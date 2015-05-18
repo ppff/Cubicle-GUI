@@ -42,7 +42,7 @@ class Simulation_cube : public QGLWidget
         QTimer* fps;
         QPoint last_pos;
         QList<QVector3D> points;
-
+        GLUquadric* sph;
 
     public slots :
 

@@ -6,13 +6,19 @@
 
 QT       += core gui opengl
 
-greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
+greaterThan(QT_MAJOR_VERSION, 5): QT += widgets
 
-TARGET = projet_specialite
+TARGET = simulator
 
 TEMPLATE = app
 
-QMAKE_CXXFLAGS += -std=c++11
+OBJECTS_DIR = obj
+MOC_DIR = moc
+UI_DIR = ui
+
+QMAKE_CXXFLAGS += -std=c++11 \
+                  -Wall -Werror
+
 
 SOURCES += main.cpp\
         mainwindow.cpp \

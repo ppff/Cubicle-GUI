@@ -1,6 +1,6 @@
 #include "memoireinterne.h"
 
-MemoireInterne::MemoireInterne(QList<Groupe> const& groupes, QObject *parent) : _groupes(groupes), QObject(parent)
+MemoireInterne::MemoireInterne(QList<Groupe> const& groupes, QObject *parent) :  QObject(parent), _groupes(groupes)
 {
     _groupeActuel = 0;
 }

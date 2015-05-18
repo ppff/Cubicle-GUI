@@ -1,6 +1,7 @@
 #include "simulation_cube.h"
 
-Simulation_cube::Simulation_cube(QWidget *parent) : QGLWidget(parent)
+Simulation_cube::Simulation_cube(QWidget *parent) : QGLWidget(parent),
+                                                    sph(gluNewQuadric())
 {
     camR = 15;
     camT = -180;
@@ -167,7 +168,7 @@ void Simulation_cube::dessiner_axes() const
 
 void Simulation_cube::dessiner_sphere(QColor const& c, float const& rayon, float const& details) const
 {
-    GLUquadric* sph;
+    GLUquadric* sph =  gluNewQuadric();
     glColor4f(c.red()/255.0,c.green()/255.0,c.blue()/255.0,c.alpha()/255.0);
     gluQuadricDrawStyle(sph, GLU_FILL); //Merci GLU
     gluSphere(sph, rayon, details, details);
