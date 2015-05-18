@@ -1,0 +1,102 @@
+#ifndef GENERAL_HPP
+#define GENERAL_HPP
+
+#include <iostream>
+#include <algorithm>
+#include <vector>
+#include <map>
+#include <memory>
+
+#include "ofMain.h"
+#include "ofxGui.h"
+
+#include "ProducerConsumerQueue.h"
+#include "SharedArray.hpp"
+
+//Fonts
+#define GLOBAL_SCORE_FONT "animeace2_reg.ttf"
+#define GLOBAL_TITLE_FONT "ObelixPro-cyr.ttf"
+
+//Audio
+#define DEFAULT_TEMPO 80
+#define AUDIO_SAMPLERATE 44100
+#define AUDIO_BUFFERSIZE 256
+
+//Useful stuff
+#define TEMPO_TO_MS(x) 60000/x
+#define MS_TO_TEMPO(x) 60000/x
+#define MAKE_NON_COPYABLE(class) \
+    class(const class& other) = delete; \
+    class& operator = (const class&) = delete;
+
+//Typedefs
+typedef unsigned long long  TimePoint;
+typedef unsigned long long  TimePeriod;
+typedef unsigned            Tempo;
+typedef float               Sample;
+typedef unsigned            SamplePos;
+
+//make_unique (available in c++14 only so let's redefine it here in case we don't want or have a c++14-compliant compiler).
+namespace std
+{
+    //Array types
+    template<typename T>
+    typename std::enable_if<std::is_array<T>::value, std::unique_ptr<T>>::type //Only accept array types
+    /*std::unique_ptr<T>*/ make_unique(size_t size)
+    {
+        return std::unique_ptr<T>(new typename std::remove_extent<T>::type[size]());
+    }
+
+    //Non-array types
+    template<typename T, typename... Args>
+    typename std::enable_if<!std::is_array<T>::value, std::unique_ptr<T>>::type //Only accept non-array types
+    /*std::unique_ptr<T>*/ make_unique(Args&&... args)
+    {
+        return std::unique_ptr<T>(new T(std::forward<Args>(args)...));
+    }
+}
+
+//Messages
+extern "C"
+{
+    #define DEBUG_MSG(...)     \
+    { 	   \
+        do      \
+        {	   \
+            std::cout      \
+            << "[DEBUG]"		\
+            << " (" << __FILE__ << ":" << __FUNCTION__ << ":" << __LINE__ << ") "	\
+            << __VA_ARGS__		\
+            << "." << std::endl		\
+            ;		\
+        } while( 0 );     \
+    }
+
+    #define ERROR_MSG(...)     \
+    { 	   \
+        do      \
+        {	   \
+            std::cout      \
+            << "[ERROR]"		\
+            << " (" << __FILE__ << ":" << __FUNCTION__ << ":" << __LINE__ << ") "	\
+            << __VA_ARGS__		\
+            << "." << std::endl	\
+            ;		\
+        } while( 0 );     \
+    }
+
+    #define ERROR_QUIT(...)     \
+    { 	   \
+        do      \
+        {	   \
+            std::cout      \
+            << "[ERROR]"		\
+            << " (" << __FILE__ << ":" << __FUNCTION__ << ":" << __LINE__ << ") "	\
+            << __VA_ARGS__		\
+            << "." << std::endl;		\
+            exit(EXIT_FAILURE);		\
+        } while( 0 ); \
+    }
+} //extern C
+
+#endif

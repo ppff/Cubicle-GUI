@@ -1,0 +1,14 @@
+<RCC>
+    <qresource prefix="/">
+        <file>flèches/bas.png</file>
+        <file>flèches/derriere.png</file>
+        <file>flèches/devant.png</file>
+        <file>flèches/gauche.png</file>
+        <file>flèches/haut.png</file>
+        <file>flèches/droite.png</file>
+        <file>flèches/groupeDroite.png</file>
+        <file>flèches/groupeGauche.png</file>
+        <file>flèches/motifDroite.png</file>
+        <file>flèches/motifGauche.png</file>
+    </qresource>
+</RCC>
