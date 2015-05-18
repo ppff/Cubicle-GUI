@@ -16,7 +16,8 @@ OBJECTS_DIR = obj
 MOC_DIR = moc
 UI_DIR = ui
 
-QMAKE_CXXFLAGS += -std=c++11
+QMAKE_CXXFLAGS += -std=c++11 \
+                  -Wall -Werror
 
 
 SOURCES += main.cpp\
