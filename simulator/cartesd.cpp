@@ -126,17 +126,16 @@ Motif CarteSD::parser_motif(QStringList const& contenu_fichier)
     QList<QVector3D> resultat;
     for (unsigned int i=0 ; i<contenu.size() ; i++)
     {
-        DEBUG_MSG("Ligne" << i << QString(contenu[i].c_str()));
         if (contenu[i].find("#") != std::string::npos)
         {
             resultat.append(parser_plan(contenu[i+1], (unsigned)((char)contenu[i][1]-'0')-num_p0));
         }
     }
 
-    for (int i=0 ; i<resultat.size() ; i++)
+    /*for (int i=0 ; i<resultat.size() ; i++)
     {
         DEBUG_MSG(resultat[i].x() << resultat[i].y() << resultat[i].z());
-    }
+    }*/
 
     return Motif(QString(nom), resultat);
 }
@@ -152,7 +151,7 @@ QList<QVector3D> CarteSD::parser_plan(std::string const& plan, unsigned num_plan
      */
 
     QList<QVector3D> res;
-    DEBUG_MSG(num_plan << QString(plan.c_str()));
+    //DEBUG_MSG(num_plan << QString(plan.c_str()));
 
     for (unsigned i=0 ; i<plan.size() ; i++)
     {
