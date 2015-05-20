@@ -15,9 +15,9 @@ TEMPLATE = app
 SOURCES += main.cpp\
         mainwindow.cpp \
     led.cpp \
-    cube.cpp
-
+    cube.cpp \
     plan.cpp
+    plan.cpp\
 
 HEADERS  += mainwindow.h \
     plan.h

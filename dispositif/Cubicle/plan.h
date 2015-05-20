@@ -3,6 +3,7 @@
 
 #include <QObject>
 #include<QVector>
+#include<led.h>
 class Plan
 {
 public:
@@ -11,7 +12,7 @@ public:
 private:
 
 
-   QVector<QVector<Led>> led_list(9);
+   QVector<QVector<Led>> led_list[9];
 
 };
 
