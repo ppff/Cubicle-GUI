@@ -2,18 +2,23 @@
 
 Led::Led()
 {
-    this->etat = eteinte;
+    this->etat =0; // 0 equivaut à led eteinte
 }
 
-Led::allumer()
+void Led::allumer()
 {
-    this->etat= allumee;
+    this->etat=1;
     this->updateFichier();
 }
 
 
-Led::eteindre()
+void Led::eteindre()
 {
-    this->etat= eteinte;
+    this->etat= 0;
     this->updateFichier();
+}
+
+void Led::updateFichier()
+{
+
 }

@@ -1,5 +1,10 @@
 #ifndef CUBE_H
 #define CUBE_H
+#include <QString>
+#include <QList>
+#include "plan.h"
+
+
 
 class Cube
 {

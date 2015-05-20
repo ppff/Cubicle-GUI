@@ -12,7 +12,7 @@ public:
 private:
 
 
-   QVector<QVector<Led>> led_list[9];
+   QVector<Led> led_list[9];
 
 };
 

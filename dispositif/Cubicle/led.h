@@ -7,17 +7,16 @@ public:
     Led();
 
 public:
-    allumer();
+    void allumer();
 
 public:
-    eteindre();
+    void eteindre();
 
 public:
-    updateFichier();
+    void updateFichier();
 
 private:
-    enum etat { allumee, eteinte };
-
+   int etat;
 };
 
 #endif // LED_H
