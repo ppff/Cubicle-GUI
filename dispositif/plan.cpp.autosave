@@ -1,0 +1,7 @@
+#include "plan.h"
+
+Plan::Plan()
+{
+QList<Led> listLed::extraire_groupes();
+}
+
