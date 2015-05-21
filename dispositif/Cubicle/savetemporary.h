@@ -15,6 +15,9 @@ public:
     explicit SaveTemporary(QWidget *parent = 0);
     ~SaveTemporary();
 
+private slots:
+    void on_buttonBox_accepted();
+
 private:
     Ui::SaveTemporary *ui;
 };
