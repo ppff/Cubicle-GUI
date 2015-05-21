@@ -1,5 +1,6 @@
 #include "creationfichier.h"
 #include "ui_creationfichier.h"
+#include "savetemporary.h"
 
 CreationFichier::CreationFichier(QWidget *parent) :
     QDialog(parent),
@@ -11,4 +12,11 @@ CreationFichier::CreationFichier(QWidget *parent) :
 CreationFichier::~CreationFichier()
 {
     delete ui;
+}
+
+void CreationFichier::on_pushButton_clicked()
+{
+    SaveTemporary savetempo;
+    savetempo.setModal(true);
+    savetempo.exec();
 }

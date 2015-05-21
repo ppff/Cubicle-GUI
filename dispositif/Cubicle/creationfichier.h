@@ -15,6 +15,9 @@ public:
     explicit CreationFichier(QWidget *parent = 0);
     ~CreationFichier();
 
+private slots:
+    void on_pushButton_clicked();
+
 private:
     Ui::CreationFichier *ui;
 };
