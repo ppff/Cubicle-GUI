@@ -2,7 +2,7 @@
 #define SAVETEMPORARY_H
 
 #include <QDialog>
-
+#include <QString>
 namespace Ui {
 class SaveTemporary;
 }
@@ -14,12 +14,15 @@ class SaveTemporary : public QDialog
 public:
     explicit SaveTemporary(QWidget *parent = 0);
     ~SaveTemporary();
+    QString getFileName();
+    void setFileName(QString t);
 
 private slots:
     void on_buttonBox_accepted();
 
 private:
     Ui::SaveTemporary *ui;
+    QString Name;
 };
 
 #endif // SAVETEMPORARY_H

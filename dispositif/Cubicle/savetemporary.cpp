@@ -5,6 +5,9 @@
 #include <QDir>
 #include <QIODevice>
 #include <QTextStream>
+#include <QString>
+#include <QFileDialog>
+#include <QMessageBox>
 
 SaveTemporary::SaveTemporary(QWidget *parent) :
     QDialog(parent),
@@ -20,25 +23,31 @@ SaveTemporary::~SaveTemporary()
 
 void SaveTemporary::on_buttonBox_accepted()
 {
-    QString texte_2 = ui -> textEdit_2 -> toPlainText();
-    QDir dir(texte_2);
+    /*
+    QString folderName = ui -> textEdit_2 -> toPlainText();
+    QDir dir(folderName);
+
     if (!dir.exists()) {
         dir.mkpath(".");
         qDebug() << "Created directory successed!";
     }
-    QString texte= ui -> textEdit -> toPlainText();
-    /*
-    QFile fileCreate(texte);
-    if (fileCreate.open(QIODevice::ReadWrite)){
-        QTextStream myStream(&fileCreate);
-        myStream<<texte;
-        qDebug() << "Created texte successed!";
-    }
-*/
+    */
+
+    QString fileName= ui -> textEdit -> toPlainText();
     QFile file;
-    file.setFileName(texte +".txt");//file_name is the QString, which I get as aparameter
+    file.setFileName(fileName +".txt");
     file.open(QIODevice::ReadWrite | QIODevice::Text);
-    QTextStream stream(&file);
-    QTextStream(stdout) << texte; //To see the name of the file, which has just been typed
+    //QTextStream stream(&file);
+    SaveTemporary::setFileName(fileName);
     file.close();
+    getFileName();
+}
+
+void SaveTemporary::setFileName(QString t){
+    Name = t;
+}
+
+QString SaveTemporary::getFileName(){
+    qDebug() << Name;
+    return Name;
 }
