@@ -18,20 +18,19 @@ SOURCES += main.cpp\
     cube.cpp \
     plan.cpp \
     direction.cpp\
-    plan.cpp
+
 
 
 HEADERS  += mainwindow.h \
     plan.h\
     led.h\
-
     cube.h \
     direction.h \
-    cube.h
+
 
 
 
 FORMS    += mainwindow.ui
 
 RESOURCES += \
-    icones.qrc
+    ressource.qrc
