@@ -5,6 +5,7 @@
 #include <string>
 #include <sstream>
 #include <iostream>
+#include <QLabel>
  using namespace std;
 
 namespace Ui {
@@ -15,8 +16,9 @@ class AffichePlan : public QDialog
 {
     Q_OBJECT
 public slots:
-    void afficheLed(const QString & valeur);
+    void afficheLed(const int i, const int j, const int etat);
     void controlLed(const QString & valeur);
+    void afficheCube3D( QLabel* label, QLabel* label2);
 
 
 public:
@@ -26,7 +28,8 @@ public:
 private:
     Ui::AffichePlan *ui;
     Cube c;
-    QPushButton* buttons[81];
+    QPushButton* buttons[9];
+
 
 };
 

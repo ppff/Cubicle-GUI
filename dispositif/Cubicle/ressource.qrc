@@ -2,5 +2,7 @@
     <qresource prefix="/icone">
         <file>led.jpeg</file>
         <file>../ledEteinte.jpeg</file>
+        <file>../cubicle.jpg</file>
+        <file>../repere.jpeg</file>
     </qresource>
 </RCC>
