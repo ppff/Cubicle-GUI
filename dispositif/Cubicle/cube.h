@@ -10,12 +10,12 @@ class Cube
 {
 public:
     Cube();
-
+    QList<Plan>* getListVer();
+    QList<Plan>* getListHor();
+    void updateCube(const Plan p, const int ori, const int pos);
 private:
-    QList<Plan> listePlanHor;
-
-private:
-    QList<Plan> listePlanVer;
+    QList<Plan>* listePlanHor;
+    QList<Plan>* listePlanVer;
 };
 
 #endif // CUBE_H
