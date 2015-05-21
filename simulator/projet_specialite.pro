@@ -35,7 +35,7 @@ HEADERS  += mainwindow.h \
     groupe.h \
     cartesd.h \
     memoireinterne.h
-
+INCLUDEPATH=C:\Documents/freeglut-3.0.0/GL/glut.h
 FORMS    += mainwindow.ui
 
 LIBS += -lGL -lGLU -lglut
