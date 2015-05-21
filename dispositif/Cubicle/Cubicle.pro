@@ -16,15 +16,21 @@ SOURCES += main.cpp\
         mainwindow.cpp \
     led.cpp \
     cube.cpp \
-    plan.cpp
+    plan.cpp \
+    dialog.cpp \
+    afficheplan.cpp
 
 HEADERS  += mainwindow.h \
     plan.h\
     led.h\
-    cube.h
+    cube.h \
+    dialog.h \
+    afficheplan.h
 
 
-FORMS    += mainwindow.ui
+FORMS    += mainwindow.ui \
+    dialog.ui \
+    afficheplan.ui
 
 RESOURCES += \
     ressource.qrc

@@ -5,13 +5,29 @@
 #include "plan.h"
 #include "iostream"
 #include "cube.h"
+#include "afficheplan.h"
+
 int main(int argc, char *argv[])
 {
     QApplication a(argc, argv);
-    MainWindow w;
-    Dialog d;
-    d.show();
-    w.show();
+    /////////////Démo allumer une led/////////////////////////////////////
+  /* Dialog d;
+    d.show();*/
+    //////////////////////////////////////////////////////////////////////
+
+
+
+
+    ///////////Démo Affichage d'un plan de led///////////////////////////
+    AffichePlan aff;
+    aff.show();
+
+
+    /////////////////////////////////////////////////////////////////////
+
+
+
+
 
     ///////////////////////test des classes led, cube et plan/////////////
 /*
