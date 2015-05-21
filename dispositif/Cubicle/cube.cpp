@@ -5,33 +5,44 @@
 
 Cube::Cube()
 {
-    this->listePlanHor= new QList<Plan>();
-    this->listePlanVer= new  QList<Plan>();
+    this->listePlan1= new QList<Plan>();
+    this->listePlan2= new  QList<Plan>();
+    this->listePlan3= new  QList<Plan>();
 
 
 
     for (int i = 0 ; i < 9 ; i++){
     Plan p=Plan();
-             this->listePlanHor->insert(i, p);
-             this->listePlanVer->insert(i,p);
+             this->listePlan1->insert(i, p);
+             this->listePlan2->insert(i,p);
+             this->listePlan3->insert(i,p);
     }
 }
 
 
-QList<Plan>* Cube:: getListHor(){
-    return this->listePlanHor;
+QList<Plan>* Cube:: getList1(){
+    return this->listePlan1;
 }
-QList<Plan>* Cube:: getListVer(){
-    return this->listePlanVer;
+
+QList<Plan>* Cube:: getList2(){
+    return this->listePlan2;
+}
+
+QList<Plan>* Cube:: getList3(){
+    return this->listePlan3;
 }
 
 void Cube::updateCube(const Plan p, const int ori, const int pos){
     if(ori==0){
-        this->getListHor()->removeAt(pos);
-        this->getListHor()->insert(pos,p);
+        this->getList1()->removeAt(pos);
+        this->getList1()->insert(pos,p);
     }
-    else {
-        this->getListVer()->removeAt(pos);
-        this->getListVer()->insert(pos,p);
+    else  if(ori==1){
+        this->getList2()->removeAt(pos);
+        this->getList2()->insert(pos,p);
+          }
+         else {
+        this->getList3()->removeAt(pos);
+        this->getList3()->insert(pos,p);
     }
 }
