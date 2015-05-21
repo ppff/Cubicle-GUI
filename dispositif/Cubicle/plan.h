@@ -17,8 +17,6 @@ public:
 private:
     Led** led_list;
 
-
-
 };
 
 #endif // PLAN_H
