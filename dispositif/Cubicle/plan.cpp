@@ -15,8 +15,6 @@ Plan::Plan(){
             this->led_list[i][j]=l;
         }
     }
-
-
 }
 
 void Plan::setLed(const Led l,const int i, const int j){
