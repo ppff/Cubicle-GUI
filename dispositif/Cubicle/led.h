@@ -1,22 +1,21 @@
 #ifndef LED_H
 #define LED_H
 
+
 class Led
 {
 public:
     Led();
-
-public:
     void allumer();
-
-public:
     void eteindre();
-
-public:
+    void modifierEtat();
     void updateFichier();
+    int getEtat();
 
 private:
    int etat;
+
+
 };
 
 #endif // LED_H
