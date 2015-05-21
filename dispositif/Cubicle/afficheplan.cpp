@@ -5,6 +5,7 @@
 #include <sstream>
 #include <iostream>
 #include <QPushButton>
+#include <QSignalMapper>
 
 using namespace std;
 
@@ -15,31 +16,38 @@ AffichePlan::AffichePlan(QWidget *parent) :
     ui->setupUi(this);
     this->c=Cube();
 
+    QSignalMapper *signalMapper = new QSignalMapper(this);
+
     for (int i = 0; i < 9; i++) {
         for (int j=0;j<9; j++){
-
-           QString text = QString::number(i);
            buttons[i] = new QPushButton("", this);
            buttons[i]->setIcon(QIcon(":/icone/ledEteinte.jpeg"));
            buttons[i]->setGeometry(30, 30, 30, 30);
            buttons[i]->move(30*i+50, 30*j+50);
 
-           connect(buttons[i], SIGNAL(clicked()), this, SLOT(affiche(i)));
 
+            QString lig=QString::number(i);
+            QString col=QString::number(i);
+             std:: cout << & lig << '\n' ;
+
+      //    QWidget::connect(buttons[i], SIGNAL(clicked()), this, SLOT(controlLed()));
+          connect(buttons[i], SIGNAL(clicked()), signalMapper, SLOT(map()));
+          signalMapper->setMapping(buttons[i], lig);
+          connect(signalMapper, SIGNAL(mapped(const QString &)), this, SLOT(controlLed(const QString &)));
        }
 
     }
 
 }
 
-void AffichePlan:: affiche(const int i)
+void AffichePlan:: afficheLed(const QString & valeur)
 {
 
 }
 
-void AffichePlan::controlLed(const int i,const int j){
-    std:: cout << "le bouton"<< '\n' ;
-    std:: cout << i+" "+j << '\n' ;
+void AffichePlan::controlLed(const QString & valeur){
+   // std:: cout << "le bouton"<< '\n' ;
+ //  std:: cout << & valeur << '\n' ;
    Led l= this->c.getListHor()->first().getLed(0,0);
    std:: cout << "led etat"<< '\n' ;
    std:: cout << l.getEtat() << '\n' ;

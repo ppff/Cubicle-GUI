@@ -1,6 +1,6 @@
 #include "ui_dialog.h"
 #include <iostream>
-#include "control.h"
+
 #include "QIcon"
 #include "dialog.h"
 #include "cube.h"
