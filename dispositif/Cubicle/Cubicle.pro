@@ -17,7 +17,7 @@ SOURCES += main.cpp\
     led.cpp \
     cube.cpp \
     plan.cpp \
-    direction.cpp\
+
 
 
 
@@ -25,7 +25,7 @@ HEADERS  += mainwindow.h \
     plan.h\
     led.h\
     cube.h \
-    direction.h \
+
 
 
 
