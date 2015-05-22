@@ -23,10 +23,10 @@ void Led::modifierEtat()
 {
     if(this->etat==0)
     {
-        this->allumer();
+        allumer();
     }
     else{
-        this->eteindre();
+        eteindre();
     }
 
 }
