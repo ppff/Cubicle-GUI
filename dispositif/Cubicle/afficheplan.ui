@@ -13,7 +13,6 @@
   <property name="windowTitle">
    <string>Dialog</string>
   </property>
-<<<<<<< HEAD
   <widget class="QLabel" name="label">
    <property name="geometry">
     <rect>
@@ -27,8 +26,6 @@
     <string>TextLabel</string>
    </property>
   </widget>
-=======
->>>>>>> master
  </widget>
  <resources/>
  <connections/>

@@ -52,11 +52,13 @@ void AffichePlan::controlLed(const QString & valeur){
    int i=stri.toInt(false,10);
    int j=strj.toInt(false,10);
 
-   Led l= this->c.getListHor()->first().getLed(i,j);
+   Led l= this->c.getList1()->first().getLed(i,j);
    l.modifierEtat();
-   Plan p1=c.getListHor()->first();
-   Plan p2=c.getListVer()->first();
+   Plan p1=c.getList1()->first();
+   Plan p2=c.getList2()->first();
+   Plan p3=c.getList3()->first();
    p1.updatePlan(l,i,j);
+   p2.updatePlan(l,i,j);
    p2.updatePlan(l,i,j);
    c.updateCube(p1,0,0);
    c.updateCube(p2,1,0);
@@ -116,12 +118,13 @@ void AffichePlan:: affiche(const int i)
 void AffichePlan::controlLed(const int i,const int j){
     std:: cout << "le bouton"<< '\n' ;
     std:: cout << i+" "+j << '\n' ;
-   Led l= this->c.getListHor()->first().getLed(0,0);
+   Led l= this->c.getList1()->first().getLed(0,0);
    std:: cout << "led etat"<< '\n' ;
    std:: cout << l.getEtat() << '\n' ;
    l.modifierEtat();
-   Plan p1=c.getListHor()->first();
-   Plan p2=c.getListVer()->first();
+   Plan p1=c.getList1()->first();
+   Plan p2=c.getList2()->first();
+   Plan p3=c.getList3()->first();
    p1.updatePlan(l,0,0);
    p2.updatePlan(l,0,0);
    c.updateCube(p1,0,0);
