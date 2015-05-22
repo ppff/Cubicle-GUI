@@ -16,7 +16,6 @@ Plan::Plan(){
         }
     }
 
-
 }
 
 void Plan::setLed(const Led l,const int i, const int j){

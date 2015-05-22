@@ -1,4 +1,5 @@
 #include "planled.h"
+<<<<<<< HEAD
 #include "ui_planled.h"
 
 Planled::Planled(QWidget *parent) :
@@ -11,4 +12,9 @@ Planled::Planled(QWidget *parent) :
 Planled::~Planled()
 {
     delete ui;
+=======
+
+PlanLed::PlanLed()
+{
+>>>>>>> master
 }

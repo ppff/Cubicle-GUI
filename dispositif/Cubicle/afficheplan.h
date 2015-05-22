@@ -16,9 +16,15 @@ class AffichePlan : public QDialog
 {
     Q_OBJECT
 public slots:
+
     void afficheLed(const int i, const int j, const int etat);
     void controlLed(const QString & valeur);
     void afficheCube3D( QLabel* label);
+
+
+    void affiche(const int i);
+public slots:
+    void controlLed(const int i, const int j);
 
 
 public:
@@ -28,7 +34,9 @@ public:
 private:
     Ui::AffichePlan *ui;
     Cube c;
+
     QPushButton* buttons[90];
+
 };
 
 #endif // AFFICHEPLAN_H
