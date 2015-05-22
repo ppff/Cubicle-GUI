@@ -17,16 +17,22 @@ SOURCES += main.cpp\
     led.cpp \
     cube.cpp \
     plan.cpp \
-    nouveaumotif.cpp
+    nouveaumotif.cpp \
+        mainwindow.cpp\
+    led.cpp\
+    cube.cpp\
+    plan.cpp
 
 
 
 
-HEADERS  += mainwindow.h \
+HEADERS  += mainwindow.h\
     plan.h\
     led.h\
     cube.h \
-    nouveaumotif.h
+    nouveaumotif.h \
+    cube.h
+
 
 
 
@@ -34,5 +40,5 @@ HEADERS  += mainwindow.h \
 
 FORMS    += mainwindow.ui
 
-RESOURCES += \
+RESOURCES +=\
     ressource.qrc
