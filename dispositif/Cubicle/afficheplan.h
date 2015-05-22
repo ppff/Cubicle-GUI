@@ -33,6 +33,8 @@ public:
     QString getName();
     void setEmpl(QString empl);
     QString getEmpl();
+    void modifierFichier(QString newLine);
+    QString getLinePlan(const int nplan,const int nligne);
 
 
 private:

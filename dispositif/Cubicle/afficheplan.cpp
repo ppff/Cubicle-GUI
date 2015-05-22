@@ -104,10 +104,30 @@ void AffichePlan::ouvrir(){
     }
 
     QTextStream flux(&file);
-  //  for()
+    QString readLine;
+    QString newLine;
+    for (int k=0;k<3;k++){
+        readLine= flux.readLine()+'\n';
+        newLine+=readLine;
+    }
+    int nplan=0;// numéro du plan
+    int nligne=0; //numéro de la ligne
 
-
- file.close();
+   for(int cntP=0;cntP<9;cntP++){
+       for(int cntL=0;cntL<9;cntL++){
+           readLine= flux.readLine()+'\n';
+           newLine+=getLinePlan(nplan,nligne)+'\n';
+           nligne++; //passer à la ligne suivante
+       }
+        readLine= flux.readLine()+'\n';
+        int g=readLine.toInt(false,10);
+        std::cout << g << '\n';
+        newLine+=readLine; //recopier la ligne #1 par exemple
+        nligne=0;
+        nplan++;// passer au plan suivant
+   }
+   file.close();
+   modifierFichier(newLine);
 }
 
 void AffichePlan::setName(QString nom){
@@ -128,7 +148,32 @@ QString AffichePlan::getEmpl(){
 
 void AffichePlan::controlSave(){
     this->ouvrir();
+}
 
+QString AffichePlan::getLinePlan(int nplan,int nligne){
+    QString str="";
+    QString etat;
+    for(int i=0;i<9;i++){
+       Led l=this->c.getList1()->value(nplan).getLed(nligne,i);
+       int e=l.getEtat() ;
+       etat=QString::number(e);
+       str+=etat;
+    }
+
+    int j=str.toInt(false,10);
+    return str;
+}
+
+void AffichePlan::modifierFichier(QString newLine){
+    QFile file(this->empl);
+    if(!file.open(QIODevice::WriteOnly | QIODevice::Text)){
+        qDebug()<<"le fichier n'est pas ouvert";
+       return;
+    }
+    QTextStream out(&file);
+    out << newLine;
+    file.flush();
+    file.close();
 }
 
 
