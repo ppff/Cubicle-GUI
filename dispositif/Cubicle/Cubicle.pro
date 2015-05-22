@@ -17,9 +17,7 @@ SOURCES += main.cpp\
     led.cpp \
     cube.cpp \
     plan.cpp \
-    creationfichier.cpp \
-    savetemporary.cpp \
-    selection_plan.cpp
+    savetemporary.cpp
 
 
 
@@ -28,18 +26,14 @@ HEADERS  += mainwindow.h \
     plan.h\
     led.h\
     cube.h \
-    creationfichier.h \
-    savetemporary.h \
-    selection_plan.h
+    savetemporary.h
 
 
 
 
 
 FORMS    += mainwindow.ui \
-    creationfichier.ui \
-    savetemporary.ui \
-    selection_plan.ui
+    savetemporary.ui
 
 RESOURCES += \
     ressource.qrc
