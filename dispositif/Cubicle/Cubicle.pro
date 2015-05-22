@@ -13,41 +13,41 @@ TEMPLATE = app
 
 
 SOURCES += main.cpp\
-        mainwindow.cpp \
-    led.cpp \
-    cube.cpp \
-    plan.cpp \
-    dialog.cpp \
-    afficheplan.cpp \
-    creationfichier.cpp \
-    savetemporary.cpp \
+        mainwindow.cpp\
+    led.cpp\
+    cube.cpp\
+    plan.cpp\
+    dialog.cpp\
+    afficheplan.cpp\
+    creationfichier.cpp\
+    savetemporary.cpp\
     selection_plan.cpp
 
 
 
 
-HEADERS  += mainwindow.h \
+HEADERS  += mainwindow.h\
     plan.h\
     led.h\
-    cube.h \
-    dialog.h \
+    cube.h\
+    dialog.h\
     afficheplan.h
 
 
-FORMS    += mainwindow.ui \
-    dialog.ui \
-    afficheplan.ui
-    creationfichier.h \
-    savetemporary.h \
+FORMS    += mainwindow.ui\
+    dialog.ui\
+    afficheplan.ui\
+    creationfichier.h\
+    savetemporary.h\
     selection_plan.h
 
 
 
 
 
-FORMS    += mainwindow.ui \
-    creationfichier.ui \
-    savetemporary.ui \
+FORMS    += mainwindow.ui\
+    creationfichier.ui\
+    savetemporary.ui\
     selection_plan.ui
 
 
