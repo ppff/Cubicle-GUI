@@ -1,6 +1,4 @@
 #include "mainwindow.h"
-#include "selection_plan.h"
-#include "creationfichier.h"
 #include <QApplication>
 #include"led.h"
 #include "plan.h"
@@ -11,6 +9,7 @@
 int main(int argc, char *argv[])
 {
     QApplication a(argc, argv);
+
 
     /////////////Démo allumer une led/////////////////////////////////////
   /* Dialog d;
@@ -43,10 +42,5 @@ int main(int argc, char *argv[])
     //MainWindow w;
     //w.show();
 
-
-    //Selection_Plan s;
-    //s.show();
-    CreationFichier c;
-    c.show();
     return a.exec();
 }

@@ -19,11 +19,7 @@ SOURCES += main.cpp\
     plan.cpp\
     dialog.cpp\
     afficheplan.cpp\
-    creationfichier.cpp\
-    savetemporary.cpp\
-    selection_plan.cpp
-
-
+    savetemporary.cpp
 
 
 HEADERS  += mainwindow.h\
@@ -31,24 +27,16 @@ HEADERS  += mainwindow.h\
     led.h\
     cube.h\
     dialog.h\
-    afficheplan.h
+    afficheplan.h\
+    savetemporary.h
 
 
 FORMS    += mainwindow.ui\
     dialog.ui\
     afficheplan.ui\
-    creationfichier.h\
-    savetemporary.h\
-    selection_plan.h
+    savetemporary.ui
 
 
-
-
-
-FORMS    += mainwindow.ui\
-    creationfichier.ui\
-    savetemporary.ui\
-    selection_plan.ui
 
 
 RESOURCES += \
