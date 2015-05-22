@@ -13,18 +13,18 @@ TEMPLATE = app
 
 
 SOURCES += main.cpp\
-        mainwindow.cpp \
-    led.cpp \
-    cube.cpp \
-    plan.cpp \
+        mainwindow.cpp\
+    led.cpp\
+    cube.cpp\
+    plan.cpp
 
 
 
 
-HEADERS  += mainwindow.h \
+HEADERS  += mainwindow.h\
     plan.h\
     led.h\
-    cube.h \
+    cube.h
 
 
 
@@ -32,5 +32,5 @@ HEADERS  += mainwindow.h \
 
 FORMS    += mainwindow.ui
 
-RESOURCES += \
+RESOURCES +=\
     ressource.qrc
