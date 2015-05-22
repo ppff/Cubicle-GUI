@@ -8,7 +8,7 @@
 #include <QSignalMapper>
 #include <QLabel>
 #include <QGridLayout>
-
+#include <QTextStream>
 
 using namespace std;
 
@@ -20,6 +20,8 @@ AffichePlan::AffichePlan(QWidget *parent) :
     this->c=Cube();
     QLabel* l=ui->label;
     this->afficheCube3D(l);
+    QObject::connect(ui->pushButton, SIGNAL(clicked()),
+                          this, SLOT(controlSave()));
 
     QSignalMapper *signalMapper = new QSignalMapper(this);
 
@@ -91,46 +93,44 @@ void AffichePlan:: afficheCube3D( QLabel* label){
     label->move(800,300);
     label->adjustSize();
     label->show();
+}
 
+void AffichePlan::ouvrir(){
 
-    for (int i = 0; i < 9; i++) {
-        for (int j=0;j<9; j++){
-
-           QString text = QString::number(i);
-           buttons[i] = new QPushButton("", this);
-           buttons[i]->setIcon(QIcon(":/icone/ledEteinte.jpeg"));
-           buttons[i]->setGeometry(30, 30, 30, 30);
-           buttons[i]->move(30*i+50, 30*j+50);
-
-           connect(buttons[i], SIGNAL(clicked()), this, SLOT(affiche(i)));
-
-       }
-
+    QFile file(this->empl);
+    if(!file.open(QIODevice::ReadWrite | QIODevice::Text)){
+        qDebug()<<"le fichier n'est pas ouvert";
+       return;
     }
 
+    QTextStream flux(&file);
+  //  for()
+
+
+ file.close();
 }
 
-void AffichePlan:: affiche(const int i)
-{
+void AffichePlan::setName(QString nom){
+    this->nom=nom;
+}
+
+QString AffichePlan::getName(){
+    return this->nom;
+}
+
+void AffichePlan::setEmpl(QString e){
+    this->empl=e;
+}
+
+QString AffichePlan::getEmpl(){
+    return this->empl;
+}
+
+void AffichePlan::controlSave(){
+    this->ouvrir();
 
 }
 
-void AffichePlan::controlLed(const int i,const int j){
-    std:: cout << "le bouton"<< '\n' ;
-    std:: cout << i+" "+j << '\n' ;
-   Led l= this->c.getList1()->first().getLed(0,0);
-   std:: cout << "led etat"<< '\n' ;
-   std:: cout << l.getEtat() << '\n' ;
-   l.modifierEtat();
-   Plan p1=c.getList1()->first();
-   Plan p2=c.getList2()->first();
-   Plan p3=c.getList3()->first();
-   p1.updatePlan(l,0,0);
-   p2.updatePlan(l,0,0);
-   c.updateCube(p1,0,0);
-   c.updateCube(p2,1,0);
-
-}
 
 AffichePlan::~AffichePlan()
 {

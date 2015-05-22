@@ -6,6 +6,8 @@
 #include <sstream>
 #include <iostream>
 #include <QLabel>
+#include <QFile>
+#include <QDebug>
  using namespace std;
 
 namespace Ui {
@@ -20,20 +22,24 @@ public slots:
     void afficheLed(const int i, const int j, const int etat);
     void controlLed(const QString & valeur);
     void afficheCube3D( QLabel* label);
-
-
-    void affiche(const int i);
-public slots:
-    void controlLed(const int i, const int j);
+    void controlSave();
 
 
 public:
     explicit AffichePlan(QWidget *parent = 0);
     ~AffichePlan();
+    void ouvrir();
+    void setName(QString nom);
+    QString getName();
+    void setEmpl(QString empl);
+    QString getEmpl();
+
 
 private:
     Ui::AffichePlan *ui;
     Cube c;
+    QString nom;
+    QString empl;
 
     QPushButton* buttons[90];
 

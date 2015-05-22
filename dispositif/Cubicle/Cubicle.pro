@@ -19,7 +19,8 @@ SOURCES += main.cpp\
     plan.cpp\
     dialog.cpp\
     afficheplan.cpp\
-    savetemporary.cpp
+    savetemporary.cpp \
+    save.cpp
 
 
 HEADERS  += mainwindow.h\
@@ -28,13 +29,15 @@ HEADERS  += mainwindow.h\
     cube.h\
     dialog.h\
     afficheplan.h\
-    savetemporary.h
+    savetemporary.h \
+    save.h
 
 
 FORMS    += mainwindow.ui\
     dialog.ui\
     afficheplan.ui\
-    savetemporary.ui
+    savetemporary.ui \
+    save.ui
 
 
 

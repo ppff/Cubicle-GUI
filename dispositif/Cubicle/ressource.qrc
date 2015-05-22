@@ -5,4 +5,7 @@
         <file>../cubicle.jpg</file>
         <file>../repere.jpeg</file>
     </qresource>
+    <qresource prefix="/texte">
+        <file>../file.txt</file>
+    </qresource>
 </RCC>

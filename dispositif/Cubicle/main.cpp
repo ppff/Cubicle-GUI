@@ -5,6 +5,7 @@
 #include "iostream"
 #include "cube.h"
 #include "afficheplan.h"
+#include "save.h"
 
 int main(int argc, char *argv[])
 {
@@ -21,12 +22,20 @@ int main(int argc, char *argv[])
 
     ///////////Démo Affichage d'un plan de led///////////////////////////
     AffichePlan aff;
+    aff.setName("file.txt");
+    aff.setEmpl("/home/sahli/Projet_spec/Cubicle-GUI/dispositif/file.txt");
     aff.show();
 
 
     /////////////////////////////////////////////////////////////////////
 
+    ///////////////////////save/////////////////////////////////////////
+  /*  save s;
+    s.setName("file.txt");
+    s.setEmpl("/home/sahli/Projet_spec/Cubicle-GUI/dispositif/file.txt");
+    s.show();*/
 
+    ////////////////////////////////////////////////////////////////////
 
 
 
