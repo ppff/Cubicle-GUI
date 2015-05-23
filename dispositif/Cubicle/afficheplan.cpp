@@ -22,6 +22,8 @@ AffichePlan::AffichePlan(QWidget *parent) :
     this->afficheCube3D(l);
     QObject::connect(ui->pushButton, SIGNAL(clicked()),
                           this, SLOT(controlSave()));
+    QObject::connect(ui->pushButton_2,SIGNAL(clicked()),
+                          this, SLOT(controlQuit()));
 
     QSignalMapper *signalMapper = new QSignalMapper(this);
 
@@ -48,23 +50,42 @@ AffichePlan::AffichePlan(QWidget *parent) :
 
 
 void AffichePlan::controlLed(const QString & valeur){
-
    QString stri=valeur[0];
    QString strj=valeur[1];
    int i=stri.toInt(false,10);
    int j=strj.toInt(false,10);
-
+/////////celà dépend de quelle orientation on choisit: spécifique vue dessus  ori=0//////
    Led l= this->c.getList1()->first().getLed(i,j);
    l.modifierEtat();
    Plan p1=c.getList1()->first();
-   Plan p2=c.getList2()->first();
-   Plan p3=c.getList3()->first();
-   p1.updatePlan(l,i,j);
-   p2.updatePlan(l,i,j);
-   p2.updatePlan(l,i,j);
-   c.updateCube(p1,0,0);
-   c.updateCube(p2,1,0);
+   Plan p2=c.getList2()->value(j);
+   Plan p3=c.getList3()->value(i);
+   p1.updatePlan(l,i,j,0,0,0);//0,0 c'est changement de la vue de dessue à vue de dessus
+   p2.updatePlan(l,i,j,0,0,1); //premier 0: 1er plan ,  dessus -> gauche
+   p3.updatePlan(l,i,j,0,0,2);// dessus -> face
+   c.updateCube(p1,0,0); //ori et pos
+   c.updateCube(p2,1,j);
+   c.updateCube(p3,2,i);
+   //////ori==1//////////////////////////////////////////////////////////////////////////////
+/*   int ori;
+   int nplan;
+   switch (ori){
+   case 0:  Led l= this->c.getList1()->value(nplan).getLed(i,j); break;
+   case 1:  Led l= this->c.getList2()->value(nplan).getLed(i,j); break;
+   case 2:  Led l= this->c.getList3()->value(nplan).getLed(i,j); break;
+   }
 
+   l.modifierEtat();
+   Plan p1=c.getList1()->value(nplan);
+   Plan p2=c.getList2()->value(j);
+   Plan p3=c.getList3()->value(i);
+   p1.updatePlan(l,i,j,nplan,ori,0);//0,0 c'est changement de la vue de dessue à vue de dessus
+   p2.updatePlan(l,i,j,nplan,ori,1); //premier 0: 1er plan ,  dessus -> gauche
+   p3.updatePlan(l,i,j,nplan,ori,2);// dessus -> face
+   c.updateCube(p1,0,nplan); //ori et pos
+   c.updateCube(p2,1,j);
+   c.updateCube(p3,2,i);*/
+/////////////////////////////////////////////////////////////////////////////////////////
    afficheLed(i,j,l.getEtat());
 
 }
@@ -120,8 +141,6 @@ void AffichePlan::ouvrir(){
            nligne++; //passer à la ligne suivante
        }
         readLine= flux.readLine()+'\n';
-        int g=readLine.toInt(false,10);
-        std::cout << g << '\n';
         newLine+=readLine; //recopier la ligne #1 par exemple
         nligne=0;
         nplan++;// passer au plan suivant
@@ -159,8 +178,6 @@ QString AffichePlan::getLinePlan(int nplan,int nligne){
        etat=QString::number(e);
        str+=etat;
     }
-
-    int j=str.toInt(false,10);
     return str;
 }
 
@@ -174,6 +191,14 @@ void AffichePlan::modifierFichier(QString newLine){
     out << newLine;
     file.flush();
     file.close();
+}
+
+void AffichePlan::quit(){
+
+}
+
+void AffichePlan::controlQuit(){
+
 }
 
 

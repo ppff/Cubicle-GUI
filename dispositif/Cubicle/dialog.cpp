@@ -30,13 +30,12 @@ void Dialog::controlLed(){
    Plan p1=c.getList1()->first();
    Plan p2=c.getList2()->first();
    Plan p3=c.getList3()->first();
-   p1.updatePlan(l,0,0);
-   p2.updatePlan(l,0,0);
-   p3.updatePlan(l,0,0);
+   p1.updatePlan(l,0,0,0,0,0);
+   p2.updatePlan(l,0,0,0,0,1);
+   p3.updatePlan(l,0,0,0,0,2);
    c.updateCube(p1,0,0);
    c.updateCube(p2,1,0);
    c.updateCube(p3,1,0);
-
 }
 
 Dialog::~Dialog()

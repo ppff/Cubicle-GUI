@@ -23,6 +23,7 @@ public slots:
     void controlLed(const QString & valeur);
     void afficheCube3D( QLabel* label);
     void controlSave();
+    void controlQuit();
 
 
 public:
@@ -35,6 +36,7 @@ public:
     QString getEmpl();
     void modifierFichier(QString newLine);
     QString getLinePlan(const int nplan,const int nligne);
+    void quit();
 
 
 private:
