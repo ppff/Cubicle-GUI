@@ -13,20 +13,34 @@ TEMPLATE = app
 
 
 SOURCES += main.cpp\
+<<<<<<< HEAD
         mainwindow.cpp \
     led.cpp \
     cube.cpp \
     plan.cpp \
     savetemporary.cpp
+=======
+    mainwindow.cpp\
+    nouveaumotif.cpp\
+    led.cpp\
+    cube.cpp\
+    plan.cpp
+>>>>>>> sauvegardeFichier
 
 
 
 
-HEADERS  += mainwindow.h \
+
+HEADERS  += mainwindow.h\
     plan.h\
     led.h\
+<<<<<<< HEAD
     cube.h \
     savetemporary.h
+=======
+    cube.h\
+    nouveaumotif.h\
+>>>>>>> sauvegardeFichier
 
 
 
@@ -35,5 +49,5 @@ HEADERS  += mainwindow.h \
 FORMS    += mainwindow.ui \
     savetemporary.ui
 
-RESOURCES += \
+RESOURCES +=\
     ressource.qrc
