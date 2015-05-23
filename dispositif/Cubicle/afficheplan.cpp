@@ -21,12 +21,19 @@ AffichePlan::AffichePlan(QWidget *parent) :
     ui->setupUi(this);
     this->c=Cube();
     QLabel* l=ui->label;
+
     this->afficheCube3D(l);
     QObject::connect(ui->pushButton, SIGNAL(clicked()),
                           this, SLOT(controlSave()));
     QObject::connect(ui->pushButton_2,SIGNAL(clicked()),
                           this, SLOT(controlQuit()));
+    QObject::connect(ui->pushButton_3,SIGNAL(clicked()),
+                          this, SLOT(controlDelete()));
+    affichePlanLed();
 
+}
+
+void AffichePlan::affichePlanLed(){
     QSignalMapper *signalMapper = new QSignalMapper(this);
 
    for (int i = 0; i < 9; i++) {
@@ -47,9 +54,20 @@ AffichePlan::AffichePlan(QWidget *parent) :
        }
 }
     connect(signalMapper, SIGNAL(mapped(const QString &)), this, SLOT(controlLed(const QString &)));
-
 }
 
+void AffichePlan::deletePlanLed(){
+    for (int i = 0; i < 9; i++) {
+         for (int j=0;j<9; j++){
+             QString col=QString::number(i);
+             QString lig=QString::number(j);
+             QString text=lig+col;
+             int num=text.toInt(false,10);
+             buttons[num]->hide();
+
+         }
+    }
+}
 
 void AffichePlan::controlLed(const QString & valeur){
    QString stri=valeur[0];
@@ -116,6 +134,11 @@ void AffichePlan:: afficheCube3D( QLabel* label){
     label->move(800,300);
     label->adjustSize();
     label->show();
+}
+
+void AffichePlan::deleteCube3D(){
+    ui->label->setPixmap(QPixmap());
+   ui->label->repaint();
 }
 
 void AffichePlan::ouvrir(){
@@ -202,6 +225,19 @@ void AffichePlan::controlQuit(){
         if (reponse == QMessageBox::Yes)
         {
             this->close();
+        }
+}
+
+void AffichePlan::controlDelete(){
+    int reponse = QMessageBox::question(this, "Quit", " Are you sure you want to delete this pattern ?");
+
+        if (reponse == QMessageBox::Yes)
+        {
+            QFile file(empl);
+            file.remove();
+            this->deleteCube3D();
+            this->deletePlanLed();
+
         }
 }
 

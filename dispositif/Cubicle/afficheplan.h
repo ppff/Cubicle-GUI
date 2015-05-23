@@ -24,6 +24,7 @@ public slots:
     void afficheCube3D( QLabel* label);
     void controlSave();
     void controlQuit();
+    void controlDelete();
 
 
 public:
@@ -36,6 +37,9 @@ public:
     QString getEmpl();
     void modifierFichier(QString newLine);
     QString getLinePlan(const int nplan,const int nligne);
+    void deleteCube3D();
+    void affichePlanLed();
+    void deletePlanLed();
 
 
 
