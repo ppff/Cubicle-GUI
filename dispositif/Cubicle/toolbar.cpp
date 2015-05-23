@@ -70,7 +70,7 @@ void ToolBar::setNumeroPlan(int i)
 
 void ToolBar::on_VerticalDA_clicked()
 {
-    setOrientationPlan(1);
+    setOrientationPlan(2);
     ui -> Plan1->setVisible(true);
     ui -> Plan2->setVisible(true);
     ui -> Plan3->setVisible(true);
@@ -102,7 +102,7 @@ void ToolBar::on_VerticalDA_clicked()
 
 void ToolBar::on_VerticalGD_clicked()
 {
-    setOrientationPlan(2);
+    setOrientationPlan(1);
     ui -> Plan1->setVisible(false);
     ui -> Plan2->setVisible(false);
     ui -> Plan3->setVisible(false);
@@ -134,7 +134,7 @@ void ToolBar::on_VerticalGD_clicked()
 
 void ToolBar::on_Horizontal_clicked()
 {
-    setOrientationPlan(3);
+    setOrientationPlan(0);
     ui -> Plan1->setVisible(false);
     ui -> Plan2->setVisible(false);
     ui -> Plan3->setVisible(false);
