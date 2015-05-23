@@ -17,8 +17,8 @@ SOURCES += main.cpp\
     nouveaumotif.cpp\
     led.cpp\
     cube.cpp\
-    plan.cpp\
-    nouveaumotif.cpp\
+    plan.cpp
+
 
 
 

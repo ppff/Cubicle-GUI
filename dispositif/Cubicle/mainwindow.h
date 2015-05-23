@@ -36,13 +36,12 @@ private:
     QMenu* contextMenu;
     QString namedir;
     QAction *insertMotif;
-
+    QAction *insert_Group;
 public slots:
 void ouvrir_explorer() ;
 void ajouter_motif() ;
 
 public slots:
-void ouvrir_explorer() ;
 void insertGroup();
 
 
