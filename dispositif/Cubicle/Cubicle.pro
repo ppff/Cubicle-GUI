@@ -13,19 +13,13 @@ TEMPLATE = app
 
 
 SOURCES += main.cpp\
-<<<<<<< HEAD
-        mainwindow.cpp \
-    led.cpp \
-    cube.cpp \
-    plan.cpp \
-    savetemporary.cpp
-=======
     mainwindow.cpp\
     nouveaumotif.cpp\
     led.cpp\
     cube.cpp\
-    plan.cpp
->>>>>>> sauvegardeFichier
+    plan.cpp\
+    savetemporary.cpp
+
 
 
 
@@ -34,13 +28,9 @@ SOURCES += main.cpp\
 HEADERS  += mainwindow.h\
     plan.h\
     led.h\
-<<<<<<< HEAD
-    cube.h \
-    savetemporary.h
-=======
     cube.h\
     nouveaumotif.h\
->>>>>>> sauvegardeFichier
+    savetemporary.h
 
 
 
