@@ -9,6 +9,8 @@
 #include <QLabel>
 #include <QGridLayout>
 #include <QTextStream>
+#include <QInputDialog>
+#include <QMessageBox>
 
 using namespace std;
 
@@ -193,12 +195,14 @@ void AffichePlan::modifierFichier(QString newLine){
     file.close();
 }
 
-void AffichePlan::quit(){
-
-}
 
 void AffichePlan::controlQuit(){
+    int reponse = QMessageBox::question(this, "Quit", " Are you sure you want to quit ?");
 
+        if (reponse == QMessageBox::Yes)
+        {
+            this->close();
+        }
 }
 
 

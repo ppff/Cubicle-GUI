@@ -36,7 +36,7 @@ public:
     QString getEmpl();
     void modifierFichier(QString newLine);
     QString getLinePlan(const int nplan,const int nligne);
-    void quit();
+
 
 
 private:
