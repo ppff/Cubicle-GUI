@@ -13,12 +13,8 @@ TEMPLATE = app
 
 
 SOURCES += main.cpp\
-        mainwindow.cpp \
-    led.cpp \
-    cube.cpp \
-    plan.cpp \
-    nouveaumotif.cpp \
-        mainwindow.cpp\
+    mainwindow.cpp\
+    nouveaumotif.cpp\
     led.cpp\
     cube.cpp\
     plan.cpp
@@ -29,8 +25,7 @@ SOURCES += main.cpp\
 HEADERS  += mainwindow.h\
     plan.h\
     led.h\
-    cube.h \
-    nouveaumotif.h \
+    nouveaumotif.h\
     cube.h
 
 

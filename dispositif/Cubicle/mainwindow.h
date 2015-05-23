@@ -9,6 +9,8 @@
 #include <QString>
 #include <iostream>
 #include <QMessageBox>
+#include "QMenu"
+#include "QPoint"
 
 namespace Ui {
 class MainWindow;
@@ -29,10 +31,14 @@ public:
 private:
     Ui::MainWindow *ui;
     QDirModel *model;
-     QString namedir;
+    QMenu* contextMenu;
+    QString namedir;
+    QAction *insertMotif;
 
 public slots:
 void ouvrir_explorer() ;
+void ajouter_motif() ;
+
 
 
 };
