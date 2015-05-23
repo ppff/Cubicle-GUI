@@ -9,6 +9,7 @@
 #include <QString>
 #include <iostream>
 #include <QMessageBox>
+#include <QInputDialog>
 
 namespace Ui {
 class MainWindow;
@@ -30,9 +31,12 @@ private:
     Ui::MainWindow *ui;
     QDirModel *model;
      QString namedir;
+     QAction* insert_Group;
+     QMenu* contextMenu;
 
 public slots:
 void ouvrir_explorer() ;
+void insertGroup();
 
 
 };
