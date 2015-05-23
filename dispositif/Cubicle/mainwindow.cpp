@@ -24,7 +24,6 @@ MainWindow::MainWindow(QWidget *parent) :
     ui->actionSave->setDisabled(true);
 
      connect(ui->actionOpen_directory,SIGNAL(triggered(bool)),this,SLOT(ouvrir_explorer()));
-     insert_Group = new QAction("insert Group",this);
      connect(ui->actionNew_Group,SIGNAL(triggered(bool)),this,SLOT(insertGroup()));
      connect(ui->actionNew_Pattern,SIGNAL(triggered(bool)),this,SLOT(ajouter_motif()));
 
@@ -32,19 +31,15 @@ MainWindow::MainWindow(QWidget *parent) :
 
 void MainWindow::ouvrir_explorer(){
     namedir=QFileDialog::getExistingDirectory(this, tr("Open Directory"),
-                                                   "/home",
-                                                   QFileDialog::ShowDirsOnly
-                                                   | QFileDialog::DontResolveSymlinks
-
+                                                   "/home"
                                                );
-
+  if (namedir=="") return;
   QDir dir(namedir);
-  QStringList filters(".cpp");
   QFileInfoList list=dir.entryInfoList(QDir::Files);
   QFileInfoList list2=dir.entryInfoList(QDir::Dirs);
   //on ne doit pas charger le dossier d'un groupe de motif mais plutot le repertoire des groupes de motif
   if ((!list.isEmpty()) and (!list2.isEmpty())) {
-       QMessageBox::information(this,tr("warning"),"can not open this directory, please choose the source directory");
+       QMessageBox::information(this,tr("warning"),"cannot open this directory, please choose the source directory");
        qDebug()<<"impossible";
        return;
   }
@@ -67,6 +62,8 @@ void MainWindow::tree(){
     ui->treeView->expand(index);
     ui->treeView->scrollTo(index);
     ui->treeView->setCurrentIndex(index);
+    ui->treeView->setColumnHidden(1,true);
+    ui->treeView->setColumnHidden(2,true);
     ui->treeView->resizeColumnToContents(0);
     ui->actionNew_Group->setEnabled(true);
     ui->actionNew_Pattern->setEnabled(true);
@@ -76,16 +73,22 @@ void MainWindow::tree(){
 void MainWindow::ajouter_motif(){
     QModelIndex index=ui->treeView->currentIndex();
     if (index.isValid()){
+
         if (model->fileInfo(index).isDir()) {
             QString dir=model->fileInfo(index).absolutePath();
+
             QString nameGroup=model->fileInfo(index).baseName();
+             if((dir + "/" + nameGroup) !=namedir){
+            qDebug()<<"le namedir est "+ namedir;
             qDebug()<<"la direction du dossier est "+dir;
             qDebug()<<"le nom du dossier est "+nameGroup;
             QString nameMotif=QInputDialog::getText(this,"Name","Enter the pattern name");
             NouveauMotif m=NouveauMotif(nameGroup,nameMotif,dir+"/"+nameGroup);
             tree();
-
-
+            }
+             else {
+               QMessageBox::information(this,tr("warning"),"cannot add a pattern, please choose or add a group");
+             }
 
         }
     }
