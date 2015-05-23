@@ -10,7 +10,12 @@ MainWindow::MainWindow(QWidget *parent) :
     ui(new Ui::MainWindow)
 {
     ui->setupUi(this);
-
+    ui->actionCopy->setDisabled(true);
+    ui->actionDelete_pattern->setDisabled(true);
+    ui->actionNew_Group->setDisabled(true);
+    ui->actionNew_Pattern->setDisabled(true);
+    ui->actionPaste_pattern->setDisabled(true);
+    ui->actionSave->setDisabled(true);
 
      connect(ui->actionOpen_directory,SIGNAL(triggered(bool)),this,SLOT(ouvrir_explorer()));
        insert_Group = new QAction("insert Group",this);
@@ -31,6 +36,7 @@ void MainWindow::ouvrir_explorer(){
   insertMotif = new QAction("Inserer Motif",contextMenu);
   ui->treeView->addAction(insertMotif);
   connect(insertMotif,SIGNAL(triggered(bool)),this, SLOT(ajouter_motif()));
+
 }
 
 void MainWindow::tree(){
@@ -44,6 +50,9 @@ void MainWindow::tree(){
     ui->treeView->scrollTo(index);
     ui->treeView->setCurrentIndex(index);
     ui->treeView->resizeColumnToContents(0);
+    ui->actionNew_Group->setEnabled(true);
+    ui->actionNew_Pattern->setEnabled(true);
+
 }
 
 void MainWindow::ajouter_motif(){
@@ -71,6 +80,7 @@ void MainWindow::insertGroup(){
     QString name =QInputDialog::getText(this,"Name","Enter a name");
     if(name.isEmpty())return;
     model->mkdir(index,name);
+
 
 }
 
