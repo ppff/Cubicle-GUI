@@ -37,6 +37,7 @@ private:
     QString namedir;
     QAction *insertMotif;
     QAction *insert_Group;
+
 public slots:
 void ouvrir_explorer() ;
 void ajouter_motif() ;

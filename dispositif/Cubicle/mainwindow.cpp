@@ -5,20 +5,20 @@
 #include "nouveaumotif.h"
 #include "QMenu"
 #include "QPoint"
+
+
 MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent),
     ui(new Ui::MainWindow)
 {
     ui->setupUi(this);
-
-
-     connect(ui->actionOpen_directory,SIGNAL(triggered(bool)),this,SLOT(ouvrir_explorer()));
-       insert_Group = new QAction("insert Group",this);
-       connect(ui->actionNew_Group,SIGNAL(triggered(bool)),this,SLOT(insertGroup()));
-      connect(ui->actionNew_Pattern,SIGNAL(triggered(bool)),this,SLOT(ajouter_motif()));
-
+    connect(ui->actionOpen_directory,SIGNAL(triggered(bool)),this,SLOT(ouvrir_explorer()));
+    insert_Group = new QAction("insert Group",this);
+    connect(ui->actionNew_Group,SIGNAL(triggered(bool)),this,SLOT(insertGroup()));
+    connect(ui->actionNew_Pattern,SIGNAL(triggered(bool)),this,SLOT(ajouter_motif()));
 }
 
+//ouvre le répertoire de travail
 void MainWindow::ouvrir_explorer(){
     namedir = QFileDialog::getExistingDirectory(this, tr("Open Directory"),
                                                    "/home",
@@ -33,6 +33,7 @@ void MainWindow::ouvrir_explorer(){
   connect(insertMotif,SIGNAL(triggered(bool)),this, SLOT(ajouter_motif()));
 }
 
+//affiche l'arbre de dossiers
 void MainWindow::tree(){
             model = new QDirModel(this);
             model->setReadOnly(false);
@@ -46,6 +47,7 @@ void MainWindow::tree(){
     ui->treeView->resizeColumnToContents(0);
 }
 
+//creer un nouveau motif
 void MainWindow::ajouter_motif(){
     QModelIndex index=ui->treeView->currentIndex();
     if (index.isValid()){
@@ -64,6 +66,8 @@ void MainWindow::ajouter_motif(){
     }
 
 }
+
+//creer un nouveau groupe de motif
 void MainWindow::insertGroup(){
     QModelIndex index =ui->treeView->currentIndex();
     if (!index.isValid()) return;
