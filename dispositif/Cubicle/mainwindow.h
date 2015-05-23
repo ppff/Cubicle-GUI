@@ -37,10 +37,14 @@ private:
     QString namedir;
     QAction *insertMotif;
     QAction *insert_Group;
+    QString paste_element;
+    bool dirOrFile;//false if file
+
 public slots:
 void ouvrir_explorer() ;
 void ajouter_motif() ;
-
+void copier();
+void coller();
 public slots:
 void insertGroup();
 
