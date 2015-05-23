@@ -83,11 +83,12 @@ void MainWindow::ajouter_motif(){
 
 }
 void MainWindow::insertGroup(){
-    QModelIndex index =ui->treeView->currentIndex();
+
+    QModelIndex index =model->index(namedir,0);
     if (!index.isValid()) return;
     QString name =QInputDialog::getText(this,"Name","Enter a name");
     if(name.isEmpty())return;
-    model->mkdir(index, name);
+    model->mkdir(index,name);
 
 }
 

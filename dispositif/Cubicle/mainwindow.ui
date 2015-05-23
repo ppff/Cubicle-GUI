@@ -68,41 +68,73 @@
   </widget>
   <widget class="QStatusBar" name="statusBar"/>
   <action name="actionNew_Group">
+   <property name="icon">
+    <iconset resource="ressource.qrc">
+     <normaloff>:/Images/new_group.png</normaloff>:/Images/new_group.png</iconset>
+   </property>
    <property name="text">
     <string>new Group</string>
    </property>
   </action>
   <action name="actionNew_Pattern">
+   <property name="icon">
+    <iconset resource="ressource.qrc">
+     <normaloff>:/Images/new_pattern.gif</normaloff>:/Images/new_pattern.gif</iconset>
+   </property>
    <property name="text">
     <string>new Pattern</string>
    </property>
   </action>
   <action name="actionSave">
+   <property name="icon">
+    <iconset resource="ressource.qrc">
+     <normaloff>:/Images/save.png</normaloff>:/Images/save.png</iconset>
+   </property>
    <property name="text">
     <string>save</string>
    </property>
   </action>
   <action name="actionQuit">
+   <property name="icon">
+    <iconset resource="ressource.qrc">
+     <normaloff>:/Images/quit.png</normaloff>:/Images/quit.png</iconset>
+   </property>
    <property name="text">
     <string>quit</string>
    </property>
   </action>
   <action name="actionCopy">
+   <property name="icon">
+    <iconset resource="ressource.qrc">
+     <normaloff>:/Images/copy.png</normaloff>:/Images/copy.png</iconset>
+   </property>
    <property name="text">
     <string>copy pattern</string>
    </property>
   </action>
   <action name="actionOpen_directory">
+   <property name="icon">
+    <iconset resource="ressource.qrc">
+     <normaloff>:/Images/open_directory.png</normaloff>:/Images/open_directory.png</iconset>
+   </property>
    <property name="text">
     <string>open directory</string>
    </property>
   </action>
   <action name="actionPaste_pattern">
+   <property name="icon">
+    <iconset resource="ressource.qrc">
+     <normaloff>:/Images/paste.png</normaloff>:/Images/paste.png</iconset>
+   </property>
    <property name="text">
     <string>paste pattern</string>
    </property>
   </action>
   <action name="actionDelete_pattern">
+   <property name="icon">
+    <iconset resource="ressource.qrc">
+     <normaloff>:/Images/delete_pattern.png</normaloff>:/Images/delete_pattern.png</iconset>
+   </property>
    <property name="text">
     <string>delete pattern</string>
    </property>
@@ -112,6 +144,8 @@
  <tabstops>
   <tabstop>treeView</tabstop>
  </tabstops>
- <resources/>
+ <resources>
+  <include location="ressource.qrc"/>
+ </resources>
  <connections/>
 </ui>
