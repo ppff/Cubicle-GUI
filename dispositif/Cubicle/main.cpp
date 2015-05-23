@@ -1,7 +1,7 @@
 #include "mainwindow.h"
 #include "selection_plan.h"
 #include "creationfichier.h"
-#include "boutonaffichecube.h"
+#include "toolbar.h"
 #include <QApplication>
 #include"led.h"
 #include "plan.h"
@@ -17,7 +17,7 @@ int main(int argc, char *argv[])
     //s.show();
     //CreationFichier c;
     //c.show();
-    BoutonAfficheCube b;
-    b.show();
+    ToolBar t;
+    t.show();
     return a.exec();
 }

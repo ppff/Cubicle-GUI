@@ -20,7 +20,7 @@ SOURCES += main.cpp\
     creationfichier.cpp \
     savetemporary.cpp \
     selection_plan.cpp \
-    boutonaffichecube.cpp
+    toolbar.cpp
 
 
 
@@ -32,7 +32,7 @@ HEADERS  += mainwindow.h \
     creationfichier.h \
     savetemporary.h \
     selection_plan.h \
-    boutonaffichecube.h
+    toolbar.h
 
 
 
@@ -42,7 +42,7 @@ FORMS    += mainwindow.ui \
     creationfichier.ui \
     savetemporary.ui \
     selection_plan.ui \
-    boutonaffichecube.ui
+    toolbar.ui
 
 RESOURCES += \
     ressource.qrc
