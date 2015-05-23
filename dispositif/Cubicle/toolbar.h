@@ -16,6 +16,8 @@ public:
     ~ToolBar();
     void setOrientationPlan(int i);
     int getOrientationPlan();
+    int getNumeroPlan();
+    void setNumeroPlan(int i);
 
 private slots:
     void on_VerticalDA_clicked();
@@ -25,6 +27,7 @@ private slots:
 private:
     Ui::ToolBar *ui;
     int OrienPlan;
+    int NumeroPlan;
 };
 
 #endif // TOOLBAR_H

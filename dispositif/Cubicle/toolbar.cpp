@@ -58,6 +58,16 @@ void ToolBar::setOrientationPlan(int i)
    OrienPlan=i;
 }
 
+int ToolBar::getNumeroPlan()
+{
+   return NumeroPlan;
+}
+
+void ToolBar::setNumeroPlan(int i)
+{
+   NumeroPlan=i;
+}
+
 void ToolBar::on_VerticalDA_clicked()
 {
     setOrientationPlan(1);
