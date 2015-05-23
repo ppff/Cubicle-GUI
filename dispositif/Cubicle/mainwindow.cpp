@@ -8,9 +8,6 @@ MainWindow::MainWindow(QWidget *parent) :
     ui->setupUi(this);
 
 
-    //ui->treeView->setContextMenuPolicy(Qt::ActionsContextMenu);
-
-
      connect(ui->actionOpen_directory,SIGNAL(triggered(bool)),this,SLOT(ouvrir_explorer()));
        insert_Group = new QAction("insert Group",this);
        connect(ui->actionNew_Group,SIGNAL(triggered(bool)),this,SLOT(insertGroup()));
@@ -42,11 +39,12 @@ void MainWindow::tree(){
 
 }
 void MainWindow::insertGroup(){
-    QModelIndex index =ui->treeView->currentIndex();
+
+    QModelIndex index =model->index(namedir,0);
     if (!index.isValid()) return;
     QString name =QInputDialog::getText(this,"Name","Enter a name");
     if(name.isEmpty())return;
-    model->mkdir(index, name);
+    model->mkdir(index,name);
 
 }
 

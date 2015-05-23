@@ -1,1 +1,12 @@
-<RCC/>
+<RCC>
+    <qresource prefix="/Images">
+        <file>quit.png</file>
+        <file>save.png</file>
+        <file>new_pattern.gif</file>
+        <file>delete_pattern.png</file>
+        <file>paste.png</file>
+        <file>copy.png</file>
+        <file>open_directory.png</file>
+        <file>new_group.png</file>
+    </qresource>
+</RCC>
