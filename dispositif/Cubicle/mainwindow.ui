@@ -41,17 +41,19 @@
     <property name="title">
      <string>File</string>
     </property>
+    <addaction name="actionOpen_directory"/>
     <addaction name="actionNew_Group"/>
     <addaction name="actionNew_Pattern"/>
     <addaction name="actionSave"/>
     <addaction name="actionQuit"/>
-    <addaction name="actionSelect_directory"/>
    </widget>
    <widget class="QMenu" name="menuEdit">
     <property name="title">
      <string>Edit</string>
     </property>
     <addaction name="actionCopy"/>
+    <addaction name="actionPaste_pattern"/>
+    <addaction name="actionDelete_pattern"/>
    </widget>
    <addaction name="menuFile"/>
    <addaction name="menuEdit"/>
@@ -87,19 +89,29 @@
   </action>
   <action name="actionCopy">
    <property name="text">
-    <string>copy</string>
+    <string>copy pattern</string>
    </property>
   </action>
-  <action name="actionSelect_directory">
+  <action name="actionOpen_directory">
    <property name="text">
-    <string>select directory</string>
+    <string>open directory</string>
    </property>
-   <property name="priority">
-    <enum>QAction::NormalPriority</enum>
+  </action>
+  <action name="actionPaste_pattern">
+   <property name="text">
+    <string>paste pattern</string>
+   </property>
+  </action>
+  <action name="actionDelete_pattern">
+   <property name="text">
+    <string>delete pattern</string>
    </property>
   </action>
  </widget>
  <layoutdefault spacing="6" margin="11"/>
+ <tabstops>
+  <tabstop>treeView</tabstop>
+ </tabstops>
  <resources/>
  <connections/>
 </ui>

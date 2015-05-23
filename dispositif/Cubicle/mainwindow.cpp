@@ -12,15 +12,19 @@ MainWindow::MainWindow(QWidget *parent) :
     ui->setupUi(this);
 
 
-   connect(ui->actionSelect_directory,SIGNAL(triggered(bool)),this,SLOT(ouvrir_explorer()));
-   connect(ui->actionNew_Pattern,SIGNAL(triggered(bool)),this,SLOT(ajouter_motif()));
+     connect(ui->actionOpen_directory,SIGNAL(triggered(bool)),this,SLOT(ouvrir_explorer()));
+       insert_Group = new QAction("insert Group",this);
+       connect(ui->actionNew_Group,SIGNAL(triggered(bool)),this,SLOT(insertGroup()));
+      connect(ui->actionNew_Pattern,SIGNAL(triggered(bool)),this,SLOT(ajouter_motif()));
+
 }
 
 void MainWindow::ouvrir_explorer(){
     namedir = QFileDialog::getExistingDirectory(this, tr("Open Directory"),
                                                    "/home",
                                                    QFileDialog::ShowDirsOnly
-                                                   | QFileDialog::DontResolveSymlinks);
+                                                   | QFileDialog::DontResolveSymlinks
+                                                    );
   tree();
   contextMenu = new QMenu(ui->treeView);
   ui->treeView->setContextMenuPolicy(Qt::ActionsContextMenu);
@@ -35,6 +39,7 @@ void MainWindow::tree(){
             model->setSorting(QDir::DirsFirst | QDir::IgnoreCase | QDir::Name);
     ui->treeView->setModel(model);
     QModelIndex index=model->index(namedir);
+     ui->treeView->setRootIndex(index);
     ui->treeView->expand(index);
     ui->treeView->scrollTo(index);
     ui->treeView->setCurrentIndex(index);
@@ -54,11 +59,20 @@ void MainWindow::ajouter_motif(){
             tree();
 
 
+
         }
     }
 
+}
+void MainWindow::insertGroup(){
+    QModelIndex index =ui->treeView->currentIndex();
+    if (!index.isValid()) return;
+    QString name =QInputDialog::getText(this,"Name","Enter a name");
+    if(name.isEmpty())return;
+    model->mkdir(index, name);
 
-                                 }
+}
+
 MainWindow::~MainWindow()
 {
     delete ui;

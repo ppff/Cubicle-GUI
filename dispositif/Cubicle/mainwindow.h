@@ -11,6 +11,8 @@
 #include <QMessageBox>
 #include "QMenu"
 #include "QPoint"
+#include <QInputDialog>
+
 
 namespace Ui {
 class MainWindow;
@@ -38,6 +40,10 @@ private:
 public slots:
 void ouvrir_explorer() ;
 void ajouter_motif() ;
+
+public slots:
+void ouvrir_explorer() ;
+void insertGroup();
 
 
 
