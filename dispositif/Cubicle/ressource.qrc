@@ -1,5 +1,6 @@
 <RCC>
     <qresource prefix="/icone">
+
         <file>led.jpeg</file>
         <file>../ledEteinte.jpeg</file>
         <file>../cubicle.jpg</file>
@@ -7,5 +8,41 @@
     </qresource>
     <qresource prefix="/texte">
         <file>../file.txt</file>
+        <file>cube.gif</file>
+        <file>Dupliquer.gif</file>
+        <file>Selection_Plan.jpeg</file>
+        <file>gauche.png</file>
+        <file>devant.jpeg</file>
+        <file>bas.jpeg</file>
+        <file>VAA1.png</file>
+        <file>VAA2.png</file>
+        <file>VAA3.png</file>
+        <file>VAA4.png</file>
+        <file>VAA5.png</file>
+        <file>VAA6.png</file>
+        <file>VAA7.png</file>
+        <file>VAA8.png</file>
+        <file>VAA9.png</file>
+        <file>AR.png</file>
+        <file>bas.png</file>
+        <file>GAUCHE.png</file>
+        <file>VDG1.png</file>
+        <file>VDG2.png</file>
+        <file>VDG3.png</file>
+        <file>VDG4.png</file>
+        <file>VDG5.png</file>
+        <file>VDG6.png</file>
+        <file>VDG7.png</file>
+        <file>VDG8.png</file>
+        <file>VDG9.png</file>
+        <file>H1.png</file>
+        <file>H2.png</file>
+        <file>H3.png</file>
+        <file>H4.png</file>
+        <file>H5.png</file>
+        <file>H6.png</file>
+        <file>H7.png</file>
+        <file>H8.png</file>
+        <file>H9.png</file>
     </qresource>
 </RCC>

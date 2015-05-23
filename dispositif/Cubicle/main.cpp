@@ -1,4 +1,5 @@
 #include "mainwindow.h"
+#include "toolbar.h"
 #include <QApplication>
 #include"led.h"
 #include "plan.h"
@@ -50,6 +51,7 @@ int main(int argc, char *argv[])
    /////////////////////////////////////////////////////////////////////
     //MainWindow w;
     //w.show();
-
+    ToolBar t;
+    t.show();
     return a.exec();
 }
