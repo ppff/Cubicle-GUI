@@ -38,6 +38,7 @@ private:
     QAction *insertMotif;
     QAction *insert_Group;
     QString paste_element;
+    QString nom_copie;
     bool dirOrFile;//false if file
 
 public slots:

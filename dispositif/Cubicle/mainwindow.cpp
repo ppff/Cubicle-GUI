@@ -22,14 +22,12 @@ MainWindow::MainWindow(QWidget *parent) :
     ui->actionNew_Pattern->setDisabled(true);
     ui->actionPaste_pattern->setDisabled(true);
     ui->actionSave->setDisabled(true);
-
-     connect(ui->actionOpen_directory,SIGNAL(triggered(bool)),this,SLOT(ouvrir_explorer()));
-     connect(ui->actionOpen_directory,SIGNAL(triggered(bool)),this,SLOT(ouvrir_explorer()));
-     connect(ui->actionCopy,SIGNAL(triggered(bool)),this,SLOT(copier()));
-     connect(ui->actionPaste_pattern,SIGNAL(triggered(bool)),this,SLOT(coller()));
-     insert_Group = new QAction("insert Group",this);
-     connect(ui->actionNew_Group,SIGNAL(triggered(bool)),this,SLOT(insertGroup()));
-     connect(ui->actionNew_Pattern,SIGNAL(triggered(bool)),this,SLOT(ajouter_motif()));
+    connect(ui->actionOpen_directory,SIGNAL(triggered(bool)),this,SLOT(ouvrir_explorer()));
+    connect(ui->actionCopy,SIGNAL(triggered(bool)),this,SLOT(copier()));
+    connect(ui->actionPaste_pattern,SIGNAL(triggered(bool)),this,SLOT(coller()));
+    insert_Group = new QAction("insert Group",this);
+    connect(ui->actionNew_Group,SIGNAL(triggered(bool)),this,SLOT(insertGroup()));
+    connect(ui->actionNew_Pattern,SIGNAL(triggered(bool)),this,SLOT(ajouter_motif()));
 
 }
 
@@ -37,7 +35,9 @@ void MainWindow::ouvrir_explorer(){
     namedir=QFileDialog::getExistingDirectory(this, tr("Open Directory"),
                                                    "/home"
                                                );
-  if (namedir=="") return;
+  if (namedir=="") {qDebug()<<namedir;
+      return;}
+
   QDir dir(namedir);
   QFileInfoList list=dir.entryInfoList(QDir::Files);
   QFileInfoList list2=dir.entryInfoList(QDir::Dirs);
@@ -60,7 +60,10 @@ void MainWindow::copier(){
     QModelIndex index=ui->treeView->currentIndex();
     if (model->fileInfo(index).isFile()) {
         dirOrFile=false;
-        paste_element=model->fileInfo(index).absolutePath();
+        paste_element=model->fileInfo(index).absoluteFilePath();
+        nom_copie=model->fileInfo(index).baseName();
+        qDebug()<<nom_copie;
+        qDebug()<<"j'ai copié : "+paste_element;
     }
 }
 void MainWindow::coller(){
@@ -71,10 +74,12 @@ void MainWindow::coller(){
                 QString dir=model->fileInfo(index).absolutePath();
                 QString nameGroup=model->fileInfo(index).baseName();
                 QFile file(paste_element);
-                bool valid = file.copy("C:/copieNext.txt");
+                 qDebug()<<"je vais coller  :"+dir+"/"+nameGroup+"/"+nom_copie+"_copie.txt";
+                bool valid = file.copy(dir+"/"+nameGroup+"/"+nom_copie+"_copie.txt");
                 if (!valid){
                    qDebug()<<"coller impossible";
                }
+                tree();
     }
 
 }
@@ -96,6 +101,8 @@ void MainWindow::tree(){
     ui->treeView->resizeColumnToContents(0);
     ui->actionNew_Group->setEnabled(true);
     ui->actionNew_Pattern->setEnabled(true);
+     ui->actionCopy->setDisabled(false);
+     ui->actionPaste_pattern->setDisabled(false);
 
 }
 
