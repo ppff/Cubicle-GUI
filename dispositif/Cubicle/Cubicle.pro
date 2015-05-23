@@ -16,7 +16,8 @@ SOURCES += main.cpp\
         mainwindow.cpp\
     led.cpp\
     cube.cpp\
-    plan.cpp
+    plan.cpp\
+    nouveaumotif.cpp
 
 
 
@@ -24,7 +25,8 @@ SOURCES += main.cpp\
 HEADERS  += mainwindow.h\
     plan.h\
     led.h\
-    cube.h
+    cube.h\
+    nouveaumotif.h
 
 
 
