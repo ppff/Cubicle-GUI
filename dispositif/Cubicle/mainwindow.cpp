@@ -5,6 +5,12 @@
 #include "nouveaumotif.h"
 #include "QMenu"
 #include "QPoint"
+#include "QMessageBox"
+#include "QDirIterator"
+#include "QDebug"
+
+
+
 MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent),
     ui(new Ui::MainWindow)
@@ -13,18 +19,30 @@ MainWindow::MainWindow(QWidget *parent) :
 
 
      connect(ui->actionOpen_directory,SIGNAL(triggered(bool)),this,SLOT(ouvrir_explorer()));
-       insert_Group = new QAction("insert Group",this);
-       connect(ui->actionNew_Group,SIGNAL(triggered(bool)),this,SLOT(insertGroup()));
-      connect(ui->actionNew_Pattern,SIGNAL(triggered(bool)),this,SLOT(ajouter_motif()));
+     insert_Group = new QAction("insert Group",this);
+     connect(ui->actionNew_Group,SIGNAL(triggered(bool)),this,SLOT(insertGroup()));
+     connect(ui->actionNew_Pattern,SIGNAL(triggered(bool)),this,SLOT(ajouter_motif()));
 
 }
 
 void MainWindow::ouvrir_explorer(){
-    namedir = QFileDialog::getExistingDirectory(this, tr("Open Directory"),
+    namedir=QFileDialog::getExistingDirectory(this, tr("Open Directory"),
                                                    "/home",
                                                    QFileDialog::ShowDirsOnly
                                                    | QFileDialog::DontResolveSymlinks
-                                                    );
+
+                                               );
+
+  QDir dir(namedir);
+  QStringList filters(".cpp");
+  QFileInfoList list=dir.entryInfoList(QDir::Files);
+  QFileInfoList list2=dir.entryInfoList(QDir::Dirs);
+  //on ne doit pas charger le dossier d'un groupe de motif mais plutot le repertoire des groupes de motif
+  if ((!list.isEmpty()) and (!list2.isEmpty())) {
+       QMessageBox::information(this,tr("warning"),"can not open this directory, please choose the source directory");
+       qDebug()<<"impossible";
+       return;
+  }
   tree();
   contextMenu = new QMenu(ui->treeView);
   ui->treeView->setContextMenuPolicy(Qt::ActionsContextMenu);
