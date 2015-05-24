@@ -68,11 +68,13 @@ private:
     QPushButton*  fleche_face;
     Cube c;
     bool dirOpen;
+    bool copierCouper; // vaut 0 pour copier et 1 pour couper
 
 
 public slots:
 void ouvrir_explorer() ;
 void ajouter_motif() ;
+void couper();
 void copier();
 void coller();
 public slots:

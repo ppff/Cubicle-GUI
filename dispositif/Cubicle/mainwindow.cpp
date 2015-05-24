@@ -29,6 +29,7 @@ MainWindow::MainWindow(QWidget *parent) :
     ui->actionNew_Pattern->setDisabled(true);
     ui->actionPaste_pattern->setDisabled(true);
     ui->actionSave->setDisabled(true);
+    ui->actionCut_pattern->setDisabled(true);
     connect(ui->actionOpen_directory,SIGNAL(triggered(bool)),this,SLOT(ouvrir_explorer()));
     connect(ui->actionCopy,SIGNAL(triggered(bool)),this,SLOT(copier()));
     connect(ui->actionPaste_pattern,SIGNAL(triggered(bool)),this,SLOT(coller()));
@@ -38,6 +39,7 @@ MainWindow::MainWindow(QWidget *parent) :
     connect(ui->actionDelete_pattern,SIGNAL(triggered(bool)),this,SLOT(controlDelete()));
     connect(ui->actionSave,SIGNAL(triggered(bool)),this,SLOT(controlSave()));
     connect(ui->treeView,SIGNAL(doubleClicked(const QModelIndex &)),this,SLOT(doubleClick()));
+    connect(ui->actionCut_pattern,SIGNAL(triggered(bool)),this,SLOT(couper()));
     l=ui->label;
 
     this->setWindowIcon(QIcon("cubicle.jpg"));
@@ -76,14 +78,18 @@ void MainWindow::contextMenuEvent(QContextMenuEvent *event){
              QString s =model->fileInfo(index).absoluteFilePath();
              if(index.isValid()){
                   ui->treeView->setContextMenuPolicy(Qt::ActionsContextMenu);
-                  insertMotif = contextMenu->addAction("new pattern");
-                  connect(insertMotif,SIGNAL(triggered(bool)),this, SLOT(ajouter_motif()));
-                  QAction * paste;
-                  paste = contextMenu->addAction("paste pattern");
-                  connect(paste,SIGNAL(triggered(bool)),this, SLOT(coller()));
                   QAction * insertGroup;
                   insertGroup = contextMenu->addAction("new group");
                   connect(insertGroup,SIGNAL(triggered(bool)),this, SLOT(insertGroup()));
+                  QString dir=model->fileInfo(index).absolutePath();
+                  QString nameGroup=model->fileInfo(index).baseName();
+                  if((dir+'/'+nameGroup)!=namedir){
+                          insertMotif = contextMenu->addAction("new pattern");
+                          connect(insertMotif,SIGNAL(triggered(bool)),this, SLOT(ajouter_motif()));
+                          QAction * paste;
+                          paste = contextMenu->addAction("paste pattern");
+                          connect(paste,SIGNAL(triggered(bool)),this, SLOT(coller()));
+                  }
              }
     }
 
@@ -97,6 +103,8 @@ void MainWindow::contextMenuEvent(QContextMenuEvent *event){
                    QAction * copy;
                    copy = contextMenu->addAction("copy pattern");
                    connect(copy,SIGNAL(triggered(bool)),this, SLOT(copier()));
+                   QAction *cut = contextMenu->addAction("cut pattern");
+                   connect(cut,SIGNAL(triggered(bool)),this, SLOT(couper()));
                    deletePattern = contextMenu->addAction("delete pattern");
                    connect(deletePattern,SIGNAL(triggered(bool)),this, SLOT(controlDelete()));
                 }
@@ -106,30 +114,47 @@ void MainWindow::contextMenuEvent(QContextMenuEvent *event){
     }
 
 }
+
+void MainWindow::couper(){
+    copier();
+    copierCouper=1;
+}
+
 void MainWindow::copier(){
     QModelIndex index=ui->treeView->currentIndex();
     if (model->fileInfo(index).isFile()) {
         dirOrFile=false;
         paste_element=model->fileInfo(index).absoluteFilePath();
         nom_copie=model->fileInfo(index).baseName();
+        copierCouper=0;
         qDebug()<<nom_copie;
         qDebug()<<"j'ai copié : "+paste_element;
     }
 }
 void MainWindow::coller(){
+     QString nameGroup;
     if (!dirOrFile){
+
         QModelIndex index=ui->treeView->currentIndex();
         if (index.isValid()){
             if (model->fileInfo(index).isDir()) {
                 QString dir=model->fileInfo(index).absolutePath();
-                QString nameGroup=model->fileInfo(index).baseName();
-                QFile file(paste_element);
-                 qDebug()<<"je vais coller  :"+dir+"/"+nameGroup+"/"+nom_copie+"_copie.txt";
-                bool valid = file.copy(dir+"/"+nameGroup+"/"+nom_copie+"_copie.txt");
-                if (!valid){
-                   qDebug()<<"coller impossible";
-               }
-                tree();
+                nameGroup=model->fileInfo(index).baseName();
+                if((dir+'/'+nameGroup)!=namedir){
+                    QFile file(paste_element);
+                     qDebug()<<"je vais coller  :"+dir+"/"+nameGroup+"/"+nom_copie+"_copie.txt";
+                    bool valid = file.copy(dir+"/"+nameGroup+"/"+nom_copie+"_copie.txt");
+                    if (copierCouper==1){
+                        QFile file(paste_element);
+                        file.remove();
+                        tree();
+                    }
+                    if (!valid){
+                       qDebug()<<"coller impossible";
+                   }
+                    tree();
+                }
+
     }
 
 }
@@ -156,6 +181,7 @@ void MainWindow::tree(){
     ui->actionDelete_pattern->setEnabled(true);
     ui->actionCopy->setDisabled(false);
     ui->actionPaste_pattern->setDisabled(false);
+    ui->actionCut_pattern->setDisabled(false);
     ui->actionSave->setDisabled(false);
 
 }

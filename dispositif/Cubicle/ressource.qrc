@@ -15,10 +15,11 @@
         <file>../atome.gif</file>
         <file>../atomeblanc.jpeg</file>
         <file>nvatomeblanc.png</file>
-         </qresource>
+        <file>couper.png</file>
+    </qresource>
     <qresource prefix="/texte">
         <file>../file.txt</file>
-         </qresource>
+    </qresource>
     <qresource prefix="/Images">
         <file>quit.png</file>
         <file>save.png</file>

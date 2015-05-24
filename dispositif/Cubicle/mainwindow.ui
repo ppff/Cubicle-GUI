@@ -67,6 +67,7 @@
     <addaction name="actionCopy"/>
     <addaction name="actionPaste_pattern"/>
     <addaction name="actionDelete_pattern"/>
+    <addaction name="actionCut_pattern"/>
    </widget>
    <widget class="QMenu" name="menuTools">
     <property name="title">
@@ -283,6 +284,8 @@
    <addaction name="actionSave"/>
    <addaction name="actionCopy"/>
    <addaction name="actionPaste_pattern"/>
+   <addaction name="actionCut_pattern"/>
+   <addaction name="actionDelete_pattern"/>
    <addaction name="actionQuit"/>
    <addaction name="actionSelect"/>
    <addaction name="actionDuplicate"/>
@@ -384,6 +387,15 @@
    </property>
    <property name="text">
     <string>Duplicate</string>
+   </property>
+  </action>
+  <action name="actionCut_pattern">
+   <property name="icon">
+    <iconset resource="ressource.qrc">
+     <normaloff>:/icone/couper.png</normaloff>:/icone/couper.png</iconset>
+   </property>
+   <property name="text">
+    <string>cut pattern</string>
    </property>
   </action>
  </widget>
