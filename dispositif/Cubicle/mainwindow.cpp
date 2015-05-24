@@ -90,14 +90,16 @@ void MainWindow::tree(){
             model = new QDirModel(this);
             model->setReadOnly(false);
             model->setSorting(QDir::DirsFirst | QDir::IgnoreCase | QDir::Name);
+
     ui->treeView->setModel(model);
     QModelIndex index=model->index(namedir);
      ui->treeView->setRootIndex(index);
     ui->treeView->expand(index);
     ui->treeView->scrollTo(index);
     ui->treeView->setCurrentIndex(index);
-    ui->treeView->setColumnHidden(1,true);
-    ui->treeView->setColumnHidden(2,true);
+    for(int i=1;i<4;i++){
+        ui->treeView->hideColumn(i);
+    }
     ui->treeView->resizeColumnToContents(0);
     ui->actionNew_Group->setEnabled(true);
     ui->actionNew_Pattern->setEnabled(true);
