@@ -28,11 +28,6 @@ void save::ouvrir(){
        return;
     }
 
-  /*  QTextStream flux(&file);
-    flux<<nom<<endl<<nom<<endl;
-    for
-
-*/
  file.close();
 }
 

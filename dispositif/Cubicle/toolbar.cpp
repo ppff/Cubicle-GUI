@@ -13,7 +13,7 @@ ToolBar::ToolBar(QWidget *parent) :
 {
     ui->setupUi(this);
     QPixmap pix(":/icone/cube.gif");
-    ui -> Cube -> setPixmap(pix);
+   // ui -> Cube -> setPixmap(pix);
     ui -> Plan1-> setVisible(false);
     ui -> Plan2-> setVisible(false);
     ui -> Plan3-> setVisible(false);

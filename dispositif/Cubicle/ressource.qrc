@@ -1,13 +1,9 @@
 <RCC>
     <qresource prefix="/icone">
-
         <file>led.jpeg</file>
         <file>../ledEteinte.jpeg</file>
         <file>../cubicle.jpg</file>
         <file>../repere.jpeg</file>
-    </qresource>
-    <qresource prefix="/texte">
-        <file>../file.txt</file>
         <file>cube.gif</file>
         <file>Dupliquer.gif</file>
         <file>Selection_Plan.jpeg</file>
@@ -44,5 +40,12 @@
         <file>H7.png</file>
         <file>H8.png</file>
         <file>H9.png</file>
+        <file>../cubeatome.gif</file>
+        <file>../nvcube.jpeg</file>
+        <file>../atome.gif</file>
+        <file>../atomeblanc.jpeg</file>
+    </qresource>
+    <qresource prefix="/texte">
+        <file>../file.txt</file>
     </qresource>
 </RCC>

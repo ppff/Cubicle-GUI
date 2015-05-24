@@ -35,8 +35,8 @@ Led** Plan::getMatrice(){
 void Plan::updatePlan(const Led l, const int i, const int j,const int nplan, const int oriinit, const int nvori ){
     switch (oriinit){
         case 0: switch(nvori){
-             //       case 1: this->setLed(l,abs(8-nplan),abs(8-i)); break;
-               //     case 2: this->setLed(l,abs(8-nplan),j); break;
+               //     case 1: this->setLed(l,abs(8-nplan),abs(8-i)); break;
+                 //   case 2: this->setLed(l,abs(8-nplan),j); break;
                     case 0: this->setLed(l,i,j); break;
             }
         break;

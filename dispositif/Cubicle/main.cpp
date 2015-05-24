@@ -7,6 +7,8 @@
 #include "cube.h"
 #include "afficheplan.h"
 #include "save.h"
+#include "personbutton.h"
+#include "dialog.h"
 
 int main(int argc, char *argv[])
 {
@@ -14,15 +16,16 @@ int main(int argc, char *argv[])
 
 
     /////////////Démo allumer une led/////////////////////////////////////
-  /* Dialog d;
-    d.show();*/
+ //  Dialog d;
+   // d.show();
     //////////////////////////////////////////////////////////////////////
 
-
+  //  PersonButton p;
+  //  p.show();
 
 
     ///////////Démo Affichage d'un plan de led///////////////////////////
-    AffichePlan aff;
+    AffichePlan aff ;
     aff.setName("file.txt");
     aff.setEmpl("/home/sahli/Projet_spec/Cubicle-GUI/dispositif/file.txt");
     aff.show();
@@ -51,7 +54,7 @@ int main(int argc, char *argv[])
    /////////////////////////////////////////////////////////////////////
     //MainWindow w;
     //w.show();
-    ToolBar t;
-    t.show();
+ //   ToolBar t;
+  //  t.show();
     return a.exec();
 }
