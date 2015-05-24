@@ -1,4 +1,5 @@
 <RCC>
+<<<<<<< HEAD
     <qresource prefix="/icone">
         <file>led.jpeg</file>
         <file>../ledEteinte.jpeg</file>
@@ -18,5 +19,16 @@
     </qresource>
     <qresource prefix="/texte">
         <file>../file.txt</file>
+=======
+    <qresource prefix="/Images">
+        <file>quit.png</file>
+        <file>save.png</file>
+        <file>new_pattern.gif</file>
+        <file>delete_pattern.png</file>
+        <file>paste.png</file>
+        <file>copy.png</file>
+        <file>open_directory.png</file>
+        <file>new_group.png</file>
+>>>>>>> sauvegardeFichier
     </qresource>
 </RCC>

@@ -10,6 +10,7 @@
 #include "personbutton.h"
 #include "dialog.h"
 
+
 int main(int argc, char *argv[])
 {
     QApplication a(argc, argv);
@@ -56,5 +57,6 @@ int main(int argc, char *argv[])
     //w.show();
  //   ToolBar t;
   //  t.show();
+
     return a.exec();
 }

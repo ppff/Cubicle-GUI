@@ -6,23 +6,73 @@
    <rect>
     <x>0</x>
     <y>0</y>
+<<<<<<< HEAD
     <width>662</width>
     <height>386</height>
+=======
+    <width>814</width>
+    <height>552</height>
+>>>>>>> sauvegardeFichier
    </rect>
   </property>
   <property name="windowTitle">
    <string>MainWindow</string>
   </property>
+<<<<<<< HEAD
   <widget class="QWidget" name="centralWidget"/>
+=======
+  <widget class="QWidget" name="centralWidget">
+   <widget class="QTreeView" name="treeView">
+    <property name="geometry">
+     <rect>
+      <x>0</x>
+      <y>0</y>
+      <width>181</width>
+      <height>491</height>
+     </rect>
+    </property>
+   </widget>
+  </widget>
+>>>>>>> sauvegardeFichier
   <widget class="QMenuBar" name="menuBar">
    <property name="geometry">
     <rect>
      <x>0</x>
      <y>0</y>
+<<<<<<< HEAD
      <width>662</width>
      <height>25</height>
     </rect>
    </property>
+=======
+     <width>814</width>
+     <height>21</height>
+    </rect>
+   </property>
+   <property name="nativeMenuBar">
+    <bool>false</bool>
+   </property>
+   <widget class="QMenu" name="menuFile">
+    <property name="title">
+     <string>File</string>
+    </property>
+    <addaction name="actionOpen_directory"/>
+    <addaction name="actionNew_Group"/>
+    <addaction name="actionNew_Pattern"/>
+    <addaction name="actionSave"/>
+    <addaction name="actionQuit"/>
+   </widget>
+   <widget class="QMenu" name="menuEdit">
+    <property name="title">
+     <string>Edit</string>
+    </property>
+    <addaction name="actionCopy"/>
+    <addaction name="actionPaste_pattern"/>
+    <addaction name="actionDelete_pattern"/>
+   </widget>
+   <addaction name="menuFile"/>
+   <addaction name="menuEdit"/>
+>>>>>>> sauvegardeFichier
   </widget>
   <widget class="QToolBar" name="mainToolBar">
    <attribute name="toolBarArea">
@@ -33,8 +83,91 @@
    </attribute>
   </widget>
   <widget class="QStatusBar" name="statusBar"/>
+<<<<<<< HEAD
  </widget>
  <layoutdefault spacing="6" margin="11"/>
  <resources/>
+=======
+  <action name="actionNew_Group">
+   <property name="icon">
+    <iconset resource="ressource.qrc">
+     <normaloff>:/Images/new_group.png</normaloff>:/Images/new_group.png</iconset>
+   </property>
+   <property name="text">
+    <string>new Group</string>
+   </property>
+  </action>
+  <action name="actionNew_Pattern">
+   <property name="icon">
+    <iconset resource="ressource.qrc">
+     <normaloff>:/Images/new_pattern.gif</normaloff>:/Images/new_pattern.gif</iconset>
+   </property>
+   <property name="text">
+    <string>new Pattern</string>
+   </property>
+  </action>
+  <action name="actionSave">
+   <property name="icon">
+    <iconset resource="ressource.qrc">
+     <normaloff>:/Images/save.png</normaloff>:/Images/save.png</iconset>
+   </property>
+   <property name="text">
+    <string>save</string>
+   </property>
+  </action>
+  <action name="actionQuit">
+   <property name="icon">
+    <iconset resource="ressource.qrc">
+     <normaloff>:/Images/quit.png</normaloff>:/Images/quit.png</iconset>
+   </property>
+   <property name="text">
+    <string>quit</string>
+   </property>
+  </action>
+  <action name="actionCopy">
+   <property name="icon">
+    <iconset resource="ressource.qrc">
+     <normaloff>:/Images/copy.png</normaloff>:/Images/copy.png</iconset>
+   </property>
+   <property name="text">
+    <string>copy pattern</string>
+   </property>
+  </action>
+  <action name="actionOpen_directory">
+   <property name="icon">
+    <iconset resource="ressource.qrc">
+     <normaloff>:/Images/open_directory.png</normaloff>:/Images/open_directory.png</iconset>
+   </property>
+   <property name="text">
+    <string>open directory</string>
+   </property>
+  </action>
+  <action name="actionPaste_pattern">
+   <property name="icon">
+    <iconset resource="ressource.qrc">
+     <normaloff>:/Images/paste.png</normaloff>:/Images/paste.png</iconset>
+   </property>
+   <property name="text">
+    <string>paste pattern</string>
+   </property>
+  </action>
+  <action name="actionDelete_pattern">
+   <property name="icon">
+    <iconset resource="ressource.qrc">
+     <normaloff>:/Images/delete_pattern.png</normaloff>:/Images/delete_pattern.png</iconset>
+   </property>
+   <property name="text">
+    <string>delete pattern</string>
+   </property>
+  </action>
+ </widget>
+ <layoutdefault spacing="6" margin="11"/>
+ <tabstops>
+  <tabstop>treeView</tabstop>
+ </tabstops>
+ <resources>
+  <include location="ressource.qrc"/>
+ </resources>
+>>>>>>> sauvegardeFichier
  <connections/>
 </ui>

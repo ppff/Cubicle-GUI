@@ -13,7 +13,7 @@ TEMPLATE = app
 
 
 SOURCES += main.cpp\
-        mainwindow.cpp\
+    mainwindow.cpp\
     led.cpp\
     cube.cpp\
     plan.cpp\
@@ -21,8 +21,8 @@ SOURCES += main.cpp\
     afficheplan.cpp\
     save.cpp\
     toolbar.cpp \
-    personbutton.cpp
-
+    personbutton.cpp\
+    nouveaumotif.cpp
 
 
 
@@ -34,7 +34,9 @@ HEADERS  += mainwindow.h\
     afficheplan.h\
     save.h\
     toolbar.h \
-    personbutton.h
+    personbutton.h\
+    nouveaumotif.h\
+
 
 
 
@@ -45,5 +47,9 @@ FORMS    += mainwindow.ui\
     toolbar.ui
 
 
-RESOURCES += \
+
+
+
+
+RESOURCES +=\
     ressource.qrc
