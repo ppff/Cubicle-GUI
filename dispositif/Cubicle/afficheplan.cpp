@@ -78,7 +78,7 @@ void AffichePlan::affichePlanLed(const QString & valeur){
            }
 
            if(l.getEtat()==0){
-               buttons[num]->setIcon(QIcon(":/icone/atomeblanc.jpeg"));
+               buttons[num]->setIcon(QIcon(":/icone/nvatomeblanc.png"));
            }
            else {
                buttons[num]->setIcon(QIcon(":/icone/atome.gif"));
@@ -169,7 +169,7 @@ void AffichePlan:: afficheLed(const int i, const int j,const  int etat )
        int num=text.toInt(false,10);
 
     if(etat==0){
-        this->buttons[num]->setIcon(QIcon(":/icone/atomeblanc.jpeg"));
+        this->buttons[num]->setIcon(QIcon(":/icone/nvatomeblanc.png"));
       }
     else {
         this->buttons[num]->setIcon(QIcon(":/icone/atome.gif"));
@@ -360,7 +360,7 @@ void AffichePlan::afficheListePlan2(){
 
     int num=text.toInt(false,10);
     plans[num]->setVisible(true);
-    plans[num]->setIcon(QIcon(":/icone/ledEteinte.jpeg"));
+    plans[num]->setIcon(QIcon(":/icone/nvatomeblanc.png"));
     plans[num]->setGeometry(100, 50, 250, 100);
     plans[num]->move(500-j*50, 30*j+50);
 
