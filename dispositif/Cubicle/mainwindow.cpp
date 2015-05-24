@@ -32,7 +32,6 @@ MainWindow::MainWindow(QWidget *parent) :
     connect(ui->actionOpen_directory,SIGNAL(triggered(bool)),this,SLOT(ouvrir_explorer()));
     connect(ui->actionCopy,SIGNAL(triggered(bool)),this,SLOT(copier()));
     connect(ui->actionPaste_pattern,SIGNAL(triggered(bool)),this,SLOT(coller()));
-    insert_Group = new QAction("insert Group",this);
     connect(ui->actionNew_Group,SIGNAL(triggered(bool)),this,SLOT(insertGroup()));
     connect(ui->actionNew_Pattern,SIGNAL(triggered(bool)),this,SLOT(ajouter_motif()));
     connect(ui->actionQuit,SIGNAL(triggered(bool)),this,SLOT(controlQuit()));
@@ -46,6 +45,7 @@ MainWindow::MainWindow(QWidget *parent) :
     deleteCube3D(0);
     deletePlanLed(0);
     this->desactivePlan(0);
+    dirOpen=false;
 
 }
 
@@ -66,14 +66,46 @@ void MainWindow::ouvrir_explorer(){
        return;
   }
   tree();
-  contextMenu = new QMenu(ui->treeView);
-  ui->treeView->setContextMenuPolicy(Qt::ActionsContextMenu);
-  insertMotif = new QAction("Inserer Motif",contextMenu);
-  ui->treeView->addAction(insertMotif);
-  connect(insertMotif,SIGNAL(triggered(bool)),this, SLOT(ajouter_motif()));
+  dirOpen=true;
+}
+void MainWindow::contextMenuEvent(QContextMenuEvent *event){
+    if(dirOpen){
+        contextMenu = new QMenu(ui->treeView);
+        QModelIndex index=ui->treeView->currentIndex();
+        if (model->fileInfo(index).isDir()) {
+             QString s =model->fileInfo(index).absoluteFilePath();
+             if(index.isValid()){
+                  ui->treeView->setContextMenuPolicy(Qt::ActionsContextMenu);
+                  insertMotif = contextMenu->addAction("new pattern");
+                  connect(insertMotif,SIGNAL(triggered(bool)),this, SLOT(ajouter_motif()));
+                  QAction * paste;
+                  paste = contextMenu->addAction("paste pattern");
+                  connect(paste,SIGNAL(triggered(bool)),this, SLOT(coller()));
+                  QAction * insertGroup;
+                  insertGroup = contextMenu->addAction("new group");
+                  connect(insertGroup,SIGNAL(triggered(bool)),this, SLOT(insertGroup()));
+             }
+    }
+
+        if (model->fileInfo(index).isFile()){
+              QString sp =model->fileInfo(index).absoluteFilePath();
+              if(index.isValid()){
+                   ui->treeView->setContextMenuPolicy(Qt::ActionsContextMenu);
+                   QAction * save;
+                   save = contextMenu->addAction("save");
+                   connect(save,SIGNAL(triggered(bool)),this, SLOT(controlSave()));
+                   QAction * copy;
+                   copy = contextMenu->addAction("copy pattern");
+                   connect(copy,SIGNAL(triggered(bool)),this, SLOT(copier()));
+                   deletePattern = contextMenu->addAction("delete pattern");
+                   connect(deletePattern,SIGNAL(triggered(bool)),this, SLOT(controlDelete()));
+                }
+        }
+
+    contextMenu->exec(QCursor::pos());
+    }
 
 }
-
 void MainWindow::copier(){
     QModelIndex index=ui->treeView->currentIndex();
     if (model->fileInfo(index).isFile()) {
@@ -141,7 +173,6 @@ void MainWindow::ajouter_motif(){
             QString nameMotif=QInputDialog::getText(this,"Name","Enter the pattern name");
             NouveauMotif m=NouveauMotif(nameGroup,nameMotif,dir+"/"+nameGroup);
             tree();
-          //  c=Cube();
             }
              else {
                QMessageBox::information(this,tr("warning"),"cannot add a pattern, please choose or add a group");
@@ -178,6 +209,7 @@ void MainWindow::controlDelete(){
 
          QString name=model->fileInfo(index).absoluteFilePath();
          QFile file(name);
+         qDebug()<< "are you sure delete pattern";
          int reponse = QMessageBox::question(this, "Quit", " Are you sure you want to delete this pattern ?");
            if (reponse == QMessageBox::Yes) {
                file.remove();

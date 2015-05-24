@@ -13,6 +13,7 @@
 #include "QPoint"
 #include <QInputDialog>
 #include "cube.h"
+#include <QContextMenuEvent>
 
 
 namespace Ui {
@@ -39,6 +40,7 @@ public:
     int getNumeroPlan();
     void setNumeroPlan(int i);
     void desactivePlan(int i);
+    void contextMenuEvent(QContextMenuEvent *event);
 
     ~MainWindow();
 
@@ -51,6 +53,7 @@ private:
     QString namedir;
     QAction *insertMotif;
     QAction *insert_Group;
+    QAction *deletePattern;
     QString paste_element;
     QString nom_copie;
     bool dirOrFile;//false if file
@@ -64,6 +67,7 @@ private:
     QPushButton*  fleche_gauche;
     QPushButton*  fleche_face;
     Cube c;
+    bool dirOpen;
 
 
 public slots:
