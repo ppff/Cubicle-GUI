@@ -6,47 +6,45 @@
    <rect>
     <x>0</x>
     <y>0</y>
-<<<<<<< HEAD
-    <width>662</width>
-    <height>386</height>
-=======
     <width>814</width>
     <height>552</height>
->>>>>>> sauvegardeFichier
    </rect>
   </property>
   <property name="windowTitle">
    <string>MainWindow</string>
   </property>
-<<<<<<< HEAD
-  <widget class="QWidget" name="centralWidget"/>
-=======
   <widget class="QWidget" name="centralWidget">
    <widget class="QTreeView" name="treeView">
     <property name="geometry">
      <rect>
       <x>0</x>
       <y>0</y>
-      <width>181</width>
-      <height>491</height>
+      <width>231</width>
+      <height>511</height>
      </rect>
     </property>
    </widget>
+   <widget class="QLabel" name="label">
+    <property name="geometry">
+     <rect>
+      <x>700</x>
+      <y>350</y>
+      <width>67</width>
+      <height>20</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string/>
+    </property>
+   </widget>
   </widget>
->>>>>>> sauvegardeFichier
   <widget class="QMenuBar" name="menuBar">
    <property name="geometry">
     <rect>
      <x>0</x>
      <y>0</y>
-<<<<<<< HEAD
-     <width>662</width>
-     <height>25</height>
-    </rect>
-   </property>
-=======
      <width>814</width>
-     <height>21</height>
+     <height>25</height>
     </rect>
    </property>
    <property name="nativeMenuBar">
@@ -72,7 +70,6 @@
    </widget>
    <addaction name="menuFile"/>
    <addaction name="menuEdit"/>
->>>>>>> sauvegardeFichier
   </widget>
   <widget class="QToolBar" name="mainToolBar">
    <attribute name="toolBarArea">
@@ -83,11 +80,6 @@
    </attribute>
   </widget>
   <widget class="QStatusBar" name="statusBar"/>
-<<<<<<< HEAD
- </widget>
- <layoutdefault spacing="6" margin="11"/>
- <resources/>
-=======
   <action name="actionNew_Group">
    <property name="icon">
     <iconset resource="ressource.qrc">
@@ -160,6 +152,15 @@
     <string>delete pattern</string>
    </property>
   </action>
+  <action name="actionSelect_a_group_of_atoms">
+   <property name="icon">
+    <iconset resource="ressource.qrc">
+     <normaloff>:/icone/Selection_Plan.jpeg</normaloff>:/icone/Selection_Plan.jpeg</iconset>
+   </property>
+   <property name="text">
+    <string>select a group of atoms</string>
+   </property>
+  </action>
  </widget>
  <layoutdefault spacing="6" margin="11"/>
  <tabstops>
@@ -168,6 +169,5 @@
  <resources>
   <include location="ressource.qrc"/>
  </resources>
->>>>>>> sauvegardeFichier
  <connections/>
 </ui>
