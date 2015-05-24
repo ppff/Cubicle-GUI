@@ -18,7 +18,6 @@ SOURCES += main.cpp\
     cube.cpp\
     plan.cpp\
     dialog.cpp\
-    afficheplan.cpp\
     save.cpp\
     toolbar.cpp \
     personbutton.cpp\
@@ -32,7 +31,6 @@ HEADERS  += mainwindow.h\
     led.h\
     cube.h\
     dialog.h\
-    afficheplan.h\
     save.h\
     toolbar.h \
     personbutton.h\
@@ -44,7 +42,6 @@ HEADERS  += mainwindow.h\
 
 FORMS    += mainwindow.ui\
     dialog.ui\
-    afficheplan.ui\
     save.ui\
     toolbar.ui
 

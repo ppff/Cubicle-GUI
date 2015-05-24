@@ -5,7 +5,6 @@
 #include "plan.h"
 #include "iostream"
 #include "cube.h"
-#include "afficheplan.h"
 #include "save.h"
 #include "personbutton.h"
 #include "dialog.h"
