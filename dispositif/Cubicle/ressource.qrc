@@ -1,5 +1,4 @@
 <RCC>
-<<<<<<< HEAD
     <qresource prefix="/icone">
         <file>led.jpeg</file>
         <file>../ledEteinte.jpeg</file>
@@ -16,10 +15,10 @@
         <file>../atome.gif</file>
         <file>../atomeblanc.jpeg</file>
         <file>nvatomeblanc.png</file>
-    </qresource>
+         </qresource>
     <qresource prefix="/texte">
         <file>../file.txt</file>
-=======
+         </qresource>
     <qresource prefix="/Images">
         <file>quit.png</file>
         <file>save.png</file>
@@ -29,6 +28,5 @@
         <file>copy.png</file>
         <file>open_directory.png</file>
         <file>new_group.png</file>
->>>>>>> sauvegardeFichier
     </qresource>
 </RCC>
