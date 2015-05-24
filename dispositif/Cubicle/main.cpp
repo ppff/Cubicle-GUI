@@ -9,9 +9,10 @@ int main(int argc, char *argv[])
 {
     QApplication a(argc, argv);
     MainWindow w;
+
+
+   //MainWindow *mainwindow = MainWindow::getInstance();
+   //mainwindow->show();
     w.show();
-
-
-
     return a.exec();
 }

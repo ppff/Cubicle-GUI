@@ -12,7 +12,7 @@
 #include "QMenu"
 #include "QPoint"
 #include <QInputDialog>
-
+#include <QMessageBox>
 
 namespace Ui {
 class MainWindow;
@@ -28,10 +28,14 @@ public:
     void tree();
     ~MainWindow();
 
+    /*static MainWindow* getInstance();
+    static void kill();*/
+     //static MainWindow* _instance;
+     //Ui::MainWindow* getUi();
 
-
-private:
+public:
     Ui::MainWindow *ui;
+
     QDirModel *model;
     QMenu* contextMenu;
     QString namedir;
@@ -52,5 +56,7 @@ void insertGroup();
 
 
 };
+
+//MainWindow* MainWindow::_instance=NULL;
 
 #endif // MAINWINDOW_H

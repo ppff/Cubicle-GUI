@@ -11,10 +11,13 @@
 
 
 
+//MainWindow *MainWindow::_instance = NULL;
+
 MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent),
     ui(new Ui::MainWindow)
 {
+
     ui->setupUi(this);
     ui->actionCopy->setDisabled(true);
     ui->actionDelete_pattern->setDisabled(true);
@@ -25,7 +28,6 @@ MainWindow::MainWindow(QWidget *parent) :
     connect(ui->actionOpen_directory,SIGNAL(triggered(bool)),this,SLOT(ouvrir_explorer()));
     connect(ui->actionCopy,SIGNAL(triggered(bool)),this,SLOT(copier()));
     connect(ui->actionPaste_pattern,SIGNAL(triggered(bool)),this,SLOT(coller()));
-    insert_Group = new QAction("insert Group",this);
     connect(ui->actionNew_Group,SIGNAL(triggered(bool)),this,SLOT(insertGroup()));
     connect(ui->actionNew_Pattern,SIGNAL(triggered(bool)),this,SLOT(ajouter_motif()));
 
@@ -147,5 +149,20 @@ MainWindow::~MainWindow()
 {
     delete ui;
 }
+
+/*MainWindow* MainWindow::getInstance()
+{
+    if(_instance == 0)
+        _instance = new MainWindow();
+
+    return _instance;
+}
+
+void MainWindow::kill()
+{
+    if(_instance != 0)
+        delete _instance;
+}*/
+
 
 
