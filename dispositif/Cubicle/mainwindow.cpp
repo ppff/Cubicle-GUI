@@ -23,6 +23,7 @@ MainWindow::MainWindow(QWidget *parent) :
     ui(new Ui::MainWindow)
 {
     ui->setupUi(this);
+    this->setWindowState(Qt::WindowFullScreen);
     ui->actionCopy->setDisabled(true);
     ui->actionDelete_pattern->setDisabled(true);
     ui->actionNew_Group->setDisabled(true);
@@ -176,6 +177,7 @@ void MainWindow::tree(){
         ui->treeView->hideColumn(i);
     }
     ui->treeView->resizeColumnToContents(0);
+  //  ui->treeView->setSizePolicy(expanding);
     ui->actionNew_Group->setEnabled(true);
     ui->actionNew_Pattern->setEnabled(true);
     ui->actionDelete_pattern->setEnabled(true);
