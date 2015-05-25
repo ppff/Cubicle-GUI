@@ -449,7 +449,7 @@ void MainWindow::affichePlanLed(const QString & valeur){
          plans[num]->setStyleSheet("QPushButton { background-color: rgba(240,240,240,255); }");
     }
     l3->setPixmap(QPixmap(":/icone/x.jpeg"));
-    l3->move(270,-5);
+    l3->move(2070,-5);
     l->adjustSize();
     l->show();
     l4->setPixmap(QPixmap(":/icone/y.png"));
