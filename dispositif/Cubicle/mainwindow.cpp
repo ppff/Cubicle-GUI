@@ -448,12 +448,12 @@ void MainWindow::affichePlanLed(const QString & valeur){
     for (int num=0;num<9;num++){
          plans[num]->setStyleSheet("QPushButton { background-color: rgba(240,240,240,255); }");
     }
-    l3->setPixmap(QPixmap(":/icone/x.jpeg"));
-    l3->move(2070,-5);
-    l->adjustSize();
-    l->show();
-    l4->setPixmap(QPixmap(":/icone/y.png"));
-    l4->move(300,-5);
+    l3->setPixmap(QPixmap(":/icone/y.png"));
+    l3->move(290,-1);
+    l3->adjustSize();
+    l3->show();
+    l4->setPixmap(QPixmap(":/icone/x.png"));
+    l4->move(280,5);
     l4->adjustSize();
     l4->show();
     QString stori=valeur[0];
