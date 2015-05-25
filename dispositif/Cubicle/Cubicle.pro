@@ -17,9 +17,6 @@ SOURCES += main.cpp\
     led.cpp\
     cube.cpp\
     plan.cpp\
-    dialog.cpp\
-    save.cpp\
-    toolbar.cpp \
     personbutton.cpp\
     nouveaumotif.cpp\
     gestionfichier.cpp
@@ -32,19 +29,14 @@ HEADERS  += mainwindow.h\
     led.h\
     cube.h\
     dialog.h\
-    save.h\
-    toolbar.h \
-    personbutton.h\
     nouveaumotif.h\
     gestionfichier.h
 
 
 
 
-FORMS    += mainwindow.ui\
-    dialog.ui\
-    save.ui\
-    toolbar.ui
+FORMS    += mainwindow.ui
+
 
 
 

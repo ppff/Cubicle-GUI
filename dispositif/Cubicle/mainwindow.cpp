@@ -336,6 +336,12 @@ void MainWindow::deleteCube3D(int i){
     else{
         ui->label->setPixmap(QPixmap());
         ui->label->repaint();
+        ui->label_2->setPixmap(QPixmap());
+        ui->label_2->repaint();
+        ui->label_3->setPixmap(QPixmap());
+        ui->label_3->repaint();
+        ui->label_4->setPixmap(QPixmap());
+        ui->label_4->repaint();
     }
     this->fleche_bas->hide();
     this->fleche_gauche->hide();
