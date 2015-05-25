@@ -15,7 +15,8 @@
 #include "gestionfichier.h"
 #include "cube.h"
 #include <QPushButton>
-
+#include <QPainter>
+#include <QPainterPath>
 using namespace std;
 
 MainWindow::MainWindow(QWidget *parent) :
@@ -42,6 +43,9 @@ MainWindow::MainWindow(QWidget *parent) :
     connect(ui->treeView,SIGNAL(doubleClicked(const QModelIndex &)),this,SLOT(doubleClick()));
     connect(ui->actionCut_pattern,SIGNAL(triggered(bool)),this,SLOT(couper()));
     l=ui->label;
+    this->l2=ui->label_2;
+    l3=ui->label_3;
+    l4=ui->label_4;
     this->setWindowIcon(QIcon("cubicle.jpg"));
     this->setWindowTitle("Cubicle");
     deleteCube3D(0);
@@ -282,7 +286,7 @@ void MainWindow::doubleClick(){
              deletePlanLed(1);
              desactivePlan(1);
              deleteCube3D(1);
-             afficheCube3D(l);
+             afficheCube3D(l,l2);
          }
     }
     else {
@@ -290,11 +294,15 @@ void MainWindow::doubleClick(){
     }
 }
 
-void MainWindow:: afficheCube3D( QLabel* label){
+void MainWindow:: afficheCube3D( QLabel* label,QLabel* l){
     label->setPixmap(QPixmap(":/icone/nvcube.jpeg"));
     label->move(860,350);
     label->adjustSize();
     label->show();
+    l->setPixmap(QPixmap(":/icone/reperenv.jpeg"));
+    l->move(820,500);
+    l->adjustSize();
+    l->show();
     this->fleche_bas->setVisible(true);
     fleche_bas->setIcon(QIcon(":/icone/bas.png"));
     fleche_bas->setGeometry(1025,415,40,40);
@@ -341,7 +349,7 @@ void MainWindow::afficheListePlan1(){
            int num=text.toInt(false,10);
            plans[num]->setVisible(true);
            plans[num]->setGeometry(100, 50, 250, 100);
-           plans[num]->move(690-20*j, 50*j+90);
+           plans[num]->move(700-20*j, 50*j+90);
            plans[num]->setStyleSheet("QPushButton { background-color: rgba(240,240,240,255); }");
 
           connect(plans[num], SIGNAL(clicked()), signalMapper, SLOT(map()));
@@ -365,7 +373,7 @@ void MainWindow::afficheListePlan2(){
     int num=text.toInt(false,10);
     plans[num]->setVisible(true);
     plans[num]->setGeometry(100, 50, 250, 100);
-    plans[num]->move(690-20*j, 50*j+90);
+    plans[num]->move(700-20*j, 50*j+90);
     plans[num]->setStyleSheet("QPushButton { background-color: rgba(240,240,240,255); }");
 
 
@@ -390,7 +398,7 @@ void MainWindow::afficheListePlan3(){
        int num=text.toInt(false,10);
        plans[num]->setVisible(true);
        plans[num]->setGeometry(100, 50, 250, 100);
-       plans[num]->move(690-20*j, 50*j+90);
+       plans[num]->move(700-20*j, 50*j+90);
        plans[num]->setStyleSheet("QPushButton { background-color: rgba(240,240,240,255); }");
 
        connect(plans[num], SIGNAL(clicked()), signalMapper, SLOT(map()));
@@ -440,7 +448,14 @@ void MainWindow::affichePlanLed(const QString & valeur){
     for (int num=0;num<9;num++){
          plans[num]->setStyleSheet("QPushButton { background-color: rgba(240,240,240,255); }");
     }
-
+    l3->setPixmap(QPixmap(":/icone/x.jpeg"));
+    l3->move(270,-5);
+    l->adjustSize();
+    l->show();
+    l4->setPixmap(QPixmap(":/icone/y.png"));
+    l4->move(300,-5);
+    l4->adjustSize();
+    l4->show();
     QString stori=valeur[0];
     QString stnplan=valeur[1];
     int ori=stori.toInt(false,10);
@@ -458,7 +473,7 @@ void MainWindow::affichePlanLed(const QString & valeur){
            int num=text.toInt(false,10);
            buttons[num]->setVisible(true);
            buttons[num]->setGeometry(30, 30, 30, 30);
-           buttons[num]->move(30*i+320, 30*j+70);
+           buttons[num]->move(30*i+320, 30*j+90);
            Led l;
            switch(this->OrienPlan){
                 case 0: l=c.getList1()->value(this->NumeroPlan).getLed(j,i); break;

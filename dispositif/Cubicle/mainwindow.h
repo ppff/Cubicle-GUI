@@ -32,7 +32,7 @@ public:
     void ouvrir();
     void setEmpMotif(QString nom);
     QString getEmplMotif();
-    void afficheCube3D(QLabel* l );
+    void afficheCube3D(QLabel* l,QLabel*l2);
     void deleteCube3D(int i);
     void deletePlanLed(int i);
     void setOrientationPlan(int i);
@@ -59,6 +59,9 @@ private:
     bool dirOrFile;//false if file
     QString emplMotif;
     QLabel* l;
+    QLabel * l2;
+    QLabel* l3;
+    QLabel* l4;
     QPushButton* buttons[90];
     int OrienPlan;
     int NumeroPlan;
