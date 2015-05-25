@@ -8,12 +8,15 @@
 #include "save.h"
 #include "personbutton.h"
 #include "dialog.h"
+#include <QPalette>
 
 
 int main(int argc, char *argv[])
 {
     QApplication a(argc, argv);
-
+    QPalette pal=a.palette();
+    pal.setColor(QPalette::Window, Qt ::white);
+    a.setPalette(pal);
 
     /////////////Démo allumer une led/////////////////////////////////////
  //  Dialog d;

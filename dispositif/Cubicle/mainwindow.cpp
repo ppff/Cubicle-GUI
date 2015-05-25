@@ -41,13 +41,13 @@ MainWindow::MainWindow(QWidget *parent) :
     connect(ui->treeView,SIGNAL(doubleClicked(const QModelIndex &)),this,SLOT(doubleClick()));
     connect(ui->actionCut_pattern,SIGNAL(triggered(bool)),this,SLOT(couper()));
     l=ui->label;
-
     this->setWindowIcon(QIcon("cubicle.jpg"));
     this->setWindowTitle("Cubicle");
     deleteCube3D(0);
     deletePlanLed(0);
     this->desactivePlan(0);
     dirOpen=false;
+
 
 }
 
@@ -295,17 +295,17 @@ void MainWindow:: afficheCube3D( QLabel* label){
     label->show();
     this->fleche_bas->setVisible(true);
     fleche_bas->setIcon(QIcon(":/icone/bas.png"));
-    fleche_bas->setGeometry(960,390,40,40);
+    fleche_bas->setGeometry(1025,415,40,40);
     QObject::connect(fleche_bas, SIGNAL(clicked()),
                           this, SLOT(afficheListePlan1()));
-    fleche_gauche->setVisible(true);
+  //  fleche_gauche->setVisible(true);
     fleche_gauche->setIcon(QIcon(":/icone/GAUCHE.png"));
-    fleche_gauche->setGeometry(1060,480,40,40);
+    fleche_gauche->setGeometry(1085,550,40,40);
     QObject::connect(fleche_gauche, SIGNAL(clicked()),
                           this, SLOT(afficheListePlan2()));
-    fleche_face->setVisible(true);
+ //   fleche_face->setVisible(true);
     fleche_face->setIcon(QIcon(":/icone/AR.png"));
-    fleche_face->setGeometry(950,500,40,40);
+    fleche_face->setGeometry(1000,550,40,40);
     QObject::connect(fleche_face, SIGNAL(clicked()),
                           this, SLOT(afficheListePlan3()));
 
@@ -340,6 +340,7 @@ void MainWindow::afficheListePlan1(){
            plans[num]->setVisible(true);
            plans[num]->setGeometry(100, 50, 250, 100);
            plans[num]->move(690-20*j, 50*j+90);
+           plans[num]->setStyleSheet("QPushButton { background-color: rgba(240,240,240,255); }");
 
           connect(plans[num], SIGNAL(clicked()), signalMapper, SLOT(map()));
           signalMapper->setMapping(plans[num], text);
@@ -361,9 +362,10 @@ void MainWindow::afficheListePlan2(){
 
     int num=text.toInt(false,10);
     plans[num]->setVisible(true);
-    plans[num]->setIcon(QIcon(":/icone/nvatomeblanc.png"));
     plans[num]->setGeometry(100, 50, 250, 100);
-    plans[num]->move(690-j*50, 30*j+90);
+    plans[num]->move(690-20*j, 50*j+90);
+    plans[num]->setStyleSheet("QPushButton { background-color: rgba(240,240,240,255); }");
+
 
    connect(plans[num], SIGNAL(clicked()), signalMapper, SLOT(map()));
    signalMapper->setMapping(plans[num], text);
@@ -387,6 +389,7 @@ void MainWindow::afficheListePlan3(){
        plans[num]->setVisible(true);
        plans[num]->setGeometry(100, 50, 250, 100);
        plans[num]->move(690-20*j, 50*j+90);
+       plans[num]->setStyleSheet("QPushButton { background-color: rgba(240,240,240,255); }");
 
        connect(plans[num], SIGNAL(clicked()), signalMapper, SLOT(map()));
       signalMapper->setMapping(plans[num], text);
@@ -403,7 +406,7 @@ void MainWindow::desactivePlan(int niemefois){
            QString text=ori+nplan;
            int num=text.toInt(false,10);
            if(niemefois==0){  //il crée le bouton que la première fois
-            plans[num]=new QPushButton(nplan,this);
+            plans[num]=new QPushButton("",this);
            }
            plans[num]->hide();
         }
@@ -414,7 +417,7 @@ void MainWindow::desactivePlan(int niemefois){
            QString text=ori+nplan;
            int num=text.toInt(false,10);
            if(niemefois==0){
-             plans[num]=new QPushButton(nplan,this);
+             plans[num]=new QPushButton("",this);
            }
            plans[num]->hide();
         }
@@ -424,7 +427,7 @@ void MainWindow::desactivePlan(int niemefois){
            QString text=ori+nplan;
            int num=text.toInt(false,10);
            if(niemefois==0){
-              plans[num]=new QPushButton(nplan,this);
+              plans[num]=new QPushButton("",this);
            }
            plans[num]->hide();
           }
@@ -432,11 +435,16 @@ void MainWindow::desactivePlan(int niemefois){
 
 
 void MainWindow::affichePlanLed(const QString & valeur){
+    for (int num=0;num<9;num++){
+         plans[num]->setStyleSheet("QPushButton { background-color: rgba(240,240,240,255); }");
+    }
+
     QString stori=valeur[0];
     QString stnplan=valeur[1];
     int ori=stori.toInt(false,10);
     int nplan=stnplan.toInt(false,10);
     this->setNumeroPlan(nplan);
+    plans[nplan]->setStyleSheet("QPushButton { background-color: red; }");
     QSignalMapper *signalMapper = new QSignalMapper(this);
 
    for (int i = 0; i < 9; i++) {
