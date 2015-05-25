@@ -21,7 +21,7 @@ SOURCES += main.cpp\
     save.cpp\
     toolbar.cpp \
     personbutton.cpp\
-    nouveaumotif.cpp \
+    nouveaumotif.cpp\
     gestionfichier.cpp
 
 
