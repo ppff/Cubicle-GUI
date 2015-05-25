@@ -23,6 +23,7 @@ MainWindow::MainWindow(QWidget *parent) :
     ui(new Ui::MainWindow)
 {
     ui->setupUi(this);
+    this->setWindowState(Qt::WindowFullScreen);
     ui->actionCopy->setDisabled(true);
     ui->actionDelete_pattern->setDisabled(true);
     ui->actionNew_Group->setDisabled(true);
@@ -32,7 +33,6 @@ MainWindow::MainWindow(QWidget *parent) :
     connect(ui->actionOpen_directory,SIGNAL(triggered(bool)),this,SLOT(ouvrir_explorer()));
     connect(ui->actionCopy,SIGNAL(triggered(bool)),this,SLOT(copier()));
     connect(ui->actionPaste_pattern,SIGNAL(triggered(bool)),this,SLOT(coller()));
-    insert_Group = new QAction("insert Group",this);
     connect(ui->actionNew_Group,SIGNAL(triggered(bool)),this,SLOT(insertGroup()));
     connect(ui->actionNew_Pattern,SIGNAL(triggered(bool)),this,SLOT(ajouter_motif()));
     connect(ui->actionQuit,SIGNAL(triggered(bool)),this,SLOT(controlQuit()));
@@ -119,6 +119,7 @@ void MainWindow::tree(){
         ui->treeView->hideColumn(i);
     }
     ui->treeView->resizeColumnToContents(0);
+  //  ui->treeView->setSizePolicy(expanding);
     ui->actionNew_Group->setEnabled(true);
     ui->actionNew_Pattern->setEnabled(true);
     ui->actionDelete_pattern->setEnabled(true);
