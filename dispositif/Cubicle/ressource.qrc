@@ -1,1 +1,36 @@
-<RCC/>
+<RCC>
+    <qresource prefix="/icone">
+        <file>led.jpeg</file>
+        <file>../ledEteinte.jpeg</file>
+        <file>../cubicle.jpg</file>
+        <file>../repere.jpeg</file>
+        <file>cube.gif</file>
+        <file>Dupliquer.gif</file>
+        <file>Selection_Plan.jpeg</file>
+        <file>AR.png</file>
+        <file>bas.png</file>
+        <file>GAUCHE.png</file>
+        <file>../cubeatome.gif</file>
+        <file>../nvcube.jpeg</file>
+        <file>../atome.gif</file>
+        <file>../atomeblanc.jpeg</file>
+        <file>nvatomeblanc.png</file>
+        <file>couper.png</file>
+        <file>../reperenv.jpeg</file>
+        <file>../y.png</file>
+        <file>../x.png</file>
+    </qresource>
+    <qresource prefix="/texte">
+        <file>../file.txt</file>
+    </qresource>
+    <qresource prefix="/Images">
+        <file>quit.png</file>
+        <file>save.png</file>
+        <file>new_pattern.gif</file>
+        <file>delete_pattern.png</file>
+        <file>paste.png</file>
+        <file>copy.png</file>
+        <file>open_directory.png</file>
+        <file>new_group.png</file>
+    </qresource>
+</RCC>
