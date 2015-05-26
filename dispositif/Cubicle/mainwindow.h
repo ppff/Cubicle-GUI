@@ -14,6 +14,24 @@
 #include <QInputDialog>
 #include "cube.h"
 #include <QContextMenuEvent>
+#include "ui_mainwindow.h"
+#include "QTreeWidgetItem"
+#include"QInputDialog"
+#include "nouveaumotif.h"
+#include "QMenu"
+#include "QPoint"
+#include "QMessageBox"
+#include "QDirIterator"
+#include "QDebug"
+#include <strstream>
+#include <string>
+#include <sstream>
+#include <iostream>
+#include "gestionfichier.h"
+#include "cube.h"
+#include <QPushButton>
+#include <QPainter>
+#include <QPainterPath>
 
 
 namespace Ui {

@@ -1,22 +1,5 @@
 #include "mainwindow.h"
-#include "ui_mainwindow.h"
-#include "QTreeWidgetItem"
-#include"QInputDialog"
-#include "nouveaumotif.h"
-#include "QMenu"
-#include "QPoint"
-#include "QMessageBox"
-#include "QDirIterator"
-#include "QDebug"
-#include <strstream>
-#include <string>
-#include <sstream>
-#include <iostream>
-#include "gestionfichier.h"
-#include "cube.h"
-#include <QPushButton>
-#include <QPainter>
-#include <QPainterPath>
+
 using namespace std;
 
 MainWindow::MainWindow(QWidget *parent) :
@@ -78,6 +61,7 @@ void MainWindow::ouvrir_explorer(){
   tree();
   dirOpen=true;
 }
+
 void MainWindow::contextMenuEvent(QContextMenuEvent *event){
     if(dirOpen){
         contextMenu = new QMenu(ui->treeView);
@@ -183,7 +167,6 @@ void MainWindow::tree(){
         ui->treeView->hideColumn(i);
     }
     ui->treeView->resizeColumnToContents(0);
-  //  ui->treeView->setSizePolicy(expanding);
     ui->actionNew_Group->setEnabled(true);
     ui->actionNew_Pattern->setEnabled(true);
     ui->actionDelete_pattern->setEnabled(true);
@@ -194,7 +177,7 @@ void MainWindow::tree(){
 
 }
 
-//creer un nouveau motif
+//créer un nouveau motif
 void MainWindow::ajouter_motif(){
     QModelIndex index=ui->treeView->currentIndex();
     if (index.isValid()){
@@ -220,7 +203,7 @@ void MainWindow::ajouter_motif(){
 
 }
 
-//creer un nouveau groupe de motif
+//créer un nouveau groupe
 void MainWindow::insertGroup(){
 
     QModelIndex index =model->index(namedir,0);
@@ -248,7 +231,6 @@ void MainWindow::controlDelete(){
 
          QString name=model->fileInfo(index).absoluteFilePath();
          QFile file(name);
-         qDebug()<< "are you sure delete pattern";
          int reponse = QMessageBox::question(this, "Quit", " Are you sure you want to delete this pattern ?");
            if (reponse == QMessageBox::Yes) {
                file.remove();
@@ -256,7 +238,6 @@ void MainWindow::controlDelete(){
                this->deleteCube3D(1);
                this->deletePlanLed(1);
                this->desactivePlan(1);
-
            }
     }
     else {
@@ -269,14 +250,9 @@ void MainWindow::controlSave(){
     ges.ouvrir(this->emplMotif,this->c);
 }
 
-void MainWindow::setEmpMotif(QString nom){
-    this->emplMotif=nom;
-}
 
-QString MainWindow::getEmplMotif(){
-    return this->emplMotif;
-}
 
+// supprimer la liste des plans et le plan 2D Lors d'un double clic sur un nouveau motif
 void MainWindow::doubleClick(){
     QModelIndex index=ui->treeView->currentIndex();
     if (model->fileInfo(index).isFile()) {
@@ -286,7 +262,7 @@ void MainWindow::doubleClick(){
          if(name.compare(this->getEmplMotif())!=0){
              qDebug() <<"ancien motif "+ this->getEmplMotif();
              this->setEmpMotif(name);
-             qDebug ()<< "nv motif "+this->getEmplMotif();
+             qDebug ()<< "nouveau motif "+this->getEmplMotif();
              this->c=Cube();
              deletePlanLed(1);
              desactivePlan(1);
@@ -311,19 +287,11 @@ void MainWindow:: afficheCube3D( QLabel* label,QLabel* l){
     this->fleche_bas->setVisible(true);
     fleche_bas->setIcon(QIcon(":/icone/bas.png"));
     fleche_bas->setGeometry(1025,415,40,40);
-  //  fleche_gauche->setVisible(true);
-    fleche_gauche->setIcon(QIcon(":/icone/GAUCHE.png"));
-    fleche_gauche->setGeometry(1085,550,40,40);
- //   fleche_face->setVisible(true);
-    fleche_face->setIcon(QIcon(":/icone/AR.png"));
-    fleche_face->setGeometry(1000,550,40,40);
 }
 
 void MainWindow::deleteCube3D(int i){
     if(i==0){
         this->fleche_bas=new QPushButton("",this);
-        this->fleche_gauche=new QPushButton("",this);
-        this->fleche_face=new QPushButton("",this);
     }
     else{
         ui->label->setPixmap(QPixmap());
@@ -336,9 +304,6 @@ void MainWindow::deleteCube3D(int i){
         ui->label_4->repaint();
     }
     this->fleche_bas->hide();
-    this->fleche_gauche->hide();
-    this->fleche_face->hide();
-
 }
 
 void MainWindow::afficheListePlan1(){
@@ -445,8 +410,8 @@ void MainWindow::controlLed(const QString & valeur){
   l.modifierEtat();
 
   Plan p1=c.getList1()->value(this->NumeroPlan);
-  p1.updatePlan(l,lig,col,NumeroPlan,OrienPlan,0);
-  c.updateCube(p1,0,NumeroPlan);
+  p1.updatePlan(l,lig,col,NumeroPlan);
+  c.updateCube(p1,NumeroPlan);
 
   afficheLed(lig,col,l.getEtat());
 
@@ -471,8 +436,6 @@ void MainWindow:: afficheLed(const int i, const int j,const  int etat )
 
 void MainWindow::connexion(){
     QObject::connect(fleche_bas, SIGNAL(clicked()), this, SLOT(afficheListePlan1()));
-    QObject::connect(fleche_gauche, SIGNAL(clicked()),this, SLOT(afficheListePlan2()));
-    QObject::connect(fleche_face, SIGNAL(clicked()),this, SLOT(afficheListePlan3()));
 
     QSignalMapper *signalMapper = new QSignalMapper(this);
     QString ori=QString::number(0);
@@ -522,6 +485,13 @@ void MainWindow::setNumeroPlan(int i)
    NumeroPlan=i;
 }
 
+void MainWindow::setEmpMotif(QString nom){
+    this->emplMotif=nom;
+}
+
+QString MainWindow::getEmplMotif(){
+    return this->emplMotif;
+}
 
 
 MainWindow::~MainWindow()
