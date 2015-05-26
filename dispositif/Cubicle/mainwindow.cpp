@@ -95,8 +95,6 @@ void MainWindow::contextMenuEvent(QContextMenuEvent *event){
              if(index.isValid()){
                   ui->treeView->setContextMenuPolicy(Qt::ActionsContextMenu);
                   QAction * insertGroup;
-                  insertGroup = contextMenu->addAction("new group");
-                  connect(insertGroup,SIGNAL(triggered(bool)),this, SLOT(insertGroup()));
                   QString dir=model->fileInfo(index).absolutePath();
                   QString nameGroup=model->fileInfo(index).baseName();
                   if((dir+'/'+nameGroup)!=namedir){
