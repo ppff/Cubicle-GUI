@@ -178,8 +178,9 @@ void MainWindow::coller(){
 
 void MainWindow::tree(){
             model = new QDirModel(this);
-            model->setReadOnly(false);
+            model->setReadOnly(true);
             model->setSorting(QDir::DirsFirst | QDir::IgnoreCase | QDir::Name);
+
     ui->treeView->setModel(model);
     QModelIndex index=model->index(namedir);
      ui->treeView->setRootIndex(index);
