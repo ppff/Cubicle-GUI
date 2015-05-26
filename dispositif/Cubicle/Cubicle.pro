@@ -17,7 +17,6 @@ SOURCES += main.cpp\
     led.cpp\
     cube.cpp\
     plan.cpp\
-    personbutton.cpp\
     nouveaumotif.cpp\
     gestionfichier.cpp
 
