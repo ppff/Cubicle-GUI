@@ -464,7 +464,6 @@ void MainWindow::affichePlanLed(const QString & valeur){
     int nplan=stnplan.toInt(false,10);
     this->setNumeroPlan(nplan);
     plans[nplan]->setStyleSheet("QPushButton { background-color: red; }");
- //   QSignalMapper *signalMapper = new QSignalMapper(this);
 
    for (int i = 0; i < 9; i++) {
         for (int j=0;j<9; j++){
@@ -476,11 +475,7 @@ void MainWindow::affichePlanLed(const QString & valeur){
            buttons[num]->setVisible(true);
 
            Led l;
-           switch(this->OrienPlan){
-                case 0: l=c.getList1()->value(this->NumeroPlan).getLed(j,i); break;
-                case 1: l=c.getList2()->value(this->NumeroPlan).getLed(j,i); break;
-                case 2: l=c.getList3()->value(this->NumeroPlan).getLed(j,i); break;
-           }
+           l=c.getList1()->value(this->NumeroPlan).getLed(j,i);
 
            if(l.getEtat()==0){
                buttons[num]->setIcon(QIcon(":/icone/nvatomeblanc.png"));
@@ -488,13 +483,8 @@ void MainWindow::affichePlanLed(const QString & valeur){
            else {
                buttons[num]->setIcon(QIcon(":/icone/atome.gif"));
            }
-
-         // connect(buttons[num], SIGNAL(clicked()), signalMapper, SLOT(map()));
-         // signalMapper->setMapping(buttons[num], text);
-
        }
     }
- //   connect(signalMapper, SIGNAL(mapped(const QString &)), this, SLOT(controlLed(const QString &)));
 }
 
 void MainWindow::deletePlanLed(int nfois){
@@ -521,50 +511,14 @@ void MainWindow::controlLed(const QString & valeur){
    int lig=strlig.toInt(false,10);
    int col=strcol.toInt(false,10);
   Led l;
-   switch (this->OrienPlan){
-   case 0:   l= this->c.getList1()->value(NumeroPlan).getLed(lig,col); break;
-   case 1:   l= this->c.getList2()->value(NumeroPlan).getLed(lig,col); break;
-   case 2:   l= this->c.getList3()->value(NumeroPlan).getLed(lig,col); break;
-   }
+  l= this->c.getList1()->value(NumeroPlan).getLed(lig,col);
+  l.modifierEtat();
 
-   l.modifierEtat();
-   switch(OrienPlan){
-        case 0:{
-       Plan p1=c.getList1()->value(this->NumeroPlan);
-       Plan p2=c.getList2()->value(col);
-       Plan p3=c.getList3()->value(lig);
-       p1.updatePlan(l,lig,col,NumeroPlan,OrienPlan,0);
-       p2.updatePlan(l,lig,col,NumeroPlan,OrienPlan,1);
-       p3.updatePlan(l,lig,col,NumeroPlan,OrienPlan,2);
-       c.updateCube(p1,0,NumeroPlan);
-       c.updateCube(p2,1,col);
-       c.updateCube(p3,2,lig);
-         }break;
-        case 1:{
-       Plan p1=c.getList1()->value(abs(8-lig));
-       Plan p2=c.getList2()->value(NumeroPlan);
-       Plan p3=c.getList3()->value(abs(8-col));
-       p1.updatePlan(l,lig,col,NumeroPlan,OrienPlan,0);
-       p2.updatePlan(l,lig,col,NumeroPlan,OrienPlan,1);
-       p3.updatePlan(l,lig,col,NumeroPlan,OrienPlan,2);
-       c.updateCube(p1,0,abs(8-lig));
-       c.updateCube(p2,1,NumeroPlan);
-       c.updateCube(p3,2,abs(8-col));
-   } break;
+  Plan p1=c.getList1()->value(this->NumeroPlan);
+  p1.updatePlan(l,lig,col,NumeroPlan,OrienPlan,0);
+  c.updateCube(p1,0,NumeroPlan);
 
-        case 2:{
-       Plan p1=c.getList1()->value(abs(8-lig));
-       Plan p2=c.getList2()->value(col);
-       Plan p3=c.getList3()->value(NumeroPlan);
-       p1.updatePlan(l,lig,col,NumeroPlan,OrienPlan,0);
-       p2.updatePlan(l,lig,col,NumeroPlan,OrienPlan,1);
-       p3.updatePlan(l,lig,col,NumeroPlan,OrienPlan,2);
-       c.updateCube(p1,0,abs(8-lig));
-       c.updateCube(p2,1,col);
-       c.updateCube(p3,2,NumeroPlan);
-   } break;
-   }
-   afficheLed(lig,col,l.getEtat());
+  afficheLed(lig,col,l.getEtat());
 
 }
 void MainWindow:: afficheLed(const int i, const int j,const  int etat )
