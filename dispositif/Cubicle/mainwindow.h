@@ -34,6 +34,7 @@
 #include <QPainterPath>
 
 
+
 namespace Ui {
 class MainWindow;
 }
@@ -63,10 +64,14 @@ public:
 
     ~MainWindow();
 
+    /*static MainWindow* getInstance();
+    static void kill();*/
+     //static MainWindow* _instance;
+     //Ui::MainWindow* getUi();
 
-
-private:
+public:
     Ui::MainWindow *ui;
+
     QDirModel *model;
     QMenu* contextMenu;
     QString namedir;
@@ -113,5 +118,7 @@ void controlLed(const QString & valeur);
 
 
 };
+
+//MainWindow* MainWindow::_instance=NULL;
 
 #endif // MAINWINDOW_H

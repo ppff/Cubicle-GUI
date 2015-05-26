@@ -5,7 +5,7 @@
 
 
 //cette classe crée un nouveau fichier avec le nomdu groupe, du nouveau motif et des 0 dans tous les leds
-NouveauMotif::NouveauMotif(QString nomGroup, QString nomMotif, QString Dir)
+NouveauMotif::NouveauMotif(QString nomMotif, QString Dir)
 {
  QFile motif(Dir+"/"+nomMotif+".txt");
     if (!motif.open(QIODevice::WriteOnly | QIODevice::Text)){
@@ -14,13 +14,14 @@ NouveauMotif::NouveauMotif(QString nomGroup, QString nomMotif, QString Dir)
     }
  QTextStream flux(&motif);
  flux.setCodec("UTF-8");
- flux<<nomGroup<<endl<<nomMotif<<endl ;
+ flux<<"@"+nomMotif<<endl ;
  for(int i=1; i<10;i++){
      QString c=QString::number(i);
      flux<<"#"+c<<endl;
      for(int j=1; j<10;j++){
          flux<<"000000000"<<endl ;
      }
+     flux<<endl;
  }
  motif.close() ;
 

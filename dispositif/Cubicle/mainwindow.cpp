@@ -1,11 +1,33 @@
 #include "mainwindow.h"
+#include "ui_mainwindow.h"
+#include "QTreeWidgetItem"
+#include"QInputDialog"
+#include "nouveaumotif.h"
+#include "QMenu"
+#include "QPoint"
+#include "QMessageBox"
+#include "QDirIterator"
+#include "QDebug"
+#include <strstream>
+#include <string>
+#include <sstream>
+#include <iostream>
+#include "gestionfichier.h"
+#include "cube.h"
+#include <QPushButton>
+#include <QPainter>
+#include <QPainterPath>
+
 
 using namespace std;
+
+//MainWindow *MainWindow::_instance = NULL;
 
 MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent),
     ui(new Ui::MainWindow)
 {
+
     ui->setupUi(this);
 
     this->setWindowState(Qt::WindowFullScreen);
@@ -50,7 +72,9 @@ void MainWindow::ouvrir_explorer(){
       return;}
 
   QDir dir(namedir);
-  QFileInfoList list=dir.entryInfoList(QDir::Files);
+  QStringList nameFilter;
+  nameFilter<<"*.txt";
+  QFileInfoList list=dir.entryInfoList(nameFilter,QDir::Files);
   QFileInfoList list2=dir.entryInfoList(QDir::Dirs);
   //on ne doit pas charger le dossier d'un groupe de motif mais plutot le repertoire des groupes de motif
   if ((!list.isEmpty()) and (!list2.isEmpty())) {
@@ -156,7 +180,7 @@ void MainWindow::tree(){
             model = new QDirModel(this);
             model->setReadOnly(false);
             model->setSorting(QDir::DirsFirst | QDir::IgnoreCase | QDir::Name);
-            model->setReadOnly(true);
+
     ui->treeView->setModel(model);
     QModelIndex index=model->index(namedir);
      ui->treeView->setRootIndex(index);
@@ -183,6 +207,7 @@ void MainWindow::ajouter_motif(){
     if (index.isValid()){
 
         if (model->fileInfo(index).isDir()) {
+             model->setReadOnly(true);
             QString dir=model->fileInfo(index).absolutePath();
 
             QString nameGroup=model->fileInfo(index).baseName();
@@ -191,7 +216,8 @@ void MainWindow::ajouter_motif(){
             qDebug()<<"l'emplacement du dossier est "+dir;
             qDebug()<<"le nom du dossier est "+nameGroup;
             QString nameMotif=QInputDialog::getText(this,"Name","Enter the pattern name");
-            NouveauMotif m=NouveauMotif(nameGroup,nameMotif,dir+"/"+nameGroup);
+
+            NouveauMotif m=NouveauMotif(nameMotif,dir+"/"+nameGroup);
             tree();
             }
              else {
@@ -200,6 +226,7 @@ void MainWindow::ajouter_motif(){
 
         }
     }
+     model->setReadOnly(false);
 
 }
 
@@ -210,6 +237,18 @@ void MainWindow::insertGroup(){
     if (!index.isValid()) return;
     QString name =QInputDialog::getText(this,"Name","Enter a name");
     if(name.isEmpty())return;
+
+    QFile fichierGroupes(namedir+"/ORDRE");
+    if(!fichierGroupes.open(QIODevice::ReadWrite | QIODevice::Text | QIODevice::Append)){
+          qDebug()<<"le fichier ORDRE ne s'ouvre pas";
+      }
+      else{
+          QTextStream flux(&fichierGroupes);
+           flux.readAll();
+           flux<<name;
+           fichierGroupes.close();
+          }
+
     model->mkdir(index,name);
 
 
@@ -514,4 +553,18 @@ MainWindow::~MainWindow()
 {
     delete ui;
 }
+
+/*MainWindow* MainWindow::getInstance()
+{
+    if(_instance == 0)
+        _instance = new MainWindow();
+
+    return _instance;
+}
+
+void MainWindow::kill()
+{
+    if(_instance != 0)
+        delete _instance;
+}*/
 
