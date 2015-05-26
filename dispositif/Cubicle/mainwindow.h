@@ -41,6 +41,7 @@ public:
     int getNumeroPlan();
     void setNumeroPlan(int i);
     void desactivePlan(int i);
+    void connexion();
     void contextMenuEvent(QContextMenuEvent *event);
 
     ~MainWindow();
