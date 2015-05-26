@@ -43,10 +43,10 @@ MainWindow::MainWindow(QWidget *parent) :
     connect(ui->actionSave,SIGNAL(triggered(bool)),this,SLOT(controlSave()));
     connect(ui->treeView,SIGNAL(doubleClicked(const QModelIndex &)),this,SLOT(doubleClick()));
     connect(ui->actionCut_pattern,SIGNAL(triggered(bool)),this,SLOT(couper()));
-    l=ui->label;
-    l2=ui->label_2;
-    l3=ui->label_3;
-    l4=ui->label_4;
+    l_cube=ui->label;
+    l_repere=ui->label_2;
+    label_y=ui->label_3;
+    label_x=ui->label_4;
     this->setWindowTitle("Cubicle");
     deleteCube3D(0);
     deletePlanLed(0);
@@ -291,7 +291,7 @@ void MainWindow::doubleClick(){
              deletePlanLed(1);
              desactivePlan(1);
              deleteCube3D(1);
-             afficheCube3D(l,l2);
+             afficheCube3D(l_cube,l_repere);
          }
     }
     else {
@@ -344,7 +344,6 @@ void MainWindow::deleteCube3D(int i){
 void MainWindow::afficheListePlan1(){
     desactivePlan(1);
     deletePlanLed(1);
- //   QSignalMapper *signalMapper = new QSignalMapper(this);
          for (int j=0;j<9; j++){ //les plans vue de dessus
            setOrientationPlan(0);
            QString ori=QString::number(0);
@@ -352,54 +351,10 @@ void MainWindow::afficheListePlan1(){
            QString text=ori+nplan;
            int num=text.toInt(false,10);
            plans[num]->setVisible(true);
-       //   connect(plans[num], SIGNAL(clicked()), signalMapper, SLOT(map()));
-         // signalMapper->setMapping(plans[num], text);
         }
-  //  connect(signalMapper, SIGNAL(mapped(const QString &)), this, SLOT(affichePlanLed(const QString &)));
-
 }
 
 
-void MainWindow::afficheListePlan2(){
-     desactivePlan(1);
-     deletePlanLed(1);
- QSignalMapper *signalMapper = new QSignalMapper(this);
- for (int j=0;j<9; j++){ //les plans vue de gauche
-    setOrientationPlan(1);
-    QString ori=QString::number(1);
-    QString nplan=QString::number(j);
-    QString text=ori+nplan;
-
-    int num=text.toInt(false,10);
-    plans[num]->setVisible(true);
-
-   connect(plans[num], SIGNAL(clicked()), signalMapper, SLOT(map()));
-   signalMapper->setMapping(plans[num], text);
-
-    }
-   connect(signalMapper, SIGNAL(mapped(const QString &)), this, SLOT(affichePlanLed(const QString &)));
-
-}
-
-void MainWindow::afficheListePlan3(){
-     desactivePlan(1);
-     deletePlanLed(1);
-    QSignalMapper *signalMapper = new QSignalMapper(this);
-    for (int j=0;j<9; j++){ //les plans vue de face
-       setOrientationPlan(2);
-       QString ori=QString::number(2);
-       QString nplan=QString::number(j);
-       QString text=ori+nplan;
-
-       int num=text.toInt(false,10);
-       plans[num]->setVisible(true);
-
-       connect(plans[num], SIGNAL(clicked()), signalMapper, SLOT(map()));
-      signalMapper->setMapping(plans[num], text);
-   }
-      connect(signalMapper, SIGNAL(mapped(const QString &)), this, SLOT(affichePlanLed(const QString &)));
-
-}
 
 void MainWindow::desactivePlan(int niemefois){
 
@@ -416,33 +371,6 @@ void MainWindow::desactivePlan(int niemefois){
            }
            plans[num]->hide();
         }
-
-        for (int j=0;j<9; j++){
-           QString ori=QString::number(1);
-           QString nplan=QString::number(j);
-           QString text=ori+nplan;
-           int num=text.toInt(false,10);
-           if(niemefois==0){
-             plans[num]=new QPushButton("",this);
-             plans[num]->setGeometry(100, 50, 250, 100);
-             plans[num]->move(700-20*j, 50*j+90);
-             plans[num]->setStyleSheet("QPushButton { background-color: rgba(240,240,240,255); }");
-           }
-           plans[num]->hide();
-        }
-        for (int j=0;j<9; j++){
-           QString ori=QString::number(2);
-           QString nplan=QString::number(j);
-           QString text=ori+nplan;
-           int num=text.toInt(false,10);
-           if(niemefois==0){
-              plans[num]=new QPushButton("",this);
-              plans[num]->setGeometry(100, 50, 250, 100);
-              plans[num]->move(700-20*j, 50*j+90);
-              plans[num]->setStyleSheet("QPushButton { background-color: rgba(240,240,240,255); }");
-           }
-           plans[num]->hide();
-          }
 }
 
 
@@ -450,14 +378,14 @@ void MainWindow::affichePlanLed(const QString & valeur){
     for (int num=0;num<9;num++){
          plans[num]->setStyleSheet("QPushButton { background-color: rgba(240,240,240,255); }");
     }
-    l3->setPixmap(QPixmap(":/icone/y.png"));
-    l3->move(290,-1);
-    l3->adjustSize();
-    l3->show();
-    l4->setPixmap(QPixmap(":/icone/x.png"));
-    l4->move(280,5);
-    l4->adjustSize();
-    l4->show();
+    label_y->setPixmap(QPixmap(":/icone/y.png"));
+    label_y->move(290,-1);
+    label_y->adjustSize();
+    label_y->show();
+    label_x->setPixmap(QPixmap(":/icone/x.png"));
+    label_x->move(280,5);
+    label_x->adjustSize();
+    label_x->show();
     QString stori=valeur[0];
     QString stnplan=valeur[1];
     int ori=stori.toInt(false,10);
@@ -489,6 +417,8 @@ void MainWindow::affichePlanLed(const QString & valeur){
 
 void MainWindow::deletePlanLed(int nfois){
 
+    label_x->hide();
+    label_y->hide();
         for (int i = 0; i < 9; i++) {
              for (int j=0;j<9; j++){
                  QString col=QString::number(i);
@@ -521,6 +451,8 @@ void MainWindow::controlLed(const QString & valeur){
   afficheLed(lig,col,l.getEtat());
 
 }
+
+
 void MainWindow:: afficheLed(const int i, const int j,const  int etat )
 {
        QString lig=QString::number(i);

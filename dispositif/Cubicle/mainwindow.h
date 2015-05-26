@@ -59,10 +59,10 @@ private:
     QString nom_copie;
     bool dirOrFile;//false if file
     QString emplMotif;
-    QLabel* l;
-    QLabel * l2;
-    QLabel* l3;
-    QLabel* l4;
+    QLabel* l_cube;
+    QLabel * l_repere;
+    QLabel*label_x;
+    QLabel* label_y;
     QPushButton* buttons[90];
     int OrienPlan;
     int NumeroPlan;
@@ -88,8 +88,6 @@ void controlDelete();
 void controlSave();
 void doubleClick();
 void afficheListePlan1();
-void afficheListePlan2();
-void afficheListePlan3();
 void affichePlanLed(const QString & valeur);
 void afficheLed(const int i, const int j, const int etat);
 void controlLed(const QString & valeur);
