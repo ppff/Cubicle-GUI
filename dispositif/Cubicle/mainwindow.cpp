@@ -331,9 +331,9 @@ void MainWindow::desactivePlan(int niemefois){
            if(niemefois==0){  //il crée le bouton une seule fois fois
             plans[num]=new QPushButton("",this);
             plans[num]->setGeometry(70, 70, 150, 150);
-            plans[num]->move(700-20*j, 50*j+90);
-            plans[num]->setStyleSheet("QPushButton { background-color: rgba(240,240,240,255); }");
+            plans[num]->move(630+20*j, 30*j+90);
            }
+           plans[num]->setStyleSheet("QPushButton { background-color: rgba(240,240,240,255); }");
            plans[num]->hide();
         }
 }
@@ -343,12 +343,12 @@ void MainWindow::affichePlanLed(const QString & valeur){
     for (int num=0;num<9;num++){
          plans[num]->setStyleSheet("QPushButton { background-color: rgba(240,240,240,255); }");
     }
-    label_y->setPixmap(QPixmap(":/icone/y.png"));
-    label_y->move(290,-1);
+    label_y->setPixmap(QPixmap(":/icone/z.png"));
+    label_y->move(590,29);
     label_y->adjustSize();
     label_y->show();
     label_x->setPixmap(QPixmap(":/icone/x.png"));
-    label_x->move(280,5);
+    label_x->move(325,296);
     label_x->adjustSize();
     label_x->show();
     QString stori=valeur[0];
@@ -357,6 +357,22 @@ void MainWindow::affichePlanLed(const QString & valeur){
     int nplan=stnplan.toInt(false,10);
     this->setNumeroPlan(nplan);
     plans[nplan]->setStyleSheet("QPushButton { background-color: red; }");
+
+    switch(nplan){
+
+    case 0:l_cube->setPixmap(QPixmap(":/icone/plan8.png")); break;
+    case 1:l_cube->setPixmap(QPixmap(":/icone/plan7.png"));break;
+    case 2:l_cube->setPixmap(QPixmap(":/icone/plan6.png"));break;
+    case 3:l_cube->setPixmap(QPixmap(":/icone/plan5.png"));break;
+    case 4:l_cube->setPixmap(QPixmap(":/icone/plan4.png"));break;
+    case 5:l_cube->setPixmap(QPixmap(":/icone/plan3.png"));break;
+    case 6:l_cube->setPixmap(QPixmap(":/icone/plan2.png"));break;
+    case 7:l_cube->setPixmap(QPixmap(":/icone/plan1.png"));break;
+    case 8:l_cube->setPixmap(QPixmap(":/icone/plan0.png"));break;
+    }
+    l_cube->move(930,385);
+    l_cube->adjustSize();
+    l_cube->show();
 
    for (int i = 0; i < 9; i++) {
         for (int j=0;j<9; j++){

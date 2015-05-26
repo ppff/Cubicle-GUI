@@ -20,6 +20,16 @@
         <file>../y.png</file>
         <file>../x.png</file>
         <file>../CubeParfait.jpeg</file>
+        <file>plan8.png</file>
+        <file>plan7.png</file>
+        <file>plan6.png</file>
+        <file>plan5.png</file>
+        <file>plan4.png</file>
+        <file>plan3.png</file>
+        <file>plan2.png</file>
+        <file>plan1.png</file>
+        <file>plan0.png</file>
+        <file>../z.png</file>
     </qresource>
     <qresource prefix="/texte">
         <file>../file.txt</file>
