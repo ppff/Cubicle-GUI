@@ -94,7 +94,6 @@ void MainWindow::contextMenuEvent(QContextMenuEvent *event){
              QString s =model->fileInfo(index).absoluteFilePath();
              if(index.isValid()){
                   ui->treeView->setContextMenuPolicy(Qt::ActionsContextMenu);
-                  QAction * insertGroup;
                   QString dir=model->fileInfo(index).absolutePath();
                   QString nameGroup=model->fileInfo(index).baseName();
                   if((dir+'/'+nameGroup)!=namedir){
@@ -232,7 +231,6 @@ void MainWindow::ajouter_motif(){
 void MainWindow::insertGroup(){
 
     QModelIndex index =model->index(namedir,0);
-    if (!index.isValid()) return;
     QString name =QInputDialog::getText(this,"Name","Enter a name");
     if(name.isEmpty())return;
 
@@ -243,7 +241,7 @@ void MainWindow::insertGroup(){
       else{
           QTextStream flux(&fichierGroupes);
            flux.readAll();
-           flux<<name;
+           flux<<name<<endl;
            fichierGroupes.close();
           }
 
