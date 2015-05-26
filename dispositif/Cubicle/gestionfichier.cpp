@@ -16,7 +16,7 @@ void GestionFichier::ouvrir(QString empl,Cube c){
     QTextStream flux(&file);
     QString readLine;
     QString newLine;
-    for (int k=0;k<3;k++){
+    for (int k=0;k<2;k++){
         readLine= flux.readLine()+'\n';
         newLine+=readLine;
     }
@@ -29,8 +29,10 @@ void GestionFichier::ouvrir(QString empl,Cube c){
            newLine+=getLinePlan(nplan,nligne,c)+'\n';
            nligne++; //passer à la ligne suivante
        }
+       for (int i=0;i<2;i++){//recopier la ligne vide et la ligne #2 par exemple
         readLine= flux.readLine()+'\n';
-        newLine+=readLine; //recopier la ligne #1 par exemple
+        newLine+=readLine;
+       }
         nligne=0;
         nplan++;// passer au plan suivant
    }
