@@ -330,7 +330,7 @@ void MainWindow::desactivePlan(int niemefois){
            int num=text.toInt(false,10);
            if(niemefois==0){  //il crée le bouton une seule fois fois
             plans[num]=new QPushButton("",this);
-            plans[num]->setGeometry(100, 50, 250, 100);
+            plans[num]->setGeometry(70, 70, 150, 150);
             plans[num]->move(700-20*j, 50*j+90);
             plans[num]->setStyleSheet("QPushButton { background-color: rgba(240,240,240,255); }");
            }
