@@ -12,7 +12,7 @@ public:
     void setLed(const Led l, const int i, const int j);
     Led** getMatrice();
     Led getLed(const int i, const int j);
-    void updatePlan(const Led l, const int i, const int j);
+    void updatePlan(const Led l, const int i, const int j,const int nplan);
 
 private:
     Led** led_list;

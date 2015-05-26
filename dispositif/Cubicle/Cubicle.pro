@@ -13,36 +13,35 @@ TEMPLATE = app
 
 
 SOURCES += main.cpp\
-        mainwindow.cpp \
-    led.cpp \
-    cube.cpp \
-    plan.cpp \
-    creationfichier.cpp \
-    savetemporary.cpp \
-    selection_plan.cpp \
-    toolbar.cpp
+    mainwindow.cpp\
+    led.cpp\
+    cube.cpp\
+    plan.cpp\
+    nouveaumotif.cpp\
+    gestionfichier.cpp
 
 
 
 
-HEADERS  += mainwindow.h \
+HEADERS  += mainwindow.h\
     plan.h\
     led.h\
-    cube.h \
-    creationfichier.h \
-    savetemporary.h \
-    selection_plan.h \
-    toolbar.h
+    cube.h\
+    dialog.h\
+    nouveaumotif.h\
+    gestionfichier.h
+
+
+
+
+FORMS    += mainwindow.ui
 
 
 
 
 
-FORMS    += mainwindow.ui \
-    creationfichier.ui \
-    savetemporary.ui \
-    selection_plan.ui \
-    toolbar.ui
 
-RESOURCES += \
+
+
+RESOURCES +=\
     ressource.qrc

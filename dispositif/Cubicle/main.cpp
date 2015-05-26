@@ -1,23 +1,24 @@
 #include "mainwindow.h"
-#include "selection_plan.h"
-#include "creationfichier.h"
-#include "toolbar.h"
 #include <QApplication>
 #include"led.h"
 #include "plan.h"
 #include "iostream"
 #include "cube.h"
+#include "personbutton.h"
+#include <QPalette>
+
+
 int main(int argc, char *argv[])
 {
     QApplication a(argc, argv);
-    //MainWindow w;
-    //w.show();
+    QPalette pal=a.palette();
+    pal.setColor(QPalette::Window, Qt ::white);
+    a.setPalette(pal);
 
-    //Selection_Plan s;
-    //s.show();
-    //CreationFichier c;
-    //c.show();
-    ToolBar t;
-    t.show();
+
+    MainWindow w;
+    w.show();
+
+
     return a.exec();
 }

@@ -6,33 +6,15 @@ Led::Led()
 
 }
 
-void Led::allumer()
-{
-    this->etat=1;
-    this->updateFichier();
-}
-
-
-void Led::eteindre()
-{
-    this->etat= 0;
-    this->updateFichier();
-}
-
 void Led::modifierEtat()
 {
     if(this->etat==0)
     {
-        this->allumer();
+         this->etat=1;
     }
     else{
-        this->eteindre();
+         this->etat=0;
     }
-
-}
-
-void Led::updateFichier()
-{
 
 }
 

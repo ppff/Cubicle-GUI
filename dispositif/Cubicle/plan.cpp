@@ -1,4 +1,6 @@
 #include "plan.h"
+#include <iostream>
+#include <cstdlib>
 
 
 Plan::Plan(){
@@ -30,8 +32,9 @@ Led** Plan::getMatrice(){
     return this->led_list;
 }
 
-void Plan::updatePlan(const Led l, const int i, const int j){
-    this->setLed(l,i,j);
+void Plan::updatePlan(const Led l, const int i, const int j,const int nplan ){
+
+      this->setLed(l,i,j);
 }
 
 

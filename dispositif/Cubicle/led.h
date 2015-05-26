@@ -6,10 +6,7 @@ class Led
 {
 public:
     Led();
-    void allumer();
-    void eteindre();
     void modifierEtat();
-    void updateFichier();
     int getEtat();
 
 private:
