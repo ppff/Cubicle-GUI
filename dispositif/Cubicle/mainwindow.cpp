@@ -17,6 +17,7 @@
 #include <QPushButton>
 #include <QPainter>
 #include <QPainterPath>
+
 using namespace std;
 
 //MainWindow *MainWindow::_instance = NULL;
@@ -70,7 +71,9 @@ void MainWindow::ouvrir_explorer(){
       return;}
 
   QDir dir(namedir);
-  QFileInfoList list=dir.entryInfoList(QDir::Files);
+  QStringList nameFilter;
+  nameFilter<<"*.txt";
+  QFileInfoList list=dir.entryInfoList(nameFilter,QDir::Files);
   QFileInfoList list2=dir.entryInfoList(QDir::Dirs);
   //on ne doit pas charger le dossier d'un groupe de motif mais plutot le repertoire des groupes de motif
   if ((!list.isEmpty()) and (!list2.isEmpty())) {
@@ -210,7 +213,8 @@ void MainWindow::ajouter_motif(){
             qDebug()<<"l'emplacement du dossier est "+dir;
             qDebug()<<"le nom du dossier est "+nameGroup;
             QString nameMotif=QInputDialog::getText(this,"Name","Enter the pattern name");
-            NouveauMotif m=NouveauMotif(nameGroup,nameMotif,dir+"/"+nameGroup);
+
+            NouveauMotif m=NouveauMotif(nameMotif,dir+"/"+nameGroup);
             tree();
             }
              else {
@@ -229,6 +233,18 @@ void MainWindow::insertGroup(){
     if (!index.isValid()) return;
     QString name =QInputDialog::getText(this,"Name","Enter a name");
     if(name.isEmpty())return;
+
+    QFile fichierGroupes(namedir+"/ORDRE");
+    if(!fichierGroupes.open(QIODevice::ReadWrite | QIODevice::Text | QIODevice::Append)){
+          qDebug()<<"le fichier ORDRE ne s'ouvre pas";
+      }
+      else{
+          QTextStream flux(&fichierGroupes);
+           flux.readAll();
+           flux<<name;
+           fichierGroupes.close();
+          }
+
     model->mkdir(index,name);
 
 

@@ -6,7 +6,7 @@ class NouveauMotif
 {
 
 public:
-    NouveauMotif(QString nomGroup, QString nomMotif, QString Dir);
+    NouveauMotif(QString nomMotif, QString Dir);
 
 };
 

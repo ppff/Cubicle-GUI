@@ -5,7 +5,7 @@
 
 
 //cette classe crée un nouveau fichier avec le nomdu groupe, du nouveau motif et des 0 dans tous les leds
-NouveauMotif::NouveauMotif(QString nomGroup, QString nomMotif, QString Dir)
+NouveauMotif::NouveauMotif(QString nomMotif, QString Dir)
 {
  QFile motif(Dir+"/"+nomMotif+".txt");
     if (!motif.open(QIODevice::WriteOnly | QIODevice::Text)){
