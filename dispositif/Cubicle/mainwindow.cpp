@@ -178,7 +178,7 @@ void MainWindow::coller(){
 
 void MainWindow::tree(){
             model = new QDirModel(this);
-            model->setReadOnly(true);
+            model->setReadOnly(false);
             model->setSorting(QDir::DirsFirst | QDir::IgnoreCase | QDir::Name);
 
     ui->treeView->setModel(model);
@@ -207,6 +207,7 @@ void MainWindow::ajouter_motif(){
     if (index.isValid()){
 
         if (model->fileInfo(index).isDir()) {
+             model->setReadOnly(true);
             QString dir=model->fileInfo(index).absolutePath();
 
             QString nameGroup=model->fileInfo(index).baseName();
@@ -225,6 +226,7 @@ void MainWindow::ajouter_motif(){
 
         }
     }
+     model->setReadOnly(false);
 
 }
 
