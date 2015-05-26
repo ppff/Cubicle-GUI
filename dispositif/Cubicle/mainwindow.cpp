@@ -19,10 +19,13 @@
 #include <QPainterPath>
 using namespace std;
 
+//MainWindow *MainWindow::_instance = NULL;
+
 MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent),
     ui(new Ui::MainWindow)
 {
+
     ui->setupUi(this);
 
     this->setWindowState(Qt::WindowFullScreen);
@@ -617,4 +620,18 @@ MainWindow::~MainWindow()
 {
     delete ui;
 }
+
+/*MainWindow* MainWindow::getInstance()
+{
+    if(_instance == 0)
+        _instance = new MainWindow();
+
+    return _instance;
+}
+
+void MainWindow::kill()
+{
+    if(_instance != 0)
+        delete _instance;
+}*/
 

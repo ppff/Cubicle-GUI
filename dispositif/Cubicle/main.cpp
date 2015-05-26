@@ -17,8 +17,11 @@ int main(int argc, char *argv[])
 
 
     MainWindow w;
-    w.show();
 
+
+   //MainWindow *mainwindow = MainWindow::getInstance();
+   //mainwindow->show();
+    w.show();
 
     return a.exec();
 }
