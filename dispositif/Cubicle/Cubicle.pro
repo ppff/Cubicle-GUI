@@ -14,11 +14,12 @@ TEMPLATE = app
 
 SOURCES += main.cpp\
     mainwindow.cpp\
-    nouveaumotif.cpp\
     led.cpp\
     cube.cpp\
-    plan.cpp
-
+    plan.cpp\
+    personbutton.cpp\
+    nouveaumotif.cpp\
+    gestionfichier.cpp
 
 
 
@@ -27,13 +28,21 @@ HEADERS  += mainwindow.h\
     plan.h\
     led.h\
     cube.h\
+    dialog.h\
     nouveaumotif.h\
-
+    gestionfichier.h
 
 
 
 
 FORMS    += mainwindow.ui
+
+
+
+
+
+
+
 
 RESOURCES +=\
     ressource.qrc
