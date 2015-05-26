@@ -4,7 +4,6 @@
 #include "plan.h"
 #include "iostream"
 #include "cube.h"
-#include "personbutton.h"
 #include <QPalette>
 
 

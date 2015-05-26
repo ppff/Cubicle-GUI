@@ -19,6 +19,7 @@
         <file>../reperenv.jpeg</file>
         <file>../y.png</file>
         <file>../x.png</file>
+        <file>../CubeParfait.jpeg</file>
     </qresource>
     <qresource prefix="/texte">
         <file>../file.txt</file>

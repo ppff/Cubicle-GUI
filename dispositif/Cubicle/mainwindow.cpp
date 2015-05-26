@@ -276,22 +276,22 @@ void MainWindow::doubleClick(){
 }
 
 void MainWindow:: afficheCube3D( QLabel* label,QLabel* l){
-    label->setPixmap(QPixmap(":/icone/nvcube.jpeg"));
-    label->move(860,350);
+    label->setPixmap(QPixmap(":/icone/CubeParfait.jpeg"));
+    label->move(930,385);
     label->adjustSize();
     label->show();
     l->setPixmap(QPixmap(":/icone/reperenv.jpeg"));
-    l->move(820,500);
+    l->move(820,530);
     l->adjustSize();
     l->show();
-    this->fleche_bas->setVisible(true);
-    fleche_bas->setIcon(QIcon(":/icone/bas.png"));
-    fleche_bas->setGeometry(1025,415,40,40);
+    this->fleche_gauche->setVisible(true);
+    fleche_gauche->setIcon(QIcon(":/icone/GAUCHE.png"));
+    fleche_gauche->setGeometry(1235,570,40,40);
 }
 
 void MainWindow::deleteCube3D(int i){
     if(i==0){
-        this->fleche_bas=new QPushButton("",this);
+        this->fleche_gauche=new QPushButton("",this);
     }
     else{
         ui->label->setPixmap(QPixmap());
@@ -303,7 +303,7 @@ void MainWindow::deleteCube3D(int i){
         ui->label_4->setPixmap(QPixmap());
         ui->label_4->repaint();
     }
-    this->fleche_bas->hide();
+    this->fleche_gauche->hide();
 }
 
 void MainWindow::afficheListePlan1(){
@@ -435,7 +435,7 @@ void MainWindow:: afficheLed(const int i, const int j,const  int etat )
 }
 
 void MainWindow::connexion(){
-    QObject::connect(fleche_bas, SIGNAL(clicked()), this, SLOT(afficheListePlan1()));
+    QObject::connect(fleche_gauche, SIGNAL(clicked()), this, SLOT(afficheListePlan1()));
 
     QSignalMapper *signalMapper = new QSignalMapper(this);
     QString ori=QString::number(0);
