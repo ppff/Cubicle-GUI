@@ -36,6 +36,7 @@ void simulation_cube::resizeGL (int width, int height)
 
 void simulation_cube::paintGL()
 {
+    qDebug()<<"je rentre n fois";
     //delete color and depth buffer
     glClear(GL_COLOR_BUFFER_BIT|GL_DEPTH_BUFFER_BIT);
     glEnable(GL_BLEND);
@@ -48,7 +49,9 @@ void simulation_cube::paintGL()
                   camUpX, camUpY, camUpZ);
 
         dessiner_axes();
-
+        int a=this->getListPoints().size();
+        QString sizede=QString::number(a);
+        qDebug()<<"size de points dans paint "+sizede;
         //On affiche les LEDS
         for (int x=0 ; x<9 ; x++)
         {
@@ -58,6 +61,8 @@ void simulation_cube::paintGL()
                 {
                     glPushMatrix();
                     glTranslatef(x-4, y-4, z-4);
+
+
                     if (points.indexOf(QVector3D(x,y,z)) == -1) //Si le point n'est pas dans la liste de points à allumer
                     {
                         dessiner_sphere(QColor(255,255,255,TRANSPARENCE_SPHERE_ETEINTE), RAYON_SPHERES, DETAIL_SPHERES);
@@ -119,13 +124,13 @@ void simulation_cube::calculer_coord_cam()
 }
 
 void simulation_cube::recevoir_nouveaux_points(QList<QVector3D> const& p)
-{
+{/*
     points.clear();
 
     for (QVector3D v : p)
     {
         points.append(coordonnees_cubicle_vers_opengl(v));
-    }
+    }*/
 }
 
 QVector3D simulation_cube::coordonnees_cubicle_vers_opengl(QVector3D const& v) const
@@ -183,6 +188,11 @@ QList<QVector3D> simulation_cube::getListPoints(){
     return this->points;
 }
 
-void simulation_cube::setListPoints(){
+void simulation_cube::setListPoints(QList<QVector3D> const& l){
+    this->points.clear();
 
+    for(QVector3D v: l){
+        this->points.append(QVector3D(v.x(),v.y(),v.z()));
+
+    }
 }

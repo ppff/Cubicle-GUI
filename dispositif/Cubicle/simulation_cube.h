@@ -46,7 +46,7 @@ class simulation_cube : public QGLWidget
 
         void calculer_coord_cam();
         QList<QVector3D> getListPoints();
-        void setListPoints();
+        void setListPoints(QList<QVector3D> const& l);
 
 
 
