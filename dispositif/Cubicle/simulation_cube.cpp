@@ -63,11 +63,11 @@ void simulation_cube::paintGL()
 
                     if (points.indexOf(QVector3D(x,y,z)) == -1) //Si le point n'est pas dans la liste de points à allumer
                     {
-                        dessiner_sphere(QColor(255,255,255,TRANSPARENCE_SPHERE_ETEINTE), RAYON_SPHERES, DETAIL_SPHERES);
+                        dessiner_sphere(QColor(255,255,255,TRANSPARENCE_SPHERE_ETEINTE), RAYON_SPHERES, DETAIL_SPHERES,0);
                     }
                     else
                     {
-                        dessiner_sphere(QColor(255,255,255,TRANSPARENCE_SPHERE_ALLUMEE), RAYON_SPHERES, DETAIL_SPHERES);
+                        dessiner_sphere(QColor(255,255,255,TRANSPARENCE_SPHERE_ALLUMEE), RAYON_SPHERES, DETAIL_SPHERES,1);
                     }
                     glPopMatrix();
                 }
@@ -171,14 +171,19 @@ void simulation_cube::dessiner_axes() const
     glEnd();
 }
 
-void simulation_cube::dessiner_sphere(QColor const& c, float const& rayon, float const& details) const
+void simulation_cube::dessiner_sphere(QColor const& c, float const& rayon, float const& details, int etat) const
 {
     GLUquadric* sph =  gluNewQuadric();
-    //sphères blanches
-    glColor4f(c.red()/255.0,c.green()/255.0,c.blue()/255.0,c.alpha()/255.0);
+    if(etat==1){
+        //led allumée =>sphère rouge
+        glColor3f(1.0f,0.0f,0.0f);
+    }
+    else {
+        //sphère blanche
+        glColor4f(c.red()/255.0,c.green()/255.0,c.blue()/255.0,c.alpha()/255.0);
+    }
+
     gluQuadricDrawStyle(sph, GLU_FILL); //Merci GLU
-    //sphères rouges
-  //  glColor3f(1.0f,0.0f,0.0f);
     gluSphere(sph, rayon, details, details);
 }
 

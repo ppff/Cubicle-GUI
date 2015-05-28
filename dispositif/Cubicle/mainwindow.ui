@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>814</width>
-    <height>552</height>
+    <height>642</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -79,8 +79,8 @@
    <widget class="simulation_cube" name="widget" native="true">
     <property name="geometry">
      <rect>
-      <x>509</x>
-      <y>199</y>
+      <x>370</x>
+      <y>360</y>
       <width>301</width>
       <height>211</height>
      </rect>
@@ -154,7 +154,7 @@
   </widget>
   <action name="actionNew_Group">
    <property name="icon">
-    <iconset resource="ressource.qrc">
+    <iconset>
      <normaloff>:/Images/new_group.png</normaloff>:/Images/new_group.png</iconset>
    </property>
    <property name="text">
@@ -163,7 +163,7 @@
   </action>
   <action name="actionNew_Pattern">
    <property name="icon">
-    <iconset resource="ressource.qrc">
+    <iconset>
      <normaloff>:/Images/new_pattern.gif</normaloff>:/Images/new_pattern.gif</iconset>
    </property>
    <property name="text">
@@ -172,7 +172,7 @@
   </action>
   <action name="actionSave">
    <property name="icon">
-    <iconset resource="ressource.qrc">
+    <iconset>
      <normaloff>:/Images/save.png</normaloff>:/Images/save.png</iconset>
    </property>
    <property name="text">
@@ -181,7 +181,7 @@
   </action>
   <action name="actionQuit">
    <property name="icon">
-    <iconset resource="ressource.qrc">
+    <iconset>
      <normaloff>:/Images/quit.png</normaloff>:/Images/quit.png</iconset>
    </property>
    <property name="text">
@@ -190,7 +190,7 @@
   </action>
   <action name="actionCopy">
    <property name="icon">
-    <iconset resource="ressource.qrc">
+    <iconset>
      <normaloff>:/Images/copy.png</normaloff>:/Images/copy.png</iconset>
    </property>
    <property name="text">
@@ -199,7 +199,7 @@
   </action>
   <action name="actionOpen_directory">
    <property name="icon">
-    <iconset theme="opendirectory" resource="ressource.qrc">
+    <iconset theme="opendirectory">
      <normaloff>:/Images/open_directory.png</normaloff>:/Images/open_directory.png</iconset>
    </property>
    <property name="text">
@@ -208,7 +208,7 @@
   </action>
   <action name="actionPaste_pattern">
    <property name="icon">
-    <iconset resource="ressource.qrc">
+    <iconset>
      <normaloff>:/Images/paste.png</normaloff>:/Images/paste.png</iconset>
    </property>
    <property name="text">
@@ -217,7 +217,7 @@
   </action>
   <action name="actionDelete_pattern">
    <property name="icon">
-    <iconset resource="ressource.qrc">
+    <iconset>
      <normaloff>:/Images/delete_pattern.png</normaloff>:/Images/delete_pattern.png</iconset>
    </property>
    <property name="text">
@@ -226,7 +226,7 @@
   </action>
   <action name="actionSelect_a_group_of_atoms">
    <property name="icon">
-    <iconset resource="ressource.qrc">
+    <iconset>
      <normaloff>:/icone/Selection_Plan.jpeg</normaloff>:/icone/Selection_Plan.jpeg</iconset>
    </property>
    <property name="text">
@@ -235,7 +235,7 @@
   </action>
   <action name="actionSelect">
    <property name="icon">
-    <iconset resource="ressource.qrc">
+    <iconset>
      <normaloff>:/icone/Selection_Plan.jpeg</normaloff>:/icone/Selection_Plan.jpeg</iconset>
    </property>
    <property name="text">
@@ -244,7 +244,7 @@
   </action>
   <action name="actionDuplicate">
    <property name="icon">
-    <iconset resource="ressource.qrc">
+    <iconset>
      <normaloff>:/icone/Dupliquer.gif</normaloff>:/icone/Dupliquer.gif</iconset>
    </property>
    <property name="text">
@@ -253,7 +253,7 @@
   </action>
   <action name="actionCut_pattern">
    <property name="icon">
-    <iconset resource="ressource.qrc">
+    <iconset>
      <normaloff>:/icone/couper.png</normaloff>:/icone/couper.png</iconset>
    </property>
    <property name="text">
@@ -273,8 +273,6 @@
  <tabstops>
   <tabstop>treeView</tabstop>
  </tabstops>
- <resources>
-  <include location="ressource.qrc"/>
- </resources>
+ <resources/>
  <connections/>
 </ui>
