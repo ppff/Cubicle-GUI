@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>814</width>
-    <height>552</height>
+    <height>655</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -76,6 +76,16 @@
      <string/>
     </property>
    </widget>
+   <widget class="simulation_cube" name="widget" native="true">
+    <property name="geometry">
+     <rect>
+      <x>380</x>
+      <y>410</y>
+      <width>241</width>
+      <height>161</height>
+     </rect>
+    </property>
+   </widget>
   </widget>
   <widget class="QMenuBar" name="menuBar">
    <property name="geometry">
@@ -83,7 +93,7 @@
      <x>0</x>
      <y>0</y>
      <width>814</width>
-     <height>22</height>
+     <height>25</height>
     </rect>
    </property>
    <property name="nativeMenuBar">
@@ -158,7 +168,7 @@
   </widget>
   <action name="actionNew_Group">
    <property name="icon">
-    <iconset resource="ressource.qrc">
+    <iconset>
      <normaloff>:/Images/new_group.png</normaloff>:/Images/new_group.png</iconset>
    </property>
    <property name="text">
@@ -167,7 +177,7 @@
   </action>
   <action name="actionNew_Pattern">
    <property name="icon">
-    <iconset resource="ressource.qrc">
+    <iconset>
      <normaloff>:/Images/new_pattern.gif</normaloff>:/Images/new_pattern.gif</iconset>
    </property>
    <property name="text">
@@ -176,7 +186,7 @@
   </action>
   <action name="actionSave">
    <property name="icon">
-    <iconset resource="ressource.qrc">
+    <iconset>
      <normaloff>:/Images/save.png</normaloff>:/Images/save.png</iconset>
    </property>
    <property name="text">
@@ -185,7 +195,7 @@
   </action>
   <action name="actionQuit">
    <property name="icon">
-    <iconset resource="ressource.qrc">
+    <iconset>
      <normaloff>:/Images/quit.png</normaloff>:/Images/quit.png</iconset>
    </property>
    <property name="text">
@@ -194,7 +204,7 @@
   </action>
   <action name="actionCopy">
    <property name="icon">
-    <iconset resource="ressource.qrc">
+    <iconset>
      <normaloff>:/Images/copy.png</normaloff>:/Images/copy.png</iconset>
    </property>
    <property name="text">
@@ -203,7 +213,7 @@
   </action>
   <action name="actionOpen_directory">
    <property name="icon">
-    <iconset theme="opendirectory" resource="ressource.qrc">
+    <iconset theme="opendirectory">
      <normaloff>:/Images/open_directory.png</normaloff>:/Images/open_directory.png</iconset>
    </property>
    <property name="text">
@@ -212,7 +222,7 @@
   </action>
   <action name="actionPaste_pattern">
    <property name="icon">
-    <iconset resource="ressource.qrc">
+    <iconset>
      <normaloff>:/Images/paste.png</normaloff>:/Images/paste.png</iconset>
    </property>
    <property name="text">
@@ -221,7 +231,7 @@
   </action>
   <action name="actionDelete_pattern">
    <property name="icon">
-    <iconset resource="ressource.qrc">
+    <iconset>
      <normaloff>:/Images/delete_pattern.png</normaloff>:/Images/delete_pattern.png</iconset>
    </property>
    <property name="text">
@@ -230,7 +240,7 @@
   </action>
   <action name="actionSelect_a_group_of_atoms">
    <property name="icon">
-    <iconset resource="ressource.qrc">
+    <iconset>
      <normaloff>:/icone/Selection_Plan.jpeg</normaloff>:/icone/Selection_Plan.jpeg</iconset>
    </property>
    <property name="text">
@@ -239,7 +249,7 @@
   </action>
   <action name="actionSelect">
    <property name="icon">
-    <iconset resource="ressource.qrc">
+    <iconset>
      <normaloff>:/icone/Select.png</normaloff>:/icone/Select.png</iconset>
    </property>
    <property name="text">
@@ -248,7 +258,7 @@
   </action>
   <action name="actionDuplicate">
    <property name="icon">
-    <iconset resource="ressource.qrc">
+    <iconset>
      <normaloff>:/icone/Dupliquer.jpg</normaloff>:/icone/Dupliquer.jpg</iconset>
    </property>
    <property name="text">
@@ -257,7 +267,7 @@
   </action>
   <action name="actionCut_pattern">
    <property name="icon">
-    <iconset resource="ressource.qrc">
+    <iconset>
      <normaloff>:/icone/couper.png</normaloff>:/icone/couper.png</iconset>
    </property>
    <property name="text">
@@ -266,11 +276,17 @@
   </action>
  </widget>
  <layoutdefault spacing="6" margin="11"/>
+ <customwidgets>
+  <customwidget>
+   <class>simulation_cube</class>
+   <extends>QWidget</extends>
+   <header>simulation_cube.h</header>
+   <container>1</container>
+  </customwidget>
+ </customwidgets>
  <tabstops>
   <tabstop>treeView</tabstop>
  </tabstops>
- <resources>
-  <include location="ressource.qrc"/>
- </resources>
+ <resources/>
  <connections/>
 </ui>
