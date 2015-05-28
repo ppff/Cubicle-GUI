@@ -4,7 +4,7 @@
 #
 #-------------------------------------------------
 
-QT       += core gui
+QT       += core gui opengl
 
 greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
 
@@ -18,7 +18,8 @@ SOURCES += main.cpp\
     cube.cpp\
     plan.cpp\
     nouveaumotif.cpp\
-    gestionfichier.cpp
+    gestionfichier.cpp\
+    simulation_cube.cpp
 
 
 
@@ -29,19 +30,37 @@ HEADERS  += mainwindow.h\
     cube.h\
     dialog.h\
     nouveaumotif.h\
-    gestionfichier.h
+    gestionfichier.h\
+    simulation_cube.h\
+    adapt.h
 
 
 
 
 FORMS    += mainwindow.ui
+unix:!macx {
+    LIBS +=-lGL -lGLU -lglut
+    DEFINES += CUBICLE_ON_LINUX
 
+}
 
+macx: {
+   LIBS +=-framework OpenGL
+   DEFINES += CUBICLE_ON_MAC
 
+}
 
+win32 {
 
+    LIBS +=-lglut
+    DEFINES += CUBICLE_ON_WINDOWS
+
+}
+
+CONFIG += c++11
 
 
 
 RESOURCES +=\
     ressource.qrc
+
