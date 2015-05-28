@@ -30,7 +30,7 @@ MainWindow::MainWindow(QWidget *parent) :
 
     ui->setupUi(this);
 
-    this->setWindowState(Qt::WindowFullScreen);
+   // this->setWindowState(Qt::WindowFullScreen);
     ui->actionCopy->setDisabled(true);
     ui->actionDelete_pattern->setDisabled(true);
     ui->actionNew_Group->setDisabled(true);
@@ -38,6 +38,7 @@ MainWindow::MainWindow(QWidget *parent) :
     ui->actionPaste_pattern->setDisabled(true);
     ui->actionSave->setDisabled(true);
     ui->actionCut_pattern->setDisabled(true);
+    ui->fleche_gauche->setVisible(false);
     connect(ui->actionOpen_directory,SIGNAL(triggered(bool)),this,SLOT(ouvrir_explorer()));
     connect(ui->actionCopy,SIGNAL(triggered(bool)),this,SLOT(copier()));
     connect(ui->actionPaste_pattern,SIGNAL(triggered(bool)),this,SLOT(coller()));
@@ -48,7 +49,7 @@ MainWindow::MainWindow(QWidget *parent) :
     connect(ui->actionSave,SIGNAL(triggered(bool)),this,SLOT(controlSave()));
     connect(ui->treeView,SIGNAL(doubleClicked(const QModelIndex &)),this,SLOT(doubleClick()));
     connect(ui->actionCut_pattern,SIGNAL(triggered(bool)),this,SLOT(couper()));
-    l_cube=ui->label;
+   // l_cube=ui->label;
     l_repere=ui->label_2;
     label_y=ui->label_3;
     label_x=ui->label_4;
@@ -179,6 +180,7 @@ void MainWindow::tree(){
             model->setSorting(QDir::DirsFirst | QDir::IgnoreCase | QDir::Name);
 
     ui->treeView->setModel(model);
+    qDebug() << "le namedir esstttt" + namedir;
     QModelIndex index=model->index(namedir);
      ui->treeView->setRootIndex(index);
     ui->treeView->expand(index);
@@ -302,7 +304,7 @@ void MainWindow::doubleClick(){
              deletePlanLed(1);
              desactivePlan(1);
              deleteCube3D(1);
-             afficheCube3D(l_cube,l_repere);
+             afficheCube3D(l_repere);
          }
     }
     else {
@@ -310,27 +312,30 @@ void MainWindow::doubleClick(){
     }
 }
 
-void MainWindow:: afficheCube3D( QLabel* label,QLabel* l){
-    label->setPixmap(QPixmap(":/icone/CubeParfait.jpeg"));
+void MainWindow:: afficheCube3D(QLabel* l){
+    /*label->setPixmap(QPixmap(":/icone/CubeParfait.jpeg"));
     label->move(930,385);
     label->adjustSize();
     label->show();
     l->setPixmap(QPixmap(":/icone/reperenv.jpeg"));
     l->move(820,530);
     l->adjustSize();
-    l->show();
-    this->fleche_gauche->setVisible(true);
-    fleche_gauche->setIcon(QIcon(":/icone/GAUCHE.png"));
-    fleche_gauche->setGeometry(1235,570,40,40);
+    l->show();*/
+
+    ui->fleche_gauche->setVisible(true);
+    ui->fleche_gauche->setIcon(QIcon(":/icone/GAUCHE.png"));
+    //ui->fleche_gauche->setGeometry(1235,570,40,40);
 }
 
 void MainWindow::deleteCube3D(int i){
     if(i==0){
-        this->fleche_gauche=new QPushButton("",this);
+       // this->fleche_gauche=new QPushButton("",this);
+       // ui->gridLayout->addWidget(fleche_gauche,0,4);
+        ui->fleche_gauche->setVisible(true);
     }
     else{
-        ui->label->setPixmap(QPixmap());
-        ui->label->repaint();
+        //ui->label->setPixmap(QPixmap());
+        //ui->label->repaint();
         ui->label_2->setPixmap(QPixmap());
         ui->label_2->repaint();
         ui->label_3->setPixmap(QPixmap());
@@ -338,7 +343,7 @@ void MainWindow::deleteCube3D(int i){
         ui->label_4->setPixmap(QPixmap());
         ui->label_4->repaint();
     }
-    this->fleche_gauche->hide();
+    ui->fleche_gauche->hide();
 }
 
 void MainWindow::afficheListePlan1(){
@@ -393,7 +398,7 @@ void MainWindow::affichePlanLed(const QString & valeur){
     this->setNumeroPlan(nplan);
     plans[nplan]->setStyleSheet("QPushButton { background-color: red; }");
 
-    switch(nplan){
+   /* switch(nplan){
 
     case 0:l_cube->setPixmap(QPixmap(":/icone/plan8.png")); break;
     case 1:l_cube->setPixmap(QPixmap(":/icone/plan7.png"));break;
@@ -407,7 +412,7 @@ void MainWindow::affichePlanLed(const QString & valeur){
     }
     l_cube->move(930,385);
     l_cube->adjustSize();
-    l_cube->show();
+    l_cube->show();*/
 
    for (int i = 0; i < 9; i++) {
         for (int j=0;j<9; j++){
@@ -486,7 +491,7 @@ void MainWindow:: afficheLed(const int i, const int j,const  int etat )
 }
 
 void MainWindow::connexion(){
-    QObject::connect(fleche_gauche, SIGNAL(clicked()), this, SLOT(afficheListePlan1()));
+    QObject::connect(ui->fleche_gauche, SIGNAL(clicked()), this, SLOT(afficheListePlan1()));
 
     QSignalMapper *signalMapper = new QSignalMapper(this);
     QString ori=QString::number(0);

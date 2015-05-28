@@ -51,7 +51,7 @@ public:
     void ouvrir();
     void setEmpMotif(QString nom);
     QString getEmplMotif();
-    void afficheCube3D(QLabel* l,QLabel*l2);
+    void afficheCube3D(QLabel*l2);
     void deleteCube3D(int i);
     void deletePlanLed(int i);
     void setOrientationPlan(int i);
@@ -82,7 +82,7 @@ public:
     QString nom_copie;
     bool dirOrFile;//false if file
     QString emplMotif;
-    QLabel* l_cube;
+    //QLabel* l_cube;
     QLabel * l_repere;
     QLabel*label_x;
     QLabel* label_y;
@@ -91,7 +91,7 @@ public:
     int NumeroPlan;
     QPushButton* plans[30];
     QPushButton*  fleche_bas;
-    QPushButton*  fleche_gauche;
+   // QPushButton*  fleche_gauche;
     QPushButton*  fleche_face;
     Cube c;
     bool dirOpen;
