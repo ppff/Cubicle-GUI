@@ -16,7 +16,7 @@ simulation_cube::simulation_cube(QWidget *parent) : QGLWidget(parent),
 void simulation_cube::initializeGL()
 {
     //changer la couleur du fond du cube 3D. l'enlever si on veut un fond noir
-    glClearColor(0.7,0.7,0.9,1);
+    glClearColor(0.8f,0.8f,0.8f,0.5);
     //activate the depth buffer
     glEnable(GL_DEPTH_TEST);
     glEnable(GL_BLEND);

@@ -23,7 +23,7 @@
  * Simulation des 9*9*9 LEDs du cube.
  */
 //10 eteinte et 200 allumée
-#define TRANSPARENCE_SPHERE_ETEINTE 70
+#define TRANSPARENCE_SPHERE_ETEINTE 150
 #define TRANSPARENCE_SPHERE_ALLUMEE 250
 
 #define DETAIL_SPHERES 4
