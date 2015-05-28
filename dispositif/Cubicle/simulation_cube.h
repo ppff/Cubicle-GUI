@@ -23,7 +23,7 @@
  * Simulation des 9*9*9 LEDs du cube.
  */
 //10 eteinte et 200 allumée
-#define TRANSPARENCE_SPHERE_ETEINTE 50
+#define TRANSPARENCE_SPHERE_ETEINTE 150
 #define TRANSPARENCE_SPHERE_ALLUMEE 200
 
 #define DETAIL_SPHERES 4
@@ -45,13 +45,15 @@ class simulation_cube : public QGLWidget
         void mouseMoveEvent(QMouseEvent *event);
 
         void calculer_coord_cam();
+        QList<QVector3D> getListPoints();
+        void setListPoints(QList<QVector3D> const& l);
 
 
     private :
 
         QVector3D coordonnees_cubicle_vers_opengl(QVector3D const& v) const;
         void dessiner_axes() const;
-        void dessiner_sphere(const QColor &c, float const& rayon, float const& details) const;
+        void dessiner_sphere(const QColor &c, float const& rayon, float const& details, int i) const;
 
         float camX, camY, camZ, camR, camT, camP; //rho, theta, phi pour les coordonnées sphériques.
         float camUpX, camUpY, camUpZ;
