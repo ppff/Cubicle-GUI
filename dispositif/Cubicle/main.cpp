@@ -5,7 +5,8 @@
 #include "iostream"
 #include "cube.h"
 #include <QPalette>
-#include <testAxeEtSphere.h>
+#include "testAxeEtSphere.h"
+#include "simulation_cube.h"
 
 int main(int argc, char *argv[])
 {
@@ -15,14 +16,18 @@ int main(int argc, char *argv[])
     a.setPalette(pal);
 
 
-    //MainWindow w;
+    MainWindow w;
 
 
    //MainWindow *mainwindow = MainWindow::getInstance();
-   //mainwindow->show();
-    //w.show();
+  // mainwindow->show();
+    w.show();
 
-    testAxeEtSphere t;
-    t.show();
+    //testAxeEtSphere t;
+    //t.show();
+
+    //simulation_cube s;
+  //  s.show();
+
     return a.exec();
 }

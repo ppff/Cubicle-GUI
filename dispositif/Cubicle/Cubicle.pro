@@ -19,8 +19,7 @@ SOURCES += main.cpp\
     plan.cpp\
     nouveaumotif.cpp\
     gestionfichier.cpp\
-    simulation_cube.cpp\
-    testAxeEtSphere.cpp
+    simulation_cube.cpp
 
 
 
@@ -32,8 +31,7 @@ HEADERS  += mainwindow.h\
     nouveaumotif.h\
     gestionfichier.h\
     simulation_cube.h\
-    adapt.h\
-    testAxeEtSphere.h
+    adapt.h
 
 
 

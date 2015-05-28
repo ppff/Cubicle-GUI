@@ -6,9 +6,6 @@
 #include <QGLWidget>
 #include "adapt.h"
 #include<QTimer>
-#include <QObject>
-#include <QtOpenGL>
-#include <QGLWidget>
 #include <QApplication>
 #include <QObject>
 #include <QMainWindow>
@@ -17,7 +14,10 @@
 #include <QList>
 #include <QFile>
 #include <QTextStream>
-#include "QList"
+#include <GL/glut.h>
+#include <QtGui>
+#include <qgl.h>
+#include <QKeyEvent>
 
 /* Description :
  * Simulation des 9*9*9 LEDs du cube.
@@ -47,12 +47,12 @@ class simulation_cube : public QGLWidget
         void calculer_coord_cam();
 
 
-    private :
+    protected :
 
         QVector3D coordonnees_cubicle_vers_opengl(QVector3D const& v) const;
-        void dessiner_axes() const;
+        void dessiner_axes();
         void dessiner_sphere(const QColor &c, float const& rayon, float const& details) const;
-
+        float fAxisRadius, fAxisHeight, fArrowRadius, fArrowHeight;
         float camX, camY, camZ, camR, camT, camP; //rho, theta, phi pour les coordonnées sphériques.
         float camUpX, camUpY, camUpZ;
         QTimer* fps;
