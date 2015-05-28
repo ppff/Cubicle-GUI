@@ -30,6 +30,8 @@
         <file>plan1.png</file>
         <file>plan0.png</file>
         <file>../z.png</file>
+        <file>Dupliquer.jpg</file>
+        <file>Select.png</file>
     </qresource>
     <qresource prefix="/texte">
         <file>../file.txt</file>
