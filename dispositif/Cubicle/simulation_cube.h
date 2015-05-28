@@ -18,6 +18,7 @@
 #include <QFile>
 #include <QTextStream>
 #include "QList"
+#include <iostream>
 
 /* Description :
  * Simulation des 9*9*9 LEDs du cube.
@@ -45,6 +46,10 @@ class simulation_cube : public QGLWidget
         void mouseMoveEvent(QMouseEvent *event);
 
         void calculer_coord_cam();
+        QList<QVector3D> getListPoints();
+        void setListPoints(QList<QVector3D> const& l);
+        QList<QVector3D> getListPlan();
+        void setListPlan(QList<QVector3D> const& l);
 
 
     private :
@@ -53,11 +58,14 @@ class simulation_cube : public QGLWidget
         void dessiner_axes() const;
         void dessiner_sphere(const QColor &c, float const& rayon, float const& details) const;
 
+
+
         float camX, camY, camZ, camR, camT, camP; //rho, theta, phi pour les coordonnées sphériques.
         float camUpX, camUpY, camUpZ;
         QTimer* fps;
         QPoint last_pos;
         QList<QVector3D> points;
+        QList<QVector3D> plan;
         GLUquadric* sph;
 
     public slots :

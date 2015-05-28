@@ -50,7 +50,7 @@ void simulation_cube::paintGL()
         dessiner_axes();
 
         //On affiche les LEDS
-        for (int x=0 ; x<9 ; x++)
+       /* for (int x=0 ; x<9 ; x++)
         {
             for (int y=0 ; y<9 ; y++)
             {
@@ -61,6 +61,32 @@ void simulation_cube::paintGL()
                     if (points.indexOf(QVector3D(x,y,z)) == -1) //Si le point n'est pas dans la liste de points à allumer
                     {
                         dessiner_sphere(QColor(255,255,255,TRANSPARENCE_SPHERE_ETEINTE), RAYON_SPHERES, DETAIL_SPHERES);
+                    }
+                    else
+                    {
+                        dessiner_sphere(QColor(255,255,255,TRANSPARENCE_SPHERE_ALLUMEE), RAYON_SPHERES, DETAIL_SPHERES);
+                    }
+                    glPopMatrix();
+                }
+            }
+        }*/
+
+        //On affiche les plans selectionnes
+        for (int x=0 ; x<9 ; x++)
+        {
+            for (int y=0 ; y<9 ; y++)
+            {
+                for (int z=0 ; z<9 ; z++)
+                {
+                    glPushMatrix();
+                    glTranslatef(x-4, y-4, z-4);
+                    if ((plan.indexOf(QVector3D(x,y,z)) == -1)&&(points.indexOf(QVector3D(x,y,z))== -1)) //Si le point n'est pas dans la liste de points à allumer
+                    {
+                        dessiner_sphere(QColor(255,255,255,TRANSPARENCE_SPHERE_ETEINTE), RAYON_SPHERES, DETAIL_SPHERES);
+                    }
+                    else if (plan.indexOf(QVector3D(x,y,z)) != -1)
+                    {
+                        dessiner_sphere(QColor(Qt::green), RAYON_SPHERES, DETAIL_SPHERES);
                     }
                     else
                     {
@@ -174,4 +200,29 @@ void simulation_cube::dessiner_sphere(QColor const& c, float const& rayon, float
     glColor4f(c.red()/255.0,c.green()/255.0,c.blue()/255.0,c.alpha()/255.0);
     gluQuadricDrawStyle(sph, GLU_FILL); //Merci GLU
     gluSphere(sph, rayon, details, details);
+}
+QList<QVector3D> simulation_cube::getListPoints(){
+    return this->points;
+}
+
+void simulation_cube::setListPoints(QList<QVector3D> const& l){
+    this->points.clear();
+
+    for(QVector3D v: l){
+        this->points.append(QVector3D(v.x(),v.y(),v.z()));
+
+    }
+}
+
+QList<QVector3D> simulation_cube::getListPlan(){
+    return this->plan;
+}
+
+void simulation_cube::setListPlan(QList<QVector3D> const& l){
+    this->plan.clear();
+
+    for(QVector3D v: l){
+        this->plan.append(QVector3D(v.x(),v.y(),v.z()));
+
+    }
 }

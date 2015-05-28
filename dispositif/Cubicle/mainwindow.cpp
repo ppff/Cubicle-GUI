@@ -397,6 +397,55 @@ void MainWindow::affichePlanLed(const QString & valeur){
     int nplan=stnplan.toInt(false,10);
     this->setNumeroPlan(nplan);
     plans[nplan]->setStyleSheet("QPushButton { background-color: red; }");
+   /* QList<QVector3D> ll;
+    for(i)
+    QVector3D v;
+    v=QVector3D(abs(8-col),NumeroPlan,abs(8-lig));
+    ll.append(v);
+    int a=ll.size();
+    QString size=QString::number(a);
+    qDebug()<<"size "+size;
+    this->ui->widget->setListPlan(ll);
+    int s=ui->widget->getListPlan().size();
+    QString size1=QString::number(s);
+    qDebug()<<"size "+size1;
+    int i=ui->widget->getListPoints().indexOf(QVector3D(8,8,8));
+    QString ii=QString::number(i);
+    qDebug()<<"index of "+ii;
+    qDebug()<<"j'allume";*/
+    QList<QVector3D> ll;
+    for(int i=0;i<9;i++)
+        for(int k=0;k<9;k++)
+        {QVector3D v;
+            v= QVector3D(i,nplan,k);
+            ll.append(v);
+
+
+
+            /*int a=ll.size();
+            QString size=QString::number(a);
+            qDebug()<<"size "+size;*/
+            this->ui->widget->setListPlan(ll);
+           /*  for(QVector3D v1: ui->widget->getListPlan()){
+
+                 QString x1=QString::number(v1.x());
+                   QString y1=QString::number(v1.y());
+                   QString z1=QString::number(v1.z());
+                      qDebug()<< "recupere point x  "+x1+"y"+y1+"z"+z1;
+                      int j=ui->widget->getListPlan().indexOf(v1);
+                      QString jj=QString::number(j);
+                      qDebug()<<"index of "+jj;
+
+             }*/
+           /* int i=ui->widget->getListPlan().indexOf(QVector3D(i,nplan,k));
+            int s=ui->widget->getListPlan().size();
+            QString size1=QString::number(s);
+            qDebug()<<"size "+size1;
+            QString ii=QString::number(i);
+            qDebug()<<"index of "+ii;
+            qDebug()<<"j'allume";*/
+        }
+
 
    /* switch(nplan){
 
