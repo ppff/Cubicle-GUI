@@ -15,6 +15,10 @@ simulation_cube::simulation_cube(QWidget *parent) : QGLWidget(parent),
 
 void simulation_cube::initializeGL()
 {
+    fAxisRadius = 0.025f;
+    fAxisHeight = 1.0f;
+    fArrowRadius = 0.06f;
+    fArrowHeight = 0.1f;
     //changer la couleur du fond du cube 3D. l'enlever si on veut un fond noir
     glClearColor(0.7,0.7,0.9,1);
     //activate the depth buffer
@@ -149,23 +153,83 @@ QVector3D simulation_cube::coordonnees_cubicle_vers_opengl(QVector3D const& v) c
     return QVector3D(v.y(), v.z(), v.x());
 }
 
-void simulation_cube::dessiner_axes() const
+void simulation_cube::dessiner_axes()
 {
+    /*
     //On prend le repère Cubicle
     glBegin(GL_LINES);
     //X en rouge
     glColor4f(0.0, 0.0, 1.0, 1.0);
     glVertex3f(0.0, 0.0, 0.0);
-    glVertex3f(3.0, 0.0, 0.0);
+    glVertex3f(10.0, 0.0, 0.0);
     //Y en vert
     glColor4f(1.0, 0.0, 0.0, 1.0);
     glVertex3f(0.0, 0.0, 0.0);
-    glVertex3f(0.0, 3.0, 0.0);
+    glVertex3f(0.0, 10.0, 0.0);
     //Z en bleu
     glColor4f(0.0, 1.0, 0.0, 1.0);
     glVertex3f(0.0, 0.0, 0.0);
-    glVertex3f(0.0, 0.0, 3.0);
+    glVertex3f(0.0, 0.0, 10.0);
     glEnd();
+    */
+    GLUquadricObj *pObj = gluNewQuadric();
+    ///////////////////////////////////////////////////////
+    // Draw the blue X axis first, with arrowed head
+    glColor3f(0.0f, 0.0f, 1.0f);
+    glPushMatrix();
+    glRotatef(90.0f, 0.0f, 0.0f, 1.0f);
+    gluCylinder(pObj, fAxisRadius, fAxisRadius, fAxisHeight, 10, 1);
+    glPushMatrix();
+    glTranslatef(0.0f,0.0f,1.0f);
+    gluCylinder(pObj, fArrowRadius, 0.0f, fArrowHeight, 10, 1);
+    glRotatef(180.0f, 1.0f, 0.0f, 0.0f);
+    gluDisk(pObj, fAxisRadius, fArrowRadius, 10, 1);
+    glDisable(GL_DEPTH_TEST);
+    glPushMatrix();
+    renderText(0, 0, -1, "X");
+    glPopMatrix();
+    glPopMatrix();
+    glPopMatrix();
+    ///////////////////////////////////////////////////////
+    // Draw the Red Z axis 2nd, with arrowed head
+    glColor3f(1.0f, 0.0f, 0.0f);
+    glPushMatrix();
+    glRotatef(90.0f, 0.0f, 1.0f, 0.0f);
+    gluCylinder(pObj, fAxisRadius, fAxisRadius, fAxisHeight, 10, 1);
+    glPushMatrix();
+    glTranslatef(0.0f, 0.0f, 1.0f);
+    gluCylinder(pObj, fArrowRadius, 0.0f, fArrowHeight, 10, 1);
+    glRotatef(180.0f, 0.0f, 1.0f, 0.0f);
+    gluDisk(pObj, fAxisRadius, fArrowRadius, 10, 1);
+    glDisable(GL_DEPTH_TEST);
+    glPushMatrix();
+    renderText(1, 0, 0, "Z");
+    glPopMatrix();
+    glPopMatrix();
+    glPopMatrix();
+
+    ///////////////////////////////////////////////////////
+    // Draw the Green Y axis 3rd, with arrowed head
+    glColor3f(0.0f, 1.0f, 0.0f);
+    glPushMatrix();
+    glRotatef(-90.0f, 1.0f, 0.0f, 0.0f);
+    gluCylinder(pObj, fAxisRadius, fAxisRadius, fAxisHeight, 10, 1);
+    glPushMatrix();
+    glTranslatef(0.0f, 0.0f, 1.0f);
+    gluCylinder(pObj, fArrowRadius, 0.0f, fArrowHeight, 10, 1);
+    glRotatef(180.0f, 1.0f, 0.0f, 0.0f);
+    gluDisk(pObj, fAxisRadius, fArrowRadius, 10, 1);
+    glDisable(GL_DEPTH_TEST);
+    glPushMatrix();
+    renderText(0, 1, 0, "Y");
+    glPopMatrix();
+    glPopMatrix();
+    glPopMatrix();
+
+    /////////////////////////////////////////////////////////
+    // Delete the quadric
+    gluDeleteQuadric(pObj);
+
 }
 
 void simulation_cube::dessiner_sphere(QColor const& c, float const& rayon, float const& details) const

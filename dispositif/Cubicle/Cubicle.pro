@@ -23,7 +23,6 @@ SOURCES += main.cpp\
 
 
 
-
 HEADERS  += mainwindow.h\
     plan.h\
     led.h\
@@ -33,7 +32,6 @@ HEADERS  += mainwindow.h\
     gestionfichier.h\
     simulation_cube.h\
     adapt.h
-
 
 
 
