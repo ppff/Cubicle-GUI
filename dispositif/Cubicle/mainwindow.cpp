@@ -463,6 +463,19 @@ void MainWindow::controlLed(const QString & valeur){
   Plan p1=c.getList1()->value(this->NumeroPlan);
   p1.updatePlan(l,lig,col,NumeroPlan);
   c.updateCube(p1,NumeroPlan);
+  QVector3D v;
+  v=QVector3D(abs(8-col),NumeroPlan,abs(8-lig));
+  simul.getListPoints().insert(0,v);
+ // simul.getListPoints().append(v);
+   QString x=QString::number(v.x());
+   QString y=QString::number(v.y());
+   QString z=QString::number(v.z());
+  qDebug()<< "ajout point x  "+x+"y"+y+"z"+z;
+  QVector3D v1=simul.getListPoints().first();
+  QString x1=QString::number(v1.x());
+  QString y1=QString::number(v1.y());
+  QString z1=QString::number(v1.z());
+ qDebug()<< "ajout point x  "+x1+"y"+y1+"z"+z1;
 
   afficheLed(lig,col,l.getEtat());
 

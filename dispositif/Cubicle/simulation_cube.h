@@ -45,6 +45,10 @@ class simulation_cube : public QGLWidget
         void mouseMoveEvent(QMouseEvent *event);
 
         void calculer_coord_cam();
+        QList<QVector3D> getListPoints();
+        void setListPoints();
+
+
 
 
     private :

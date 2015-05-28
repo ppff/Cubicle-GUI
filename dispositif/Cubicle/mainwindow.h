@@ -32,6 +32,7 @@
 #include <QPushButton>
 #include <QPainter>
 #include <QPainterPath>
+#include "simulation_cube.h"
 
 
 
@@ -96,6 +97,7 @@ public:
     Cube c;
     bool dirOpen;
     bool copierCouper; // vaut 0 pour copier et 1 pour couper
+    simulation_cube simul;
 
 
 public slots:
