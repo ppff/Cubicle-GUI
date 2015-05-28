@@ -285,10 +285,13 @@
   <customwidget>
    <class>simulation_cube</class>
    <extends>QWidget</extends>
-   <header location="global">simulation_cube.h</header>
+   <header>simulation_cube.h</header>
    <container>1</container>
   </customwidget>
  </customwidgets>
+ <tabstops>
+  <tabstop>treeView</tabstop>
+ </tabstops>
  <resources>
   <include location="ressource.qrc"/>
  </resources>

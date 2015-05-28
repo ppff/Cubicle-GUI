@@ -58,6 +58,8 @@ void simulation_cube::paintGL()
                 {
                     glPushMatrix();
                     glTranslatef(x-4, y-4, z-4);
+
+
                     if (points.indexOf(QVector3D(x,y,z)) == -1) //Si le point n'est pas dans la liste de points à allumer
                     {
                         dessiner_sphere(QColor(255,255,255,TRANSPARENCE_SPHERE_ETEINTE), RAYON_SPHERES, DETAIL_SPHERES);
@@ -71,7 +73,7 @@ void simulation_cube::paintGL()
             }
         }*/
 
-        //On affiche les plans selectionnes
+        //On affiche les plans et leds selectionnes
         for (int x=0 ; x<9 ; x++)
         {
             for (int y=0 ; y<9 ; y++)
@@ -84,13 +86,13 @@ void simulation_cube::paintGL()
                     {
                         dessiner_sphere(QColor(255,255,255,TRANSPARENCE_SPHERE_ETEINTE), RAYON_SPHERES, DETAIL_SPHERES);
                     }
-                    else if (plan.indexOf(QVector3D(x,y,z)) != -1)
+                   /* else if (plan.indexOf(QVector3D(x,y,z)) != -1)
                     {
                         dessiner_sphere(QColor(Qt::green), RAYON_SPHERES, DETAIL_SPHERES);
-                    }
-                    else
+                    }*/
+                    else if (points.indexOf(QVector3D(x,y,z)) != -1)
                     {
-                        dessiner_sphere(QColor(255,255,255,TRANSPARENCE_SPHERE_ALLUMEE), RAYON_SPHERES, DETAIL_SPHERES);
+                        dessiner_sphere(QColor(Qt::red), RAYON_SPHERES, DETAIL_SPHERES);
                     }
                     glPopMatrix();
                 }
@@ -145,13 +147,13 @@ void simulation_cube::calculer_coord_cam()
 }
 
 void simulation_cube::recevoir_nouveaux_points(QList<QVector3D> const& p)
-{
+{/*
     points.clear();
 
     for (QVector3D v : p)
     {
         points.append(coordonnees_cubicle_vers_opengl(v));
-    }
+    }*/
 }
 
 QVector3D simulation_cube::coordonnees_cubicle_vers_opengl(QVector3D const& v) const
@@ -197,10 +199,14 @@ void simulation_cube::dessiner_axes() const
 void simulation_cube::dessiner_sphere(QColor const& c, float const& rayon, float const& details) const
 {
     GLUquadric* sph =  gluNewQuadric();
+    //sphères blanches
     glColor4f(c.red()/255.0,c.green()/255.0,c.blue()/255.0,c.alpha()/255.0);
     gluQuadricDrawStyle(sph, GLU_FILL); //Merci GLU
+    //sphères rouges
+  //  glColor3f(1.0f,0.0f,0.0f);
     gluSphere(sph, rayon, details, details);
 }
+
 QList<QVector3D> simulation_cube::getListPoints(){
     return this->points;
 }
@@ -214,6 +220,7 @@ void simulation_cube::setListPoints(QList<QVector3D> const& l){
     }
 }
 
+
 QList<QVector3D> simulation_cube::getListPlan(){
     return this->plan;
 }
@@ -226,3 +233,4 @@ void simulation_cube::setListPlan(QList<QVector3D> const& l){
 
     }
 }
+
