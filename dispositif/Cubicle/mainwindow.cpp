@@ -468,8 +468,16 @@ void MainWindow::controlLed(const QString & valeur){
 
   QVector3D v;
   v=QVector3D(abs(8-col),NumeroPlan,abs(8-lig));
-  liste_vecteur3D.append(v);
-  this->ui->widget->setListPoints(liste_vecteur3D);
+  if(this->c.getList1()->value(NumeroPlan).getLed(lig,col).getEtat()==1){
+
+        liste_vecteur3D.append(v);
+        this->ui->widget->setListPoints(liste_vecteur3D);
+
+  }
+  else {
+      liste_vecteur3D.removeAll(v);
+      this->ui->widget->setListPoints(liste_vecteur3D);
+  }
 
   afficheLed(lig,col,l.getEtat());
 
