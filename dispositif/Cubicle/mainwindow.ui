@@ -83,7 +83,7 @@
      <x>0</x>
      <y>0</y>
      <width>814</width>
-     <height>25</height>
+     <height>22</height>
     </rect>
    </property>
    <property name="nativeMenuBar">
@@ -139,8 +139,22 @@
    <addaction name="actionCut_pattern"/>
    <addaction name="actionDelete_pattern"/>
    <addaction name="actionQuit"/>
-   <addaction name="actionSelect"/>
+  </widget>
+  <widget class="QToolBar" name="toolBar">
+   <property name="windowTitle">
+    <string>toolBar</string>
+   </property>
+   <property name="layoutDirection">
+    <enum>Qt::RightToLeft</enum>
+   </property>
+   <attribute name="toolBarArea">
+    <enum>TopToolBarArea</enum>
+   </attribute>
+   <attribute name="toolBarBreak">
+    <bool>false</bool>
+   </attribute>
    <addaction name="actionDuplicate"/>
+   <addaction name="actionSelect"/>
   </widget>
   <action name="actionNew_Group">
    <property name="icon">
@@ -226,7 +240,7 @@
   <action name="actionSelect">
    <property name="icon">
     <iconset resource="ressource.qrc">
-     <normaloff>:/icone/Selection_Plan.jpeg</normaloff>:/icone/Selection_Plan.jpeg</iconset>
+     <normaloff>:/icone/Select.png</normaloff>:/icone/Select.png</iconset>
    </property>
    <property name="text">
     <string>Select</string>
@@ -235,7 +249,7 @@
   <action name="actionDuplicate">
    <property name="icon">
     <iconset resource="ressource.qrc">
-     <normaloff>:/icone/Dupliquer.gif</normaloff>:/icone/Dupliquer.gif</iconset>
+     <normaloff>:/icone/Dupliquer.jpg</normaloff>:/icone/Dupliquer.jpg</iconset>
    </property>
    <property name="text">
     <string>Duplicate</string>
