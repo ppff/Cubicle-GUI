@@ -97,7 +97,7 @@ public:
     Cube c;
     bool dirOpen;
     bool copierCouper; // vaut 0 pour copier et 1 pour couper
-    simulation_cube simul;
+    QList<QVector3D> liste_vecteur3D;
 
 
 public slots:

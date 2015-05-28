@@ -463,41 +463,11 @@ void MainWindow::controlLed(const QString & valeur){
   Plan p1=c.getList1()->value(this->NumeroPlan);
   p1.updatePlan(l,lig,col,NumeroPlan);
   c.updateCube(p1,NumeroPlan);
-/*  simul.setListPoints();
-  simul.getListPoints().clear();
-  QVector3D v;
-  v=QVector3D(abs(8-col),NumeroPlan,abs(8-lig));
-  //simul.getListPoints().insert(0,v);
-  simul.getListPoints().append(v);
-   QString x=QString::number(v.x());
-   QString y=QString::number(v.y());
-   QString z=QString::number(v.z());
-  qDebug()<< "ajout point x  "+x+"y"+y+"z"+z;
-QList<QVector3D> l1=simul.getListPoints();
-int a=simul.getListPoints().size();
-QVector3D const&  v1=simul.getListPoints().value(0);
-  QString x1=QString::number(v1.x());
-  QString y1=QString::number(v1.y());
-  QString z1=QString::number(v1.z());
-  QString size=QString::number(a);
- qDebug()<< "recupere point x  "+x1+"y"+y1+"z"+z1;
-qDebug()<<"size "+size;*/
 
-  QList<QVector3D> ll;
   QVector3D v;
   v=QVector3D(abs(8-col),NumeroPlan,abs(8-lig));
-  ll.append(v);
-  int a=ll.size();
-  QString size=QString::number(a);
-  qDebug()<<"size "+size;
-  this->ui->widget->setListPoints(ll);
-  int s=ui->widget->getListPoints().size();
-  QString size1=QString::number(s);
-  qDebug()<<"size "+size1;
-  int i=ui->widget->getListPoints().indexOf(QVector3D(8,8,8));
-  QString ii=QString::number(i);
-  qDebug()<<"index of "+ii;
-  qDebug()<<"j'allume";
+  liste_vecteur3D.append(v);
+  this->ui->widget->setListPoints(liste_vecteur3D);
 
   afficheLed(lig,col,l.getEtat());
 

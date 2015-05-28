@@ -36,7 +36,7 @@ void simulation_cube::resizeGL (int width, int height)
 
 void simulation_cube::paintGL()
 {
-    qDebug()<<"je rentre n fois";
+
     //delete color and depth buffer
     glClear(GL_COLOR_BUFFER_BIT|GL_DEPTH_BUFFER_BIT);
     glEnable(GL_BLEND);
@@ -49,9 +49,7 @@ void simulation_cube::paintGL()
                   camUpX, camUpY, camUpZ);
 
         dessiner_axes();
-        int a=this->getListPoints().size();
-        QString sizede=QString::number(a);
-        qDebug()<<"size de points dans paint "+sizede;
+
         //On affiche les LEDS
         for (int x=0 ; x<9 ; x++)
         {
