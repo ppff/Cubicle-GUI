@@ -6,9 +6,6 @@
 #include <QGLWidget>
 #include "adapt.h"
 #include<QTimer>
-#include <QObject>
-#include <QtOpenGL>
-#include <QGLWidget>
 #include <QApplication>
 #include <QObject>
 #include <QMainWindow>
@@ -17,7 +14,10 @@
 #include <QList>
 #include <QFile>
 #include <QTextStream>
-#include "QList"
+#include <GL/glut.h>
+#include <QtGui>
+#include <qgl.h>
+#include <QKeyEvent>
 
 /* Description :
  * Simulation des 9*9*9 LEDs du cube.
@@ -25,6 +25,7 @@
 //10 eteinte et 200 allumée
 #define TRANSPARENCE_SPHERE_ETEINTE 150
 #define TRANSPARENCE_SPHERE_ALLUMEE 250
+
 
 #define DETAIL_SPHERES 4
 #define RAYON_SPHERES 0.15
@@ -49,14 +50,17 @@ class simulation_cube : public QGLWidget
         void setListPoints(QList<QVector3D> const& l);
 
 
-
-
-    private :
+    protected :
 
         QVector3D coordonnees_cubicle_vers_opengl(QVector3D const& v) const;
-        void dessiner_axes() const;
-        void dessiner_sphere(const QColor &c, float const& rayon, float const& details,int etat) const;
 
+
+        void dessiner_axes();
+
+        float fAxisRadius, fAxisHeight, fArrowRadius, fArrowHeight;
+
+
+        void dessiner_sphere(const QColor &c, float const& rayon, float const& details, int i) const;
         float camX, camY, camZ, camR, camT, camP; //rho, theta, phi pour les coordonnées sphériques.
         float camUpX, camUpY, camUpZ;
         QTimer* fps;

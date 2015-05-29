@@ -119,6 +119,8 @@ void controlLed(const QString & valeur);
 
 
 
+private slots:
+void on_actionNew_Group_triggered();
 };
 
 //MainWindow* MainWindow::_instance=NULL;

@@ -31,6 +31,7 @@ MainWindow::MainWindow(QWidget *parent) :
     ui->setupUi(this);
 
   //  this->setWindowState(Qt::WindowFullScreen);
+
     ui->actionCopy->setDisabled(true);
     ui->actionDelete_pattern->setDisabled(true);
     ui->actionNew_Group->setDisabled(true);
@@ -226,11 +227,13 @@ void MainWindow::ajouter_motif(){
      model->setReadOnly(false);
 
 }
-
+/*
 //créer un nouveau groupe
 void MainWindow::insertGroup(){
 
     QModelIndex index =model->index(namedir,0);
+
+
     QString name =QInputDialog::getText(this,"Name","Enter a name");
     if(name.isEmpty())return;
 
@@ -246,9 +249,15 @@ void MainWindow::insertGroup(){
           }
 
     model->mkdir(index,name);
-
-
 }
+*/
+void MainWindow::on_actionNew_Group_triggered()
+{
+        QModelIndex index =model->index(namedir,0);
+        QString name ="New Groupe";
+        model->mkdir(index,name);
+}
+
 
 void MainWindow::controlQuit(){
     int reponse = QMessageBox::question(this, "Quit", " Are you sure you want to quit ?");
@@ -480,7 +489,6 @@ void MainWindow::controlLed(const QString & valeur){
       this->ui->widget->setListPoints(liste_vecteur3D);
   }
 
-
   afficheLed(lig,col,l.getEtat());
 
 }
@@ -580,4 +588,5 @@ void MainWindow::kill()
     if(_instance != 0)
         delete _instance;
 }*/
+
 

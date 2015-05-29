@@ -34,11 +34,28 @@ HEADERS  += mainwindow.h \
     motif.h \
     groupe.h \
     cartesd.h \
-    memoireinterne.h
-INCLUDEPATH=C:\Documents/freeglut-3.0.0/GL/glut.h
+    memoireinterne.h \
+    adapt.h
+
 FORMS    += mainwindow.ui
 
-LIBS += -lGL -lGLU -lglut
+unix:!macx {
+    LIBS +=-lGL -lGLU -lglut
+    DEFINES += CUBICLE_ON_LINUX
 
+}
+
+macx: {
+   LIBS +=-framework OpenGL
+   DEFINES += CUBICLE_ON_MAC
+
+}
+
+win32 {
+
+    LIBS +=-lglut
+    DEFINES += CUBICLE_ON_WINDOWS
+
+}
 RESOURCES += \
     ressources.qrc
