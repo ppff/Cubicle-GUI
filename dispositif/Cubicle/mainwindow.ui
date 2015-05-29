@@ -76,6 +76,16 @@
      <string/>
     </property>
    </widget>
+   <widget class="simulation_cube" name="widget" native="true">
+    <property name="geometry">
+     <rect>
+      <x>259</x>
+      <y>19</y>
+      <width>541</width>
+      <height>431</height>
+     </rect>
+    </property>
+   </widget>
   </widget>
   <widget class="QMenuBar" name="menuBar">
    <property name="geometry">
@@ -83,7 +93,7 @@
      <x>0</x>
      <y>0</y>
      <width>814</width>
-     <height>22</height>
+     <height>25</height>
     </rect>
    </property>
    <property name="nativeMenuBar">
@@ -266,6 +276,14 @@
   </action>
  </widget>
  <layoutdefault spacing="6" margin="11"/>
+ <customwidgets>
+  <customwidget>
+   <class>simulation_cube</class>
+   <extends>QWidget</extends>
+   <header>simulation_cube.h</header>
+   <container>1</container>
+  </customwidget>
+ </customwidgets>
  <tabstops>
   <tabstop>treeView</tabstop>
  </tabstops>
