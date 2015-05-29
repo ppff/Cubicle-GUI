@@ -251,14 +251,65 @@ void MainWindow::insertGroup(){
     model->mkdir(index,name);
 }
 */
+
 void MainWindow::on_actionNew_Group_triggered()
 {
+        int m;
+        QString s;
         QModelIndex index =model->index(namedir,0);
         QString name ="New Groupe";
+        QDir dir(namedir);
+        QFileInfoList entries = dir.entryInfoList(QDir::NoDotAndDotDot | QDir::AllEntries);
+        dir.setSorting( QDir::Name);
+        m=entries.size();
+        if (m<10){
+            s = "0"+QString::number(m)+"_";
+        }else {
+            s = QString::number(m)+"_";
+        }
+            /*
+            for (int i=0;i<m;++i)
+            {
+                QString path = entries[i].absoluteFilePath();
+                QDir d=QDir(path);
+                err=RemoveDirectory(d);
+            }
+            */
+        name = s + name;
         model->mkdir(index,name);
+
 }
 
+///////////////////////////////////////////////////////////////////////////////
+bool RemoveDirectory(QDir &aDir)
+{
+    bool err=false;
+    if (aDir.exists())
+    {
+        QFileInfoList entries = aDir.entryInfoList(QDir::NoDotAndDotDot | QDir::Dirs | QDir::Files);
 
+        for (int i=0,m=entries.size();i<m;++i)
+        {
+            QString path = entries[i].absoluteFilePath();
+            if (!entries[i].isDir())
+            {
+                QFile file(path);
+                if (!file.remove())
+                    err=true;
+            }
+            else
+            {
+                QDir d=QDir(path);
+                err=RemoveDirectory(d);
+            }
+        }
+        if (!aDir.rmdir(aDir.absolutePath()))
+            err = true;
+    }
+    return err;
+}
+
+////////////////////////////////////////////////////////////////////////////////
 void MainWindow::controlQuit(){
     int reponse = QMessageBox::question(this, "Quit", " Are you sure you want to quit ?");
 

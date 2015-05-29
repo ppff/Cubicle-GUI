@@ -33,8 +33,9 @@
 #include <QPainter>
 #include <QPainterPath>
 #include "simulation_cube.h"
-
-
+#include <QDir>
+#include <QFileInfoList>
+#include <QFileInfo>
 
 namespace Ui {
 class MainWindow;
@@ -101,23 +102,25 @@ public:
 
 
 public slots:
-void ouvrir_explorer() ;
-void ajouter_motif() ;
-void couper();
-void copier();
-void coller();
+    void ouvrir_explorer() ;
+    void ajouter_motif() ;
+    void couper();
+    void copier();
+    void coller();
+
 public slots:
-void insertGroup();
-void controlQuit();
-void controlDelete();
-void controlSave();
-void doubleClick();
-void afficheListePlan1();
-void affichePlanLed(const QString & valeur);
-void afficheLed(const int i, const int j, const int etat);
-void controlLed(const QString & valeur);
+  //  void insertGroup();
+    void controlQuit();
+    void controlDelete();
+    void controlSave();
+    void doubleClick();
+    void afficheListePlan1();
+    void affichePlanLed(const QString & valeur);
+    void afficheLed(const int i, const int j, const int etat);
+    void controlLed(const QString & valeur);
 
-
+protected:
+    QDir *aDir;
 
 private slots:
 void on_actionNew_Group_triggered();
