@@ -42,7 +42,7 @@ MainWindow::MainWindow(QWidget *parent) :
     connect(ui->actionOpen_directory,SIGNAL(triggered(bool)),this,SLOT(ouvrir_explorer()));
     connect(ui->actionCopy,SIGNAL(triggered(bool)),this,SLOT(copier()));
     connect(ui->actionPaste_pattern,SIGNAL(triggered(bool)),this,SLOT(coller()));
-    connect(ui->actionNew_Group,SIGNAL(triggered(bool)),this,SLOT(insertGroup()));
+//    connect(ui->actionNew_Group,SIGNAL(triggered(bool)),this,SLOT(insertGroup()));
     connect(ui->actionNew_Pattern,SIGNAL(triggered(bool)),this,SLOT(ajouter_motif()));
     connect(ui->actionQuit,SIGNAL(triggered(bool)),this,SLOT(controlQuit()));
     connect(ui->actionDelete_pattern,SIGNAL(triggered(bool)),this,SLOT(controlDelete()));
@@ -59,6 +59,7 @@ MainWindow::MainWindow(QWidget *parent) :
     desactivePlan(0);
     connexion();
     dirOpen=false;
+    ui->actionNew_Group->setEnabled(true);
 
 
 
@@ -189,7 +190,7 @@ void MainWindow::tree(){
         ui->treeView->hideColumn(i);
     }
     ui->treeView->resizeColumnToContents(0);
-    ui->actionNew_Group->setEnabled(true);
+   // ui->actionNew_Group->setEnabled(true);
     ui->actionNew_Pattern->setEnabled(true);
     ui->actionDelete_pattern->setEnabled(true);
     ui->actionCopy->setDisabled(false);
@@ -256,33 +257,63 @@ void MainWindow::on_actionNew_Group_triggered()
 {
         int m;
         QString s;
-        QModelIndex index =model->index(namedir,0);
-        QString name ="New Groupe";
-        QDir dir(namedir);
-        QFileInfoList entries = dir.entryInfoList(QDir::NoDotAndDotDot | QDir::AllEntries);
-        dir.setSorting( QDir::Name);
-        m=entries.size();
-        if (m<10){
-            s = "0"+QString::number(m)+"_";
-        }else {
-            s = QString::number(m)+"_";
-        }
-            /*
-            for (int i=0;i<m;++i)
-            {
-                QString path = entries[i].absoluteFilePath();
-                QDir d=QDir(path);
-                err=RemoveDirectory(d);
+        if(namedir!=""){
+            QModelIndex index =model->index(namedir,0);
+            QString name ="New Groupe";
+            QDir dir(namedir);
+            QFileInfoList entries = dir.entryInfoList(QDir::NoDotAndDotDot | QDir::AllEntries);
+            dir.setSorting( QDir::Name);
+            m=entries.size();
+            if (m<10){
+                s = "0"+QString::number(m)+"_";
+            }else {
+                s = QString::number(m)+"_";
             }
-            */
-        name = s + name;
-        model->mkdir(index,name);
+                /*
+                for (int i=0;i<m;++i)
+                {
+                    QString path = entries[i].absoluteFilePath();
+                    QDir d=QDir(path);
+                    err=RemoveDirectory(d);
+                }
+                */
+            name = s + name;
+            model->mkdir(index,name);
+        }
+        else{
+           // QString name ="New Groupe";
+           // QDir dir("/home");
+           // dir.mkdir("home/"+name);
+          //  QDir dir("home/NewGroup");
+           // if (dir.exists()) {
+               // qDebug()<<"ouiii";
+               // dir.mkpath(".");
+              //  QDir lDir;
+              //  if (! lDir.exists("Home/NewGroup")){
+                //    lDir.mkdir("Home/NewGroup");
+          //  }
+       /*     QDir dir = QDir::root();                 // "/"
+             if (!dir.cd("home")) {                    // "/tmp"
+                 qWarning("Cannot find the \"/home\" directory");
+             }*/
+       //      QDir dir(QDir::homePath());
+        //     dir.mkdir(".test");
+
+             namedir="Cubicle";
+             QDir::home().mkdir(namedir);
+             tree();
+
+
+
+        }
+
+
 
 }
 
 ///////////////////////////////////////////////////////////////////////////////
 bool RemoveDirectory(QDir &aDir)
-{
+{/*
     bool err=false;
     if (aDir.exists())
     {
@@ -307,6 +338,7 @@ bool RemoveDirectory(QDir &aDir)
             err = true;
     }
     return err;
+    */
 }
 
 ////////////////////////////////////////////////////////////////////////////////
