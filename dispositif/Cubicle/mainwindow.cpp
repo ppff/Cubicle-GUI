@@ -30,7 +30,7 @@ MainWindow::MainWindow(QWidget *parent) :
 
     ui->setupUi(this);
 
-    this->setWindowState(Qt::WindowFullScreen);
+   // this->setWindowState(Qt::WindowFullScreen);
     ui->actionCopy->setDisabled(true);
     ui->actionDelete_pattern->setDisabled(true);
     ui->actionNew_Group->setDisabled(true);
@@ -303,6 +303,8 @@ void MainWindow::doubleClick(){
              desactivePlan(1);
              deleteCube3D(1);
              afficheCube3D(l_cube,l_repere);
+             this->liste_vecteur3D.clear();
+             this->ui->widget->setListPoints(liste_vecteur3D);
          }
     }
     else {
@@ -463,6 +465,19 @@ void MainWindow::controlLed(const QString & valeur){
   Plan p1=c.getList1()->value(this->NumeroPlan);
   p1.updatePlan(l,lig,col,NumeroPlan);
   c.updateCube(p1,NumeroPlan);
+
+  QVector3D v;
+  v=QVector3D(abs(8-col),NumeroPlan,abs(8-lig));
+  if(this->c.getList1()->value(NumeroPlan).getLed(lig,col).getEtat()==1){
+
+        liste_vecteur3D.append(v);
+        this->ui->widget->setListPoints(liste_vecteur3D);
+
+  }
+  else {
+      liste_vecteur3D.removeAll(v);
+      this->ui->widget->setListPoints(liste_vecteur3D);
+  }
 
   afficheLed(lig,col,l.getEtat());
 
