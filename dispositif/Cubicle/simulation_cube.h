@@ -14,7 +14,6 @@
 #include <QList>
 #include <QFile>
 #include <QTextStream>
-#include <GL/glut.h>
 #include <QtGui>
 #include <qgl.h>
 #include <QKeyEvent>
