@@ -421,7 +421,11 @@ void MainWindow::doubleClick(){
 
              this->liste_vecteur3D.clear();
              this->ui->widget->setListPoints(liste_vecteur3D);
-              ui->widget->setListPlan(liste_vecteur3D);
+             ui->widget->setListPlan(liste_vecteur3D);
+             GestionFichier ges;
+             QList<QVector3D> l=ges.parser(name);
+
+
          }
     }
     else {
