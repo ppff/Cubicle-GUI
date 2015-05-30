@@ -16,7 +16,8 @@ simulation_cube::simulation_cube(QWidget *parent) : QGLWidget(parent),
 void simulation_cube::initializeGL()
 {
     //changer la couleur du fond du cube 3D. l'enlever si on veut un fond noir
-    glClearColor(0.7,0.7,0.9,1);
+    qglClearColor(QColor(198,164,154,255));
+
     //activate the depth buffer
     glEnable(GL_DEPTH_TEST);
     glEnable(GL_BLEND);
@@ -36,6 +37,7 @@ void simulation_cube::resizeGL (int width, int height)
 
 void simulation_cube::paintGL()
 {
+
     //delete color and depth buffer
     glClear(GL_COLOR_BUFFER_BIT|GL_DEPTH_BUFFER_BIT);
     glEnable(GL_BLEND);
@@ -49,29 +51,7 @@ void simulation_cube::paintGL()
 
         dessiner_axes();
 
-        //On affiche les LEDS
-       /* for (int x=0 ; x<9 ; x++)
-        {
-            for (int y=0 ; y<9 ; y++)
-            {
-                for (int z=0 ; z<9 ; z++)
-                {
-                    glPushMatrix();
-                    glTranslatef(x-4, y-4, z-4);
 
-
-                    if (points.indexOf(QVector3D(x,y,z)) == -1) //Si le point n'est pas dans la liste de points à allumer
-                    {
-                        dessiner_sphere(QColor(255,255,255,TRANSPARENCE_SPHERE_ETEINTE), RAYON_SPHERES, DETAIL_SPHERES);
-                    }
-                    else
-                    {
-                        dessiner_sphere(QColor(255,255,255,TRANSPARENCE_SPHERE_ALLUMEE), RAYON_SPHERES, DETAIL_SPHERES);
-                    }
-                    glPopMatrix();
-                }
-            }
-        }*/
 
         //On affiche les plans et leds selectionnes
         for (int x=0 ; x<9 ; x++)
@@ -82,19 +62,22 @@ void simulation_cube::paintGL()
                 {
                     glPushMatrix();
                     glTranslatef(x-4, y-4, z-4);
-                    if ((plan.indexOf(QVector3D(x,y,z)) == -1)&&(points.indexOf(QVector3D(x,y,z))== -1)) //Si le point n'est pas dans la liste de points à allumer
+                    if ((plan.indexOf(QVector3D(x,y,z)) == -1)&&(points.indexOf(QVector3D(x,y,z)) == -1)) //Si le point n'est pas dans la liste de points à allumer
                     {
                         dessiner_sphere(QColor(255,255,255,TRANSPARENCE_SPHERE_ETEINTE), RAYON_SPHERES, DETAIL_SPHERES);
                     }
-                   /* else if (plan.indexOf(QVector3D(x,y,z)) != -1)
-                    {
-                        dessiner_sphere(QColor(Qt::green), RAYON_SPHERES, DETAIL_SPHERES);
-                    }*/
                     else if (points.indexOf(QVector3D(x,y,z)) != -1)
                     {
-                        dessiner_sphere(QColor(Qt::red), RAYON_SPHERES, DETAIL_SPHERES);
+                       dessiner_sphere(QColor(Qt::red), RAYON_SPHERES, DETAIL_SPHERES);
+
+                    }
+                    else{
+                        dessiner_sphere(QColor(198,229,217,255), RAYON_SPHERES_plan, DETAIL_SPHERES);
                     }
                     glPopMatrix();
+
+
+
                 }
             }
         }
@@ -199,11 +182,10 @@ void simulation_cube::dessiner_axes() const
 void simulation_cube::dessiner_sphere(QColor const& c, float const& rayon, float const& details) const
 {
     GLUquadric* sph =  gluNewQuadric();
-    //sphères blanches
+
     glColor4f(c.red()/255.0,c.green()/255.0,c.blue()/255.0,c.alpha()/255.0);
+
     gluQuadricDrawStyle(sph, GLU_FILL); //Merci GLU
-    //sphères rouges
-  //  glColor3f(1.0f,0.0f,0.0f);
     gluSphere(sph, rayon, details, details);
 }
 

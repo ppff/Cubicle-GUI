@@ -11,15 +11,11 @@ int main(int argc, char *argv[])
 {
     QApplication a(argc, argv);
     QPalette pal=a.palette();
-    pal.setColor(QPalette::Window, Qt ::white);
+    pal.setColor(QPalette::Window,QColor(244,234,213,255));
     a.setPalette(pal);
 
 
     MainWindow w;
-
-
-   //MainWindow *mainwindow = MainWindow::getInstance();
-   //mainwindow->show();
     w.show();
 
     return a.exec();

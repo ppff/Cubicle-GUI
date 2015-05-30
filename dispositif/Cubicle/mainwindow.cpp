@@ -30,7 +30,9 @@ MainWindow::MainWindow(QWidget *parent) :
 
     ui->setupUi(this);
 
-   // this->setWindowState(Qt::WindowFullScreen);
+
+
+
     ui->actionCopy->setDisabled(true);
     ui->actionDelete_pattern->setDisabled(true);
     ui->actionNew_Group->setDisabled(true);
@@ -38,7 +40,18 @@ MainWindow::MainWindow(QWidget *parent) :
     ui->actionPaste_pattern->setDisabled(true);
     ui->actionSave->setDisabled(true);
     ui->actionCut_pattern->setDisabled(true);
-    ui->fleche_gauche->setVisible(false);
+
+    //désactiver la sélection des plans
+    ui->plane1->setDisabled(true);
+     ui->plane2->setDisabled(true);
+      ui->plane3->setDisabled(true);
+       ui->plane4->setDisabled(true);
+         ui->plane5->setDisabled(true);
+          ui->plane6->setDisabled(true);
+           ui->plane7->setDisabled(true);
+            ui->plane8->setDisabled(true);
+            ui->plane9->setDisabled(true);
+
     connect(ui->actionOpen_directory,SIGNAL(triggered(bool)),this,SLOT(ouvrir_explorer()));
     connect(ui->actionCopy,SIGNAL(triggered(bool)),this,SLOT(copier()));
     connect(ui->actionPaste_pattern,SIGNAL(triggered(bool)),this,SLOT(coller()));
@@ -49,12 +62,8 @@ MainWindow::MainWindow(QWidget *parent) :
     connect(ui->actionSave,SIGNAL(triggered(bool)),this,SLOT(controlSave()));
     connect(ui->treeView,SIGNAL(doubleClicked(const QModelIndex &)),this,SLOT(doubleClick()));
     connect(ui->actionCut_pattern,SIGNAL(triggered(bool)),this,SLOT(couper()));
-   // l_cube=ui->label;
-    l_repere=ui->label_2;
-    label_y=ui->label_3;
-    label_x=ui->label_4;
+
     this->setWindowTitle("Cubicle");
-    deleteCube3D(0);
     deletePlanLed(0);
     desactivePlan(0);
     connexion();
@@ -198,6 +207,17 @@ void MainWindow::tree(){
     ui->actionCut_pattern->setDisabled(false);
     ui->actionSave->setDisabled(false);
 
+    //réactiver la sélection des plans
+    ui->plane1->setDisabled(false);
+     ui->plane2->setDisabled(false);
+      ui->plane3->setDisabled(false);
+       ui->plane4->setDisabled(false);
+         ui->plane5->setDisabled(false);
+          ui->plane6->setDisabled(false);
+           ui->plane7->setDisabled(false);
+            ui->plane8->setDisabled(false);
+            ui->plane9->setDisabled(false);
+
 }
 
 //créer un nouveau motif
@@ -272,7 +292,6 @@ void MainWindow::controlDelete(){
            if (reponse == QMessageBox::Yes) {
                file.remove();
                tree();
-               this->deleteCube3D(1);
                this->deletePlanLed(1);
                this->desactivePlan(1);
            }
@@ -289,7 +308,7 @@ void MainWindow::controlSave(){
 
 
 
-// supprimer la liste des plans et le plan 2D Lors d'un double clic sur un nouveau motif
+// supprimer  le plan 2D Lors d'un double clic sur un nouveau motif
 void MainWindow::doubleClick(){
     QModelIndex index=ui->treeView->currentIndex();
     if (model->fileInfo(index).isFile()) {
@@ -303,8 +322,10 @@ void MainWindow::doubleClick(){
              this->c=Cube();
              deletePlanLed(1);
              desactivePlan(1);
-             deleteCube3D(1);
-             afficheCube3D(l_repere);
+             this->liste_vecteur3D.clear();
+             this->ui->widget->setListPoints(liste_vecteur3D);
+              ui->widget->setListPlan(liste_vecteur3D);
+
          }
     }
     else {
@@ -312,156 +333,61 @@ void MainWindow::doubleClick(){
     }
 }
 
-void MainWindow:: afficheCube3D(QLabel* l){
-    /*label->setPixmap(QPixmap(":/icone/CubeParfait.jpeg"));
-    label->move(930,385);
-    label->adjustSize();
-    label->show();
-    l->setPixmap(QPixmap(":/icone/reperenv.jpeg"));
-    l->move(820,530);
-    l->adjustSize();
-    l->show();*/
-
-    ui->fleche_gauche->setVisible(true);
-    ui->fleche_gauche->setIcon(QIcon(":/icone/GAUCHE.png"));
-    //ui->fleche_gauche->setGeometry(1235,570,40,40);
-}
-
-void MainWindow::deleteCube3D(int i){
-    if(i==0){
-       // this->fleche_gauche=new QPushButton("",this);
-       // ui->gridLayout->addWidget(fleche_gauche,0,4);
-        ui->fleche_gauche->setVisible(true);
-    }
-    else{
-        //ui->label->setPixmap(QPixmap());
-        //ui->label->repaint();
-        ui->label_2->setPixmap(QPixmap());
-        ui->label_2->repaint();
-        ui->label_3->setPixmap(QPixmap());
-        ui->label_3->repaint();
-        ui->label_4->setPixmap(QPixmap());
-        ui->label_4->repaint();
-    }
-    ui->fleche_gauche->hide();
-}
-
-void MainWindow::afficheListePlan1(){
-    desactivePlan(1);
-    deletePlanLed(1);
-         for (int j=0;j<9; j++){ //les plans vue de dessus
-           setOrientationPlan(0);
-           QString ori=QString::number(0);
-           QString nplan=QString::number(j);
-           QString text=ori+nplan;
-           int num=text.toInt(false,10);
-           plans[num]->setVisible(true);
-        }
-}
 
 
 
 void MainWindow::desactivePlan(int niemefois){
 
-        for (int j=0;j<9; j++){
-           QString ori=QString::number(0);
-           QString nplan=QString::number(j);
-           QString text=ori+nplan;
-           int num=text.toInt(false,10);
-           if(niemefois==0){  //il crée le bouton une seule fois fois
-            plans[num]=new QPushButton("",this);
-            plans[num]->setGeometry(70, 70, 150, 150);
-            plans[num]->move(630+20*j, 30*j+90);
-           }
-           plans[num]->setStyleSheet("QPushButton { background-color: rgba(240,240,240,255); }");
-           plans[num]->hide();
-        }
+            //déselectionner les plans
+            ui->plane1->setStyleSheet("QPushButton { background-color: rgba(240,240,240,255); }");
+             ui->plane2->setStyleSheet("QPushButton { background-color: rgba(240,240,240,255); }");
+              ui->plane3->setStyleSheet("QPushButton { background-color: rgba(240,240,240,255); }");
+               ui->plane4->setStyleSheet("QPushButton { background-color: rgba(240,240,240,255); }");
+                 ui->plane5->setStyleSheet("QPushButton { background-color: rgba(240,240,240,255); }");
+                  ui->plane6->setStyleSheet("QPushButton { background-color: rgba(240,240,240,255); }");
+                   ui->plane7->setStyleSheet("QPushButton { background-color: rgba(240,240,240,255); }");
+                    ui->plane8->setStyleSheet("QPushButton { background-color: rgba(240,240,240,255); }");
+                    ui->plane9->setStyleSheet("QPushButton { background-color: rgba(240,240,240,255); }");
+
 }
 
 
 void MainWindow::affichePlanLed(const QString & valeur){
-    for (int num=0;num<9;num++){
-         plans[num]->setStyleSheet("QPushButton { background-color: rgba(240,240,240,255); }");
-    }
-    label_y->setPixmap(QPixmap(":/icone/z.png"));
-    label_y->move(590,29);
-    label_y->adjustSize();
-    label_y->show();
-    label_x->setPixmap(QPixmap(":/icone/x.png"));
-    label_x->move(325,296);
-    label_x->adjustSize();
-    label_x->show();
-    QString stori=valeur[0];
+
+    ui->plane1->setStyleSheet("QPushButton { background-color: rgba(240,240,240,255); }");
+     ui->plane2->setStyleSheet("QPushButton { background-color: rgba(240,240,240,255); }");
+      ui->plane3->setStyleSheet("QPushButton { background-color: rgba(240,240,240,255); }");
+       ui->plane4->setStyleSheet("QPushButton { background-color: rgba(240,240,240,255); }");
+         ui->plane5->setStyleSheet("QPushButton { background-color: rgba(240,240,240,255); }");
+          ui->plane6->setStyleSheet("QPushButton { background-color: rgba(240,240,240,255); }");
+           ui->plane7->setStyleSheet("QPushButton { background-color: rgba(240,240,240,255); }");
+            ui->plane8->setStyleSheet("QPushButton { background-color: rgba(240,240,240,255); }");
+            ui->plane9->setStyleSheet("QPushButton { background-color: rgba(240,240,240,255); }");
+
     QString stnplan=valeur[1];
-    int ori=stori.toInt(false,10);
     int nplan=stnplan.toInt(false,10);
     this->setNumeroPlan(nplan);
-    plans[nplan]->setStyleSheet("QPushButton { background-color: red; }");
-   /* QList<QVector3D> ll;
-    for(i)
-    QVector3D v;
-    v=QVector3D(abs(8-col),NumeroPlan,abs(8-lig));
-    ll.append(v);
-    int a=ll.size();
-    QString size=QString::number(a);
-    qDebug()<<"size "+size;
-    this->ui->widget->setListPlan(ll);
-    int s=ui->widget->getListPlan().size();
-    QString size1=QString::number(s);
-    qDebug()<<"size "+size1;
-    int i=ui->widget->getListPoints().indexOf(QVector3D(8,8,8));
-    QString ii=QString::number(i);
-    qDebug()<<"index of "+ii;
-    qDebug()<<"j'allume";*/
+
+    switch(nplan){
+    case 0:ui->plane1->setStyleSheet("QPushButton { background-color: red; }"); break;
+    case 1:ui->plane2->setStyleSheet("QPushButton { background-color: red; }"); break;
+    case 2:ui->plane3->setStyleSheet("QPushButton { background-color: red; }"); break;
+    case 3:ui->plane4->setStyleSheet("QPushButton { background-color: red; }"); break;
+    case 4:ui->plane5->setStyleSheet("QPushButton { background-color: red; }"); break;
+    case 5:ui->plane6->setStyleSheet("QPushButton { background-color: red; }"); break;
+    case 6:ui->plane7->setStyleSheet("QPushButton { background-color: red; }"); break;
+    case 7:ui->plane8->setStyleSheet("QPushButton { background-color: red; }"); break;
+    case 8:ui->plane9->setStyleSheet("QPushButton { background-color: red; }"); break;
+    }
+
     QList<QVector3D> ll;
     for(int i=0;i<9;i++)
         for(int k=0;k<9;k++)
         {QVector3D v;
             v= QVector3D(i,nplan,k);
             ll.append(v);
-
-
-
-            /*int a=ll.size();
-            QString size=QString::number(a);
-            qDebug()<<"size "+size;*/
             this->ui->widget->setListPlan(ll);
-           /*  for(QVector3D v1: ui->widget->getListPlan()){
-
-                 QString x1=QString::number(v1.x());
-                   QString y1=QString::number(v1.y());
-                   QString z1=QString::number(v1.z());
-                      qDebug()<< "recupere point x  "+x1+"y"+y1+"z"+z1;
-                      int j=ui->widget->getListPlan().indexOf(v1);
-                      QString jj=QString::number(j);
-                      qDebug()<<"index of "+jj;
-
-             }*/
-           /* int i=ui->widget->getListPlan().indexOf(QVector3D(i,nplan,k));
-            int s=ui->widget->getListPlan().size();
-            QString size1=QString::number(s);
-            qDebug()<<"size "+size1;
-            QString ii=QString::number(i);
-            qDebug()<<"index of "+ii;
-            qDebug()<<"j'allume";*/
         }
-
-
-   /* switch(nplan){
-
-    case 0:l_cube->setPixmap(QPixmap(":/icone/plan8.png")); break;
-    case 1:l_cube->setPixmap(QPixmap(":/icone/plan7.png"));break;
-    case 2:l_cube->setPixmap(QPixmap(":/icone/plan6.png"));break;
-    case 3:l_cube->setPixmap(QPixmap(":/icone/plan5.png"));break;
-    case 4:l_cube->setPixmap(QPixmap(":/icone/plan4.png"));break;
-    case 5:l_cube->setPixmap(QPixmap(":/icone/plan3.png"));break;
-    case 6:l_cube->setPixmap(QPixmap(":/icone/plan2.png"));break;
-    case 7:l_cube->setPixmap(QPixmap(":/icone/plan1.png"));break;
-    case 8:l_cube->setPixmap(QPixmap(":/icone/plan0.png"));break;
-    }
-    l_cube->move(930,385);
-    l_cube->adjustSize();
-    l_cube->show();*/
 
    for (int i = 0; i < 9; i++) {
         for (int j=0;j<9; j++){
@@ -487,8 +413,7 @@ void MainWindow::affichePlanLed(const QString & valeur){
 
 void MainWindow::deletePlanLed(int nfois){
 
-    label_x->hide();
-    label_y->hide();
+
         for (int i = 0; i < 9; i++) {
              for (int j=0;j<9; j++){
                  QString col=QString::number(i);
@@ -517,41 +442,11 @@ void MainWindow::controlLed(const QString & valeur){
   Plan p1=c.getList1()->value(this->NumeroPlan);
   p1.updatePlan(l,lig,col,NumeroPlan);
   c.updateCube(p1,NumeroPlan);
-/*  simul.setListPoints();
-  simul.getListPoints().clear();
-  QVector3D v;
-  v=QVector3D(abs(8-col),NumeroPlan,abs(8-lig));
-  //simul.getListPoints().insert(0,v);
-  simul.getListPoints().append(v);
-   QString x=QString::number(v.x());
-   QString y=QString::number(v.y());
-   QString z=QString::number(v.z());
-  qDebug()<< "ajout point x  "+x+"y"+y+"z"+z;
-QList<QVector3D> l1=simul.getListPoints();
-int a=simul.getListPoints().size();
-QVector3D const&  v1=simul.getListPoints().value(0);
-  QString x1=QString::number(v1.x());
-  QString y1=QString::number(v1.y());
-  QString z1=QString::number(v1.z());
-  QString size=QString::number(a);
- qDebug()<< "recupere point x  "+x1+"y"+y1+"z"+z1;
-qDebug()<<"size "+size;*/
 
-  QList<QVector3D> ll;
   QVector3D v;
   v=QVector3D(abs(8-col),NumeroPlan,abs(8-lig));
-  ll.append(v);
-  int a=ll.size();
-  QString size=QString::number(a);
-  qDebug()<<"size "+size;
-  this->ui->widget->setListPoints(ll);
-  int s=ui->widget->getListPoints().size();
-  QString size1=QString::number(s);
-  qDebug()<<"size "+size1;
-  int i=ui->widget->getListPoints().indexOf(QVector3D(8,8,8));
-  QString ii=QString::number(i);
-  qDebug()<<"index of "+ii;
-  qDebug()<<"j'allume";
+  liste_vecteur3D.append(v);
+  this->ui->widget->setListPoints(liste_vecteur3D);
 
   afficheLed(lig,col,l.getEtat());
 
@@ -575,17 +470,28 @@ void MainWindow:: afficheLed(const int i, const int j,const  int etat )
 }
 
 void MainWindow::connexion(){
-    QObject::connect(ui->fleche_gauche, SIGNAL(clicked()), this, SLOT(afficheListePlan1()));
 
     QSignalMapper *signalMapper = new QSignalMapper(this);
-    QString ori=QString::number(0);
-    for (int i=0;i<9;i++){
-        QString nplan=QString::number(i);
-        QString text=ori+nplan;
-        int num=text.toInt(false,10);
-        connect(plans[num], SIGNAL(clicked()), signalMapper, SLOT(map()));
-        signalMapper->setMapping(plans[num], text);
-    }
+
+        connect(ui->plane1, SIGNAL(clicked()), signalMapper, SLOT(map()));
+        signalMapper->setMapping(ui->plane1, "00");
+        connect(ui->plane2, SIGNAL(clicked()), signalMapper, SLOT(map()));
+        signalMapper->setMapping(ui->plane2, "01");
+        connect(ui->plane3, SIGNAL(clicked()), signalMapper, SLOT(map()));
+        signalMapper->setMapping(ui->plane3, "02");
+        connect(ui->plane4, SIGNAL(clicked()), signalMapper, SLOT(map()));
+        signalMapper->setMapping(ui->plane4, "03");
+        connect(ui->plane5, SIGNAL(clicked()), signalMapper, SLOT(map()));
+        signalMapper->setMapping(ui->plane5, "04");
+        connect(ui->plane6, SIGNAL(clicked()), signalMapper, SLOT(map()));
+        signalMapper->setMapping(ui->plane6, "05");
+        connect(ui->plane7, SIGNAL(clicked()), signalMapper, SLOT(map()));
+        signalMapper->setMapping(ui->plane7, "06");
+        connect(ui->plane8, SIGNAL(clicked()), signalMapper, SLOT(map()));
+        signalMapper->setMapping(ui->plane8, "07");
+        connect(ui->plane9, SIGNAL(clicked()), signalMapper, SLOT(map()));
+        signalMapper->setMapping(ui->plane9, "08");
+
     connect(signalMapper, SIGNAL(mapped(const QString &)), this, SLOT(affichePlanLed(const QString &)));
 
     QSignalMapper *signalMapper1 = new QSignalMapper(this);
@@ -639,17 +545,5 @@ MainWindow::~MainWindow()
     delete ui;
 }
 
-/*MainWindow* MainWindow::getInstance()
-{
-    if(_instance == 0)
-        _instance = new MainWindow();
 
-    return _instance;
-}
-
-void MainWindow::kill()
-{
-    if(_instance != 0)
-        delete _instance;
-}*/
 
