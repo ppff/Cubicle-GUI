@@ -53,7 +53,6 @@ MainWindow::MainWindow(QWidget *parent) :
     connect(ui->actionOpen_directory,SIGNAL(triggered(bool)),this,SLOT(ouvrir_explorer()));
     connect(ui->actionCopy,SIGNAL(triggered(bool)),this,SLOT(copier()));
     connect(ui->actionPaste_pattern,SIGNAL(triggered(bool)),this,SLOT(coller()));
-//    connect(ui->actionNew_Group,SIGNAL(triggered(bool)),this,SLOT(insertGroup()));
     connect(ui->actionNew_Pattern,SIGNAL(triggered(bool)),this,SLOT(ajouter_motif()));
     connect(ui->actionQuit,SIGNAL(triggered(bool)),this,SLOT(controlQuit()));
     connect(ui->actionDelete_pattern,SIGNAL(triggered(bool)),this,SLOT(controlDelete()));
@@ -412,7 +411,6 @@ void MainWindow::doubleClick(){
 
          QString name=model->fileInfo(index).absoluteFilePath();
          if(name.compare(this->getEmplMotif())!=0){
-             qDebug() <<"ancien motif "+ this->getEmplMotif();
              this->setEmpMotif(name);
              qDebug ()<< "nouveau motif "+this->getEmplMotif();
              this->c=Cube();
@@ -424,7 +422,25 @@ void MainWindow::doubleClick(){
              ui->widget->setListPlan(liste_vecteur3D);
              GestionFichier ges;
              QList<QVector3D> l=ges.parser(name);
-
+             if(!l.empty()){
+                 int size=l.size();
+                 int i=l.first().x();
+                 this->ui->widget->setListPoints(l);
+                 int b=this->ui->widget->getListPoints().size();
+                 QString h=QString::number(b);
+                 QString s=QString::number(size);
+                 QString ii=QString::number(i);
+                 qDebug()<<"je vais parcourir la liste size x "+s+ii;
+                 for (QVector3D u:l){
+                   Led l=this->c.getList1()->value(u.y()).getLed(abs(8-u.z()),abs(8-u.x()));
+                   l.modifierEtat();
+                   Plan p=c.getList1()->value(u.y());
+                   p.updatePlan(l,abs(8-u.z()),abs(8-u.x()),u.y());
+                   this->c.updateCube(p,u.y());
+                   liste_vecteur3D.append(u);
+                   this->ui->widget->setListPoints(liste_vecteur3D);
+                 }
+             }
 
          }
     }

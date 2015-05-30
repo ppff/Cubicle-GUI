@@ -192,7 +192,7 @@ void simulation_cube::dessiner_axes()
     */
     GLUquadricObj *pObj = gluNewQuadric();
     ///////////////////////////////////////////////////////
-    // Draw the blue X axis first, with arrowed head
+    // Draw the blue Z axis first, with arrowed head
     glColor3f(0.0f, 0.0f, 1.0f);
     glPushMatrix();
     glRotatef(90.0f, 0.0f, 0.0f, 1.0f);
@@ -204,12 +204,12 @@ void simulation_cube::dessiner_axes()
     gluDisk(pObj, fAxisRadius, fArrowRadius, 10, 1);
     glDisable(GL_DEPTH_TEST);
     glPushMatrix();
-    renderText(0, 0, -4, "X");
+    renderText(0, 0, -4, "Z");
     glPopMatrix();
     glPopMatrix();
     glPopMatrix();
     ///////////////////////////////////////////////////////
-    // Draw the Red Z axis 2nd, with arrowed head
+    // Draw the Red X axis 2nd, with arrowed head
     glColor3f(1.0f, 0.0f, 0.0f);
     glPushMatrix();
     glRotatef(90.0f, 0.0f, 1.0f, 0.0f);
@@ -221,7 +221,7 @@ void simulation_cube::dessiner_axes()
     gluDisk(pObj, fAxisRadius, fArrowRadius, 10, 1);
     glDisable(GL_DEPTH_TEST);
     glPushMatrix();
-    renderText(0, 0, -4, "Z");
+    renderText(0, 0, -4, "X");
     glPopMatrix();
     glPopMatrix();
     glPopMatrix();

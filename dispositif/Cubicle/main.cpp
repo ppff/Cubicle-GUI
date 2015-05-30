@@ -21,7 +21,7 @@ int main(int argc, char *argv[])
 
 
 
-    GestionFichier g;
-    g.parser("/home/sahli/C++/parser.txt");
+   // GestionFichier g;
+   // QList<QVector3D> l=g.parser(":/texte/parser.txt");
     return a.exec();
 }

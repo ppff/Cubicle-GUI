@@ -35,7 +35,7 @@
         <file>saveas.png</file>
     </qresource>
     <qresource prefix="/texte">
-        <file>../file.txt</file>
+        <file>parser.txt</file>
     </qresource>
     <qresource prefix="/Images">
         <file>quit.png</file>
