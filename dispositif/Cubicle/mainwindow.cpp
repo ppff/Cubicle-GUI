@@ -231,7 +231,6 @@ void MainWindow::ajouter_motif(){
             qDebug()<<"le namedir est "+ namedir;
             qDebug()<<"l'emplacement du dossier est "+dir;
             qDebug()<<"le nom du dossier est "+nameGroup;
-        //    QString nameMotif=QInputDialog::getText(this,"Name","Enter the pattern name");
 
             NouveauMotif m=NouveauMotif("New Pattern",dir+"/"+nameGroup);
             tree();
