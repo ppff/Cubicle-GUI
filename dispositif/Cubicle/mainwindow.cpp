@@ -469,7 +469,7 @@ void MainWindow::affichePlanLed(const QString & valeur){
 
     QString stnplan=valeur[1];
 
-    int nplan=stnplan.toInt(false,10);
+    int nplan=stnplan.toInt(0,10);
     this->setNumeroPlan(nplan);
 
     switch(nplan){
