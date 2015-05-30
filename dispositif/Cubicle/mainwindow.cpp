@@ -433,7 +433,7 @@ void MainWindow::afficheListePlan1(){
            QString ori=QString::number(0);
            QString nplan=QString::number(j);
            QString text=ori+nplan;
-           int num=text.toInt(false,10);
+           int num=text.toInt(0,10);
            plans[num]->setVisible(true);
         }
 }
@@ -446,7 +446,7 @@ void MainWindow::desactivePlan(int niemefois){
            QString ori=QString::number(0);
            QString nplan=QString::number(j);
            QString text=ori+nplan;
-           int num=text.toInt(false,10);
+           int num=text.toInt(0,10);
            if(niemefois==0){  //il crée le bouton une seule fois fois
             plans[num]=new QPushButton("",this);
             plans[num]->setGeometry(70, 70, 150, 150);
@@ -472,8 +472,8 @@ void MainWindow::affichePlanLed(const QString & valeur){
     label_x->show();
     QString stori=valeur[0];
     QString stnplan=valeur[1];
-    int ori=stori.toInt(false,10);
-    int nplan=stnplan.toInt(false,10);
+    int ori=stori.toInt(0,10);
+    int nplan=stnplan.toInt(0,10);
     this->setNumeroPlan(nplan);
     plans[nplan]->setStyleSheet("QPushButton { background-color: red; }");
 
@@ -499,7 +499,7 @@ void MainWindow::affichePlanLed(const QString & valeur){
            QString lig=QString::number(j);
            QString text=lig+col;
 
-           int num=text.toInt(false,10);
+           int num=text.toInt(0,10);
            buttons[num]->setVisible(true);
 
            Led l;
@@ -524,7 +524,7 @@ void MainWindow::deletePlanLed(int nfois){
                  QString col=QString::number(i);
                  QString lig=QString::number(j);
                  QString text=lig+col;
-                 int num=text.toInt(false,10);
+                 int num=text.toInt(0,10);
                   if(nfois==0){
                          buttons[num]=new QPushButton("",this);
                          buttons[num]->setGeometry(30, 30, 30, 30);
@@ -538,8 +538,8 @@ void MainWindow::deletePlanLed(int nfois){
 void MainWindow::controlLed(const QString & valeur){
    QString strlig=valeur[0];
    QString strcol=valeur[1];
-   int lig=strlig.toInt(false,10);
-   int col=strcol.toInt(false,10);
+   int lig=strlig.toInt(0,10);
+   int col=strcol.toInt(0,10);
   Led l;
   l= this->c.getList1()->value(NumeroPlan).getLed(lig,col);
   l.modifierEtat();
@@ -572,7 +572,7 @@ void MainWindow:: afficheLed(const int i, const int j,const  int etat )
        QString lig=QString::number(i);
        QString col=QString::number(j);
        QString text=lig+col;
-       int num=text.toInt(false,10);
+       int num=text.toInt(0,10);
 
     if(etat==0){
         this->buttons[num]->setIcon(QIcon(":/icone/nvatomeblanc.png"));
@@ -591,7 +591,7 @@ void MainWindow::connexion(){
     for (int i=0;i<9;i++){
         QString nplan=QString::number(i);
         QString text=ori+nplan;
-        int num=text.toInt(false,10);
+        int num=text.toInt(0,10);
         connect(plans[num], SIGNAL(clicked()), signalMapper, SLOT(map()));
         signalMapper->setMapping(plans[num], text);
     }
@@ -604,7 +604,7 @@ void MainWindow::connexion(){
             QString lig=QString::number(j);
             QString text=lig+col;
 
-            int num=text.toInt(false,10);
+            int num=text.toInt(0,10);
             connect(buttons[num], SIGNAL(clicked()), signalMapper1, SLOT(map()));
             signalMapper1->setMapping(buttons[num], text);
         }
