@@ -29,5 +29,8 @@ int main(int argc, char *argv[])
     //simulation_cube s;
   //  s.show();
 
+
+    GestionFichier g;
+    g.parser("/home/sahli/C++/parser.txt");
     return a.exec();
 }

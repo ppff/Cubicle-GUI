@@ -64,4 +64,36 @@ void GestionFichier::modifierFichier(QString newLine, QString empl){
     file.close();
 }
 
+QList<QVector3D> GestionFichier:: parser(QString empl){
+    QFile file(empl);
+    if(!file.open(QIODevice::ReadOnly | QIODevice::Text)){
+        qDebug()<<"le fichier n'est pas ouvert";
+
+    }
+    QTextStream flux(&file);
+    QString Line;
+    QList<QVector3D> list;
+    //lire la première ligne: version
+    Line= flux.readLine()+'\n';
+
+    while(!file.atEnd()){
+        Line=flux.readLine()+'\n';
+        QCharRef sx=Line[0];
+        QCharRef sy=Line[1];
+        QCharRef sz=Line[2];
+        int x=sx.unicode();
+        int y=sy.unicode();
+        int z=sz.unicode();
+        QVector3D v=QVector3D(x,y,z);
+        qDebug()<<"i m here";
+        //qDebug()<<sx+sy+sz;
+        list.append(v);
+    }
+
+
+   file.close();
+   return list;
+
+}
+
 

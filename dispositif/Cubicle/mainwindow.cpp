@@ -259,13 +259,13 @@ void MainWindow::on_actionNew_Group_triggered()
         QString s;
         if(namedir==""){
 
-            namedir="home/Cubicle";
+            namedir="/home/Cubicle";
                      QDir::home().mkdir("Cubicle");
                       qDebug()<<"je crée cubicle pour la 1ere fois";
                        dirOpen=true;
                        tree();
         }
-       if(namedir=="home/Cubicle"){
+       if(namedir=="/home/Cubicle"){
             QModelIndex index =model->index(namedir,0);
                                   model->mkdir(index,"untitled");
                                   qDebug()<<"je crée un dossier ds Cubicle";
