@@ -32,6 +32,7 @@
 #include <QPushButton>
 #include <QPainter>
 #include <QPainterPath>
+#include "simulation_cube.h"
 
 
 
@@ -51,8 +52,6 @@ public:
     void ouvrir();
     void setEmpMotif(QString nom);
     QString getEmplMotif();
-    void afficheCube3D(QLabel* l,QLabel*l2);
-    void deleteCube3D(int i);
     void deletePlanLed(int i);
     void setOrientationPlan(int i);
     int getOrientationPlan();
@@ -82,17 +81,10 @@ public:
     QString nom_copie;
     bool dirOrFile;//false if file
     QString emplMotif;
-    QLabel* l_cube;
-    QLabel * l_repere;
-    QLabel*label_x;
-    QLabel* label_y;
     QPushButton* buttons[90];
     int OrienPlan;
     int NumeroPlan;
     QPushButton* plans[30];
-    QPushButton*  fleche_bas;
-    QPushButton*  fleche_gauche;
-    QPushButton*  fleche_face;
     Cube c;
     bool dirOpen;
     bool copierCouper; // vaut 0 pour copier et 1 pour couper
@@ -111,7 +103,7 @@ void controlQuit();
 void controlDelete();
 void controlSave();
 void doubleClick();
-void afficheListePlan1();
+
 void affichePlanLed(const QString & valeur);
 void afficheLed(const int i, const int j, const int etat);
 void controlLed(const QString & valeur);
@@ -120,6 +112,6 @@ void controlLed(const QString & valeur);
 
 };
 
-//MainWindow* MainWindow::_instance=NULL;
+
 
 #endif // MAINWINDOW_H

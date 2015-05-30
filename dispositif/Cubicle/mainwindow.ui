@@ -6,94 +6,125 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>814</width>
-    <height>655</height>
+    <width>1026</width>
+    <height>495</height>
    </rect>
   </property>
   <property name="windowTitle">
    <string>MainWindow</string>
   </property>
   <widget class="QWidget" name="centralWidget">
-   <widget class="QTreeView" name="treeView">
-    <property name="geometry">
-     <rect>
-      <x>0</x>
-      <y>0</y>
-      <width>231</width>
-      <height>511</height>
-     </rect>
-    </property>
-   </widget>
-   <widget class="QLabel" name="label">
-    <property name="geometry">
-     <rect>
-      <x>700</x>
-      <y>350</y>
-      <width>67</width>
-      <height>20</height>
-     </rect>
-    </property>
-    <property name="text">
-     <string/>
-    </property>
-   </widget>
-   <widget class="QLabel" name="label_2">
-    <property name="geometry">
-     <rect>
-      <x>690</x>
-      <y>410</y>
-      <width>67</width>
-      <height>17</height>
-     </rect>
-    </property>
-    <property name="text">
-     <string/>
-    </property>
-   </widget>
-   <widget class="QLabel" name="label_3">
-    <property name="geometry">
-     <rect>
-      <x>300</x>
-      <y>70</y>
-      <width>67</width>
-      <height>17</height>
-     </rect>
-    </property>
-    <property name="text">
-     <string/>
-    </property>
-   </widget>
-   <widget class="QLabel" name="label_4">
-    <property name="geometry">
-     <rect>
-      <x>430</x>
-      <y>40</y>
-      <width>67</width>
-      <height>17</height>
-     </rect>
-    </property>
-    <property name="text">
-     <string/>
-    </property>
-   </widget>
-   <widget class="simulation_cube" name="widget" native="true">
-    <property name="geometry">
-     <rect>
-      <x>380</x>
-      <y>410</y>
-      <width>241</width>
-      <height>161</height>
-     </rect>
-    </property>
-   </widget>
+   <layout class="QGridLayout" name="gridLayout_2">
+    <item row="1" column="0">
+     <layout class="QGridLayout" name="gridLayout">
+      <item row="14" column="2" rowspan="2">
+       <widget class="QPushButton" name="plane1">
+        <property name="text">
+         <string>Plane1</string>
+        </property>
+       </widget>
+      </item>
+      <item row="9" column="1">
+       <spacer name="horizontalSpacer">
+        <property name="orientation">
+         <enum>Qt::Horizontal</enum>
+        </property>
+        <property name="sizeHint" stdset="0">
+         <size>
+          <width>40</width>
+          <height>20</height>
+         </size>
+        </property>
+       </spacer>
+      </item>
+      <item row="0" column="3" rowspan="16">
+       <widget class="simulation_cube" name="widget" native="true">
+        <property name="sizePolicy">
+         <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
+          <horstretch>0</horstretch>
+          <verstretch>0</verstretch>
+         </sizepolicy>
+        </property>
+        <zorder>horizontalSpacer</zorder>
+       </widget>
+      </item>
+      <item row="0" column="0" rowspan="16">
+       <widget class="QTreeView" name="treeView">
+        <property name="sizePolicy">
+         <sizepolicy hsizetype="Minimum" vsizetype="Expanding">
+          <horstretch>0</horstretch>
+          <verstretch>0</verstretch>
+         </sizepolicy>
+        </property>
+       </widget>
+      </item>
+      <item row="13" column="2">
+       <widget class="QPushButton" name="plane2">
+        <property name="text">
+         <string>Plane2</string>
+        </property>
+       </widget>
+      </item>
+      <item row="11" column="2" rowspan="2">
+       <widget class="QPushButton" name="plane3">
+        <property name="text">
+         <string>Plane3</string>
+        </property>
+       </widget>
+      </item>
+      <item row="10" column="2">
+       <widget class="QPushButton" name="plane4">
+        <property name="text">
+         <string>Plane4</string>
+        </property>
+       </widget>
+      </item>
+      <item row="8" column="2" rowspan="2">
+       <widget class="QPushButton" name="plane5">
+        <property name="text">
+         <string>Plane5</string>
+        </property>
+       </widget>
+      </item>
+      <item row="7" column="2">
+       <widget class="QPushButton" name="plane6">
+        <property name="text">
+         <string>Plane6</string>
+        </property>
+       </widget>
+      </item>
+      <item row="5" column="2" rowspan="2">
+       <widget class="QPushButton" name="plane7">
+        <property name="text">
+         <string>Plane7</string>
+        </property>
+       </widget>
+      </item>
+      <item row="4" column="2">
+       <widget class="QPushButton" name="plane8">
+        <property name="text">
+         <string>Plane8</string>
+        </property>
+       </widget>
+      </item>
+      <item row="2" column="2" rowspan="2">
+       <widget class="QPushButton" name="plane9">
+        <property name="text">
+         <string>Plane9</string>
+        </property>
+       </widget>
+      </item>
+     </layout>
+    </item>
+   </layout>
   </widget>
   <widget class="QMenuBar" name="menuBar">
    <property name="geometry">
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>814</width>
-     <height>25</height>
+     <width>1026</width>
+     <height>21</height>
     </rect>
    </property>
    <property name="nativeMenuBar">
