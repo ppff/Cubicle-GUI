@@ -257,9 +257,23 @@ void MainWindow::on_actionNew_Group_triggered()
 {
         int m;
         QString s;
-        if(namedir!=""){
+        if(namedir==""){
+
+            namedir="/home/Cubicle";
+                     QDir::home().mkdir("Cubicle");
+                      qDebug()<<"je crée cubicle pour la 1ere fois";
+                       dirOpen=true;
+                       tree();
+        }
+       if(namedir=="/home/Cubicle"){
             QModelIndex index =model->index(namedir,0);
-            QString name ="New Groupe";
+                                  model->mkdir(index,"untitled");
+                                  qDebug()<<"je crée un dossier ds Cubicle";
+       }
+       else {
+
+            QModelIndex index =model->index(namedir,0);
+            QString name ="New Group";
             QDir dir(namedir);
             QFileInfoList entries = dir.entryInfoList(QDir::NoDotAndDotDot | QDir::AllEntries);
             dir.setSorting( QDir::Name);
@@ -279,35 +293,9 @@ void MainWindow::on_actionNew_Group_triggered()
                 */
             name = s + name;
             model->mkdir(index,name);
-        }
-        else{
-           // QString name ="New Groupe";
-           // QDir dir("/home");
-           // dir.mkdir("home/"+name);
-          //  QDir dir("home/NewGroup");
-           // if (dir.exists()) {
-               // qDebug()<<"ouiii";
-               // dir.mkpath(".");
-              //  QDir lDir;
-              //  if (! lDir.exists("Home/NewGroup")){
-                //    lDir.mkdir("Home/NewGroup");
-          //  }
-       /*     QDir dir = QDir::root();                 // "/"
-             if (!dir.cd("home")) {                    // "/tmp"
-                 qWarning("Cannot find the \"/home\" directory");
-             }*/
-       //      QDir dir(QDir::homePath());
-        //     dir.mkdir(".test");
+            qDebug()<<"j'ai crée un dossier ds "+namedir;
 
-             namedir="Cubicle";
-             QDir::home().mkdir(namedir);
-             tree();
-
-
-
-        }
-
-
+    }
 
 }
 
@@ -377,7 +365,9 @@ void MainWindow::controlSave(){
     ges.ouvrir(this->emplMotif,this->c);
 }
 
+void MainWindow::controlSaveAs(){
 
+}
 
 // supprimer la liste des plans et le plan 2D Lors d'un double clic sur un nouveau motif
 void MainWindow::doubleClick(){

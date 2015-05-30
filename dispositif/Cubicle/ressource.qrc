@@ -32,6 +32,7 @@
         <file>../z.png</file>
         <file>Dupliquer.jpg</file>
         <file>Select.png</file>
+        <file>saveas.png</file>
     </qresource>
     <qresource prefix="/texte">
         <file>../file.txt</file>

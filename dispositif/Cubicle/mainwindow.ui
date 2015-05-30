@@ -107,7 +107,8 @@
     <addaction name="actionNew_Group"/>
     <addaction name="actionNew_Pattern"/>
     <addaction name="actionSave"/>
-    <addaction name="actionQuit"/>
+    <addaction name="actionSave_as"/>
+    <addaction name="actionQuit_2"/>
    </widget>
    <widget class="QMenu" name="menuEdit">
     <property name="title">
@@ -168,7 +169,7 @@
   </widget>
   <action name="actionNew_Group">
    <property name="icon">
-    <iconset>
+    <iconset resource="ressource.qrc">
      <normaloff>:/Images/new_group.png</normaloff>:/Images/new_group.png</iconset>
    </property>
    <property name="text">
@@ -177,7 +178,7 @@
   </action>
   <action name="actionNew_Pattern">
    <property name="icon">
-    <iconset>
+    <iconset resource="ressource.qrc">
      <normaloff>:/Images/new_pattern.gif</normaloff>:/Images/new_pattern.gif</iconset>
    </property>
    <property name="text">
@@ -186,7 +187,7 @@
   </action>
   <action name="actionSave">
    <property name="icon">
-    <iconset>
+    <iconset resource="ressource.qrc">
      <normaloff>:/Images/save.png</normaloff>:/Images/save.png</iconset>
    </property>
    <property name="text">
@@ -195,7 +196,7 @@
   </action>
   <action name="actionQuit">
    <property name="icon">
-    <iconset>
+    <iconset resource="ressource.qrc">
      <normaloff>:/Images/quit.png</normaloff>:/Images/quit.png</iconset>
    </property>
    <property name="text">
@@ -204,7 +205,7 @@
   </action>
   <action name="actionCopy">
    <property name="icon">
-    <iconset>
+    <iconset resource="ressource.qrc">
      <normaloff>:/Images/copy.png</normaloff>:/Images/copy.png</iconset>
    </property>
    <property name="text">
@@ -213,7 +214,7 @@
   </action>
   <action name="actionOpen_directory">
    <property name="icon">
-    <iconset theme="opendirectory">
+    <iconset theme="opendirectory" resource="ressource.qrc">
      <normaloff>:/Images/open_directory.png</normaloff>:/Images/open_directory.png</iconset>
    </property>
    <property name="text">
@@ -222,7 +223,7 @@
   </action>
   <action name="actionPaste_pattern">
    <property name="icon">
-    <iconset>
+    <iconset resource="ressource.qrc">
      <normaloff>:/Images/paste.png</normaloff>:/Images/paste.png</iconset>
    </property>
    <property name="text">
@@ -231,7 +232,7 @@
   </action>
   <action name="actionDelete_pattern">
    <property name="icon">
-    <iconset>
+    <iconset resource="ressource.qrc">
      <normaloff>:/Images/delete_pattern.png</normaloff>:/Images/delete_pattern.png</iconset>
    </property>
    <property name="text">
@@ -240,7 +241,7 @@
   </action>
   <action name="actionSelect_a_group_of_atoms">
    <property name="icon">
-    <iconset>
+    <iconset resource="ressource.qrc">
      <normaloff>:/icone/Selection_Plan.jpeg</normaloff>:/icone/Selection_Plan.jpeg</iconset>
    </property>
    <property name="text">
@@ -249,7 +250,7 @@
   </action>
   <action name="actionSelect">
    <property name="icon">
-    <iconset>
+    <iconset resource="ressource.qrc">
      <normaloff>:/icone/Select.png</normaloff>:/icone/Select.png</iconset>
    </property>
    <property name="text">
@@ -258,7 +259,7 @@
   </action>
   <action name="actionDuplicate">
    <property name="icon">
-    <iconset>
+    <iconset resource="ressource.qrc">
      <normaloff>:/icone/Dupliquer.jpg</normaloff>:/icone/Dupliquer.jpg</iconset>
    </property>
    <property name="text">
@@ -267,11 +268,29 @@
   </action>
   <action name="actionCut_pattern">
    <property name="icon">
-    <iconset>
+    <iconset resource="ressource.qrc">
      <normaloff>:/icone/couper.png</normaloff>:/icone/couper.png</iconset>
    </property>
    <property name="text">
     <string>cut pattern</string>
+   </property>
+  </action>
+  <action name="actionSave_as">
+   <property name="icon">
+    <iconset resource="ressource.qrc">
+     <normaloff>:/icone/saveas.png</normaloff>:/icone/saveas.png</iconset>
+   </property>
+   <property name="text">
+    <string>save as</string>
+   </property>
+  </action>
+  <action name="actionQuit_2">
+   <property name="icon">
+    <iconset resource="ressource.qrc">
+     <normaloff>:/Images/quit.png</normaloff>:/Images/quit.png</iconset>
+   </property>
+   <property name="text">
+    <string>quit</string>
    </property>
   </action>
  </widget>
@@ -287,6 +306,8 @@
  <tabstops>
   <tabstop>treeView</tabstop>
  </tabstops>
- <resources/>
+ <resources>
+  <include location="ressource.qrc"/>
+ </resources>
  <connections/>
 </ui>
