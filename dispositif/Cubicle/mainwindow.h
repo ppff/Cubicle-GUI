@@ -89,7 +89,6 @@ public:
     bool dirOpen;
     bool copierCouper; // vaut 0 pour copier et 1 pour couper
     QList<QVector3D> liste_vecteur3D;
-    void afficheListePlan1();
 
 
 public slots:
@@ -113,6 +112,6 @@ void controlLed(const QString & valeur);
 
 };
 
-//MainWindow* MainWindow::_instance=NULL;
+
 
 #endif // MAINWINDOW_H

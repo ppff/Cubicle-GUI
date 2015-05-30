@@ -5,18 +5,20 @@
 #include "iostream"
 #include "cube.h"
 #include <QPalette>
-
+#include "testAxeEtSphere.h"
+#include "simulation_cube.h"
 
 int main(int argc, char *argv[])
 {
     QApplication a(argc, argv);
     QPalette pal=a.palette();
-    pal.setColor(QPalette::Window,QColor(244,234,213,255));
+    pal.setColor(QPalette::Window,QColor(234,237,229,255));
     a.setPalette(pal);
 
 
     MainWindow w;
     w.show();
+
 
     return a.exec();
 }

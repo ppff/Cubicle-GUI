@@ -30,9 +30,6 @@ MainWindow::MainWindow(QWidget *parent) :
 
     ui->setupUi(this);
 
-
-
-
     ui->actionCopy->setDisabled(true);
     ui->actionDelete_pattern->setDisabled(true);
     ui->actionNew_Group->setDisabled(true);
@@ -322,16 +319,22 @@ void MainWindow::doubleClick(){
              this->c=Cube();
              deletePlanLed(1);
              desactivePlan(1);
+
              this->liste_vecteur3D.clear();
              this->ui->widget->setListPoints(liste_vecteur3D);
               ui->widget->setListPlan(liste_vecteur3D);
-
          }
     }
     else {
         dirOrFile=true;
     }
 }
+
+
+
+
+
+
 
 
 
@@ -349,6 +352,7 @@ void MainWindow::desactivePlan(int niemefois){
                     ui->plane8->setStyleSheet("QPushButton { background-color: rgba(240,240,240,255); }");
                     ui->plane9->setStyleSheet("QPushButton { background-color: rgba(240,240,240,255); }");
 
+
 }
 
 
@@ -365,6 +369,7 @@ void MainWindow::affichePlanLed(const QString & valeur){
             ui->plane9->setStyleSheet("QPushButton { background-color: rgba(240,240,240,255); }");
 
     QString stnplan=valeur[1];
+
     int nplan=stnplan.toInt(false,10);
     this->setNumeroPlan(nplan);
 
@@ -395,7 +400,7 @@ void MainWindow::affichePlanLed(const QString & valeur){
            QString lig=QString::number(j);
            QString text=lig+col;
 
-           int num=text.toInt(false,10);
+           int num=text.toInt(0,10);
            buttons[num]->setVisible(true);
 
            Led l;
@@ -419,7 +424,7 @@ void MainWindow::deletePlanLed(int nfois){
                  QString col=QString::number(i);
                  QString lig=QString::number(j);
                  QString text=lig+col;
-                 int num=text.toInt(false,10);
+                 int num=text.toInt(0,10);
                   if(nfois==0){
                          buttons[num]=new QPushButton("",this);
                          buttons[num]->setGeometry(30, 30, 30, 30);
@@ -433,8 +438,8 @@ void MainWindow::deletePlanLed(int nfois){
 void MainWindow::controlLed(const QString & valeur){
    QString strlig=valeur[0];
    QString strcol=valeur[1];
-   int lig=strlig.toInt(false,10);
-   int col=strcol.toInt(false,10);
+   int lig=strlig.toInt(0,10);
+   int col=strcol.toInt(0,10);
   Led l;
   l= this->c.getList1()->value(NumeroPlan).getLed(lig,col);
   l.modifierEtat();
@@ -445,8 +450,20 @@ void MainWindow::controlLed(const QString & valeur){
 
   QVector3D v;
   v=QVector3D(abs(8-col),NumeroPlan,abs(8-lig));
+
   liste_vecteur3D.append(v);
   this->ui->widget->setListPoints(liste_vecteur3D);
+  if(this->c.getList1()->value(NumeroPlan).getLed(lig,col).getEtat()==1){
+
+        liste_vecteur3D.append(v);
+        this->ui->widget->setListPoints(liste_vecteur3D);
+
+  }
+  else {
+      liste_vecteur3D.removeAll(v);
+      this->ui->widget->setListPoints(liste_vecteur3D);
+  }
+
 
   afficheLed(lig,col,l.getEtat());
 
@@ -458,7 +475,7 @@ void MainWindow:: afficheLed(const int i, const int j,const  int etat )
        QString lig=QString::number(i);
        QString col=QString::number(j);
        QString text=lig+col;
-       int num=text.toInt(false,10);
+       int num=text.toInt(0,10);
 
     if(etat==0){
         this->buttons[num]->setIcon(QIcon(":/icone/nvatomeblanc.png"));
@@ -472,6 +489,7 @@ void MainWindow:: afficheLed(const int i, const int j,const  int etat )
 void MainWindow::connexion(){
 
     QSignalMapper *signalMapper = new QSignalMapper(this);
+
 
         connect(ui->plane1, SIGNAL(clicked()), signalMapper, SLOT(map()));
         signalMapper->setMapping(ui->plane1, "00");
@@ -501,7 +519,7 @@ void MainWindow::connexion(){
             QString lig=QString::number(j);
             QString text=lig+col;
 
-            int num=text.toInt(false,10);
+            int num=text.toInt(0,10);
             connect(buttons[num], SIGNAL(clicked()), signalMapper1, SLOT(map()));
             signalMapper1->setMapping(buttons[num], text);
         }
