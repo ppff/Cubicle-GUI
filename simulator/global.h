@@ -4,7 +4,7 @@
 //Includes
 #include <QtOpenGL>
 #include <QGLWidget>
-#include <GL/glut.h>
+#include "adapt.h"
 
 #include <QApplication>
 #include <QObject>
