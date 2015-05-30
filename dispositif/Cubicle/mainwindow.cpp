@@ -187,7 +187,7 @@ void MainWindow::tree(){
             model->setSorting(QDir::DirsFirst | QDir::IgnoreCase | QDir::Name);
 
     ui->treeView->setModel(model);
-    qDebug() << "le namedir esstttt" + namedir;
+    qDebug() << "le namedir est" + namedir;
     QModelIndex index=model->index(namedir);
      ui->treeView->setRootIndex(index);
     ui->treeView->expand(index);
@@ -197,7 +197,6 @@ void MainWindow::tree(){
         ui->treeView->hideColumn(i);
     }
     ui->treeView->resizeColumnToContents(0);
-   // ui->actionNew_Group->setEnabled(true);
     ui->actionNew_Pattern->setEnabled(true);
     ui->actionDelete_pattern->setEnabled(true);
     ui->actionCopy->setDisabled(false);
@@ -232,9 +231,9 @@ void MainWindow::ajouter_motif(){
             qDebug()<<"le namedir est "+ namedir;
             qDebug()<<"l'emplacement du dossier est "+dir;
             qDebug()<<"le nom du dossier est "+nameGroup;
-            QString nameMotif=QInputDialog::getText(this,"Name","Enter the pattern name");
+        //    QString nameMotif=QInputDialog::getText(this,"Name","Enter the pattern name");
 
-            NouveauMotif m=NouveauMotif(nameMotif,dir+"/"+nameGroup);
+            NouveauMotif m=NouveauMotif("New Pattern",dir+"/"+nameGroup);
             tree();
             }
              else {
