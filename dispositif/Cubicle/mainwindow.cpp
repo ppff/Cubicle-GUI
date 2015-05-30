@@ -423,14 +423,9 @@ void MainWindow::doubleClick(){
              GestionFichier ges;
              QList<QVector3D> l=ges.parser(name);
              if(!l.empty()){
-                 int size=l.size();
-                 int i=l.first().x();
+
                  this->ui->widget->setListPoints(l);
-                 int b=this->ui->widget->getListPoints().size();
-                 QString h=QString::number(b);
-                 QString s=QString::number(size);
-                 QString ii=QString::number(i);
-                 qDebug()<<"je vais parcourir la liste size x "+s+ii;
+
                  for (QVector3D u:l){
                    Led l=this->c.getList1()->value(u.y()).getLed(abs(8-u.z()),abs(8-u.x()));
                    l.modifierEtat();

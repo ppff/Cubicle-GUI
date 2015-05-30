@@ -83,7 +83,6 @@ QList<QVector3D> GestionFichier:: parser(QString empl){
                 int z=sz.toInt(0,10);
 
             QVector3D v=QVector3D(x,y,z);
-            qDebug()<<"je lis "+sx+sy+sz;
             list.append(v);
         }
     }
