@@ -437,12 +437,8 @@ void MainWindow::doubleClick(){
 
 
 
-
-
-
-
-
 void MainWindow::desactivePlan(int niemefois){
+
 
             //déselectionner les plans
             ui->plane1->setStyleSheet("QPushButton { background-color: rgba(240,240,240,255); }");
@@ -474,6 +470,7 @@ void MainWindow::affichePlanLed(const QString & valeur){
     QString stnplan=valeur[1];
 
     int nplan=stnplan.toInt(0,10);
+
     this->setNumeroPlan(nplan);
 
     switch(nplan){
@@ -596,6 +593,7 @@ void MainWindow:: afficheLed(const int i, const int j,const  int etat )
 void MainWindow::connexion(){
 
     QSignalMapper *signalMapper = new QSignalMapper(this);
+
 
 
         connect(ui->plane1, SIGNAL(clicked()), signalMapper, SLOT(map()));
