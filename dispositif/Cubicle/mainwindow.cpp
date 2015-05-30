@@ -203,18 +203,6 @@ void MainWindow::tree(){
     ui->actionPaste_pattern->setDisabled(false);
     ui->actionCut_pattern->setDisabled(false);
     ui->actionSave->setDisabled(false);
-
-    //réactiver la sélection des plans
-    ui->plane1->setDisabled(false);
-     ui->plane2->setDisabled(false);
-      ui->plane3->setDisabled(false);
-       ui->plane4->setDisabled(false);
-         ui->plane5->setDisabled(false);
-          ui->plane6->setDisabled(false);
-           ui->plane7->setDisabled(false);
-            ui->plane8->setDisabled(false);
-            ui->plane9->setDisabled(false);
-
 }
 
 //créer un nouveau motif
@@ -403,9 +391,21 @@ void MainWindow::controlSaveAs(){
 
 // supprimer  le plan 2D Lors d'un double clic sur un nouveau motif
 void MainWindow::doubleClick(){
-    QModelIndex index=ui->treeView->currentIndex();
-    if (model->fileInfo(index).isFile()) {
+     QModelIndex index=ui->treeView->currentIndex();
+     if (model->fileInfo(index).isFile()) {
         dirOrFile=false;
+
+        //réactiver la sélection des plans
+        ui->plane1->setDisabled(false);
+        ui->plane2->setDisabled(false);
+        ui->plane3->setDisabled(false);
+        ui->plane4->setDisabled(false);
+        ui->plane5->setDisabled(false);
+        ui->plane6->setDisabled(false);
+        ui->plane7->setDisabled(false);
+        ui->plane8->setDisabled(false);
+        ui->plane9->setDisabled(false);
+
 
          QString name=model->fileInfo(index).absoluteFilePath();
          if(name.compare(this->getEmplMotif())!=0){
