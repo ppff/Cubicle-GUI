@@ -8,6 +8,8 @@
 #include "testAxeEtSphere.h"
 #include "simulation_cube.h"
 
+extern "C" int* parser_file(const char* name);
+
 int main(int argc, char *argv[])
 {
     QApplication a(argc, argv);

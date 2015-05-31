@@ -17,7 +17,11 @@
 #include <QPushButton>
 #include <QPainter>
 #include <QPainterPath>
-
+/*
+extern "C" {
+#include "parser.h"
+}
+*/
 
 using namespace std;
 
@@ -422,7 +426,12 @@ void MainWindow::doubleClick(){
              this->liste_vecteur3D.clear();
              this->ui->widget->setListPoints(liste_vecteur3D);
              ui->widget->setListPlan(liste_vecteur3D);
+             int* tab;
+
+             const char* nomFichier= name.toStdString().c_str();
+        //     tab=parser_file(nomFichier);
              GestionFichier ges;
+          //   QList<QVector3D> l=ges.tabToVector3D(tab);
              QList<QVector3D> l=ges.parser(name);
              if(!l.empty()){
 

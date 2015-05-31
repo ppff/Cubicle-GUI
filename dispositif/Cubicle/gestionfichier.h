@@ -9,7 +9,8 @@
 
 
 
-#ifdef __cplusplus
+
+//#ifdef __cplusplus
 
 class GestionFichier
 {
@@ -19,7 +20,9 @@ public:
     void modifierFichier(QString newLine, QString empl);
     QString getLinePlan(const int nplan,const int nligne,Cube c);
     QList<QVector3D> parser(QString empl);
+    QList<QVector3D> tabToVector3D(int* tab);
 };
+/*
 #else
     typedef
     struct GestionFichier
@@ -30,17 +33,17 @@ public:
 extern "C" {
 #endif
     #if defined(__STDC__) || defined(__cplusplus)
-    extern void c_function(GestionFichier*); /* ANSI C prototypes */
-    extern GestionFichier* cplusplus_callback_function(GestionFichier*);
+    extern int* parser_file(const char*); /* ANSI C prototypes */
+ /*   extern GestionFichier* cplusplus_callback_function(GestionFichier*);
 #else
     extern void c_function(); /* K&R style */
-    extern GestionFichier* cplusplus_callback_function();
-#endif
+//    extern GestionFichier* cplusplus_callback_function();
+/*#endif
 
 #ifdef __cplusplus
 }
 #endif
 
-
+*/
 
 #endif // GESTIONFICHIER_H
