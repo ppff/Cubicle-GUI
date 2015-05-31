@@ -59,6 +59,7 @@ MainWindow::MainWindow(QWidget *parent) :
     connect(ui->actionSave,SIGNAL(triggered(bool)),this,SLOT(controlSave()));
     connect(ui->treeView,SIGNAL(doubleClicked(const QModelIndex &)),this,SLOT(doubleClick()));
     connect(ui->actionCut_pattern,SIGNAL(triggered(bool)),this,SLOT(couper()));
+    connect(ui->actionSave_as,SIGNAL(triggered(bool)),this,SLOT(controlSaveAs()));
 
     this->setWindowTitle("Cubicle");
     deletePlanLed(0);
@@ -253,12 +254,19 @@ void MainWindow::new_project(){
      model->setSorting(QDir::DirsFirst | QDir::IgnoreCase | QDir::Name);
 
          QModelIndex index=model->index(s);
-          model->mkdir(index,"workspace");
+        model->mkdir(index,"workspace");
         namedir=s+"/workspace";
+
 
                   qDebug()<<"je crée cubicle pour la 1ere fois";
              new_index=model->index(namedir);
              model->mkdir(new_index,"Cubicle");
+
+        /*qDebug()<<"je crée cubicle pour la 1ere fois";
+             QModelIndex index1=model->index(namedir);
+             model->mkdir(index1,"Cubicle");
+                    tree();*/
+
 
             tree();
 }
@@ -371,11 +379,90 @@ void MainWindow::controlSave(){
     GestionFichier ges;
     ges.ouvrir(this->emplMotif,this->c);
 }
+void MainWindow::xCopy2 (const QString &sourcePath, const QString &destPath, const QString &name)
+{
+    static const QStringList filters = QStringList () << "*";
+    static const QDir::Filters flags = QDir::NoDotAndDotDot | QDir::AllDirs | QDir::Files | QDir::Hidden;
 
-void MainWindow::controlSaveAs(){
+    QString sourceObjectPath = sourcePath+"/"+name;
+    QString destObjectPath = destPath +"/"+name;
+    QFileInfo fi (sourceObjectPath);
+
+    if (fi.isDir ()) {
+        qDebug () << "Créer le répertoire " << destObjectPath;
+        QDir destDir(destPath);
+        destDir.mkdir(name);
+
+        qDebug () << "Recopier dedans, récursivement, le contenu de" << sourceObjectPath;
+        //sourceObjectPath += '/';
+        //destObjectPath += '/';
+        QDir currentSourceDir (sourceObjectPath);
+        const QStringList fileList = currentSourceDir.entryList (filters, flags);
+        foreach (const QString &content, fileList) {
+            xCopy2 (sourceObjectPath, destObjectPath, content);
+        }
+    } else {
+        qDebug () << "Copier le fichier " << name << "de" << sourcePath << "vers" << destPath;
+        QFile::copy (sourceObjectPath, destObjectPath);
+
+
+    }
+    if (!removeDir(namedir+"/Cubicle")){
+        qDebug()<<"le dossier n'est pas supprimé"
+        ;
+    }
+   namedir= destPath;
+   qDebug()<< "le nouveau path est" + namedir;
+   tree();
+
 
 }
+void MainWindow::controlSaveAs(){
+    qDebug()<<"je suis dans controlSaveAs";
+    QString destPath=QFileDialog::getExistingDirectory(this, tr("Open Directory"),
+                                                   "/home"
+                                               );
+    QString originPath=namedir;
+    qDebug()<<"l'origine est "+namedir;
+    qDebug()<<"la destination est"+destPath;
+    xCopy2(originPath,destPath,"Cubicle");
+}
 
+bool MainWindow::removeDir(const QString& dirPath) //dirPath = le chemin du répertoire à supprimer, ex : "/home/user/monRepertoire")
+{
+    QDir folder(dirPath);
+    //On va lister dans ce répertoire tous les éléments différents de "." et ".."
+    //(désignant respectivement le répertoire en cours et le répertoire parent)
+    folder.setFilter(QDir::NoDotAndDotDot | QDir::AllEntries);
+    foreach(QFileInfo fileInfo, folder.entryInfoList())
+    {
+        //Si l'élément est un répertoire, on applique la méthode courante à ce répertoire, c'est un appel récursif
+        if(fileInfo.isDir())
+        {
+            if(!removeDir(fileInfo.filePath())) //Si une erreur survient, on retourne false
+                return false;
+        }
+        //Si l'élément est un fichier, on le supprime
+        else if(fileInfo.isFile())
+        {
+            if(!QFile::remove(fileInfo.filePath()))
+            {
+                //Si une erreur survient, on retourne false
+                return false;
+            }
+        }
+    }
+
+    //Le dossier est maintenant vide, on le supprime
+    if(!folder.rmdir(dirPath))
+    {
+        //Si une erreur survient, on retourne false
+        return false;
+    }
+
+    //Sinon, on retourne true
+    return true;
+}
 // supprimer  le plan 2D Lors d'un double clic sur un nouveau motif
 void MainWindow::doubleClick(){
      QModelIndex index=ui->treeView->currentIndex();
