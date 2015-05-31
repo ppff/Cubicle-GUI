@@ -119,6 +119,7 @@ public slots:
     void affichePlanLed(const QString & valeur);
     void afficheLed(const int i, const int j, const int etat);
     void controlLed(const QString & valeur);
+   // void controlRename();
 
 protected:
     QDir *aDir;

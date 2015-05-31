@@ -60,6 +60,7 @@ MainWindow::MainWindow(QWidget *parent) :
     connect(ui->treeView,SIGNAL(doubleClicked(const QModelIndex &)),this,SLOT(doubleClick()));
     connect(ui->actionCut_pattern,SIGNAL(triggered(bool)),this,SLOT(couper()));
     connect(ui->actionSave_as,SIGNAL(triggered(bool)),this,SLOT(controlSaveAs()));
+   // connect(ui->treeView,SIGNAL(doubleClicked(QModelIndex)),this,SLOT(controlRename()));
 
     this->setWindowTitle("Cubicle");
     deletePlanLed(0);
@@ -407,6 +408,10 @@ void MainWindow::xCopy2 (const QString &sourcePath, const QString &destPath, con
 
 
     }
+    namedir= destObjectPath;
+    qDebug()<< "le nouveau path est" + namedir;
+    this->setWindowTitle("Cubicle["+destObjectPath+"]") ;
+    tree();
 
 
 
@@ -424,9 +429,7 @@ void MainWindow::controlSaveAs(){
     if (!removeDir(namedir+"/Cubicle")){
         qDebug()<<namedir+"/Cubicle n'est pas supprimé";
     }
-    namedir= destPath;
-    qDebug()<< "le nouveau path est" + namedir;
-    tree();
+
 }
 
 bool MainWindow::removeDir(const QString& dirPath) //dirPath = le chemin du répertoire à supprimer, ex : "/home/user/monRepertoire")
@@ -467,6 +470,25 @@ bool MainWindow::removeDir(const QString& dirPath) //dirPath = le chemin du rép
     //Sinon, on retourne true
     return true;
 }
+
+/*void MainWindow::controlRename(){
+    QModelIndex index=ui->treeView->currentIndex();
+     if (model->fileInfo(index).isFile()){
+            QString path = model->filePath(index);
+            QString name = model->fileName(index);
+            QString dir = path;
+            dir.remove(dir.size() - name.size(), name.size());
+            QFile file(path);
+            if(file.open(QIODevice::WriteOnly | QIODevice::Text))
+            {
+                //Interact with the file
+                file.close();
+                if(file.rename(QString("%1read %2").arg(dir, name)))
+                        qDebug() << "Renamed";
+            }
+     }
+}*/
+
 // supprimer  le plan 2D Lors d'un double clic sur un nouveau motif
 void MainWindow::doubleClick(){
      QModelIndex index=ui->treeView->currentIndex();
