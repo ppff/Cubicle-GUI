@@ -242,11 +242,9 @@ void MainWindow::new_project(){
      model->setSorting(QDir::DirsFirst | QDir::IgnoreCase | QDir::Name);
 
          QModelIndex index=model->index(s);
-          model->mkdir(index,"workspace");
+        model->mkdir(index,"workspace");
         namedir=s+"/workspace";
-
-
-                  qDebug()<<"je crée cubicle pour la 1ere fois";
+        qDebug()<<"je crée cubicle pour la 1ere fois";
              QModelIndex index1=model->index(namedir);
              model->mkdir(index1,"Cubicle");
                     tree();
@@ -379,6 +377,7 @@ void MainWindow::xCopy2 (const QString &sourcePath, const QString &destPath, con
     } else {
         qDebug () << "Copier le fichier " << name << "de" << sourcePath << "vers" << destPath;
         QFile::copy (sourceObjectPath, destObjectPath);
+        QFile::remove(sourceObjectPath);
     }
     namedir.clear();
 }
@@ -387,10 +386,10 @@ void MainWindow::controlSaveAs(){
     QString destPath=QFileDialog::getExistingDirectory(this, tr("Open Directory"),
                                                    "/home"
                                                );
-    QString originPath=QCoreApplication::applicationDirPath();
+    QString originPath=namedir;
     qDebug()<<"l'origine est "+namedir;
     qDebug()<<"la destination est"+destPath;
-    xCopy2(originPath,destPath,"newCubicle");
+    xCopy2(originPath,destPath,"Cubicle");
 }
 
 
