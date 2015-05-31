@@ -190,9 +190,9 @@ void MainWindow::tree(){
     qDebug() << "le namedir est" + namedir;
     QModelIndex index=model->index(namedir);
      ui->treeView->setRootIndex(index);
-    ui->treeView->expand(index);
-    ui->treeView->scrollTo(index);
-    ui->treeView->setCurrentIndex(index);
+    ui->treeView->expand(new_index);
+    ui->treeView->scrollTo(new_index);
+    ui->treeView->setCurrentIndex(new_index);
     for(int i=1;i<4;i++){
         ui->treeView->hideColumn(i);
     }
@@ -241,20 +241,21 @@ void MainWindow::new_project(){
      model->setSorting(QDir::DirsFirst | QDir::IgnoreCase | QDir::Name);
 
          QModelIndex index=model->index(s);
-          model->mkdir(index,"new Cubicle");
-        namedir=s+"/new Cubicle";
+          model->mkdir(index,"workspace");
+        namedir=s+"/workspace";
 
                   qDebug()<<"je crée cubicle pour la 1ere fois";
-
+             QModelIndex index1=model->index(namedir);
+             model->mkdir(index1,"Cubicle");
                     tree();
 
 }
 
 void MainWindow::on_actionNew_Group_triggered()
 {   int m;
-    QModelIndex index =model->index(namedir,0);
+    QModelIndex index =model->index(namedir+"/Cubicle",0);
     QString name ="New Group";
-    QDir dir(namedir);
+    QDir dir(namedir+"/Cubicle");
     QFileInfoList entries = dir.entryInfoList(QDir::NoDotAndDotDot | QDir::AllEntries);
     dir.setSorting( QDir::Name);
     m=entries.size();
@@ -262,7 +263,9 @@ void MainWindow::on_actionNew_Group_triggered()
         s = "0"+QString::number(m)+"_";
     }else {
         s = QString::number(m)+"_";
+
     }
+
         /*
         for (int i=0;i<m;++i)
         {
@@ -274,6 +277,8 @@ void MainWindow::on_actionNew_Group_triggered()
     name = s + name;
     model->mkdir(index,name);
     qDebug()<<"j'ai crée un dossier ds "+namedir;
+       new_index =model->index(namedir+"/Cubicle"+name,0);
+    tree();
 
 }
 
