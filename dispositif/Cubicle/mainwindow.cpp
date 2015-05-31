@@ -377,9 +377,12 @@ void MainWindow::xCopy2 (const QString &sourcePath, const QString &destPath, con
     } else {
         qDebug () << "Copier le fichier " << name << "de" << sourcePath << "vers" << destPath;
         QFile::copy (sourceObjectPath, destObjectPath);
-        QFile::remove(sourceObjectPath);
+
     }
-    namedir.clear();
+    if (!removeDir(namedir+"/Cubicle")){
+        qDebug()<<"le dossier n'est pas supprimé"
+        ;
+    }
 }
 void MainWindow::controlSaveAs(){
     qDebug()<<"je suis dans controlSaveAs";
@@ -392,7 +395,41 @@ void MainWindow::controlSaveAs(){
     xCopy2(originPath,destPath,"Cubicle");
 }
 
+bool MainWindow::removeDir(const QString& dirPath) //dirPath = le chemin du répertoire à supprimer, ex : "/home/user/monRepertoire")
+{
+    QDir folder(dirPath);
+    //On va lister dans ce répertoire tous les éléments différents de "." et ".."
+    //(désignant respectivement le répertoire en cours et le répertoire parent)
+    folder.setFilter(QDir::NoDotAndDotDot | QDir::AllEntries);
+    foreach(QFileInfo fileInfo, folder.entryInfoList())
+    {
+        //Si l'élément est un répertoire, on applique la méthode courante à ce répertoire, c'est un appel récursif
+        if(fileInfo.isDir())
+        {
+            if(!removeDir(fileInfo.filePath())) //Si une erreur survient, on retourne false
+                return false;
+        }
+        //Si l'élément est un fichier, on le supprime
+        else if(fileInfo.isFile())
+        {
+            if(!QFile::remove(fileInfo.filePath()))
+            {
+                //Si une erreur survient, on retourne false
+                return false;
+            }
+        }
+    }
 
+    //Le dossier est maintenant vide, on le supprime
+    if(!folder.rmdir(dirPath))
+    {
+        //Si une erreur survient, on retourne false
+        return false;
+    }
+
+    //Sinon, on retourne true
+    return true;
+}
 // supprimer  le plan 2D Lors d'un double clic sur un nouveau motif
 void MainWindow::doubleClick(){
      QModelIndex index=ui->treeView->currentIndex();
