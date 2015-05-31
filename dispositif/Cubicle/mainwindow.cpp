@@ -49,7 +49,7 @@ MainWindow::MainWindow(QWidget *parent) :
            ui->plane7->setDisabled(true);
             ui->plane8->setDisabled(true);
             ui->plane9->setDisabled(true);
-
+    connect(ui->actionNew_project,SIGNAL(triggered(bool)),this,SLOT(new_project()));
     connect(ui->actionOpen_directory,SIGNAL(triggered(bool)),this,SLOT(ouvrir_explorer()));
     connect(ui->actionCopy,SIGNAL(triggered(bool)),this,SLOT(copier()));
     connect(ui->actionPaste_pattern,SIGNAL(triggered(bool)),this,SLOT(coller()));
@@ -233,20 +233,60 @@ void MainWindow::ajouter_motif(){
 
 }
 
+void MainWindow::new_project(){
+
+    s=QCoreApplication::applicationDirPath();
+    model = new QDirModel(this);
+     model->setReadOnly(false);
+     model->setSorting(QDir::DirsFirst | QDir::IgnoreCase | QDir::Name);
+
+         QModelIndex index=model->index(s);
+          model->mkdir(index,"Cubicle");
+        namedir=s+"/Cubicle";
+
+                  qDebug()<<"je crée cubicle pour la 1ere fois";
+                 //  dirOpen=true;
+                    tree();
+
+}
 
 void MainWindow::on_actionNew_Group_triggered()
-{
-        int m;
-        QString s;
-        if(namedir==""){
+{   int m;
+    QModelIndex index =model->index(namedir,0);
+    QString name ="New Group";
+    QDir dir(namedir);
+    QFileInfoList entries = dir.entryInfoList(QDir::NoDotAndDotDot | QDir::AllEntries);
+    dir.setSorting( QDir::Name);
+    m=entries.size();
+    if (m<10){
+        s = "0"+QString::number(m)+"_";
+    }else {
+        s = QString::number(m)+"_";
+    }
+        /*
+        for (int i=0;i<m;++i)
+        {
+            QString path = entries[i].absoluteFilePath();
+            QDir d=QDir(path);
+            err=RemoveDirectory(d);
+        }
+        */
+    name = s + name;
+    model->mkdir(index,name);
+    qDebug()<<"j'ai crée un dossier ds "+namedir;
+
+}
+
+
+       /* if(namedir==""){
 
             namedir="/home/Cubicle";
                      QDir::home().mkdir("Cubicle");
                       qDebug()<<"je crée cubicle pour la 1ere fois";
                        dirOpen=true;
                        tree();
-        }
-       if(namedir=="/home/Cubicle"){
+        }*/
+       /*if(namedir==s+"/Cubicle"){
 
            QModelIndex index=ui->treeView->currentIndex();
            if (index.isValid()){
@@ -268,34 +308,10 @@ void MainWindow::on_actionNew_Group_triggered()
                }
            }
        }
-       else {
+       else {*/
 
-            QModelIndex index =model->index(namedir,0);
-            QString name ="New Group";
-            QDir dir(namedir);
-            QFileInfoList entries = dir.entryInfoList(QDir::NoDotAndDotDot | QDir::AllEntries);
-            dir.setSorting( QDir::Name);
-            m=entries.size();
-            if (m<10){
-                s = "0"+QString::number(m)+"_";
-            }else {
-                s = QString::number(m)+"_";
-            }
-                /*
-                for (int i=0;i<m;++i)
-                {
-                    QString path = entries[i].absoluteFilePath();
-                    QDir d=QDir(path);
-                    err=RemoveDirectory(d);
-                }
-                */
-            name = s + name;
-            model->mkdir(index,name);
-            qDebug()<<"j'ai crée un dossier ds "+namedir;
 
-    }
 
-}
 
 
 void MainWindow::controlQuit(){
