@@ -38,6 +38,8 @@ MainWindow::MainWindow(QWidget *parent) :
     ui->actionPaste_pattern->setDisabled(true);
     ui->actionSave->setDisabled(true);
     ui->actionCut_pattern->setDisabled(true);
+    ui->actionRaise_a_pattern->setDisabled(true);
+
     connect(ui->actionOpen_directory,SIGNAL(triggered(bool)),this,SLOT(ouvrir_explorer()));
     connect(ui->actionCopy,SIGNAL(triggered(bool)),this,SLOT(copier()));
     connect(ui->actionPaste_pattern,SIGNAL(triggered(bool)),this,SLOT(coller()));
@@ -48,6 +50,8 @@ MainWindow::MainWindow(QWidget *parent) :
     connect(ui->actionSave,SIGNAL(triggered(bool)),this,SLOT(controlSave()));
     connect(ui->treeView,SIGNAL(doubleClicked(const QModelIndex &)),this,SLOT(doubleClick()));
     connect(ui->actionCut_pattern,SIGNAL(triggered(bool)),this,SLOT(couper()));
+    connect(ui->actionRaise_a_pattern,SIGNAL(triggered(bool)),this,SLOT(Monter()));
+
     l_cube=ui->label;
     l_repere=ui->label_2;
     label_y=ui->label_3;
@@ -58,9 +62,6 @@ MainWindow::MainWindow(QWidget *parent) :
     desactivePlan(0);
     connexion();
     dirOpen=false;
-
-
-
 }
 
 //ouvre le répertoire de travail
@@ -99,9 +100,14 @@ void MainWindow::contextMenuEvent(QContextMenuEvent *event){
                   if((dir+'/'+nameGroup)!=namedir){
                           insertMotif = contextMenu->addAction("new pattern");
                           connect(insertMotif,SIGNAL(triggered(bool)),this, SLOT(ajouter_motif()));
+
                           QAction * paste;
                           paste = contextMenu->addAction("paste pattern");
                           connect(paste,SIGNAL(triggered(bool)),this, SLOT(coller()));
+
+                          QAction * monter;
+                          monter = contextMenu->addAction("Raise a repertory");
+                          connect(monter, SIGNAL(triggered(bool)),this, SLOT(Monter()));
                   }
              }
     }
@@ -110,14 +116,18 @@ void MainWindow::contextMenuEvent(QContextMenuEvent *event){
               QString sp =model->fileInfo(index).absoluteFilePath();
               if(index.isValid()){
                    ui->treeView->setContextMenuPolicy(Qt::ActionsContextMenu);
+
                    QAction * save;
                    save = contextMenu->addAction("save");
                    connect(save,SIGNAL(triggered(bool)),this, SLOT(controlSave()));
+
                    QAction * copy;
                    copy = contextMenu->addAction("copy pattern");
                    connect(copy,SIGNAL(triggered(bool)),this, SLOT(copier()));
+
                    QAction *cut = contextMenu->addAction("cut pattern");
                    connect(cut,SIGNAL(triggered(bool)),this, SLOT(couper()));
+
                    deletePattern = contextMenu->addAction("delete pattern");
                    connect(deletePattern,SIGNAL(triggered(bool)),this, SLOT(controlDelete()));
                 }
@@ -127,6 +137,9 @@ void MainWindow::contextMenuEvent(QContextMenuEvent *event){
     }
 
 }
+
+
+///////////////////////////////////////////////////////////////////////////////
 
 void MainWindow::couper(){
     copier();
@@ -146,7 +159,7 @@ void MainWindow::copier(){
 }
 void MainWindow::coller(){
      QString nameGroup;
-    if (!dirOrFile){
+     if (!dirOrFile){
 
         QModelIndex index=ui->treeView->currentIndex();
         if (index.isValid()){
@@ -172,7 +185,6 @@ void MainWindow::coller(){
     }
 }
 
-
 void MainWindow::tree(){
             model = new QDirModel(this);
             model->setReadOnly(false);
@@ -195,7 +207,7 @@ void MainWindow::tree(){
     ui->actionPaste_pattern->setDisabled(false);
     ui->actionCut_pattern->setDisabled(false);
     ui->actionSave->setDisabled(false);
-
+    ui->actionRaise_a_pattern->setDisabled(false);
 }
 
 //créer un nouveau motif
@@ -279,7 +291,24 @@ void MainWindow::on_actionNew_Group_triggered()
 
 }
 
-///////////////////////////////////////////////////////////////////////////////
+void MainWindow::Monter()
+{
+    QString nameGroup;
+       QModelIndex index=ui->treeView->currentIndex();
+       if (index.isValid()){
+           if (model->fileInfo(index).isDir()) {
+                QString dir=model->fileInfo(index).absolutePath();
+                nameGroup=model->fileInfo(index).baseName();
+                qDebug()<<nameGroup;
+                qDebug()<<dir;
+
+                QFileInfoList entries = dire.entryInfoList(QDir::NoDotAndDotDot | QDir::AllEntries);
+
+         }
+   }
+}
+////////////////////////////////////////////////////////////////////////////////
+
 bool RemoveDirectory(QDir &aDir)
 {
     bool err=false;
@@ -637,5 +666,7 @@ void MainWindow::kill()
     if(_instance != 0)
         delete _instance;
 }*/
+
+
 
 

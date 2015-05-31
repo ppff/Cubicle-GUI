@@ -124,6 +124,8 @@
     </property>
     <addaction name="actionSelect"/>
     <addaction name="actionDuplicate"/>
+    <addaction name="actionRaise_a_pattern"/>
+    <addaction name="actionLower_a_pattern"/>
    </widget>
    <addaction name="menuFile"/>
    <addaction name="menuEdit"/>
@@ -148,6 +150,8 @@
    <addaction name="actionPaste_pattern"/>
    <addaction name="actionCut_pattern"/>
    <addaction name="actionDelete_pattern"/>
+   <addaction name="actionRaise_a_pattern"/>
+   <addaction name="actionLower_a_pattern"/>
    <addaction name="actionQuit"/>
   </widget>
   <widget class="QToolBar" name="toolBar">
@@ -168,7 +172,7 @@
   </widget>
   <action name="actionNew_Group">
    <property name="icon">
-    <iconset>
+    <iconset resource="ressource.qrc">
      <normaloff>:/Images/new_group.png</normaloff>:/Images/new_group.png</iconset>
    </property>
    <property name="text">
@@ -177,7 +181,7 @@
   </action>
   <action name="actionNew_Pattern">
    <property name="icon">
-    <iconset>
+    <iconset resource="ressource.qrc">
      <normaloff>:/Images/new_pattern.gif</normaloff>:/Images/new_pattern.gif</iconset>
    </property>
    <property name="text">
@@ -186,7 +190,7 @@
   </action>
   <action name="actionSave">
    <property name="icon">
-    <iconset>
+    <iconset resource="ressource.qrc">
      <normaloff>:/Images/save.png</normaloff>:/Images/save.png</iconset>
    </property>
    <property name="text">
@@ -195,7 +199,7 @@
   </action>
   <action name="actionQuit">
    <property name="icon">
-    <iconset>
+    <iconset resource="ressource.qrc">
      <normaloff>:/Images/quit.png</normaloff>:/Images/quit.png</iconset>
    </property>
    <property name="text">
@@ -204,7 +208,7 @@
   </action>
   <action name="actionCopy">
    <property name="icon">
-    <iconset>
+    <iconset resource="ressource.qrc">
      <normaloff>:/Images/copy.png</normaloff>:/Images/copy.png</iconset>
    </property>
    <property name="text">
@@ -213,7 +217,7 @@
   </action>
   <action name="actionOpen_directory">
    <property name="icon">
-    <iconset theme="opendirectory">
+    <iconset theme="opendirectory" resource="ressource.qrc">
      <normaloff>:/Images/open_directory.png</normaloff>:/Images/open_directory.png</iconset>
    </property>
    <property name="text">
@@ -222,7 +226,7 @@
   </action>
   <action name="actionPaste_pattern">
    <property name="icon">
-    <iconset>
+    <iconset resource="ressource.qrc">
      <normaloff>:/Images/paste.png</normaloff>:/Images/paste.png</iconset>
    </property>
    <property name="text">
@@ -231,7 +235,7 @@
   </action>
   <action name="actionDelete_pattern">
    <property name="icon">
-    <iconset>
+    <iconset resource="ressource.qrc">
      <normaloff>:/Images/delete_pattern.png</normaloff>:/Images/delete_pattern.png</iconset>
    </property>
    <property name="text">
@@ -240,7 +244,7 @@
   </action>
   <action name="actionSelect_a_group_of_atoms">
    <property name="icon">
-    <iconset>
+    <iconset resource="ressource.qrc">
      <normaloff>:/icone/Selection_Plan.jpeg</normaloff>:/icone/Selection_Plan.jpeg</iconset>
    </property>
    <property name="text">
@@ -249,7 +253,7 @@
   </action>
   <action name="actionSelect">
    <property name="icon">
-    <iconset>
+    <iconset resource="ressource.qrc">
      <normaloff>:/icone/Select.png</normaloff>:/icone/Select.png</iconset>
    </property>
    <property name="text">
@@ -258,7 +262,7 @@
   </action>
   <action name="actionDuplicate">
    <property name="icon">
-    <iconset>
+    <iconset resource="ressource.qrc">
      <normaloff>:/icone/Dupliquer.jpg</normaloff>:/icone/Dupliquer.jpg</iconset>
    </property>
    <property name="text">
@@ -267,11 +271,29 @@
   </action>
   <action name="actionCut_pattern">
    <property name="icon">
-    <iconset>
+    <iconset resource="ressource.qrc">
      <normaloff>:/icone/couper.png</normaloff>:/icone/couper.png</iconset>
    </property>
    <property name="text">
     <string>cut pattern</string>
+   </property>
+  </action>
+  <action name="actionRaise_a_pattern">
+   <property name="icon">
+    <iconset resource="ressource.qrc">
+     <normaloff>:/Images/up.png</normaloff>:/Images/up.png</iconset>
+   </property>
+   <property name="text">
+    <string>Raise</string>
+   </property>
+  </action>
+  <action name="actionLower_a_pattern">
+   <property name="icon">
+    <iconset resource="ressource.qrc">
+     <normaloff>:/Images/down.png</normaloff>:/Images/down.png</iconset>
+   </property>
+   <property name="text">
+    <string>Lower</string>
    </property>
   </action>
  </widget>
@@ -287,6 +309,8 @@
  <tabstops>
   <tabstop>treeView</tabstop>
  </tabstops>
- <resources/>
+ <resources>
+  <include location="ressource.qrc"/>
+ </resources>
  <connections/>
 </ui>

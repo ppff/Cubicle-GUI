@@ -106,6 +106,7 @@ public slots:
     void couper();
     void copier();
     void coller();
+    void Monter();
 
 public slots:
     void insertGroup();
@@ -123,6 +124,7 @@ protected:
 
 private slots:
 void on_actionNew_Group_triggered();
+
 };
 
 //MainWindow* MainWindow::_instance=NULL;
