@@ -372,10 +372,10 @@ void MainWindow::doubleClick(){
                  this->ui->widget->setListPoints(l);
 
                  for (QVector3D u:l){
-                   Led l=this->c.getList1()->value(u.y()).getLed(abs(8-u.z()),abs(8-u.x()));
+                   Led l=this->c.getList1()->value(u.y()).getLed(fabs(8-u.z()),fabs(8-u.x()));
                    l.modifierEtat();
                    Plan p=c.getList1()->value(u.y());
-                   p.updatePlan(l,abs(8-u.z()),abs(8-u.x()),u.y());
+                   p.updatePlan(l,fabs(8-u.z()),fabs(8-u.x()),u.y());
                    this->c.updateCube(p,u.y());
                    liste_vecteur3D.append(u);
                    this->ui->widget->setListPoints(liste_vecteur3D);
