@@ -412,10 +412,7 @@ void MainWindow::xCopy2 (const QString &sourcePath, const QString &destPath, con
 
 
     }
-    namedir= destObjectPath;
-    qDebug()<< "le nouveau path est" + namedir;
-    this->setWindowTitle("Cubicle["+destObjectPath+"]") ;
-    tree();
+
 
 
 
@@ -433,6 +430,10 @@ void MainWindow::controlSaveAs(){
     if (!removeDir(namedir+"/Cubicle")){
         qDebug()<<namedir+"/Cubicle n'est pas supprimé";
     }
+    namedir= destPath+"/Cubicle";
+    qDebug()<< "le nouveau path est" + namedir;
+    this->setWindowTitle("Cubicle["+destPath+"/Cubicle"+"]") ;
+    tree();
 
 }
 
