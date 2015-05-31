@@ -379,10 +379,7 @@ void MainWindow::xCopy2 (const QString &sourcePath, const QString &destPath, con
         QFile::copy (sourceObjectPath, destObjectPath);
 
     }
-    if (!removeDir(namedir+"/Cubicle")){
-        qDebug()<<"le dossier n'est pas supprimé"
-        ;
-    }
+
 }
 void MainWindow::controlSaveAs(){
     qDebug()<<"je suis dans controlSaveAs";
@@ -393,6 +390,9 @@ void MainWindow::controlSaveAs(){
     qDebug()<<"l'origine est "+namedir;
     qDebug()<<"la destination est"+destPath;
     xCopy2(originPath,destPath,"Cubicle");
+    if (!removeDir(namedir+"/Cubicle")){
+        qDebug()<<namedir+"/Cubicle n'est pas supprimé";
+    }
 }
 
 bool MainWindow::removeDir(const QString& dirPath) //dirPath = le chemin du répertoire à supprimer, ex : "/home/user/monRepertoire")
@@ -407,6 +407,7 @@ bool MainWindow::removeDir(const QString& dirPath) //dirPath = le chemin du rép
         if(fileInfo.isDir())
         {
             if(!removeDir(fileInfo.filePath())) //Si une erreur survient, on retourne false
+                qDebug()<<"erreur dans remove du dir "+dirPath;
                 return false;
         }
         //Si l'élément est un fichier, on le supprime
@@ -415,6 +416,7 @@ bool MainWindow::removeDir(const QString& dirPath) //dirPath = le chemin du rép
             if(!QFile::remove(fileInfo.filePath()))
             {
                 //Si une erreur survient, on retourne false
+                qDebug()<<"erreur dans remove du file"+dirPath;
                 return false;
             }
         }
@@ -424,6 +426,7 @@ bool MainWindow::removeDir(const QString& dirPath) //dirPath = le chemin du rép
     if(!folder.rmdir(dirPath))
     {
         //Si une erreur survient, on retourne false
+        qDebug()<<"erreur dans remove du dir"+dirPath;
         return false;
     }
 
