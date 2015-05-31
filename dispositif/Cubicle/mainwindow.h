@@ -61,7 +61,7 @@ public:
     void desactivePlan(int i);
     void connexion();
     void contextMenuEvent(QContextMenuEvent *event);
-
+    void xCopy2 (const QString &sourcePath, const QString &destPath, const QString &name);
     ~MainWindow();
 
     /*static MainWindow* getInstance();

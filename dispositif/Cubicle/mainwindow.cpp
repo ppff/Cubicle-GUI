@@ -59,6 +59,7 @@ MainWindow::MainWindow(QWidget *parent) :
     connect(ui->actionSave,SIGNAL(triggered(bool)),this,SLOT(controlSave()));
     connect(ui->treeView,SIGNAL(doubleClicked(const QModelIndex &)),this,SLOT(doubleClick()));
     connect(ui->actionCut_pattern,SIGNAL(triggered(bool)),this,SLOT(couper()));
+    connect(ui->actionSave_as,SIGNAL(triggered(bool)),this,SLOT(controlSaveAs()));
 
     this->setWindowTitle("Cubicle");
     deletePlanLed(0);
@@ -241,10 +242,9 @@ void MainWindow::new_project(){
      model->setSorting(QDir::DirsFirst | QDir::IgnoreCase | QDir::Name);
 
          QModelIndex index=model->index(s);
-          model->mkdir(index,"workspace");
+        model->mkdir(index,"workspace");
         namedir=s+"/workspace";
-
-                  qDebug()<<"je crée cubicle pour la 1ere fois";
+        qDebug()<<"je crée cubicle pour la 1ere fois";
              QModelIndex index1=model->index(namedir);
              model->mkdir(index1,"Cubicle");
                     tree();
@@ -352,10 +352,46 @@ void MainWindow::controlSave(){
     GestionFichier ges;
     ges.ouvrir(this->emplMotif,this->c);
 }
+void MainWindow::xCopy2 (const QString &sourcePath, const QString &destPath, const QString &name)
+{
+    static const QStringList filters = QStringList () << "*";
+    static const QDir::Filters flags = QDir::NoDotAndDotDot | QDir::AllDirs | QDir::Files | QDir::Hidden;
 
-void MainWindow::controlSaveAs(){
+    QString sourceObjectPath = sourcePath+"/"+name;
+    QString destObjectPath = destPath +"/"+name;
+    QFileInfo fi (sourceObjectPath);
 
+    if (fi.isDir ()) {
+        qDebug () << "Créer le répertoire " << destObjectPath;
+        QDir destDir(destPath);
+        destDir.mkdir(name);
+
+        qDebug () << "Recopier dedans, récursivement, le contenu de" << sourceObjectPath;
+        //sourceObjectPath += '/';
+        //destObjectPath += '/';
+        QDir currentSourceDir (sourceObjectPath);
+        const QStringList fileList = currentSourceDir.entryList (filters, flags);
+        foreach (const QString &content, fileList) {
+            xCopy2 (sourceObjectPath, destObjectPath, content);
+        }
+    } else {
+        qDebug () << "Copier le fichier " << name << "de" << sourcePath << "vers" << destPath;
+        QFile::copy (sourceObjectPath, destObjectPath);
+        QFile::remove(sourceObjectPath);
+    }
+    namedir.clear();
 }
+void MainWindow::controlSaveAs(){
+    qDebug()<<"je suis dans controlSaveAs";
+    QString destPath=QFileDialog::getExistingDirectory(this, tr("Open Directory"),
+                                                   "/home"
+                                               );
+    QString originPath=namedir;
+    qDebug()<<"l'origine est "+namedir;
+    qDebug()<<"la destination est"+destPath;
+    xCopy2(originPath,destPath,"Cubicle");
+}
+
 
 // supprimer  le plan 2D Lors d'un double clic sur un nouveau motif
 void MainWindow::doubleClick(){
