@@ -227,7 +227,7 @@ void MainWindow::ajouter_motif(){
 
             NouveauMotif m=NouveauMotif("New Pattern",dir+"/"+nameGroup);
             tree();
-
+            if(namedir==s+"/workspace"){
             new_index =model->index(namedir+"/Cubicle/"+ nameGroup );
          ui->treeView->expand(new_index);
          ui->treeView->scrollTo(new_index);
@@ -237,6 +237,18 @@ void MainWindow::ajouter_motif(){
          ui->treeView->selectionModel()->select(new_index,
                 QItemSelectionModel::ClearAndSelect | QItemSelectionModel::Rows);
               //ui->treeView->edit(new_index);
+            }
+            else{
+                new_index =model->index(namedir+"/"+ nameGroup );
+             ui->treeView->expand(new_index);
+             ui->treeView->scrollTo(new_index);
+             new_index =model->index(namedir+ nameGroup +"/" +m.getNameFile());
+             qDebug() << namedir+ nameGroup +"/" +m.getNameFile();
+             ui->treeView->setCurrentIndex(new_index);
+             ui->treeView->selectionModel()->select(new_index,
+                    QItemSelectionModel::ClearAndSelect | QItemSelectionModel::Rows);
+
+            }
 
 
             }
@@ -276,6 +288,7 @@ void MainWindow::new_project(){
 
 void MainWindow::on_actionNew_Group_triggered()
 {   int m;
+    if (namedir==s+"/workspace"){
     QModelIndex index =model->index(namedir+"/Cubicle",0);
     QString name ="New Group";
     QDir dir(namedir+"/Cubicle");
@@ -288,15 +301,6 @@ void MainWindow::on_actionNew_Group_triggered()
         s = QString::number(m)+"_";
 
     }
-
-        /*
-        for (int i=0;i<m;++i)
-        {
-            QString path = entries[i].absoluteFilePath();
-            QDir d=QDir(path);
-            err=RemoveDirectory(d);
-        }
-        */
     name = s + name;
     model->mkdir(index,name);
     qDebug()<<"j'ai crée un dossier ds "+namedir;
@@ -313,37 +317,36 @@ void MainWindow::on_actionNew_Group_triggered()
   ui->treeView->edit(new_index);
 
 }
-       /* if(namedir==""){
+    else {
+        QModelIndex index =model->index(namedir,0);
+        QString name ="New Group";
+        QDir dir(namedir);
+        QFileInfoList entries = dir.entryInfoList(QDir::NoDotAndDotDot | QDir::AllEntries);
+        dir.setSorting( QDir::Name);
+        m=entries.size();
+        if (m<10){
+            s = "0"+QString::number(m)+"_";
+        }else {
+            s = QString::number(m)+"_";
 
-            namedir="/home/Cubicle";
-                     QDir::home().mkdir("Cubicle");
-                      qDebug()<<"je crée cubicle pour la 1ere fois";
-                       dirOpen=true;
-                       tree();
-        }*/
-       /*if(namedir==s+"/Cubicle"){
+        }
+        name = s + name;
+        model->mkdir(index,name);
+        qDebug()<<"j'ai crée un dossier ds "+namedir;
+           new_index =model->index(namedir);
+         qDebug()<<"le new index est " + namedir;
+         new_index =model->index(namedir);
+      ui->treeView->expand(new_index);
+      ui->treeView->scrollTo(new_index);
 
-           QModelIndex index=ui->treeView->currentIndex();
-           if (index.isValid()){
-               qDebug()<<"index valide";
-               if (model->fileInfo(index).isDir()) {
-                    model->setReadOnly(true);
-                   QString dir=model->fileInfo(index).absolutePath();
-                    qDebug()<<"dir"+dir;
-                   QString nameGroup=model->fileInfo(index).baseName();
-                   qDebug()<<"name group "+nameGroup;
+      new_index =model->index(namedir+"/"+name);
+      ui->treeView->setCurrentIndex(new_index);
+      ui->treeView->selectionModel()->select(new_index,
+             QItemSelectionModel::ClearAndSelect | QItemSelectionModel::Rows);
+      ui->treeView->edit(new_index);
 
-                        QModelIndex index =model->index(namedir,0);
-                        QDir dir1(namedir);
-                        model->mkdir(index,"untitled");
-                     //   dir1.mkdir("untitled");
-                        tree();
-                        qDebug()<<"je crée un dossier ds Cubicle";
-
-               }
-           }
-       }
-       else {*/
+    }
+}
 
 
 
