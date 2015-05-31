@@ -16,7 +16,7 @@ NouveauMotif::NouveauMotif(QString nomMotif, QString Dir)
     QString snum;
     snum=QString::number(num) ; // commence le comptage par 0
 
-    QString nameFile;
+
     if(num<10){
         nameFile=Dir+"/0"+snum+"_"+nomMotif+".txt";
     }
@@ -41,3 +41,6 @@ NouveauMotif::NouveauMotif(QString nomMotif, QString Dir)
 
 }
 
+QString NouveauMotif::getNameFile(){
+ return this->nameFile;
+}
