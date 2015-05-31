@@ -73,6 +73,7 @@ public:
     Ui::MainWindow *ui;
 
     QDirModel *model;
+    QModelIndex new_index;
     QMenu* contextMenu;
     QString namedir;
     QAction *insertMotif;
