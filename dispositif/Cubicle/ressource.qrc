@@ -47,5 +47,6 @@
         <file>copy.png</file>
         <file>open_directory.png</file>
         <file>new_group.png</file>
+        <file>new_project.png</file>
     </qresource>
 </RCC>
