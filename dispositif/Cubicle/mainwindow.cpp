@@ -241,8 +241,8 @@ void MainWindow::new_project(){
      model->setSorting(QDir::DirsFirst | QDir::IgnoreCase | QDir::Name);
 
          QModelIndex index=model->index(s);
-          model->mkdir(index,"Cubicle");
-        namedir=s+"/Cubicle";
+          model->mkdir(index,"new Cubicle");
+        namedir=s+"/new Cubicle";
 
                   qDebug()<<"je crée cubicle pour la 1ere fois";
 
