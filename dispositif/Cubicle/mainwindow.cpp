@@ -245,7 +245,7 @@ void MainWindow::new_project(){
         namedir=s+"/Cubicle";
 
                   qDebug()<<"je crée cubicle pour la 1ere fois";
-                 //  dirOpen=true;
+
                     tree();
 
 }
