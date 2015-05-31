@@ -195,9 +195,10 @@ void MainWindow::tree(){
     qDebug() << "le namedir est" + namedir;
     QModelIndex index=model->index(namedir);
      ui->treeView->setRootIndex(index);
-    ui->treeView->expand(new_index);
-    ui->treeView->scrollTo(new_index);
-    ui->treeView->setCurrentIndex(new_index);
+    // ui->treeView->setExpanded(new_index,true);
+
+  /*  ui->treeView->selectionModel()->select(new_index,
+       QItemSelectionModel::ClearAndSelect | QItemSelectionModel::Rows);*/
     for(int i=1;i<4;i++){
         ui->treeView->hideColumn(i);
     }
@@ -216,7 +217,7 @@ void MainWindow::ajouter_motif(){
     if (index.isValid()){
 
         if (model->fileInfo(index).isDir()) {
-             model->setReadOnly(true);
+
             QString dir=model->fileInfo(index).absolutePath();
 
             QString nameGroup=model->fileInfo(index).baseName();
@@ -227,6 +228,18 @@ void MainWindow::ajouter_motif(){
 
             NouveauMotif m=NouveauMotif("New Pattern",dir+"/"+nameGroup);
             tree();
+
+            new_index =model->index(namedir+"/Cubicle/"+ nameGroup );
+         ui->treeView->expand(new_index);
+         ui->treeView->scrollTo(new_index);
+         new_index =model->index(namedir+"/Cubicle/"+ nameGroup +"/" +m.getNameFile());
+         qDebug() << namedir+"/Cubicle/"+ nameGroup +"/" +m.getNameFile();
+         ui->treeView->setCurrentIndex(new_index);
+         ui->treeView->selectionModel()->select(new_index,
+                QItemSelectionModel::ClearAndSelect | QItemSelectionModel::Rows);
+              //ui->treeView->edit(new_index);
+
+
             }
              else {
                QMessageBox::information(this,tr("warning"),"cannot add a pattern, please choose or add a group");
@@ -234,7 +247,6 @@ void MainWindow::ajouter_motif(){
 
         }
     }
-     model->setReadOnly(false);
 
 }
 
@@ -248,11 +260,19 @@ void MainWindow::new_project(){
          QModelIndex index=model->index(s);
         model->mkdir(index,"workspace");
         namedir=s+"/workspace";
-        qDebug()<<"je crée cubicle pour la 1ere fois";
+
+
+                  qDebug()<<"je crée cubicle pour la 1ere fois";
+             new_index=model->index(namedir);
+             model->mkdir(new_index,"Cubicle");
+
+        /*qDebug()<<"je crée cubicle pour la 1ere fois";
              QModelIndex index1=model->index(namedir);
              model->mkdir(index1,"Cubicle");
-                    tree();
+                    tree();*/
 
+
+            tree();
 }
 
 void MainWindow::on_actionNew_Group_triggered()
@@ -281,12 +301,19 @@ void MainWindow::on_actionNew_Group_triggered()
     name = s + name;
     model->mkdir(index,name);
     qDebug()<<"j'ai crée un dossier ds "+namedir;
-       new_index =model->index(namedir+"/Cubicle"+name,0);
-    tree();
+       new_index =model->index(namedir+"/Cubicle");
+     qDebug()<<"le new index est " + namedir+"/Cubicle";
+     new_index =model->index(namedir+"/Cubicle");
+  ui->treeView->expand(new_index);
+  ui->treeView->scrollTo(new_index);
+
+  new_index =model->index(namedir+"/Cubicle/"+name);
+  ui->treeView->setCurrentIndex(new_index);
+  ui->treeView->selectionModel()->select(new_index,
+         QItemSelectionModel::ClearAndSelect | QItemSelectionModel::Rows);
+  ui->treeView->edit(new_index);
 
 }
-
-
        /* if(namedir==""){
 
             namedir="/home/Cubicle";
@@ -381,9 +408,13 @@ void MainWindow::xCopy2 (const QString &sourcePath, const QString &destPath, con
     } else {
         qDebug () << "Copier le fichier " << name << "de" << sourcePath << "vers" << destPath;
         QFile::copy (sourceObjectPath, destObjectPath);
-        QFile::remove(sourceObjectPath);
+
+
     }
-    namedir.clear();
+
+
+
+
 }
 void MainWindow::controlSaveAs(){
     qDebug()<<"je suis dans controlSaveAs";
@@ -394,9 +425,52 @@ void MainWindow::controlSaveAs(){
     qDebug()<<"l'origine est "+namedir;
     qDebug()<<"la destination est"+destPath;
     xCopy2(originPath,destPath,"Cubicle");
+    if (!removeDir(namedir+"/Cubicle")){
+        qDebug()<<namedir+"/Cubicle n'est pas supprimé";
+    }
+    namedir= destPath;
+    qDebug()<< "le nouveau path est" + namedir;
+    tree();
 }
 
+bool MainWindow::removeDir(const QString& dirPath) //dirPath = le chemin du répertoire à supprimer, ex : "/home/user/monRepertoire")
+{
+    QDir folder(dirPath);
+    //On va lister dans ce répertoire tous les éléments différents de "." et ".."
+    //(désignant respectivement le répertoire en cours et le répertoire parent)
+    folder.setFilter(QDir::NoDotAndDotDot | QDir::AllEntries);
+    foreach(QFileInfo fileInfo, folder.entryInfoList())
+    {
+        //Si l'élément est un répertoire, on applique la méthode courante à ce répertoire, c'est un appel récursif
+        if(fileInfo.isDir())
+        {
+            if(!removeDir(fileInfo.filePath())) //Si une erreur survient, on retourne false
+                qDebug()<<"erreur dans remove du dir "+dirPath;
+                return false;
+        }
+        //Si l'élément est un fichier, on le supprime
+        else if(fileInfo.isFile())
+        {
+            if(!QFile::remove(fileInfo.filePath()))
+            {
+                //Si une erreur survient, on retourne false
+                qDebug()<<"erreur dans remove du file"+dirPath;
+                return false;
+            }
+        }
+    }
 
+    //Le dossier est maintenant vide, on le supprime
+    if(!folder.rmdir(dirPath))
+    {
+        //Si une erreur survient, on retourne false
+        qDebug()<<"erreur dans remove du dir"+dirPath;
+        return false;
+    }
+
+    //Sinon, on retourne true
+    return true;
+}
 // supprimer  le plan 2D Lors d'un double clic sur un nouveau motif
 void MainWindow::doubleClick(){
      QModelIndex index=ui->treeView->currentIndex();
