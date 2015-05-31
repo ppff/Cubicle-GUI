@@ -93,3 +93,5 @@ QList<QVector3D> GestionFichier:: parser(QString empl){
 }
 
 
+
+

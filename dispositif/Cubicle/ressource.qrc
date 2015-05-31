@@ -36,6 +36,7 @@
     </qresource>
     <qresource prefix="/texte">
         <file>parser.txt</file>
+        <file>../file.txt</file>
     </qresource>
     <qresource prefix="/Images">
         <file>quit.png</file>

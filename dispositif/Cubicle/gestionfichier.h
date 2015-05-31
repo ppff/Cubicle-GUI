@@ -7,6 +7,10 @@
 #include <QString>
 #include <QVector3D>
 
+
+
+#ifdef __cplusplus
+
 class GestionFichier
 {
 public:
@@ -16,5 +20,27 @@ public:
     QString getLinePlan(const int nplan,const int nligne,Cube c);
     QList<QVector3D> parser(QString empl);
 };
+#else
+    typedef
+    struct GestionFichier
+    GestionFichier;
+#endif
+
+#ifdef __cplusplus
+extern "C" {
+#endif
+    #if defined(__STDC__) || defined(__cplusplus)
+    extern void c_function(GestionFichier*); /* ANSI C prototypes */
+    extern GestionFichier* cplusplus_callback_function(GestionFichier*);
+#else
+    extern void c_function(); /* K&R style */
+    extern GestionFichier* cplusplus_callback_function();
+#endif
+
+#ifdef __cplusplus
+}
+#endif
+
+
 
 #endif // GESTIONFICHIER_H

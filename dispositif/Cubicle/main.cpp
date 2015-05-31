@@ -15,13 +15,8 @@ int main(int argc, char *argv[])
     pal.setColor(QPalette::Window,QColor(234,237,229,255));
     a.setPalette(pal);
 
-
     MainWindow w;
     w.show();
 
-
-
-   // GestionFichier g;
-   // QList<QVector3D> l=g.parser(":/texte/parser.txt");
     return a.exec();
 }
