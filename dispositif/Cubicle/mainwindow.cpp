@@ -232,30 +232,7 @@ void MainWindow::ajouter_motif(){
      model->setReadOnly(false);
 
 }
-/*
-//créer un nouveau groupe
-void MainWindow::insertGroup(){
 
-    QModelIndex index =model->index(namedir,0);
-
-
-    QString name =QInputDialog::getText(this,"Name","Enter a name");
-    if(name.isEmpty())return;
-
-    QFile fichierGroupes(namedir+"/ORDRE");
-    if(!fichierGroupes.open(QIODevice::ReadWrite | QIODevice::Text | QIODevice::Append)){
-          qDebug()<<"le fichier ORDRE ne s'ouvre pas";
-      }
-      else{
-          QTextStream flux(&fichierGroupes);
-           flux.readAll();
-           flux<<name<<endl;
-           fichierGroupes.close();
-          }
-
-    model->mkdir(index,name);
-}
-*/
 
 void MainWindow::on_actionNew_Group_triggered()
 {
@@ -320,37 +297,7 @@ void MainWindow::on_actionNew_Group_triggered()
 
 }
 
-///////////////////////////////////////////////////////////////////////////////
-bool RemoveDirectory(QDir &aDir)
-{/*
-    bool err=false;
-    if (aDir.exists())
-    {
-        QFileInfoList entries = aDir.entryInfoList(QDir::NoDotAndDotDot | QDir::Dirs | QDir::Files);
 
-        for (int i=0,m=entries.size();i<m;++i)
-        {
-            QString path = entries[i].absoluteFilePath();
-            if (!entries[i].isDir())
-            {
-                QFile file(path);
-                if (!file.remove())
-                    err=true;
-            }
-            else
-            {
-                QDir d=QDir(path);
-                err=RemoveDirectory(d);
-            }
-        }
-        if (!aDir.rmdir(aDir.absolutePath()))
-            err = true;
-    }
-    return err;
-    */
-}
-
-////////////////////////////////////////////////////////////////////////////////
 void MainWindow::controlQuit(){
     int reponse = QMessageBox::question(this, "Quit", " Are you sure you want to quit ?");
 
