@@ -17,11 +17,9 @@
 #include <QPushButton>
 #include <QPainter>
 #include <QPainterPath>
-/*
-extern "C" {
-#include "parser.h"
-}
-*/
+
+
+
 
 using namespace std;
 
@@ -493,6 +491,7 @@ bool MainWindow::removeDir(const QString& dirPath) //dirPath = le chemin du rép
             }
      }
 }*/
+extern "C" int* parser_file(const char* name);
 
 // supprimer  le plan 2D Lors d'un double clic sur un nouveau motif
 void MainWindow::doubleClick(){
@@ -525,11 +524,17 @@ void MainWindow::doubleClick(){
              ui->widget->setListPlan(liste_vecteur3D);
              int* tab;
 
+            qDebug()<<"je vais parser";
              const char* nomFichier= name.toStdString().c_str();
-        //     tab=parser_file(nomFichier);
+              qDebug()<<"je vais parser ";
+             tab=parser_file(nomFichier);
+              qDebug()<<"j'ai' parsé" ;
              GestionFichier ges;
-          //   QList<QVector3D> l=ges.tabToVector3D(tab);
-             QList<QVector3D> l=ges.parser(name);
+
+                  QList<QVector3D> l=ges.tabToVector3D(tab);
+
+
+          //   QList<QVector3D> l=ges.parser(name);
              if(!l.empty()){
 
                  this->ui->widget->setListPoints(l);
@@ -545,13 +550,13 @@ void MainWindow::doubleClick(){
                  }
              }
 
+
          }
-    }
     else {
         dirOrFile=true;
     }
 }
-
+}
 
 
 
