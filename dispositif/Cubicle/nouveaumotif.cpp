@@ -32,7 +32,7 @@ NouveauMotif::NouveauMotif(QString nomMotif, QString Dir)
     }
  QTextStream flux(&motif);
  flux.setCodec("UTF-8");
- flux<<"version 1.0"<<endl ;
+ flux<<"1"<<endl ;// on ecrit la version du fichier
 
      flux<<endl;
 

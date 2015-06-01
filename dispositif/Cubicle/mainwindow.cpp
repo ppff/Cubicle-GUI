@@ -72,8 +72,6 @@ MainWindow::MainWindow(QWidget *parent) :
     dirOpen=false;
 
 
-
-
 }
 
 //ouvre le répertoire de travail
@@ -81,11 +79,14 @@ MainWindow::MainWindow(QWidget *parent) :
 
 
 void MainWindow::ouvrir_explorer(){
-    namedir=QFileDialog::getExistingDirectory(this, tr("Open Directory"),
+  QString  tmpdir=QFileDialog::getExistingDirectory(this, tr("Open Directory"),
                                                    "/home"
                                                );
-  if (namedir=="") {qDebug()<<namedir;
+  if (tmpdir=="") {qDebug()<<tmpdir;
       return;}
+  else {
+      namedir=tmpdir;
+  }
 
   QDir dir(namedir);
   QStringList nameFilter;
@@ -213,6 +214,7 @@ void MainWindow::tree(){
     ui->actionCut_pattern->setDisabled(false);
     ui->actionSave->setDisabled(false);
     ui->actionNew_Group->setDisabled(false);
+    reordonneGroup();
 }
 
 //créer un nouveau motif
@@ -278,18 +280,21 @@ void MainWindow::new_project(){
          QModelIndex index=model->index(s);
         model->mkdir(index,"workspace");
         namedir=s+"/workspace";
-
-
-                  qDebug()<<"je crée cubicle pour la 1ere fois";
-             new_index=model->index(namedir);
-             model->mkdir(new_index,"Cubicle");
+        QDir dir(namedir+"/Cubicle");
+        if (dir.exists()){
+            qDebug()<<"avant removeDir :"+namedir+"/Cubicle";
+            removeDir(namedir+"/Cubicle");
+        }
+       qDebug()<<"je crée cubicle pour la 1ere fois";
+       new_index=model->index(namedir);
+       model->mkdir(new_index,"Cubicle");
 
         /*qDebug()<<"je crée cubicle pour la 1ere fois";
              QModelIndex index1=model->index(namedir);
              model->mkdir(index1,"Cubicle");
                     tree();*/
 
-
+    dirOpen=true;
             tree();
 }
 
@@ -363,12 +368,26 @@ void MainWindow::on_actionNew_Group_triggered()
 
 
 void MainWindow::controlQuit(){
-    int reponse = QMessageBox::question(this, "Quit", " Are you sure you want to quit ?");
+    if (!this->saved) {
+        int enregistrer=QMessageBox::question(this, "Quit", " Do you want to save the project before you quit ?");
+        if (enregistrer==QMessageBox::Yes){
+            controlSaveAs();
+            this->close();
+        }
+        else
+        {
+            this->close();
+        }
+    }
+        else {
+        this->close();
+    }
+    /*int reponse = QMessageBox::question(this, "Quit", " Are you sure you want to quit ?");
 
         if (reponse == QMessageBox::Yes)
         {
             this->close();
-        }
+        }*/
 }
 
 void MainWindow::controlDelete(){
@@ -432,60 +451,75 @@ void MainWindow::xCopy2 (const QString &sourcePath, const QString &destPath, con
 void MainWindow::controlSaveAs(){
     qDebug()<<"je suis dans controlSaveAs";
     QString destPath=QFileDialog::getExistingDirectory(this, tr("Open Directory"),
+
                                                    "/home"
                                                );
+    if (destPath=="") {qDebug()<<destPath;
+        return;}
     QString originPath=namedir;
     qDebug()<<"l'origine est "+namedir;
     qDebug()<<"la destination est"+destPath;
     xCopy2(originPath,destPath,"Cubicle");
-    if (!removeDir(namedir+"/Cubicle")){
-        qDebug()<<namedir+"/Cubicle n'est pas supprimé";
-    }
+    saved=true;
     namedir= destPath+"/Cubicle";
     qDebug()<< "le nouveau path est" + namedir;
     this->setWindowTitle("Cubicle["+destPath+"/Cubicle"+"]") ;
     tree();
 
 }
-
-bool MainWindow::removeDir(const QString& dirPath) //dirPath = le chemin du répertoire à supprimer, ex : "/home/user/monRepertoire")
+void MainWindow::removeDir(const QString& PathDir)
 {
-    QDir folder(dirPath);
-    //On va lister dans ce répertoire tous les éléments différents de "." et ".."
-    //(désignant respectivement le répertoire en cours et le répertoire parent)
-    folder.setFilter(QDir::NoDotAndDotDot | QDir::AllEntries);
-    foreach(QFileInfo fileInfo, folder.entryInfoList())
-    {
-        //Si l'élément est un répertoire, on applique la méthode courante à ce répertoire, c'est un appel récursif
-        if(fileInfo.isDir())
-        {
-            if(!removeDir(fileInfo.filePath())) //Si une erreur survient, on retourne false
-                qDebug()<<"erreur dans remove du dir "+dirPath;
-                return false;
-        }
-        //Si l'élément est un fichier, on le supprime
-        else if(fileInfo.isFile())
-        {
-            if(!QFile::remove(fileInfo.filePath()))
-            {
-                //Si une erreur survient, on retourne false
-                qDebug()<<"erreur dans remove du file"+dirPath;
-                return false;
-            }
-        }
-    }
+ //Création de l'itérateur, on précise qu'on veut tous les sous-dossiers
+ QDirIterator dirIterator(PathDir, QDirIterator::Subdirectories);
 
-    //Le dossier est maintenant vide, on le supprime
-    if(!folder.rmdir(dirPath))
-    {
-        //Si une erreur survient, on retourne false
-        qDebug()<<"erreur dans remove du dir"+dirPath;
-        return false;
-    }
+  //On récupère les fichiers et dossiers grâce à l'itérateur
+  QFileInfoList fileList;
 
-    //Sinon, on retourne true
-    return true;
+  while(dirIterator.hasNext())
+  {
+      dirIterator.next();
+      fileList << dirIterator.fileInfo();
+  }
+  QString t;
+  t=QString::number(fileList.size());
+  qDebug()<<"la taille de la liste est "+t;
+  //On parcours les éléments
+  QStringList directories;
+  for(int i = fileList.count() - 1; i >=0 ; i--)
+  {
+    //Si l'élément est un fichier, on le supprime
+    if(fileList.at(i).isFile()) {
+        QFile::remove(fileList.at(i).absoluteFilePath());
+    //On stocke le dossier contenant cet élément dans un liste (si ce n'est pas déjà fait)
+    if(!directories.contains(fileList.at(i).absolutePath()))
+        directories << fileList.at(i).absolutePath();
+    }
+    else if( fileList.at(i).isDir() && (!directories.contains(fileList.at(i).completeBaseName()))){
+
+
+    directories << fileList.at(i).absolutePath()+"/"+fileList.at(i).completeBaseName();
+
+    qDebug()<<"j'ajoute le dossier "+fileList.at(i).completeBaseName();
+
+  }
+  }
+
+  QDir dir = QDir::root();
+
+  //Finalement, on supprime tous les dossiers
+  QString s;
+  s=QString::number(directories.size());
+  qDebug()<<"la taille de la liste dir est "+s;
+  foreach( const QString StrDir, directories)
+  {
+     qDebug()<<"je supprime le dossier "+StrDir;
+     dir.rmdir(StrDir);
+  }
 }
+
+// cette fonction supprime le dosier Cubicle dans le workspace lorsqu'on fait save as
+
+
 
 /*void MainWindow::controlRename(){
     QModelIndex index=ui->treeView->currentIndex();
@@ -504,7 +538,25 @@ bool MainWindow::removeDir(const QString& dirPath) //dirPath = le chemin du rép
             }
      }
 }*/
-extern "C" int* parser_file(const char* name);
+
+
+
+void MainWindow::reordonneGroup(){
+      QModelIndex index=model->index(namedir);
+     if (model->fileInfo(index).isDir()){
+         QString path = model->filePath(index);
+         QString name = model->fileName(index);
+         qDebug() << "le path du dossier est "+ path;
+         qDebug() << "le nom du dossier est "+ name;
+
+     }
+
+
+
+}
+
+//extern "C" int* parser_file(const char* name);
+
 
 // supprimer  le plan 2D Lors d'un double clic sur un nouveau motif
 void MainWindow::doubleClick(){
@@ -535,36 +587,42 @@ void MainWindow::doubleClick(){
              this->liste_vecteur3D.clear();
              this->ui->widget->setListPoints(liste_vecteur3D);
              ui->widget->setListPlan(liste_vecteur3D);
-             int* tab;
+       //      int* tab;
 
 
-           //std::string nameStd = name.toStdString();
-           //const char* nomFichier= nameStd.c_str();
-           //tab=parser_file(nomFichier);
+         //  std::string nameStd = name.toStdString();
+         //  const char* nomFichier= nameStd.c_str();
+         //  tab=parser_file(nomFichier);
+         //  if(tab!=NULL){
+           //        int h=tab[1];
+             //      QString lh=QString::number(h);
+               //    qDebug()<<"premier elmt ds tab "+lh;
+                   GestionFichier ges;
 
-           GestionFichier ges;
+                 //  QList<QVector3D> l=ges.tabToVector3D(tab);
+                   // int x=l.first().x();
+                   // QString lll=QString::number(x);
+                  //  qDebug()<<"premier elmt "+lll;
 
-           //QList<QVector3D> l=ges.tabToVector3D(tab);
+                    QList<QVector3D> l;
+                    l=ges.parser(name,l);
+                     if(!l.empty()){
 
+                         this->ui->widget->setListPoints(l);
 
-            QList<QVector3D> l=ges.parser(name);
-             if(!l.empty()){
+                         for (QVector3D u:l){
+                           Led l=this->c.getList1()->value(u.y()).getLed(fabs(8-u.z()),fabs(8-u.x()));
+                           l.modifierEtat();
+                           Plan p=c.getList1()->value(u.y());
+                           p.updatePlan(l,fabs(8-u.z()),fabs(8-u.x()),u.y());
+                           this->c.updateCube(p,u.y());
+                           liste_vecteur3D.append(u);
+                           this->ui->widget->setListPoints(liste_vecteur3D);
+                         }
+                     }
 
-                 this->ui->widget->setListPoints(l);
-
-                 for (QVector3D u:l){
-                   Led l=this->c.getList1()->value(u.y()).getLed(fabs(8-u.z()),fabs(8-u.x()));
-                   l.modifierEtat();
-                   Plan p=c.getList1()->value(u.y());
-                   p.updatePlan(l,fabs(8-u.z()),fabs(8-u.x()),u.y());
-                   this->c.updateCube(p,u.y());
-                   liste_vecteur3D.append(u);
-                   this->ui->widget->setListPoints(liste_vecteur3D);
+        //}
                  }
-             }
-
-
-         }
     else {
         dirOrFile=true;
     }
