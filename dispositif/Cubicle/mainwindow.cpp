@@ -453,6 +453,8 @@ void MainWindow::controlSaveAs(){
     QString destPath=QFileDialog::getExistingDirectory(this, tr("Open Directory"),
                                                    "/home"
                                                );
+    if (destPath=="") {qDebug()<<destPath;
+        return;}
     QString originPath=namedir;
     qDebug()<<"l'origine est "+namedir;
     qDebug()<<"la destination est"+destPath;
