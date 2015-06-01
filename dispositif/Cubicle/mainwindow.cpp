@@ -364,9 +364,9 @@ void MainWindow::on_actionNew_Group_triggered()
 
 
 void MainWindow::controlQuit(){
-    if (this->saved) {
+    if (!this->saved) {
         int enregistrer=QMessageBox::question(this, "Quit", " Do you want to save the project before you quit ?");
-        if (enregistrer==QMessageBox::Save){
+        if (enregistrer==QMessageBox::Yes){
             controlSaveAs();
             this->close();
         }
@@ -488,6 +488,7 @@ void MainWindow::removeDir(const QString& PathDir)
         directories << fileList.at(i).absolutePath();
     }
     else if( fileList.at(i).isDir() && (!directories.contains(fileList.at(i).completeBaseName()))){
+
 
     directories << fileList.at(i).absolutePath()+"/"+fileList.at(i).completeBaseName();
 
