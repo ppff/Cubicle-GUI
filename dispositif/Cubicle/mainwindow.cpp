@@ -294,7 +294,7 @@ void MainWindow::new_project(){
              model->mkdir(index1,"Cubicle");
                     tree();*/
 
-
+    dirOpen=true;
             tree();
 }
 
@@ -451,17 +451,19 @@ void MainWindow::xCopy2 (const QString &sourcePath, const QString &destPath, con
 void MainWindow::controlSaveAs(){
     qDebug()<<"je suis dans controlSaveAs";
     QString destPath=QFileDialog::getExistingDirectory(this, tr("Open Directory"),
-                                                   "/home"
-                                               );
-    QString originPath=namedir;
-    qDebug()<<"l'origine est "+namedir;
-    qDebug()<<"la destination est"+destPath;
-    xCopy2(originPath,destPath,"Cubicle");
-    saved=true;
-    namedir= destPath+"/Cubicle";
-    qDebug()<< "le nouveau path est" + namedir;
-    this->setWindowTitle("Cubicle["+destPath+"/Cubicle"+"]") ;
-    tree();
+                                                   "/home");
+
+        QString originPath=namedir;
+        qDebug()<<"l'origine est "+namedir;
+        qDebug()<<"la destination est"+destPath;
+        xCopy2(originPath,destPath,"Cubicle");
+        saved=true;
+        namedir= destPath+"/Cubicle";
+        qDebug()<< "le nouveau path est" + namedir;
+        this->setWindowTitle("Cubicle["+destPath+"/Cubicle"+"]") ;
+        tree();
+
+
 
 }
 void MainWindow::removeDir(const QString& PathDir)
