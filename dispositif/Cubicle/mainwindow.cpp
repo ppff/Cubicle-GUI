@@ -269,11 +269,14 @@ void MainWindow::new_project(){
          QModelIndex index=model->index(s);
         model->mkdir(index,"workspace");
         namedir=s+"/workspace";
-
-
-                  qDebug()<<"je crée cubicle pour la 1ere fois";
-             new_index=model->index(namedir);
-             model->mkdir(new_index,"Cubicle");
+        QDir dir(namedir+"/Cubicle");
+        if (dir.exists()){
+            qDebug()<<"avant removeDir :"+namedir+"/Cubicle";
+            removeDir(namedir+"/Cubicle");
+        }
+       qDebug()<<"je crée cubicle pour la 1ere fois";
+       new_index=model->index(namedir);
+       model->mkdir(new_index,"Cubicle");
 
         /*qDebug()<<"je crée cubicle pour la 1ere fois";
              QModelIndex index1=model->index(namedir);
@@ -426,59 +429,64 @@ void MainWindow::controlSaveAs(){
     qDebug()<<"l'origine est "+namedir;
     qDebug()<<"la destination est"+destPath;
     xCopy2(originPath,destPath,"Cubicle");
-    if (!removeDir(namedir+"/Cubicle")){
-        qDebug()<<namedir+"/Cubicle n'est pas supprimé";
-    }
+
     namedir= destPath+"/Cubicle";
     qDebug()<< "le nouveau path est" + namedir;
     this->setWindowTitle("Cubicle["+destPath+"/Cubicle"+"]") ;
     tree();
 
 }
-
-bool MainWindow::removeDir(const QString& dirPath) //dirPath = le chemin du répertoire à supprimer, ex : "/home/user/monRepertoire")
+void MainWindow::removeDir(const QString& PathDir)
 {
-    QDir folder(dirPath);
-    //On va lister dans ce répertoire tous les éléments différents de "." et ".."
-    //(désignant respectivement le répertoire en cours et le répertoire parent)
-    folder.setFilter(QDir::NoDotAndDotDot | QDir::AllEntries);
-    foreach(QFileInfo fileInfo, folder.entryInfoList())
+ //Création de l'itérateur, on précise qu'on veut tous les sous-dossiers
+ QDirIterator dirIterator(PathDir, QDirIterator::Subdirectories);
 
-    {   QString t ;
-        t=QString::number(folder.entryInfoList().size());
-        qDebug()<<"la taille de la liste est "+t;
-        //Si l'élément est un répertoire, on applique la méthode courante à ce répertoire, c'est un appel récursif
-        if(fileInfo.isDir())
-        {
-             qDebug()<<"je supprime le "+dirPath;
-            if(!removeDir(fileInfo.filePath())) //Si une erreur survient, on retourne false
+  //On récupère les fichiers et dossiers grâce à l'itérateur
+  QFileInfoList fileList;
 
-                qDebug()<<"erreur dans remove du dir "+dirPath;
-                return false;
-        }
-        //Si l'élément est un fichier, on le supprime
-        else if(fileInfo.isFile())
-        {
-            if(!QFile::remove(fileInfo.filePath()))
-            {
-                //Si une erreur survient, on retourne false
-                qDebug()<<"erreur dans remove du file"+dirPath;
-                return false;
-            }
-        }
+  while(dirIterator.hasNext())
+  {
+      dirIterator.next();
+      fileList << dirIterator.fileInfo();
+  }
+  QString t;
+  t=QString::number(fileList.size());
+  qDebug()<<"la taille de la liste est "+t;
+  //On parcours les éléments
+  QStringList directories;
+  for(int i = fileList.count() - 1; i > 0; i--)
+  {
+    //Si l'élément est un fichier, on le supprime
+    if(fileList.at(i).isFile()) {
+        QFile::remove(fileList.at(i).absoluteFilePath());
+    //On stocke le dossier contenant cet élément dans un liste (si ce n'est pas déjà fait)
+    if(!directories.contains(fileList.at(i).absolutePath()))
+        directories << fileList.at(i).absolutePath();
     }
+    else if( fileList.at(i).isDir() && (!directories.contains(fileList.at(i).completeBaseName()))){
 
-    //Le dossier est maintenant vide, on le supprime
-    if(!folder.rmdir(dirPath))
-    {
-        //Si une erreur survient, on retourne false
-        qDebug()<<"erreur dans remove du dir"+dirPath;
-        return false;
-    }
+    directories << fileList.at(i).absolutePath()+"/"+fileList.at(i).completeBaseName();
 
-    //Sinon, on retourne true
-    return true;
+    qDebug()<<"j'ajoute le dossier "+fileList.at(i).completeBaseName();
+
+  }
+  }
+
+  QDir dir = QDir::root();
+
+  //Finalement, on supprime tous les dossiers
+  QString s;
+  s=QString::number(directories.size());
+  qDebug()<<"la taille de la liste dir est "+s;
+  foreach( const QString StrDir, directories)
+  {
+     qDebug()<<"je supprime le dossier "+StrDir;
+     dir.rmdir(StrDir);
+  }
 }
+
+// cette fonction supprime le dosier Cubicle dans le workspace lorsqu'on fait save as
+
 
 /*void MainWindow::controlRename(){
     QModelIndex index=ui->treeView->currentIndex();
