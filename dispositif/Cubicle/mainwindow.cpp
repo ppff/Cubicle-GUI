@@ -40,8 +40,11 @@ MainWindow::MainWindow(QWidget *parent) :
     ui->actionPaste_pattern->setDisabled(true);
     ui->actionSave->setDisabled(true);
     ui->actionCut_pattern->setDisabled(true);
+    ui->actionSave_as->setDisabled(true);
+
     ui->actionRaise->setDisabled(true);
     ui->actionLower->setDisabled(true);
+
 
     //désactiver la sélection des plans
     ui->plane1->setDisabled(true);
@@ -58,7 +61,7 @@ MainWindow::MainWindow(QWidget *parent) :
     connect(ui->actionCopy,SIGNAL(triggered(bool)),this,SLOT(copier()));
     connect(ui->actionPaste_pattern,SIGNAL(triggered(bool)),this,SLOT(coller()));
     connect(ui->actionNew_Pattern,SIGNAL(triggered(bool)),this,SLOT(ajouter_motif()));
-    connect(ui->actionQuit,SIGNAL(triggered(bool)),this,SLOT(controlQuit()));
+    connect(ui->actionQuit_2,SIGNAL(triggered(bool)),this,SLOT(controlQuit()));
     connect(ui->actionDelete_pattern,SIGNAL(triggered(bool)),this,SLOT(controlDelete()));
     connect(ui->actionSave,SIGNAL(triggered(bool)),this,SLOT(controlSave()));
     connect(ui->treeView,SIGNAL(doubleClicked(const QModelIndex &)),this,SLOT(doubleClick()));
@@ -72,7 +75,30 @@ MainWindow::MainWindow(QWidget *parent) :
     desactivePlan(0);
     connexion();
     dirOpen=false;
+
+
 }
+
+
+void MainWindow::closeEvent(QCloseEvent *event)
+{ if (!this->saved) {
+        int enregistrer=QMessageBox::question(this, "Quit", " Do you want to save the project before you quit ?");
+        if (enregistrer==QMessageBox::Yes){
+            controlSaveAs();
+             event->accept();
+            this->close();
+        }
+        else
+        {
+            this->close();
+        }
+    }
+   else {
+        this->close();
+    }
+}
+
+
 
 //ouvre le répertoire de travail
 
@@ -82,8 +108,10 @@ void MainWindow::ouvrir_explorer(){
   QString  tmpdir=QFileDialog::getExistingDirectory(this, tr("Open Directory"),
                                                    "/home"
                                                );
-  if (tmpdir=="") {qDebug()<<tmpdir;
-      return;}
+  if (tmpdir=="") {
+      qDebug()<<tmpdir;
+      return;
+  }
   else {
       namedir=tmpdir;
   }
@@ -99,8 +127,11 @@ void MainWindow::ouvrir_explorer(){
        qDebug()<<"impossible";
        return;
   }
+  this->setWindowTitle("Cubicle["+namedir+"/Cubicle"+"]") ;
   tree();
   dirOpen=true;
+  saved=false;
+  ui->actionSave_as->setDisabled(false);
 }
 
 void MainWindow::contextMenuEvent(QContextMenuEvent *event){
@@ -312,7 +343,10 @@ void MainWindow::new_project(){
                     tree();*/
 
     dirOpen=true;
+    this->setWindowTitle("Cubicle") ;
             tree();
+            ui->actionSave_as->setDisabled(false);
+            saved=false;
 }
 
 void MainWindow::on_actionNew_Group_triggered()
@@ -638,6 +672,9 @@ void MainWindow::controlDelete(){
 void MainWindow::controlSave(){
     GestionFichier ges;
     ges.ouvrir(this->emplMotif,this->c);
+    QMessageBox msgBox;
+    msgBox.setText("Your pattern "+currentPattern +" has been succesfully saved");
+    msgBox.exec();
 }
 void MainWindow::xCopy2 (const QString &sourcePath, const QString &destPath, const QString &name)
 {
@@ -689,6 +726,9 @@ void MainWindow::controlSaveAs(){
     namedir= destPath+"/Cubicle";
     qDebug()<< "le nouveau path est" + namedir;
     this->setWindowTitle("Cubicle["+destPath+"/Cubicle"+"]") ;
+    QMessageBox msgBox;
+    msgBox.setText("Your project Cubicle has been succesfully saved");
+    msgBox.exec();
     tree();
 
 }
@@ -742,30 +782,6 @@ void MainWindow::removeDir(const QString& PathDir)
   }
 }
 
-// cette fonction supprime le dosier Cubicle dans le workspace lorsqu'on fait save as
-
-
-
-/*void MainWindow::controlRename(){
-    QModelIndex index=ui->treeView->currentIndex();
-     if (model->fileInfo(index).isFile()){
-            QString path = model->filePath(index);
-            QString name = model->fileName(index);
-            QString dir = path;
-            dir.remove(dir.size() - name.size(), name.size());
-            QFile file(path);
-            if(file.open(QIODevice::WriteOnly | QIODevice::Text))
-            {
-                //Interact with the file
-                file.close();
-                if(file.rename(QString("%1read %2").arg(dir, name)))
-                        qDebug() << "Renamed";
-            }
-     }
-}*/
-
-
-
 void MainWindow::reordonneGroup(){
       QModelIndex index=model->index(namedir);
      if (model->fileInfo(index).isDir()){
@@ -802,9 +818,11 @@ void MainWindow::doubleClick(){
 
 
          QString name=model->fileInfo(index).absoluteFilePath();
+         this->currentPattern=model->fileInfo(index).baseName();
          if(name.compare(this->getEmplMotif())!=0){
              this->setEmpMotif(name);
              qDebug ()<< "nouveau motif "+this->getEmplMotif();
+             qDebug ()<< "nom pattern "+currentPattern;
              this->c=Cube();
              deletePlanLed(1);
              desactivePlan(1);

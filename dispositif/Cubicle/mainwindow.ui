@@ -185,13 +185,6 @@
    <addaction name="actionNew_Group"/>
    <addaction name="actionNew_Pattern"/>
    <addaction name="actionSave"/>
-   <addaction name="actionCopy"/>
-   <addaction name="actionPaste_pattern"/>
-   <addaction name="actionCut_pattern"/>
-   <addaction name="actionDelete_pattern"/>
-   <addaction name="actionRaise"/>
-   <addaction name="actionLower"/>
-   <addaction name="actionQuit"/>
   </widget>
   <widget class="QToolBar" name="toolBar">
    <property name="windowTitle">
@@ -233,7 +226,7 @@
      <normaloff>:/Images/save.png</normaloff>:/Images/save.png</iconset>
    </property>
    <property name="text">
-    <string>save</string>
+    <string>save pattern</string>
    </property>
   </action>
   <action name="actionQuit">
