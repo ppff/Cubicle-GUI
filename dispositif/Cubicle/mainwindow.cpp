@@ -236,23 +236,24 @@ void MainWindow::ajouter_motif(){
                     new_index =model->index(namedir+"/Cubicle/"+ nameGroup );
                  ui->treeView->expand(new_index);
                  ui->treeView->scrollTo(new_index);
-                 new_index =model->index(namedir+"/Cubicle/"+ nameGroup +"/" +m.getNameFile());
-                 qDebug() << namedir+"/Cubicle/"+ nameGroup +"/" +m.getNameFile();
+
+                 new_index =model->index(m.getNameFile());
                  ui->treeView->setCurrentIndex(new_index);
                  ui->treeView->selectionModel()->select(new_index,
                         QItemSelectionModel::ClearAndSelect | QItemSelectionModel::Rows);
-                      //ui->treeView->edit(new_index);
+                  ui->treeView->edit(new_index);
+
                     }
 
                 else{
                     new_index =model->index(namedir+"/"+ nameGroup );
                  ui->treeView->expand(new_index);
                  ui->treeView->scrollTo(new_index);
-                 new_index =model->index(namedir+ nameGroup +"/" +m.getNameFile());
-                 qDebug() << namedir+ nameGroup +"/" +m.getNameFile();
+                 new_index =model->index(m.getNameFile());
                  ui->treeView->setCurrentIndex(new_index);
                  ui->treeView->selectionModel()->select(new_index,
                         QItemSelectionModel::ClearAndSelect | QItemSelectionModel::Rows);
+                    ui->treeView->edit(new_index);
 
                 }
 
