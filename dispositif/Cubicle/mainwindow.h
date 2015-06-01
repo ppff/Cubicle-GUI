@@ -107,7 +107,7 @@ public slots:
     void copier();
     void coller();
     void Monter();
-
+    void Descendre();
 public slots:
     //void insertGroup();
     void controlQuit();
