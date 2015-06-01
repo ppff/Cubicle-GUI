@@ -132,6 +132,14 @@ void MainWindow::ouvrir_explorer(){
   dirOpen=true;
   saved=false;
   ui->actionSave_as->setDisabled(false);
+  this->c=Cube();
+  deletePlanLed(1);
+  desactivePlan(1);
+
+  this->liste_vecteur3D.clear();
+  this->ui->widget->setListPoints(liste_vecteur3D);
+  ui->widget->setListPlan(liste_vecteur3D);
+
 }
 
 void MainWindow::contextMenuEvent(QContextMenuEvent *event){
@@ -263,6 +271,7 @@ void MainWindow::tree(){
     ui->actionLower->setDisabled(false);
     ui->actionNew_Group->setDisabled(false);
     reordonneGroup();
+
 }
 
 //créer un nouveau motif
@@ -347,6 +356,14 @@ void MainWindow::new_project(){
             tree();
             ui->actionSave_as->setDisabled(false);
             saved=false;
+            this->c=Cube();
+            deletePlanLed(1);
+            desactivePlan(1);
+
+            this->liste_vecteur3D.clear();
+            this->ui->widget->setListPoints(liste_vecteur3D);
+            ui->widget->setListPlan(liste_vecteur3D);
+
 }
 
 void MainWindow::on_actionNew_Group_triggered()
