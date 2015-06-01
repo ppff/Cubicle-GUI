@@ -440,11 +440,16 @@ bool MainWindow::removeDir(const QString& dirPath) //dirPath = le chemin du rép
     //(désignant respectivement le répertoire en cours et le répertoire parent)
     folder.setFilter(QDir::NoDotAndDotDot | QDir::AllEntries);
     foreach(QFileInfo fileInfo, folder.entryInfoList())
-    {
+
+    {   QString t ;
+        t=QString::number(folder.entryInfoList().size());
+        qDebug()<<"la taille de la liste est "+t;
         //Si l'élément est un répertoire, on applique la méthode courante à ce répertoire, c'est un appel récursif
         if(fileInfo.isDir())
         {
+             qDebug()<<"je supprime le "+dirPath;
             if(!removeDir(fileInfo.filePath())) //Si une erreur survient, on retourne false
+
                 qDebug()<<"erreur dans remove du dir "+dirPath;
                 return false;
         }
