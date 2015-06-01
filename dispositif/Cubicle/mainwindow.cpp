@@ -75,7 +75,30 @@ MainWindow::MainWindow(QWidget *parent) :
     desactivePlan(0);
     connexion();
     dirOpen=false;
+
+
 }
+
+
+void MainWindow::closeEvent(QCloseEvent *event)
+{ if (!this->saved) {
+        int enregistrer=QMessageBox::question(this, "Quit", " Do you want to save the project before you quit ?");
+        if (enregistrer==QMessageBox::Yes){
+            controlSaveAs();
+             event->accept();
+            this->close();
+        }
+        else
+        {
+            this->close();
+        }
+    }
+   else {
+        this->close();
+    }
+}
+
+
 
 //ouvre le répertoire de travail
 
