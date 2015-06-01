@@ -68,7 +68,8 @@ public:
     void connexion();
     void contextMenuEvent(QContextMenuEvent *event);
     void xCopy2 (const QString &sourcePath, const QString &destPath, const QString &name);
-    bool removeDir(const QString& dirPath) ;
+
+    void removeDir(const QString& dirPath) ;
 
     ~MainWindow();
 
