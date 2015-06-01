@@ -91,6 +91,7 @@ public:
     QString nom_copie;
     bool dirOrFile;//false if file
     QString emplMotif;
+    QString currentPattern;
     QPushButton* buttons[90];
     int OrienPlan;
     int NumeroPlan;
@@ -105,21 +106,14 @@ public:
 
 
 public slots:
-void new_project();
-void ouvrir_explorer() ;
-void ajouter_motif() ;
-void couper();
-void copier();
-void coller();
-
-
-
-
-
-
-
-public slots:
-  //  void insertGroup();
+    void ouvrir_explorer() ;
+    void ajouter_motif() ;
+    void couper();
+    void copier();
+    void coller();
+    void Monter();
+    void Descendre();
+    void new_project();
     void controlQuit();
     void controlDelete();
     void controlSave();
@@ -128,7 +122,6 @@ public slots:
     void affichePlanLed(const QString & valeur);
     void afficheLed(const int i, const int j, const int etat);
     void controlLed(const QString & valeur);
-   // void controlRename();
 
 
 protected:
@@ -136,6 +129,7 @@ protected:
 
 private slots:
 void on_actionNew_Group_triggered();
+
 };
 
 
