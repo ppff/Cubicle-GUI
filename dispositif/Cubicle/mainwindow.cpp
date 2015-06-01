@@ -294,7 +294,7 @@ void MainWindow::new_project(){
              model->mkdir(index1,"Cubicle");
                     tree();*/
 
-
+    dirOpen=true;
             tree();
 }
 
@@ -451,6 +451,7 @@ void MainWindow::xCopy2 (const QString &sourcePath, const QString &destPath, con
 void MainWindow::controlSaveAs(){
     qDebug()<<"je suis dans controlSaveAs";
     QString destPath=QFileDialog::getExistingDirectory(this, tr("Open Directory"),
+
                                                    "/home"
                                                );
     if (destPath=="") {qDebug()<<destPath;
