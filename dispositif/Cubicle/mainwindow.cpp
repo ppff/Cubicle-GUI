@@ -605,9 +605,9 @@ void MainWindow::Descendre(){
 }
 
 void MainWindow::controlQuit(){
-    if (this->saved) {
+    if (!this->saved) {
         int enregistrer=QMessageBox::question(this, "Quit", " Do you want to save the project before you quit ?");
-        if (enregistrer==QMessageBox::Save){
+        if (enregistrer==QMessageBox::Yes){
             controlSaveAs();
             this->close();
         }
@@ -719,7 +719,7 @@ void MainWindow::removeDir(const QString& PathDir)
   qDebug()<<"la taille de la liste est "+t;
   //On parcours les éléments
   QStringList directories;
-  for(int i = fileList.count() - 1; i > 0; i--)
+  for(int i = fileList.count() - 1; i >=0 ; i--)
   {
     //Si l'élément est un fichier, on le supprime
     if(fileList.at(i).isFile()) {
