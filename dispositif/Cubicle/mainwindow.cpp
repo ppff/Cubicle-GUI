@@ -79,11 +79,14 @@ MainWindow::MainWindow(QWidget *parent) :
 
 
 void MainWindow::ouvrir_explorer(){
-    namedir=QFileDialog::getExistingDirectory(this, tr("Open Directory"),
+  QString  tmpdir=QFileDialog::getExistingDirectory(this, tr("Open Directory"),
                                                    "/home"
                                                );
-  if (namedir=="") {qDebug()<<namedir;
+  if (tmpdir=="") {qDebug()<<tmpdir;
       return;}
+  else {
+      namedir=tmpdir;
+  }
 
   QDir dir(namedir);
   QStringList nameFilter;
@@ -490,6 +493,7 @@ void MainWindow::removeDir(const QString& PathDir)
     }
     else if( fileList.at(i).isDir() && (!directories.contains(fileList.at(i).completeBaseName()))){
 
+
     directories << fileList.at(i).absolutePath()+"/"+fileList.at(i).completeBaseName();
 
     qDebug()<<"j'ajoute le dossier "+fileList.at(i).completeBaseName();
@@ -511,6 +515,7 @@ void MainWindow::removeDir(const QString& PathDir)
 }
 
 // cette fonction supprime le dosier Cubicle dans le workspace lorsqu'on fait save as
+
 
 
 /*void MainWindow::controlRename(){
