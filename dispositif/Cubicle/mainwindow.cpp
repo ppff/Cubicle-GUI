@@ -211,6 +211,7 @@ void MainWindow::tree(){
     ui->actionCut_pattern->setDisabled(false);
     ui->actionSave->setDisabled(false);
     ui->actionNew_Group->setDisabled(false);
+    reordonneGroup();
 }
 
 //créer un nouveau motif
@@ -529,7 +530,25 @@ void MainWindow::removeDir(const QString& PathDir)
             }
      }
 }*/
- //extern "C" int* parser_file(const char* name);
+
+
+
+void MainWindow::reordonneGroup(){
+      QModelIndex index=model->index(namedir);
+     if (model->fileInfo(index).isDir()){
+         QString path = model->filePath(index);
+         QString name = model->fileName(index);
+         qDebug() << "le path du dossier est "+ path;
+         qDebug() << "le nom du dossier est "+ name;
+
+     }
+
+
+
+}
+
+//extern "C" int* parser_file(const char* name);
+
 
 // supprimer  le plan 2D Lors d'un double clic sur un nouveau motif
 void MainWindow::doubleClick(){
