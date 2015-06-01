@@ -19,6 +19,8 @@
 #include <QPainterPath>
 
 
+
+
 using namespace std;
 
 //MainWindow *MainWindow::_instance = NULL;
@@ -38,6 +40,7 @@ MainWindow::MainWindow(QWidget *parent) :
     ui->actionPaste_pattern->setDisabled(true);
     ui->actionSave->setDisabled(true);
     ui->actionCut_pattern->setDisabled(true);
+
 
     //désactiver la sélection des plans
     ui->plane1->setDisabled(true);
@@ -67,13 +70,16 @@ MainWindow::MainWindow(QWidget *parent) :
     desactivePlan(0);
     connexion();
     dirOpen=false;
-    ui->actionNew_Group->setEnabled(true);
+
 
 
 
 }
 
 //ouvre le répertoire de travail
+
+
+
 void MainWindow::ouvrir_explorer(){
     namedir=QFileDialog::getExistingDirectory(this, tr("Open Directory"),
                                                    "/home"
@@ -206,6 +212,7 @@ void MainWindow::tree(){
     ui->actionPaste_pattern->setDisabled(false);
     ui->actionCut_pattern->setDisabled(false);
     ui->actionSave->setDisabled(false);
+    ui->actionNew_Group->setDisabled(false);
 }
 
 //créer un nouveau motif
@@ -222,31 +229,33 @@ void MainWindow::ajouter_motif(){
             qDebug()<<"le namedir est "+ namedir;
             qDebug()<<"l'emplacement du dossier est "+dir;
             qDebug()<<"le nom du dossier est "+nameGroup;
+            if(nameGroup!="Cubicle"){
+                    NouveauMotif m=NouveauMotif("New Pattern",dir+"/"+nameGroup);
+                    tree();
+                    if(namedir==s+"/workspace"){
+                    new_index =model->index(namedir+"/Cubicle/"+ nameGroup );
+                 ui->treeView->expand(new_index);
+                 ui->treeView->scrollTo(new_index);
 
-            NouveauMotif m=NouveauMotif("New Pattern",dir+"/"+nameGroup);
-            tree();
-            if(namedir==s+"/workspace"){
-            new_index =model->index(namedir+"/Cubicle/"+ nameGroup );
-         ui->treeView->expand(new_index);
-         ui->treeView->scrollTo(new_index);
-         new_index =model->index(namedir+"/Cubicle/"+ nameGroup +"/" +m.getNameFile());
-         qDebug() << namedir+"/Cubicle/"+ nameGroup +"/" +m.getNameFile();
-         ui->treeView->setCurrentIndex(new_index);
-         ui->treeView->selectionModel()->select(new_index,
-                QItemSelectionModel::ClearAndSelect | QItemSelectionModel::Rows);
-              //ui->treeView->edit(new_index);
-            }
-            else{
-                new_index =model->index(namedir+"/"+ nameGroup );
-             ui->treeView->expand(new_index);
-             ui->treeView->scrollTo(new_index);
-             new_index =model->index(namedir+ nameGroup +"/" +m.getNameFile());
-             qDebug() << namedir+ nameGroup +"/" +m.getNameFile();
-             ui->treeView->setCurrentIndex(new_index);
-             ui->treeView->selectionModel()->select(new_index,
-                    QItemSelectionModel::ClearAndSelect | QItemSelectionModel::Rows);
+                 new_index =model->index(m.getNameFile());
+                 ui->treeView->setCurrentIndex(new_index);
+                 ui->treeView->selectionModel()->select(new_index,
+                        QItemSelectionModel::ClearAndSelect | QItemSelectionModel::Rows);
+                  ui->treeView->edit(new_index);
 
-            }
+                    }
+
+                else{
+                    new_index =model->index(namedir+"/"+ nameGroup );
+                 ui->treeView->expand(new_index);
+                 ui->treeView->scrollTo(new_index);
+                 new_index =model->index(m.getNameFile());
+                 ui->treeView->setCurrentIndex(new_index);
+                 ui->treeView->selectionModel()->select(new_index,
+                        QItemSelectionModel::ClearAndSelect | QItemSelectionModel::Rows);
+                    ui->treeView->edit(new_index);
+
+                }
 
 
             }
@@ -258,7 +267,7 @@ void MainWindow::ajouter_motif(){
     }
 
 }
-
+}
 void MainWindow::new_project(){
 
     s=QCoreApplication::applicationDirPath();
@@ -289,20 +298,23 @@ void MainWindow::new_project(){
 
 void MainWindow::on_actionNew_Group_triggered()
 {   int m;
+    QString indice;
     if (namedir==s+"/workspace"){
     QModelIndex index =model->index(namedir+"/Cubicle",0);
-    QString name ="New Group";
+    QString name ="NewGroup";
     QDir dir(namedir+"/Cubicle");
     QFileInfoList entries = dir.entryInfoList(QDir::NoDotAndDotDot | QDir::AllEntries);
     dir.setSorting( QDir::Name);
     m=entries.size();
     if (m<10){
-        s = "0"+QString::number(m)+"_";
+        indice = "0"+QString::number(m)+"_";
     }else {
-        s = QString::number(m)+"_";
+       indice = QString::number(m)+"_";
 
     }
-    name = s + name;
+    qDebug() << "s contient "+ s;
+    name = indice + name;
+     qDebug() << "s contient "+ name;
     model->mkdir(index,name);
     qDebug()<<"j'ai crée un dossier ds "+namedir;
        new_index =model->index(namedir+"/Cubicle");
@@ -505,6 +517,7 @@ void MainWindow::removeDir(const QString& PathDir)
             }
      }
 }*/
+extern "C" int* parser_file(const char* name);
 
 // supprimer  le plan 2D Lors d'un double clic sur un nouveau motif
 void MainWindow::doubleClick(){
@@ -535,8 +548,19 @@ void MainWindow::doubleClick(){
              this->liste_vecteur3D.clear();
              this->ui->widget->setListPoints(liste_vecteur3D);
              ui->widget->setListPlan(liste_vecteur3D);
-             GestionFichier ges;
-             QList<QVector3D> l=ges.parser(name);
+             int* tab;
+
+
+           //std::string nameStd = name.toStdString();
+           //const char* nomFichier= nameStd.c_str();
+           //tab=parser_file(nomFichier);
+
+           GestionFichier ges;
+
+           //QList<QVector3D> l=ges.tabToVector3D(tab);
+
+
+            QList<QVector3D> l=ges.parser(name);
              if(!l.empty()){
 
                  this->ui->widget->setListPoints(l);
@@ -552,13 +576,13 @@ void MainWindow::doubleClick(){
                  }
              }
 
+
          }
-    }
     else {
         dirOrFile=true;
     }
 }
-
+}
 
 
 
