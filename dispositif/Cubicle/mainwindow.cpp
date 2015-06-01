@@ -386,6 +386,7 @@ void MainWindow::Monter(){
     QString newNameGroup;
     QString nameGroupDessus;
     QModelIndex index=ui->treeView->currentIndex();
+
     QModelIndex indexMoinsUn=ui->treeView->indexAbove(index);
 
        if (index.isValid()){
@@ -402,7 +403,9 @@ void MainWindow::Monter(){
                 QString nameDessusRest = nameGroupDessus.mid(3);
                 int num = numero.toInt();
                 int numDessus = numeroDessus.toInt();
-
+                if(num==0){
+                    return;
+                }
                 if (num<11){
                     newNameGroup = "0"+QString::number(num-1)+"_"+nameRest;
                 }else {
@@ -432,11 +435,6 @@ void MainWindow::Monter(){
                         QDir dir2(totalnameGroupMoinsUnCorrect);
                         dir2.rename(totalnameGroupMoinsUnChange, totalnameGroupMoinsUnCorrect);
                         dir2.setSorting(QDir::Name);
-                    }else{
-                        //QDir dir1(pathTotalOld);
-                        //dir1.rename(pathTotalOld, pathTotalNew);
-                        //dir1.setSorting(QDir::Name);
-                        QMessageBox::warning(this,"Error","Please verify numbers are continued!", QMessageBox::Ok);
                     }
                 }else if(num==10){
                     if (numDessus==num-1){
@@ -457,11 +455,6 @@ void MainWindow::Monter(){
                         QDir dir2(totalnameGroupMoinsUnCorrect);
                         dir2.rename(totalnameGroupMoinsUnChange, totalnameGroupMoinsUnCorrect);
                         dir2.setSorting(QDir::Name);
-                    }else{
-                        //QDir dir1(pathTotalOld);
-                        //dir1.rename(pathTotalOld, pathTotalNew);
-                        //dir1.setSorting(QDir::Name);
-                        QMessageBox::warning(this,"Error","Please verify numbers are continued!", QMessageBox::Ok);
                     }
                 }else if(num>10){
                     if (numDessus==num-1){
@@ -482,22 +475,12 @@ void MainWindow::Monter(){
                         QDir dir2(totalnameGroupMoinsUnCorrect);
                         dir2.rename(totalnameGroupMoinsUnChange, totalnameGroupMoinsUnCorrect);
                         dir2.setSorting(QDir::Name);
-                    }else{
-                        //QDir dir1(pathTotalOld);
-                        //dir1.rename(pathTotalOld, pathTotalNew);
-                        //dir1.setSorting(QDir::Name);
-                        QMessageBox::warning(this,"Error","Please verify numbers are continued!", QMessageBox::Ok);
                     }
                 }
                 this->tree();
-               // if (check == true){
-               //     QMessageBox::warning(this,"Error","Renamed successfully!", QMessageBox::Ok);
-               // }else{
-              //      QMessageBox::warning(this,"Error","Error renamed! Please try again.", QMessageBox::Ok);
-              //  }
-
          }
    }
+       return;
 }
 ////////////////////////////////////////////////////////////////////////////////
 void MainWindow::Descendre(){
@@ -511,16 +494,23 @@ void MainWindow::Descendre(){
            if (model->fileInfo(index).isDir()) {
                 QString dir=model->fileInfo(index).absolutePath();
                 nameGroup=model->fileInfo(index).baseName();
-                nameGroupDessous=model->fileInfo(indexPlusUn).baseName();
-                qDebug()<<nameGroup;
-                qDebug()<<dir;
-
+                QDir temp(dir);
+                QFileInfoList entries = temp.entryInfoList(QDir::NoDotAndDotDot | QDir::AllEntries);
+                int m=entries.size();
                 QString numero = nameGroup.left(2);
+                int num = numero.toInt();
+                if(num==m-1){
+                    qDebug()<<"Les numeros sont egaux";
+                    return;
+                }
+
+                nameGroupDessous=model->fileInfo(indexPlusUn).baseName();
                 QString nameRest = nameGroup.mid(3);
                 QString numeroDessous = nameGroupDessous.left(2);
                 QString nameDessousRest = nameGroupDessous.mid(3);
-                int num = numero.toInt();
+
                 int numDessous = numeroDessous.toInt();
+
 
                 if (num<9){
                     newNameGroup = "0"+QString::number(num+1)+"_"+nameRest;
@@ -551,8 +541,6 @@ void MainWindow::Descendre(){
                         QDir dir2(totalnameGroupPlusUnCorrect);
                         dir2.rename(totalnameGroupPlusUnChange, totalnameGroupPlusUnCorrect);
                         dir2.setSorting(QDir::Name);
-                    }else{
-                        QMessageBox::warning(this,"Error","Please verify numbers are continued!", QMessageBox::Ok);
                     }
                 }else if(num==9){
                     if (numDessous==num+1){
@@ -573,8 +561,6 @@ void MainWindow::Descendre(){
                         QDir dir2(totalnameGroupPlusUnCorrect);
                         dir2.rename(totalnameGroupPlusUnChange, totalnameGroupPlusUnCorrect);
                         dir2.setSorting(QDir::Name);
-                    }else{
-                        QMessageBox::warning(this,"Error","Please verify numbers are continued!", QMessageBox::Ok);
                     }
                 }else if(num>9){
                     if (numDessous==num+1){
@@ -595,13 +581,15 @@ void MainWindow::Descendre(){
                         QDir dir2(totalnameGroupPlusUnCorrect);
                         dir2.rename(totalnameGroupPlusUnChange, totalnameGroupPlusUnCorrect);
                         dir2.setSorting(QDir::Name);
-                    }else{
-                        QMessageBox::warning(this,"Error","Please verify numbers are continued!", QMessageBox::Ok);
                     }
                 }
+
                 this->tree();
+
          }
+
    }
+       return;
 }
 
 void MainWindow::controlQuit(){
