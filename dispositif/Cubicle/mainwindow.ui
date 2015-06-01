@@ -6,9 +6,15 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>1026</width>
-    <height>495</height>
+    <width>1200</width>
+    <height>600</height>
    </rect>
+  </property>
+  <property name="minimumSize">
+   <size>
+    <width>1200</width>
+    <height>600</height>
+   </size>
   </property>
   <property name="windowTitle">
    <string>MainWindow</string>
@@ -122,8 +128,8 @@
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>1026</width>
-     <height>21</height>
+     <width>1200</width>
+     <height>25</height>
     </rect>
    </property>
    <property name="nativeMenuBar">
@@ -156,6 +162,8 @@
     </property>
     <addaction name="actionSelect"/>
     <addaction name="actionDuplicate"/>
+    <addaction name="actionRaise"/>
+    <addaction name="actionLower"/>
    </widget>
    <addaction name="menuFile"/>
    <addaction name="menuEdit"/>
@@ -177,11 +185,6 @@
    <addaction name="actionNew_Group"/>
    <addaction name="actionNew_Pattern"/>
    <addaction name="actionSave"/>
-   <addaction name="actionCopy"/>
-   <addaction name="actionPaste_pattern"/>
-   <addaction name="actionCut_pattern"/>
-   <addaction name="actionDelete_pattern"/>
-   <addaction name="actionQuit"/>
   </widget>
   <widget class="QToolBar" name="toolBar">
    <property name="windowTitle">
@@ -223,7 +226,7 @@
      <normaloff>:/Images/save.png</normaloff>:/Images/save.png</iconset>
    </property>
    <property name="text">
-    <string>save</string>
+    <string>save pattern</string>
    </property>
   </action>
   <action name="actionQuit">
@@ -332,6 +335,24 @@
    </property>
    <property name="text">
     <string>new project</string>
+   </property>
+  </action>
+  <action name="actionRaise">
+   <property name="icon">
+    <iconset resource="ressource.qrc">
+     <normaloff>:/Images/up.png</normaloff>:/Images/up.png</iconset>
+   </property>
+   <property name="text">
+    <string>Raise</string>
+   </property>
+  </action>
+  <action name="actionLower">
+   <property name="icon">
+    <iconset resource="ressource.qrc">
+     <normaloff>:/Images/down.png</normaloff>:/Images/down.png</iconset>
+   </property>
+   <property name="text">
+    <string>Lower</string>
    </property>
   </action>
  </widget>

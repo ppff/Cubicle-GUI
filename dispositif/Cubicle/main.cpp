@@ -8,7 +8,6 @@
 #include "testAxeEtSphere.h"
 #include "simulation_cube.h"
 
-//extern "C" int* parser_file(const char* name);
 int main(int argc, char *argv[])
 {
     QApplication a(argc, argv);
@@ -18,9 +17,6 @@ int main(int argc, char *argv[])
 
     MainWindow w;
     w.show();
-    int* tab;
-    const char* t="parser.txt";
-   // tab=parser_file(t);
 
     return a.exec();
 }

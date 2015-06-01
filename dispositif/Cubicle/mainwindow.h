@@ -36,12 +36,6 @@
 #include <QDir>
 #include <QFileInfoList>
 #include <QFileInfo>
-/*
-extern "C" {
-#include "parser.h"
-}
-*/
-
 
 namespace Ui {
 class MainWindow;
@@ -69,6 +63,7 @@ public:
     void contextMenuEvent(QContextMenuEvent *event);
     void xCopy2 (const QString &sourcePath, const QString &destPath, const QString &name);
     void removeDir(const QString& dirPath) ;
+    void closeEvent(QCloseEvent *event);
 
     ~MainWindow();
 
@@ -91,12 +86,13 @@ public:
     QString nom_copie;
     bool dirOrFile;//false if file
     QString emplMotif;
+    QString currentPattern;
     QPushButton* buttons[90];
     int OrienPlan;
     int NumeroPlan;
     QPushButton* plans[30];
     Cube c;
-    bool saved=false ;
+    bool saved=true ;
     int dirOpen;  //vaut 0 si y a pas de directory ouvert, 1 si openDirectory et 2 si on ne choisit pas d'emplacement au début=>  saveAs
     bool copierCouper; // vaut 0 pour copier et 1 pour couper
     QList<QVector3D> liste_vecteur3D;
@@ -105,6 +101,7 @@ public:
 
 
 public slots:
+
 void new_project();
 void ouvrir_explorer() ;
 void ajouter_motif() ;
@@ -112,15 +109,8 @@ void couper();
 void copier();
 void coller();
  void reordonneGroup();
-
-
-
-
-
-
-
-public slots:
-  //  void insertGroup();
+    void Monter();
+    void Descendre();
     void controlQuit();
     void controlDelete();
     void controlSave();
@@ -129,7 +119,6 @@ public slots:
     void affichePlanLed(const QString & valeur);
     void afficheLed(const int i, const int j, const int etat);
     void controlLed(const QString & valeur);
-   // void controlRename();
 
 
 protected:
@@ -137,6 +126,7 @@ protected:
 
 private slots:
 void on_actionNew_Group_triggered();
+
 };
 
 

@@ -18,7 +18,8 @@ void GestionFichier::ouvrir(QString empl,Cube c){
     QString version=flux.readLine(); // on lit la ligne de la version
     file.resize(0);
     flux<<version<<endl;
-   for(int cntP=0;cntP<9;cntP++){
+
+    for(int cntP=0;cntP<9;cntP++){
        y=QString::number(cntP);
        for(int cntL=0;cntL<9;cntL++){
            z=QString::number(abs(8-cntL));
@@ -30,14 +31,11 @@ void GestionFichier::ouvrir(QString empl,Cube c){
                    x=QString::number(abs(8-cntA));
                    qDebug()<<"led ("+x+y+z+") allumé ";
                    flux<<x+y+z<<endl;
-           }
+               }
 
+            }
        }
-   }
-
-
-
-}
+    }
    file.close();
 }
 
@@ -59,7 +57,7 @@ QString GestionFichier::getLinePlan(int nplan,int nligne,Cube c){
 
 //parser le fichier du moutif et renvoyer une liste de vecteurs 3D de leds allumées
 
-QList<QVector3D> GestionFichier:: parser(QString empl){
+QList<QVector3D> GestionFichier:: parser(QString empl, QList<QVector3D> list){
     QFile file(empl);
     if(!file.open(QIODevice::ReadOnly | QIODevice::Text)){
         qDebug()<<"le fichier n'est pas ouvert";
@@ -68,7 +66,6 @@ QList<QVector3D> GestionFichier:: parser(QString empl){
     qDebug()<<"fichier ouvert";
     QTextStream flux(&file);
     QString  Line;
-    QList<QVector3D> list;
     list.clear();
     //lire la première ligne: version
     Line= flux.readLine()+'\n';
