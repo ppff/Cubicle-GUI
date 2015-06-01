@@ -15,12 +15,18 @@ simulation_cube::simulation_cube(QWidget *parent) : QGLWidget(parent),
 
 void simulation_cube::initializeGL()
 {
-    fAxisRadius = 0.025f;
+   /* fAxisRadius = 0.025f;
     fAxisHeight = 1.0f;
     fArrowRadius = 0.06f;
-    fArrowHeight = 0.1f;
+    fArrowHeight = 0.1f;*/
+
+    fAxisRadius = 0.025f;
+        fAxisHeight = 4.0f;
+        fArrowRadius = 0.06f;
+        fArrowHeight = 1.0f;
     //changer la couleur du fond du cube 3D. l'enlever si on veut un fond noir
-    glClearColor(0.8f,0.8f,0.8f,0.5);
+    qglClearColor(QColor(170,207,191,255));
+
     //activate the depth buffer
     glEnable(GL_DEPTH_TEST);
     glEnable(GL_BLEND);
@@ -40,6 +46,7 @@ void simulation_cube::resizeGL (int width, int height)
 
 void simulation_cube::paintGL()
 {
+
     //delete color and depth buffer
     glClear(GL_COLOR_BUFFER_BIT|GL_DEPTH_BUFFER_BIT);
     glEnable(GL_BLEND);
@@ -53,7 +60,9 @@ void simulation_cube::paintGL()
 
         dessiner_axes();
 
-        //On affiche les LEDS
+
+
+        //On affiche les plans et leds selectionnes
         for (int x=0 ; x<9 ; x++)
         {
             for (int y=0 ; y<9 ; y++)
@@ -62,15 +71,24 @@ void simulation_cube::paintGL()
                 {
                     glPushMatrix();
                     glTranslatef(x-4, y-4, z-4);
-                    if (points.indexOf(QVector3D(x,y,z)) == -1) //Si le point n'est pas dans la liste de points à allumer
+                    if ((plan.indexOf(QVector3D(x,y,z)) == -1)&&(points.indexOf(QVector3D(x,y,z)) == -1)) //Si le point n'est pas dans la liste de points à allumer
                     {
-                        dessiner_sphere(QColor(255,255,255,TRANSPARENCE_SPHERE_ETEINTE), RAYON_SPHERES, DETAIL_SPHERES,0);
+                        dessiner_sphere(QColor(255,255,255,TRANSPARENCE_SPHERE_ETEINTE), RAYON_SPHERES, DETAIL_SPHERES);
                     }
-                    else
+                    else if (points.indexOf(QVector3D(x,y,z)) != -1)
                     {
-                        dessiner_sphere(QColor(255,255,255,TRANSPARENCE_SPHERE_ALLUMEE), RAYON_SPHERES, DETAIL_SPHERES,1);
+
+                       dessiner_sphere(QColor(Qt::red), RAYON_SPHERES_plan, DETAIL_SPHERES);
+
+                    }
+                    else{
+                        dessiner_sphere(QColor(239,222,146,255), RAYON_SPHERES_plan, DETAIL_SPHERES);
+
                     }
                     glPopMatrix();
+
+
+
                 }
             }
         }
@@ -174,36 +192,36 @@ void simulation_cube::dessiner_axes()
     */
     GLUquadricObj *pObj = gluNewQuadric();
     ///////////////////////////////////////////////////////
-    // Draw the blue X axis first, with arrowed head
+    // Draw the blue Z axis first, with arrowed head
     glColor3f(0.0f, 0.0f, 1.0f);
     glPushMatrix();
     glRotatef(90.0f, 0.0f, 0.0f, 1.0f);
     gluCylinder(pObj, fAxisRadius, fAxisRadius, fAxisHeight, 10, 1);
     glPushMatrix();
-    glTranslatef(0.0f,0.0f,1.0f);
+    glTranslatef(0.0f,0.0f,4.0f);
     gluCylinder(pObj, fArrowRadius, 0.0f, fArrowHeight, 10, 1);
     glRotatef(180.0f, 1.0f, 0.0f, 0.0f);
     gluDisk(pObj, fAxisRadius, fArrowRadius, 10, 1);
     glDisable(GL_DEPTH_TEST);
     glPushMatrix();
-    renderText(0, 0, -1, "X");
+    renderText(0, 0, -2, "Z");
     glPopMatrix();
     glPopMatrix();
     glPopMatrix();
     ///////////////////////////////////////////////////////
-    // Draw the Red Z axis 2nd, with arrowed head
+    // Draw the Red X axis 2nd, with arrowed head
     glColor3f(1.0f, 0.0f, 0.0f);
     glPushMatrix();
     glRotatef(90.0f, 0.0f, 1.0f, 0.0f);
     gluCylinder(pObj, fAxisRadius, fAxisRadius, fAxisHeight, 10, 1);
     glPushMatrix();
-    glTranslatef(0.0f, 0.0f, 1.0f);
+    glTranslatef(0.0f, 0.0f, 4.0f);
     gluCylinder(pObj, fArrowRadius, 0.0f, fArrowHeight, 10, 1);
     glRotatef(180.0f, 0.0f, 1.0f, 0.0f);
     gluDisk(pObj, fAxisRadius, fArrowRadius, 10, 1);
     glDisable(GL_DEPTH_TEST);
     glPushMatrix();
-    renderText(1, 0, 0, "Z");
+    renderText(0, 0, -2, "X");
     glPopMatrix();
     glPopMatrix();
     glPopMatrix();
@@ -215,13 +233,13 @@ void simulation_cube::dessiner_axes()
     glRotatef(-90.0f, 1.0f, 0.0f, 0.0f);
     gluCylinder(pObj, fAxisRadius, fAxisRadius, fAxisHeight, 10, 1);
     glPushMatrix();
-    glTranslatef(0.0f, 0.0f, 1.0f);
+    glTranslatef(0.0f, 0.0f, 4.0f);
     gluCylinder(pObj, fArrowRadius, 0.0f, fArrowHeight, 10, 1);
     glRotatef(180.0f, 1.0f, 0.0f, 0.0f);
     gluDisk(pObj, fAxisRadius, fArrowRadius, 10, 1);
     glDisable(GL_DEPTH_TEST);
     glPushMatrix();
-    renderText(0, 1, 0, "Y");
+    renderText(0,0,-2, "Y");
     glPopMatrix();
     glPopMatrix();
     glPopMatrix();
@@ -232,18 +250,11 @@ void simulation_cube::dessiner_axes()
 
 }
 
-void simulation_cube::dessiner_sphere(QColor const& c, float const& rayon, float const& details, int etat) const
+void simulation_cube::dessiner_sphere(QColor const& c, float const& rayon, float const& details) const
 {
     GLUquadric* sph =  gluNewQuadric();
-    if(etat==1){
-        //led allumée =>sphère rouge
-        glColor3f(1.0f,0.0f,0.0f);
-    }
-    else {
-        //sphère blanche
-        glColor4f(c.red()/255.0,c.green()/255.0,c.blue()/255.0,c.alpha()/255.0);
-    }
 
+    glColor4f(c.red()/255.0,c.green()/255.0,c.blue()/255.0,c.alpha()/255.0);
     gluQuadricDrawStyle(sph, GLU_FILL); //Merci GLU
     gluSphere(sph, rayon, details, details);
 }
@@ -260,3 +271,19 @@ void simulation_cube::setListPoints(QList<QVector3D> const& l){
 
     }
 }
+
+
+
+QList<QVector3D> simulation_cube::getListPlan(){
+    return this->plan;
+}
+
+void simulation_cube::setListPlan(QList<QVector3D> const& l){
+    this->plan.clear();
+
+    for(QVector3D v: l){
+        this->plan.append(QVector3D(v.x(),v.y(),v.z()));
+
+    }
+}
+

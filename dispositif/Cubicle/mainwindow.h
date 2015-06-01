@@ -32,9 +32,16 @@
 #include <QPushButton>
 #include <QPainter>
 #include <QPainterPath>
+#include "simulation_cube.h"
 #include <QDir>
 #include <QFileInfoList>
 #include <QFileInfo>
+/*
+extern "C" {
+#include "parser.h"
+}
+*/
+
 
 namespace Ui {
 class MainWindow;
@@ -52,8 +59,6 @@ public:
     void ouvrir();
     void setEmpMotif(QString nom);
     QString getEmplMotif();
-    void afficheCube3D(QLabel* l,QLabel*l2);
-    void deleteCube3D(int i);
     void deletePlanLed(int i);
     void setOrientationPlan(int i);
     int getOrientationPlan();
@@ -62,6 +67,8 @@ public:
     void desactivePlan(int i);
     void connexion();
     void contextMenuEvent(QContextMenuEvent *event);
+    void xCopy2 (const QString &sourcePath, const QString &destPath, const QString &name);
+    void removeDir(const QString& dirPath) ;
 
     ~MainWindow();
 
@@ -74,6 +81,7 @@ public:
     Ui::MainWindow *ui;
 
     QDirModel *model;
+    QModelIndex new_index;
     QMenu* contextMenu;
     QString namedir;
     QAction *insertMotif;
@@ -83,21 +91,17 @@ public:
     QString nom_copie;
     bool dirOrFile;//false if file
     QString emplMotif;
-    QLabel* l_cube;
-    QLabel * l_repere;
-    QLabel*label_x;
-    QLabel* label_y;
     QPushButton* buttons[90];
     int OrienPlan;
     int NumeroPlan;
     QPushButton* plans[30];
-    QPushButton*  fleche_bas;
-    QPushButton*  fleche_gauche;
-    QPushButton*  fleche_face;
     Cube c;
-    bool dirOpen;
+    bool saved=false ;
+    int dirOpen;  //vaut 0 si y a pas de directory ouvert, 1 si openDirectory et 2 si on ne choisit pas d'emplacement au début=>  saveAs
     bool copierCouper; // vaut 0 pour copier et 1 pour couper
     QList<QVector3D> liste_vecteur3D;
+     QString s;
+     void reordonneGroup();
 
 
 public slots:
@@ -108,16 +112,16 @@ public slots:
     void coller();
     void Monter();
     void Descendre();
-public slots:
-    //void insertGroup();
+    void new_project();
     void controlQuit();
     void controlDelete();
     void controlSave();
+    void controlSaveAs();
     void doubleClick();
-    void afficheListePlan1();
     void affichePlanLed(const QString & valeur);
     void afficheLed(const int i, const int j, const int etat);
     void controlLed(const QString & valeur);
+
 
 protected:
     QDir *aDir;
@@ -127,6 +131,6 @@ void on_actionNew_Group_triggered();
 
 };
 
-//MainWindow* MainWindow::_instance=NULL;
+
 
 #endif // MAINWINDOW_H

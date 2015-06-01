@@ -32,8 +32,10 @@
         <file>../z.png</file>
         <file>Dupliquer.jpg</file>
         <file>Select.png</file>
+        <file>saveas.png</file>
     </qresource>
     <qresource prefix="/texte">
+        <file>parser.txt</file>
         <file>../file.txt</file>
     </qresource>
     <qresource prefix="/Images">
@@ -47,5 +49,8 @@
         <file>new_group.png</file>
         <file>down.png</file>
         <file>up.png</file>
+        <file>new_project.png</file>
     </qresource>
 </RCC>
+
+

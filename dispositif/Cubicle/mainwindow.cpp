@@ -19,6 +19,8 @@
 #include <QPainterPath>
 
 
+
+
 using namespace std;
 
 //MainWindow *MainWindow::_instance = NULL;
@@ -30,7 +32,7 @@ MainWindow::MainWindow(QWidget *parent) :
 
     ui->setupUi(this);
 
-   // this->setWindowState(Qt::WindowFullScreen);
+
     ui->actionCopy->setDisabled(true);
     ui->actionDelete_pattern->setDisabled(true);
     ui->actionNew_Group->setDisabled(true);
@@ -38,28 +40,34 @@ MainWindow::MainWindow(QWidget *parent) :
     ui->actionPaste_pattern->setDisabled(true);
     ui->actionSave->setDisabled(true);
     ui->actionCut_pattern->setDisabled(true);
-    ui->actionRaise_a_pattern->setDisabled(true);
-    ui->actionLower_a_pattern->setDisabled(true);
+    ui->actionRaise->setDisabled(true);
+    ui->actionLower->setDisabled(true);
 
+    //désactiver la sélection des plans
+    ui->plane1->setDisabled(true);
+     ui->plane2->setDisabled(true);
+      ui->plane3->setDisabled(true);
+       ui->plane4->setDisabled(true);
+         ui->plane5->setDisabled(true);
+          ui->plane6->setDisabled(true);
+           ui->plane7->setDisabled(true);
+            ui->plane8->setDisabled(true);
+            ui->plane9->setDisabled(true);
+    connect(ui->actionNew_project,SIGNAL(triggered(bool)),this,SLOT(new_project()));
     connect(ui->actionOpen_directory,SIGNAL(triggered(bool)),this,SLOT(ouvrir_explorer()));
     connect(ui->actionCopy,SIGNAL(triggered(bool)),this,SLOT(copier()));
     connect(ui->actionPaste_pattern,SIGNAL(triggered(bool)),this,SLOT(coller()));
-    connect(ui->actionNew_Group,SIGNAL(triggered(bool)),this,SLOT(insertGroup()));
     connect(ui->actionNew_Pattern,SIGNAL(triggered(bool)),this,SLOT(ajouter_motif()));
     connect(ui->actionQuit,SIGNAL(triggered(bool)),this,SLOT(controlQuit()));
     connect(ui->actionDelete_pattern,SIGNAL(triggered(bool)),this,SLOT(controlDelete()));
     connect(ui->actionSave,SIGNAL(triggered(bool)),this,SLOT(controlSave()));
     connect(ui->treeView,SIGNAL(doubleClicked(const QModelIndex &)),this,SLOT(doubleClick()));
     connect(ui->actionCut_pattern,SIGNAL(triggered(bool)),this,SLOT(couper()));
-    connect(ui->actionRaise_a_pattern,SIGNAL(triggered(bool)),this,SLOT(Monter()));
-    connect(ui->actionLower_a_pattern,SIGNAL(triggered(bool)),this,SLOT(Descendre()));
+    connect(ui->actionRaise,SIGNAL(triggered(bool)),this,SLOT(Monter()));
+    connect(ui->actionLower,SIGNAL(triggered(bool)),this,SLOT(Descendre()));
+    connect(ui->actionSave_as,SIGNAL(triggered(bool)),this,SLOT(controlSaveAs()));
 
-    l_cube=ui->label;
-    l_repere=ui->label_2;
-    label_y=ui->label_3;
-    label_x=ui->label_4;
     this->setWindowTitle("Cubicle");
-    deleteCube3D(0);
     deletePlanLed(0);
     desactivePlan(0);
     connexion();
@@ -67,12 +75,18 @@ MainWindow::MainWindow(QWidget *parent) :
 }
 
 //ouvre le répertoire de travail
+
+
+
 void MainWindow::ouvrir_explorer(){
-    namedir=QFileDialog::getExistingDirectory(this, tr("Open Directory"),
+  QString  tmpdir=QFileDialog::getExistingDirectory(this, tr("Open Directory"),
                                                    "/home"
                                                );
-  if (namedir=="") {qDebug()<<namedir;
+  if (tmpdir=="") {qDebug()<<tmpdir;
       return;}
+  else {
+      namedir=tmpdir;
+  }
 
   QDir dir(namedir);
   QStringList nameFilter;
@@ -197,24 +211,27 @@ void MainWindow::tree(){
             model->setSorting(QDir::DirsFirst | QDir::IgnoreCase | QDir::Name);
 
     ui->treeView->setModel(model);
+    qDebug() << "le namedir est" + namedir;
     QModelIndex index=model->index(namedir);
      ui->treeView->setRootIndex(index);
-    ui->treeView->expand(index);
-    ui->treeView->scrollTo(index);
-    ui->treeView->setCurrentIndex(index);
+    // ui->treeView->setExpanded(new_index,true);
+
+  /*  ui->treeView->selectionModel()->select(new_index,
+       QItemSelectionModel::ClearAndSelect | QItemSelectionModel::Rows);*/
     for(int i=1;i<4;i++){
         ui->treeView->hideColumn(i);
     }
     ui->treeView->resizeColumnToContents(0);
-    ui->actionNew_Group->setEnabled(true);
     ui->actionNew_Pattern->setEnabled(true);
     ui->actionDelete_pattern->setEnabled(true);
     ui->actionCopy->setDisabled(false);
     ui->actionPaste_pattern->setDisabled(false);
     ui->actionCut_pattern->setDisabled(false);
     ui->actionSave->setDisabled(false);
-    ui->actionRaise_a_pattern->setDisabled(false);
-    ui->actionLower_a_pattern->setDisabled(false);
+    ui->actionRaise->setDisabled(false);
+    ui->actionLower->setDisabled(false);
+    ui->actionNew_Group->setDisabled(false);
+    reordonneGroup();
 }
 
 //créer un nouveau motif
@@ -223,7 +240,7 @@ void MainWindow::ajouter_motif(){
     if (index.isValid()){
 
         if (model->fileInfo(index).isDir()) {
-             model->setReadOnly(true);
+
             QString dir=model->fileInfo(index).absolutePath();
 
             QString nameGroup=model->fileInfo(index).baseName();
@@ -231,10 +248,35 @@ void MainWindow::ajouter_motif(){
             qDebug()<<"le namedir est "+ namedir;
             qDebug()<<"l'emplacement du dossier est "+dir;
             qDebug()<<"le nom du dossier est "+nameGroup;
-            QString nameMotif=QInputDialog::getText(this,"Name","Enter the pattern name");
+            if(nameGroup!="Cubicle"){
+                    NouveauMotif m=NouveauMotif("New Pattern",dir+"/"+nameGroup);
+                    tree();
+                    if(namedir==s+"/workspace"){
+                    new_index =model->index(namedir+"/Cubicle/"+ nameGroup );
+                 ui->treeView->expand(new_index);
+                 ui->treeView->scrollTo(new_index);
 
-            NouveauMotif m=NouveauMotif(nameMotif,dir+"/"+nameGroup);
-            tree();
+                 new_index =model->index(m.getNameFile());
+                 ui->treeView->setCurrentIndex(new_index);
+                 ui->treeView->selectionModel()->select(new_index,
+                        QItemSelectionModel::ClearAndSelect | QItemSelectionModel::Rows);
+                  ui->treeView->edit(new_index);
+
+                    }
+
+                else{
+                    new_index =model->index(namedir+"/"+ nameGroup );
+                 ui->treeView->expand(new_index);
+                 ui->treeView->scrollTo(new_index);
+                 new_index =model->index(m.getNameFile());
+                 ui->treeView->setCurrentIndex(new_index);
+                 ui->treeView->selectionModel()->select(new_index,
+                        QItemSelectionModel::ClearAndSelect | QItemSelectionModel::Rows);
+                    ui->treeView->edit(new_index);
+
+                }
+
+
             }
              else {
                QMessageBox::information(this,tr("warning"),"cannot add a pattern, please choose or add a group");
@@ -242,40 +284,74 @@ void MainWindow::ajouter_motif(){
 
         }
     }
+
+}
+}
+void MainWindow::new_project(){
+
+    s=QCoreApplication::applicationDirPath();
+    model = new QDirModel(this);
      model->setReadOnly(false);
+     model->setSorting(QDir::DirsFirst | QDir::IgnoreCase | QDir::Name);
 
+         QModelIndex index=model->index(s);
+        model->mkdir(index,"workspace");
+        namedir=s+"/workspace";
+        QDir dir(namedir+"/Cubicle");
+        if (dir.exists()){
+            qDebug()<<"avant removeDir :"+namedir+"/Cubicle";
+            removeDir(namedir+"/Cubicle");
+        }
+       qDebug()<<"je crée cubicle pour la 1ere fois";
+       new_index=model->index(namedir);
+       model->mkdir(new_index,"Cubicle");
+
+        /*qDebug()<<"je crée cubicle pour la 1ere fois";
+             QModelIndex index1=model->index(namedir);
+             model->mkdir(index1,"Cubicle");
+                    tree();*/
+
+
+            tree();
 }
-/*
-//créer un nouveau groupe
-void MainWindow::insertGroup(){
-
-    QModelIndex index =model->index(namedir,0);
-
-
-    QString name =QInputDialog::getText(this,"Name","Enter a name");
-    if(name.isEmpty())return;
-
-    QFile fichierGroupes(namedir+"/ORDRE");
-    if(!fichierGroupes.open(QIODevice::ReadWrite | QIODevice::Text | QIODevice::Append)){
-          qDebug()<<"le fichier ORDRE ne s'ouvre pas";
-      }
-      else{
-          QTextStream flux(&fichierGroupes);
-           flux.readAll();
-           flux<<name<<endl;
-           fichierGroupes.close();
-          }
-
-    model->mkdir(index,name);
-}
-*/
 
 void MainWindow::on_actionNew_Group_triggered()
-{
-        int m;
-        QString s;
+{   int m;
+    QString indice;
+    if (namedir==s+"/workspace"){
+    QModelIndex index =model->index(namedir+"/Cubicle",0);
+    QString name ="NewGroup";
+    QDir dir(namedir+"/Cubicle");
+    QFileInfoList entries = dir.entryInfoList(QDir::NoDotAndDotDot | QDir::AllEntries);
+    dir.setSorting( QDir::Name);
+    m=entries.size();
+    if (m<10){
+        indice = "0"+QString::number(m)+"_";
+    }else {
+       indice = QString::number(m)+"_";
+
+    }
+    qDebug() << "s contient "+ s;
+    name = indice + name;
+     qDebug() << "s contient "+ name;
+    model->mkdir(index,name);
+    qDebug()<<"j'ai crée un dossier ds "+namedir;
+       new_index =model->index(namedir+"/Cubicle");
+     qDebug()<<"le new index est " + namedir+"/Cubicle";
+     new_index =model->index(namedir+"/Cubicle");
+  ui->treeView->expand(new_index);
+  ui->treeView->scrollTo(new_index);
+
+  new_index =model->index(namedir+"/Cubicle/"+name);
+  ui->treeView->setCurrentIndex(new_index);
+  ui->treeView->selectionModel()->select(new_index,
+         QItemSelectionModel::ClearAndSelect | QItemSelectionModel::Rows);
+  ui->treeView->edit(new_index);
+
+}
+    else {
         QModelIndex index =model->index(namedir,0);
-        QString name ="New Groupe";
+        QString name ="New Group";
         QDir dir(namedir);
         QFileInfoList entries = dir.entryInfoList(QDir::NoDotAndDotDot | QDir::AllEntries);
         dir.setSorting( QDir::Name);
@@ -284,19 +360,26 @@ void MainWindow::on_actionNew_Group_triggered()
             s = "0"+QString::number(m)+"_";
         }else {
             s = QString::number(m)+"_";
+
         }
-            /*
-            for (int i=0;i<m;++i)
-            {
-                QString path = entries[i].absoluteFilePath();
-                QDir d=QDir(path);
-                err=RemoveDirectory(d);
-            }
-            */
         name = s + name;
         model->mkdir(index,name);
+        qDebug()<<"j'ai crée un dossier ds "+namedir;
+           new_index =model->index(namedir);
+         qDebug()<<"le new index est " + namedir;
+         new_index =model->index(namedir);
+      ui->treeView->expand(new_index);
+      ui->treeView->scrollTo(new_index);
 
+      new_index =model->index(namedir+"/"+name);
+      ui->treeView->setCurrentIndex(new_index);
+      ui->treeView->selectionModel()->select(new_index,
+             QItemSelectionModel::ClearAndSelect | QItemSelectionModel::Rows);
+      ui->treeView->edit(new_index);
+
+    }
 }
+
 
 void MainWindow::Monter(){
     QString nameGroup;
@@ -521,50 +604,27 @@ void MainWindow::Descendre(){
    }
 }
 
-
-
-
-
-
-////////////////////////////////////////////////////////////////////////////////
-
-
-bool RemoveDirectory(QDir &aDir)
-{
-    bool err=false;
-    if (aDir.exists())
-    {
-        QFileInfoList entries = aDir.entryInfoList(QDir::NoDotAndDotDot | QDir::Dirs | QDir::Files);
-
-        for (int i=0,m=entries.size();i<m;++i)
-        {
-            QString path = entries[i].absoluteFilePath();
-            if (!entries[i].isDir())
-            {
-                QFile file(path);
-                if (!file.remove())
-                    err=true;
-            }
-            else
-            {
-                QDir d=QDir(path);
-                err=RemoveDirectory(d);
-            }
-        }
-        if (!aDir.rmdir(aDir.absolutePath()))
-            err = true;
-    }
-    return err;
-}
-
-////////////////////////////////////////////////////////////////////////////////
 void MainWindow::controlQuit(){
-    int reponse = QMessageBox::question(this, "Quit", " Are you sure you want to quit ?");
+    if (this->saved) {
+        int enregistrer=QMessageBox::question(this, "Quit", " Do you want to save the project before you quit ?");
+        if (enregistrer==QMessageBox::Save){
+            controlSaveAs();
+            this->close();
+        }
+        else
+        {
+            this->close();
+        }
+    }
+        else {
+        this->close();
+    }
+    /*int reponse = QMessageBox::question(this, "Quit", " Are you sure you want to quit ?");
 
         if (reponse == QMessageBox::Yes)
         {
             this->close();
-        }
+        }*/
 }
 
 void MainWindow::controlDelete(){
@@ -578,7 +638,6 @@ void MainWindow::controlDelete(){
            if (reponse == QMessageBox::Yes) {
                file.remove();
                tree();
-               this->deleteCube3D(1);
                this->deletePlanLed(1);
                this->desactivePlan(1);
            }
@@ -592,132 +651,277 @@ void MainWindow::controlSave(){
     GestionFichier ges;
     ges.ouvrir(this->emplMotif,this->c);
 }
+void MainWindow::xCopy2 (const QString &sourcePath, const QString &destPath, const QString &name)
+{
+    static const QStringList filters = QStringList () << "*";
+    static const QDir::Filters flags = QDir::NoDotAndDotDot | QDir::AllDirs | QDir::Files | QDir::Hidden;
+
+    QString sourceObjectPath = sourcePath+"/"+name;
+    QString destObjectPath = destPath +"/"+name;
+    QFileInfo fi (sourceObjectPath);
+
+    if (fi.isDir ()) {
+        qDebug () << "Créer le répertoire " << destObjectPath;
+        QDir destDir(destPath);
+        destDir.mkdir(name);
+
+        qDebug () << "Recopier dedans, récursivement, le contenu de" << sourceObjectPath;
+        //sourceObjectPath += '/';
+        //destObjectPath += '/';
+        QDir currentSourceDir (sourceObjectPath);
+        const QStringList fileList = currentSourceDir.entryList (filters, flags);
+        foreach (const QString &content, fileList) {
+            xCopy2 (sourceObjectPath, destObjectPath, content);
+        }
+    } else {
+        qDebug () << "Copier le fichier " << name << "de" << sourcePath << "vers" << destPath;
+        QFile::copy (sourceObjectPath, destObjectPath);
+
+
+    }
 
 
 
-// supprimer la liste des plans et le plan 2D Lors d'un double clic sur un nouveau motif
-void MainWindow::doubleClick(){
+
+
+}
+void MainWindow::controlSaveAs(){
+    qDebug()<<"je suis dans controlSaveAs";
+    QString destPath=QFileDialog::getExistingDirectory(this, tr("Open Directory"),
+                                                   "/home"
+                                               );
+    QString originPath=namedir;
+    qDebug()<<"l'origine est "+namedir;
+    qDebug()<<"la destination est"+destPath;
+    xCopy2(originPath,destPath,"Cubicle");
+    saved=true;
+    namedir= destPath+"/Cubicle";
+    qDebug()<< "le nouveau path est" + namedir;
+    this->setWindowTitle("Cubicle["+destPath+"/Cubicle"+"]") ;
+    tree();
+
+}
+void MainWindow::removeDir(const QString& PathDir)
+{
+ //Création de l'itérateur, on précise qu'on veut tous les sous-dossiers
+ QDirIterator dirIterator(PathDir, QDirIterator::Subdirectories);
+
+  //On récupère les fichiers et dossiers grâce à l'itérateur
+  QFileInfoList fileList;
+
+  while(dirIterator.hasNext())
+  {
+      dirIterator.next();
+      fileList << dirIterator.fileInfo();
+  }
+  QString t;
+  t=QString::number(fileList.size());
+  qDebug()<<"la taille de la liste est "+t;
+  //On parcours les éléments
+  QStringList directories;
+  for(int i = fileList.count() - 1; i > 0; i--)
+  {
+    //Si l'élément est un fichier, on le supprime
+    if(fileList.at(i).isFile()) {
+        QFile::remove(fileList.at(i).absoluteFilePath());
+    //On stocke le dossier contenant cet élément dans un liste (si ce n'est pas déjà fait)
+    if(!directories.contains(fileList.at(i).absolutePath()))
+        directories << fileList.at(i).absolutePath();
+    }
+    else if( fileList.at(i).isDir() && (!directories.contains(fileList.at(i).completeBaseName()))){
+
+
+    directories << fileList.at(i).absolutePath()+"/"+fileList.at(i).completeBaseName();
+
+    qDebug()<<"j'ajoute le dossier "+fileList.at(i).completeBaseName();
+
+  }
+  }
+
+  QDir dir = QDir::root();
+
+  //Finalement, on supprime tous les dossiers
+  QString s;
+  s=QString::number(directories.size());
+  qDebug()<<"la taille de la liste dir est "+s;
+  foreach( const QString StrDir, directories)
+  {
+     qDebug()<<"je supprime le dossier "+StrDir;
+     dir.rmdir(StrDir);
+  }
+}
+
+// cette fonction supprime le dosier Cubicle dans le workspace lorsqu'on fait save as
+
+
+
+/*void MainWindow::controlRename(){
     QModelIndex index=ui->treeView->currentIndex();
-    if (model->fileInfo(index).isFile()) {
+     if (model->fileInfo(index).isFile()){
+            QString path = model->filePath(index);
+            QString name = model->fileName(index);
+            QString dir = path;
+            dir.remove(dir.size() - name.size(), name.size());
+            QFile file(path);
+            if(file.open(QIODevice::WriteOnly | QIODevice::Text))
+            {
+                //Interact with the file
+                file.close();
+                if(file.rename(QString("%1read %2").arg(dir, name)))
+                        qDebug() << "Renamed";
+            }
+     }
+}*/
+
+
+
+void MainWindow::reordonneGroup(){
+      QModelIndex index=model->index(namedir);
+     if (model->fileInfo(index).isDir()){
+         QString path = model->filePath(index);
+         QString name = model->fileName(index);
+         qDebug() << "le path du dossier est "+ path;
+         qDebug() << "le nom du dossier est "+ name;
+
+     }
+
+
+
+}
+
+//extern "C" int* parser_file(const char* name);
+
+
+// supprimer  le plan 2D Lors d'un double clic sur un nouveau motif
+void MainWindow::doubleClick(){
+     QModelIndex index=ui->treeView->currentIndex();
+     if (model->fileInfo(index).isFile()) {
         dirOrFile=false;
+
+        //réactiver la sélection des plans
+        ui->plane1->setDisabled(false);
+        ui->plane2->setDisabled(false);
+        ui->plane3->setDisabled(false);
+        ui->plane4->setDisabled(false);
+        ui->plane5->setDisabled(false);
+        ui->plane6->setDisabled(false);
+        ui->plane7->setDisabled(false);
+        ui->plane8->setDisabled(false);
+        ui->plane9->setDisabled(false);
+
 
          QString name=model->fileInfo(index).absoluteFilePath();
          if(name.compare(this->getEmplMotif())!=0){
-             qDebug() <<"ancien motif "+ this->getEmplMotif();
              this->setEmpMotif(name);
              qDebug ()<< "nouveau motif "+this->getEmplMotif();
              this->c=Cube();
              deletePlanLed(1);
              desactivePlan(1);
-             deleteCube3D(1);
-             afficheCube3D(l_cube,l_repere);
+
              this->liste_vecteur3D.clear();
              this->ui->widget->setListPoints(liste_vecteur3D);
-         }
-    }
+             ui->widget->setListPlan(liste_vecteur3D);
+       //      int* tab;
+
+
+         //  std::string nameStd = name.toStdString();
+         //  const char* nomFichier= nameStd.c_str();
+         //  tab=parser_file(nomFichier);
+         //  if(tab!=NULL){
+           //        int h=tab[1];
+             //      QString lh=QString::number(h);
+               //    qDebug()<<"premier elmt ds tab "+lh;
+                   GestionFichier ges;
+
+                 //  QList<QVector3D> l=ges.tabToVector3D(tab);
+                   // int x=l.first().x();
+                   // QString lll=QString::number(x);
+                  //  qDebug()<<"premier elmt "+lll;
+
+                    QList<QVector3D> l;
+                    l=ges.parser(name,l);
+                     if(!l.empty()){
+
+                         this->ui->widget->setListPoints(l);
+
+                         for (QVector3D u:l){
+                           Led l=this->c.getList1()->value(u.y()).getLed(fabs(8-u.z()),fabs(8-u.x()));
+                           l.modifierEtat();
+                           Plan p=c.getList1()->value(u.y());
+                           p.updatePlan(l,fabs(8-u.z()),fabs(8-u.x()),u.y());
+                           this->c.updateCube(p,u.y());
+                           liste_vecteur3D.append(u);
+                           this->ui->widget->setListPoints(liste_vecteur3D);
+                         }
+                     }
+
+        //}
+                 }
     else {
         dirOrFile=true;
     }
 }
-
-void MainWindow:: afficheCube3D( QLabel* label,QLabel* l){
-    label->setPixmap(QPixmap(":/icone/CubeParfait.jpeg"));
-    label->move(930,385);
-    label->adjustSize();
-    label->show();
-    l->setPixmap(QPixmap(":/icone/reperenv.jpeg"));
-    l->move(820,530);
-    l->adjustSize();
-    l->show();
-    this->fleche_gauche->setVisible(true);
-    fleche_gauche->setIcon(QIcon(":/icone/GAUCHE.png"));
-    fleche_gauche->setGeometry(1235,570,40,40);
 }
 
-void MainWindow::deleteCube3D(int i){
-    if(i==0){
-        this->fleche_gauche=new QPushButton("",this);
-    }
-    else{
-        ui->label->setPixmap(QPixmap());
-        ui->label->repaint();
-        ui->label_2->setPixmap(QPixmap());
-        ui->label_2->repaint();
-        ui->label_3->setPixmap(QPixmap());
-        ui->label_3->repaint();
-        ui->label_4->setPixmap(QPixmap());
-        ui->label_4->repaint();
-    }
-    this->fleche_gauche->hide();
-}
-
-void MainWindow::afficheListePlan1(){
-    desactivePlan(1);
-    deletePlanLed(1);
-         for (int j=0;j<9; j++){ //les plans vue de dessus
-           setOrientationPlan(0);
-           QString ori=QString::number(0);
-           QString nplan=QString::number(j);
-           QString text=ori+nplan;
-           int num=text.toInt(false,10);
-           plans[num]->setVisible(true);
-        }
-}
 
 
 
 void MainWindow::desactivePlan(int niemefois){
 
-        for (int j=0;j<9; j++){
-           QString ori=QString::number(0);
-           QString nplan=QString::number(j);
-           QString text=ori+nplan;
-           int num=text.toInt(false,10);
-           if(niemefois==0){  //il crée le bouton une seule fois fois
-            plans[num]=new QPushButton("",this);
-            plans[num]->setGeometry(70, 70, 150, 150);
-            plans[num]->move(630+20*j, 30*j+90);
-           }
-           plans[num]->setStyleSheet("QPushButton { background-color: rgba(240,240,240,255); }");
-           plans[num]->hide();
-        }
+
+            //déselectionner les plans
+            ui->plane1->setStyleSheet("QPushButton { background-color: rgba(240,240,240,255); }");
+             ui->plane2->setStyleSheet("QPushButton { background-color: rgba(240,240,240,255); }");
+              ui->plane3->setStyleSheet("QPushButton { background-color: rgba(240,240,240,255); }");
+               ui->plane4->setStyleSheet("QPushButton { background-color: rgba(240,240,240,255); }");
+                 ui->plane5->setStyleSheet("QPushButton { background-color: rgba(240,240,240,255); }");
+                  ui->plane6->setStyleSheet("QPushButton { background-color: rgba(240,240,240,255); }");
+                   ui->plane7->setStyleSheet("QPushButton { background-color: rgba(240,240,240,255); }");
+                    ui->plane8->setStyleSheet("QPushButton { background-color: rgba(240,240,240,255); }");
+                    ui->plane9->setStyleSheet("QPushButton { background-color: rgba(240,240,240,255); }");
+
+
 }
 
 
 void MainWindow::affichePlanLed(const QString & valeur){
-    for (int num=0;num<9;num++){
-         plans[num]->setStyleSheet("QPushButton { background-color: rgba(240,240,240,255); }");
-    }
-    label_y->setPixmap(QPixmap(":/icone/z.png"));
-    label_y->move(590,29);
-    label_y->adjustSize();
-    label_y->show();
-    label_x->setPixmap(QPixmap(":/icone/x.png"));
-    label_x->move(325,296);
-    label_x->adjustSize();
-    label_x->show();
-    QString stori=valeur[0];
+
+    ui->plane1->setStyleSheet("QPushButton { background-color: rgba(240,240,240,255); }");
+     ui->plane2->setStyleSheet("QPushButton { background-color: rgba(240,240,240,255); }");
+      ui->plane3->setStyleSheet("QPushButton { background-color: rgba(240,240,240,255); }");
+       ui->plane4->setStyleSheet("QPushButton { background-color: rgba(240,240,240,255); }");
+         ui->plane5->setStyleSheet("QPushButton { background-color: rgba(240,240,240,255); }");
+          ui->plane6->setStyleSheet("QPushButton { background-color: rgba(240,240,240,255); }");
+           ui->plane7->setStyleSheet("QPushButton { background-color: rgba(240,240,240,255); }");
+            ui->plane8->setStyleSheet("QPushButton { background-color: rgba(240,240,240,255); }");
+            ui->plane9->setStyleSheet("QPushButton { background-color: rgba(240,240,240,255); }");
+
     QString stnplan=valeur[1];
-    int ori=stori.toInt(false,10);
-    int nplan=stnplan.toInt(false,10);
+
+    int nplan=stnplan.toInt(0,10);
+
     this->setNumeroPlan(nplan);
-    plans[nplan]->setStyleSheet("QPushButton { background-color: red; }");
 
     switch(nplan){
-
-    case 0:l_cube->setPixmap(QPixmap(":/icone/plan8.png")); break;
-    case 1:l_cube->setPixmap(QPixmap(":/icone/plan7.png"));break;
-    case 2:l_cube->setPixmap(QPixmap(":/icone/plan6.png"));break;
-    case 3:l_cube->setPixmap(QPixmap(":/icone/plan5.png"));break;
-    case 4:l_cube->setPixmap(QPixmap(":/icone/plan4.png"));break;
-    case 5:l_cube->setPixmap(QPixmap(":/icone/plan3.png"));break;
-    case 6:l_cube->setPixmap(QPixmap(":/icone/plan2.png"));break;
-    case 7:l_cube->setPixmap(QPixmap(":/icone/plan1.png"));break;
-    case 8:l_cube->setPixmap(QPixmap(":/icone/plan0.png"));break;
+    case 0:ui->plane1->setStyleSheet("QPushButton { background-color: red; }"); break;
+    case 1:ui->plane2->setStyleSheet("QPushButton { background-color: red; }"); break;
+    case 2:ui->plane3->setStyleSheet("QPushButton { background-color: red; }"); break;
+    case 3:ui->plane4->setStyleSheet("QPushButton { background-color: red; }"); break;
+    case 4:ui->plane5->setStyleSheet("QPushButton { background-color: red; }"); break;
+    case 5:ui->plane6->setStyleSheet("QPushButton { background-color: red; }"); break;
+    case 6:ui->plane7->setStyleSheet("QPushButton { background-color: red; }"); break;
+    case 7:ui->plane8->setStyleSheet("QPushButton { background-color: red; }"); break;
+    case 8:ui->plane9->setStyleSheet("QPushButton { background-color: red; }"); break;
     }
-    l_cube->move(930,385);
-    l_cube->adjustSize();
-    l_cube->show();
+
+    QList<QVector3D> ll;
+    for(int i=0;i<9;i++)
+        for(int k=0;k<9;k++)
+        {QVector3D v;
+            v= QVector3D(i,nplan,k);
+            ll.append(v);
+            this->ui->widget->setListPlan(ll);
+        }
 
    for (int i = 0; i < 9; i++) {
         for (int j=0;j<9; j++){
@@ -725,7 +929,7 @@ void MainWindow::affichePlanLed(const QString & valeur){
            QString lig=QString::number(j);
            QString text=lig+col;
 
-           int num=text.toInt(false,10);
+           int num=text.toInt(0,10);
            buttons[num]->setVisible(true);
 
            Led l;
@@ -743,14 +947,13 @@ void MainWindow::affichePlanLed(const QString & valeur){
 
 void MainWindow::deletePlanLed(int nfois){
 
-    label_x->hide();
-    label_y->hide();
+
         for (int i = 0; i < 9; i++) {
              for (int j=0;j<9; j++){
                  QString col=QString::number(i);
                  QString lig=QString::number(j);
                  QString text=lig+col;
-                 int num=text.toInt(false,10);
+                 int num=text.toInt(0,10);
                   if(nfois==0){
                          buttons[num]=new QPushButton("",this);
                          buttons[num]->setGeometry(30, 30, 30, 30);
@@ -764,8 +967,8 @@ void MainWindow::deletePlanLed(int nfois){
 void MainWindow::controlLed(const QString & valeur){
    QString strlig=valeur[0];
    QString strcol=valeur[1];
-   int lig=strlig.toInt(false,10);
-   int col=strcol.toInt(false,10);
+   int lig=strlig.toInt(0,10);
+   int col=strcol.toInt(0,10);
   Led l;
   l= this->c.getList1()->value(NumeroPlan).getLed(lig,col);
   l.modifierEtat();
@@ -776,6 +979,11 @@ void MainWindow::controlLed(const QString & valeur){
 
   QVector3D v;
   v=QVector3D(abs(8-col),NumeroPlan,abs(8-lig));
+
+
+  liste_vecteur3D.append(v);
+  this->ui->widget->setListPoints(liste_vecteur3D);
+
   if(this->c.getList1()->value(NumeroPlan).getLed(lig,col).getEtat()==1){
 
         liste_vecteur3D.append(v);
@@ -787,6 +995,9 @@ void MainWindow::controlLed(const QString & valeur){
       this->ui->widget->setListPoints(liste_vecteur3D);
   }
 
+
+
+
   afficheLed(lig,col,l.getEtat());
 
 }
@@ -797,7 +1008,7 @@ void MainWindow:: afficheLed(const int i, const int j,const  int etat )
        QString lig=QString::number(i);
        QString col=QString::number(j);
        QString text=lig+col;
-       int num=text.toInt(false,10);
+       int num=text.toInt(0,10);
 
     if(etat==0){
         this->buttons[num]->setIcon(QIcon(":/icone/nvatomeblanc.png"));
@@ -809,17 +1020,30 @@ void MainWindow:: afficheLed(const int i, const int j,const  int etat )
 }
 
 void MainWindow::connexion(){
-    QObject::connect(fleche_gauche, SIGNAL(clicked()), this, SLOT(afficheListePlan1()));
 
     QSignalMapper *signalMapper = new QSignalMapper(this);
-    QString ori=QString::number(0);
-    for (int i=0;i<9;i++){
-        QString nplan=QString::number(i);
-        QString text=ori+nplan;
-        int num=text.toInt(false,10);
-        connect(plans[num], SIGNAL(clicked()), signalMapper, SLOT(map()));
-        signalMapper->setMapping(plans[num], text);
-    }
+
+
+
+        connect(ui->plane1, SIGNAL(clicked()), signalMapper, SLOT(map()));
+        signalMapper->setMapping(ui->plane1, "00");
+        connect(ui->plane2, SIGNAL(clicked()), signalMapper, SLOT(map()));
+        signalMapper->setMapping(ui->plane2, "01");
+        connect(ui->plane3, SIGNAL(clicked()), signalMapper, SLOT(map()));
+        signalMapper->setMapping(ui->plane3, "02");
+        connect(ui->plane4, SIGNAL(clicked()), signalMapper, SLOT(map()));
+        signalMapper->setMapping(ui->plane4, "03");
+        connect(ui->plane5, SIGNAL(clicked()), signalMapper, SLOT(map()));
+        signalMapper->setMapping(ui->plane5, "04");
+        connect(ui->plane6, SIGNAL(clicked()), signalMapper, SLOT(map()));
+        signalMapper->setMapping(ui->plane6, "05");
+        connect(ui->plane7, SIGNAL(clicked()), signalMapper, SLOT(map()));
+        signalMapper->setMapping(ui->plane7, "06");
+        connect(ui->plane8, SIGNAL(clicked()), signalMapper, SLOT(map()));
+        signalMapper->setMapping(ui->plane8, "07");
+        connect(ui->plane9, SIGNAL(clicked()), signalMapper, SLOT(map()));
+        signalMapper->setMapping(ui->plane9, "08");
+
     connect(signalMapper, SIGNAL(mapped(const QString &)), this, SLOT(affichePlanLed(const QString &)));
 
     QSignalMapper *signalMapper1 = new QSignalMapper(this);
@@ -829,7 +1053,7 @@ void MainWindow::connexion(){
             QString lig=QString::number(j);
             QString text=lig+col;
 
-            int num=text.toInt(false,10);
+            int num=text.toInt(0,10);
             connect(buttons[num], SIGNAL(clicked()), signalMapper1, SLOT(map()));
             signalMapper1->setMapping(buttons[num], text);
         }
@@ -873,19 +1097,7 @@ MainWindow::~MainWindow()
     delete ui;
 }
 
-/*MainWindow* MainWindow::getInstance()
-{
-    if(_instance == 0)
-        _instance = new MainWindow();
 
-    return _instance;
-}
-
-void MainWindow::kill()
-{
-    if(_instance != 0)
-        delete _instance;
-}*/
 
 
 

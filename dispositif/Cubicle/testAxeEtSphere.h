@@ -2,7 +2,6 @@
 #define testAxeEtSphere_H
 #include <QtOpenGL>
 #include <QGLWidget>
-#include <GL/glut.h>
 #include <QtGui>
 #include <qgl.h>
 #include <QKeyEvent>
