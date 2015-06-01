@@ -19,7 +19,8 @@ SOURCES += main.cpp\
     plan.cpp\
     nouveaumotif.cpp\
     gestionfichier.cpp\
-    simulation_cube.cpp
+    simulation_cube.cpp \
+    parser.c
 
 
 
@@ -31,7 +32,8 @@ HEADERS  += mainwindow.h\
     nouveaumotif.h\
     gestionfichier.h\
     simulation_cube.h\
-    adapt.h
+    adapt.h \
+    parser.h
 
 
 

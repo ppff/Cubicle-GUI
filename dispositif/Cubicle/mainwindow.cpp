@@ -76,6 +76,9 @@ MainWindow::MainWindow(QWidget *parent) :
 }
 
 //ouvre le répertoire de travail
+
+
+
 void MainWindow::ouvrir_explorer(){
     namedir=QFileDialog::getExistingDirectory(this, tr("Open Directory"),
                                                    "/home"
@@ -224,31 +227,33 @@ void MainWindow::ajouter_motif(){
             qDebug()<<"le namedir est "+ namedir;
             qDebug()<<"l'emplacement du dossier est "+dir;
             qDebug()<<"le nom du dossier est "+nameGroup;
+            if(nameGroup!="Cubicle"){
 
-            NouveauMotif m=NouveauMotif("New Pattern",dir+"/"+nameGroup);
-            tree();
-            if(namedir==s+"/workspace"){
-            new_index =model->index(namedir+"/Cubicle/"+ nameGroup );
-         ui->treeView->expand(new_index);
-         ui->treeView->scrollTo(new_index);
-         new_index =model->index(namedir+"/Cubicle/"+ nameGroup +"/" +m.getNameFile());
-         qDebug() << namedir+"/Cubicle/"+ nameGroup +"/" +m.getNameFile();
-         ui->treeView->setCurrentIndex(new_index);
-         ui->treeView->selectionModel()->select(new_index,
-                QItemSelectionModel::ClearAndSelect | QItemSelectionModel::Rows);
-              //ui->treeView->edit(new_index);
-            }
-            else{
-                new_index =model->index(namedir+"/"+ nameGroup );
-             ui->treeView->expand(new_index);
-             ui->treeView->scrollTo(new_index);
-             new_index =model->index(namedir+ nameGroup +"/" +m.getNameFile());
-             qDebug() << namedir+ nameGroup +"/" +m.getNameFile();
-             ui->treeView->setCurrentIndex(new_index);
-             ui->treeView->selectionModel()->select(new_index,
-                    QItemSelectionModel::ClearAndSelect | QItemSelectionModel::Rows);
+                    NouveauMotif m=NouveauMotif("New Pattern",dir+"/"+nameGroup);
+                    tree();
+                    if(namedir==s+"/workspace"){
+                    new_index =model->index(namedir+"/Cubicle/"+ nameGroup );
+                 ui->treeView->expand(new_index);
+                 ui->treeView->scrollTo(new_index);
+                 new_index =model->index(namedir+"/Cubicle/"+ nameGroup +"/" +m.getNameFile());
+                 qDebug() << namedir+"/Cubicle/"+ nameGroup +"/" +m.getNameFile();
+                 ui->treeView->setCurrentIndex(new_index);
+                 ui->treeView->selectionModel()->select(new_index,
+                        QItemSelectionModel::ClearAndSelect | QItemSelectionModel::Rows);
+                      //ui->treeView->edit(new_index);
+                    }
 
-            }
+                else{
+                    new_index =model->index(namedir+"/"+ nameGroup );
+                 ui->treeView->expand(new_index);
+                 ui->treeView->scrollTo(new_index);
+                 new_index =model->index(namedir+ nameGroup +"/" +m.getNameFile());
+                 qDebug() << namedir+ nameGroup +"/" +m.getNameFile();
+                 ui->treeView->setCurrentIndex(new_index);
+                 ui->treeView->selectionModel()->select(new_index,
+                        QItemSelectionModel::ClearAndSelect | QItemSelectionModel::Rows);
+
+                }
 
 
             }
@@ -260,7 +265,7 @@ void MainWindow::ajouter_motif(){
     }
 
 }
-
+}
 void MainWindow::new_project(){
 
     s=QCoreApplication::applicationDirPath();
@@ -527,17 +532,17 @@ void MainWindow::doubleClick(){
              ui->widget->setListPlan(liste_vecteur3D);
              int* tab;
 
-            qDebug()<<"je vais parser";
-             const char* nomFichier= name.toStdString().c_str();
-              qDebug()<<"je vais parser ";
-             tab=parser_file(nomFichier);
-              qDebug()<<"j'ai' parsé" ;
-             GestionFichier ges;
 
-                  QList<QVector3D> l=ges.tabToVector3D(tab);
+           //std::string nameStd = name.toStdString();
+           //const char* nomFichier= nameStd.c_str();
+           //tab=parser_file(nomFichier);
+
+           GestionFichier ges;
+
+           //QList<QVector3D> l=ges.tabToVector3D(tab);
 
 
-          //   QList<QVector3D> l=ges.parser(name);
+            QList<QVector3D> l=ges.parser(name);
              if(!l.empty()){
 
                  this->ui->widget->setListPoints(l);
