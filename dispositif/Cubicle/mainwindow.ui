@@ -128,7 +128,11 @@
     <rect>
      <x>0</x>
      <y>0</y>
+<<<<<<< HEAD
+     <width>1026</width>
+=======
      <width>1200</width>
+>>>>>>> 83dae32eff94478b27c73336ed2944eb055e5bdc
      <height>25</height>
     </rect>
    </property>
@@ -162,6 +166,8 @@
     </property>
     <addaction name="actionSelect"/>
     <addaction name="actionDuplicate"/>
+    <addaction name="actionRaise"/>
+    <addaction name="actionLower"/>
    </widget>
    <addaction name="menuFile"/>
    <addaction name="menuEdit"/>
@@ -187,6 +193,8 @@
    <addaction name="actionPaste_pattern"/>
    <addaction name="actionCut_pattern"/>
    <addaction name="actionDelete_pattern"/>
+   <addaction name="actionRaise"/>
+   <addaction name="actionLower"/>
    <addaction name="actionQuit"/>
   </widget>
   <widget class="QToolBar" name="toolBar">
@@ -338,6 +346,24 @@
    </property>
    <property name="text">
     <string>new project</string>
+   </property>
+  </action>
+  <action name="actionRaise">
+   <property name="icon">
+    <iconset resource="ressource.qrc">
+     <normaloff>:/Images/up.png</normaloff>:/Images/up.png</iconset>
+   </property>
+   <property name="text">
+    <string>Raise</string>
+   </property>
+  </action>
+  <action name="actionLower">
+   <property name="icon">
+    <iconset resource="ressource.qrc">
+     <normaloff>:/Images/down.png</normaloff>:/Images/down.png</iconset>
+   </property>
+   <property name="text">
+    <string>Lower</string>
    </property>
   </action>
  </widget>
