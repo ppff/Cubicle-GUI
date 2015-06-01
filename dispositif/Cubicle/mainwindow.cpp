@@ -40,6 +40,7 @@ MainWindow::MainWindow(QWidget *parent) :
     ui->actionPaste_pattern->setDisabled(true);
     ui->actionSave->setDisabled(true);
     ui->actionCut_pattern->setDisabled(true);
+    ui->actionSave_as->setDisabled(true);
 
 
     //désactiver la sélection des plans
@@ -82,8 +83,10 @@ void MainWindow::ouvrir_explorer(){
   QString  tmpdir=QFileDialog::getExistingDirectory(this, tr("Open Directory"),
                                                    "/home"
                                                );
-  if (tmpdir=="") {qDebug()<<tmpdir;
-      return;}
+  if (tmpdir=="") {
+      qDebug()<<tmpdir;
+      return;
+  }
   else {
       namedir=tmpdir;
   }
@@ -99,8 +102,11 @@ void MainWindow::ouvrir_explorer(){
        qDebug()<<"impossible";
        return;
   }
+  this->setWindowTitle("Cubicle["+namedir+"/Cubicle"+"]") ;
   tree();
   dirOpen=true;
+  saved=false;
+  ui->actionSave_as->setDisabled(false);
 }
 
 void MainWindow::contextMenuEvent(QContextMenuEvent *event){
@@ -295,7 +301,10 @@ void MainWindow::new_project(){
                     tree();*/
 
     dirOpen=true;
+    this->setWindowTitle("Cubicle") ;
             tree();
+            ui->actionSave_as->setDisabled(false);
+            saved=false;
 }
 
 void MainWindow::on_actionNew_Group_triggered()
@@ -516,30 +525,6 @@ void MainWindow::removeDir(const QString& PathDir)
      dir.rmdir(StrDir);
   }
 }
-
-// cette fonction supprime le dosier Cubicle dans le workspace lorsqu'on fait save as
-
-
-
-/*void MainWindow::controlRename(){
-    QModelIndex index=ui->treeView->currentIndex();
-     if (model->fileInfo(index).isFile()){
-            QString path = model->filePath(index);
-            QString name = model->fileName(index);
-            QString dir = path;
-            dir.remove(dir.size() - name.size(), name.size());
-            QFile file(path);
-            if(file.open(QIODevice::WriteOnly | QIODevice::Text))
-            {
-                //Interact with the file
-                file.close();
-                if(file.rename(QString("%1read %2").arg(dir, name)))
-                        qDebug() << "Renamed";
-            }
-     }
-}*/
-
-
 
 void MainWindow::reordonneGroup(){
       QModelIndex index=model->index(namedir);
