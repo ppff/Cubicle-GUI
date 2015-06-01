@@ -36,12 +36,6 @@
 #include <QDir>
 #include <QFileInfoList>
 #include <QFileInfo>
-/*
-extern "C" {
-#include "parser.h"
-}
-*/
-
 
 namespace Ui {
 class MainWindow;
@@ -69,6 +63,7 @@ public:
     void contextMenuEvent(QContextMenuEvent *event);
     void xCopy2 (const QString &sourcePath, const QString &destPath, const QString &name);
     void removeDir(const QString& dirPath) ;
+    void closeEvent(QCloseEvent *event);
 
     ~MainWindow();
 
