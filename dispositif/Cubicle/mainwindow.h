@@ -100,6 +100,7 @@ public:
     bool copierCouper; // vaut 0 pour copier et 1 pour couper
     QList<QVector3D> liste_vecteur3D;
      QString s;
+     void reordonneGroup();
 
 
 public slots:
@@ -127,6 +128,7 @@ public slots:
     void afficheLed(const int i, const int j, const int etat);
     void controlLed(const QString & valeur);
    // void controlRename();
+
 
 protected:
     QDir *aDir;
