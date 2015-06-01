@@ -8,6 +8,7 @@ class NouveauMotif
 public:
     NouveauMotif(QString nomMotif, QString Dir);
     QString getNameFile();
+private:
     QString nameFile;
 
 };

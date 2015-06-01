@@ -36,12 +36,6 @@
 #include <QDir>
 #include <QFileInfoList>
 #include <QFileInfo>
-/*
-extern "C" {
-#include "parser.h"
-}
-*/
-
 
 namespace Ui {
 class MainWindow;

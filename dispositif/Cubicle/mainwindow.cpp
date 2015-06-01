@@ -18,9 +18,6 @@
 #include <QPainter>
 #include <QPainterPath>
 
-
-
-
 using namespace std;
 
 //MainWindow *MainWindow::_instance = NULL;
@@ -29,9 +26,7 @@ MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent),
     ui(new Ui::MainWindow)
 {
-
     ui->setupUi(this);
-
 
     ui->actionCopy->setDisabled(true);
     ui->actionDelete_pattern->setDisabled(true);
@@ -41,10 +36,8 @@ MainWindow::MainWindow(QWidget *parent) :
     ui->actionSave->setDisabled(true);
     ui->actionCut_pattern->setDisabled(true);
     ui->actionSave_as->setDisabled(true);
-
     ui->actionRaise->setDisabled(true);
     ui->actionLower->setDisabled(true);
-
 
     //désactiver la sélection des plans
     ui->plane1->setDisabled(true);
@@ -75,39 +68,11 @@ MainWindow::MainWindow(QWidget *parent) :
     desactivePlan(0);
     connexion();
     dirOpen=false;
-
-
 }
-
-
-void MainWindow::closeEvent(QCloseEvent *event)
-{ if (!this->saved) {
-        int enregistrer=QMessageBox::question(this, "Quit", " Do you want to save the project before you quit ?");
-        if (enregistrer==QMessageBox::Yes){
-            controlSaveAs();
-             event->accept();
-            this->close();
-        }
-        else
-        {
-            this->close();
-        }
-    }
-   else {
-        this->close();
-    }
-}
-
-
 
 //ouvre le répertoire de travail
-
-
-
 void MainWindow::ouvrir_explorer(){
-  QString  tmpdir=QFileDialog::getExistingDirectory(this, tr("Open Directory"),
-                                                   "/home"
-                                               );
+  QString  tmpdir=QFileDialog::getExistingDirectory(this, tr("Open Directory"), "/home");
   if (tmpdir=="") {
       qDebug()<<tmpdir;
       return;
@@ -139,7 +104,6 @@ void MainWindow::ouvrir_explorer(){
   this->liste_vecteur3D.clear();
   this->ui->widget->setListPoints(liste_vecteur3D);
   ui->widget->setListPlan(liste_vecteur3D);
-
 }
 
 void MainWindow::contextMenuEvent(QContextMenuEvent *event){
@@ -194,11 +158,8 @@ void MainWindow::contextMenuEvent(QContextMenuEvent *event){
 
     contextMenu->exec(QCursor::pos());
     }
-
 }
 
-
-///////////////////////////////////////////////////////////////////////////////
 
 void MainWindow::couper(){
     copier();
@@ -345,11 +306,6 @@ void MainWindow::new_project(){
        qDebug()<<"je crée cubicle pour la 1ere fois";
        new_index=model->index(namedir);
        model->mkdir(new_index,"Cubicle");
-
-        /*qDebug()<<"je crée cubicle pour la 1ere fois";
-             QModelIndex index1=model->index(namedir);
-             model->mkdir(index1,"Cubicle");
-                    tree();*/
 
     dirOpen=true;
     this->setWindowTitle("Cubicle") ;
@@ -658,13 +614,14 @@ void MainWindow::controlQuit(){
         else {
         this->close();
     }
-    /*int reponse = QMessageBox::question(this, "Quit", " Are you sure you want to quit ?");
-
-        if (reponse == QMessageBox::Yes)
-        {
-            this->close();
-        }*/
 }
+
+
+void MainWindow::closeEvent(QCloseEvent *event)
+{
+    controlQuit();
+}
+
 
 void MainWindow::controlDelete(){
     QModelIndex index=ui->treeView->currentIndex();
@@ -808,9 +765,6 @@ void MainWindow::reordonneGroup(){
          qDebug() << "le nom du dossier est "+ name;
 
      }
-
-
-
 }
 
 //extern "C" int* parser_file(const char* name);
@@ -848,12 +802,9 @@ void MainWindow::doubleClick(){
              this->ui->widget->setListPoints(liste_vecteur3D);
              ui->widget->setListPlan(liste_vecteur3D);
        //      int* tab;
-
-
          //  std::string nameStd = name.toStdString();
          //  const char* nomFichier= nameStd.c_str();
          //  tab=parser_file(nomFichier);
-         //  if(tab!=NULL){
            //        int h=tab[1];
              //      QString lh=QString::number(h);
                //    qDebug()<<"premier elmt ds tab "+lh;
@@ -880,16 +831,12 @@ void MainWindow::doubleClick(){
                            this->ui->widget->setListPoints(liste_vecteur3D);
                          }
                      }
-
-        //}
                  }
     else {
         dirOrFile=true;
     }
 }
 }
-
-
 
 
 void MainWindow::desactivePlan(int niemefois){
@@ -1021,9 +968,6 @@ void MainWindow::controlLed(const QString & valeur){
       this->ui->widget->setListPoints(liste_vecteur3D);
   }
 
-
-
-
   afficheLed(lig,col,l.getEtat());
 
 }
@@ -1048,8 +992,6 @@ void MainWindow:: afficheLed(const int i, const int j,const  int etat )
 void MainWindow::connexion(){
 
     QSignalMapper *signalMapper = new QSignalMapper(this);
-
-
 
         connect(ui->plane1, SIGNAL(clicked()), signalMapper, SLOT(map()));
         signalMapper->setMapping(ui->plane1, "00");
