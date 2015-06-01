@@ -41,7 +41,6 @@ MainWindow::MainWindow(QWidget *parent) :
     ui->actionSave->setDisabled(true);
     ui->actionCut_pattern->setDisabled(true);
     ui->actionSave_as->setDisabled(true);
-
     ui->actionRaise->setDisabled(true);
     ui->actionLower->setDisabled(true);
 
