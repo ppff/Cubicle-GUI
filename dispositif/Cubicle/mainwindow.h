@@ -68,7 +68,6 @@ public:
     void connexion();
     void contextMenuEvent(QContextMenuEvent *event);
     void xCopy2 (const QString &sourcePath, const QString &destPath, const QString &name);
-
     void removeDir(const QString& dirPath) ;
 
     ~MainWindow();
@@ -97,6 +96,7 @@ public:
     int NumeroPlan;
     QPushButton* plans[30];
     Cube c;
+    bool saved=false ;
     int dirOpen;  //vaut 0 si y a pas de directory ouvert, 1 si openDirectory et 2 si on ne choisit pas d'emplacement au début=>  saveAs
     bool copierCouper; // vaut 0 pour copier et 1 pour couper
     QList<QVector3D> liste_vecteur3D;
