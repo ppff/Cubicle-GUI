@@ -39,6 +39,7 @@ MainWindow::MainWindow(QWidget *parent) :
     ui->actionSave->setDisabled(true);
     ui->actionCut_pattern->setDisabled(true);
 
+
     //désactiver la sélection des plans
     ui->plane1->setDisabled(true);
      ui->plane2->setDisabled(true);
@@ -67,7 +68,7 @@ MainWindow::MainWindow(QWidget *parent) :
     desactivePlan(0);
     connexion();
     dirOpen=false;
-    ui->actionNew_Group->setEnabled(true);
+
 
 
 
@@ -206,6 +207,7 @@ void MainWindow::tree(){
     ui->actionPaste_pattern->setDisabled(false);
     ui->actionCut_pattern->setDisabled(false);
     ui->actionSave->setDisabled(false);
+    ui->actionNew_Group->setDisabled(false);
 }
 
 //créer un nouveau motif
@@ -234,17 +236,18 @@ void MainWindow::ajouter_motif(){
          ui->treeView->setCurrentIndex(new_index);
          ui->treeView->selectionModel()->select(new_index,
                 QItemSelectionModel::ClearAndSelect | QItemSelectionModel::Rows);
-              //ui->treeView->edit(new_index);
+              ui->treeView->edit(new_index);
             }
             else{
                 new_index =model->index(namedir+"/"+ nameGroup );
              ui->treeView->expand(new_index);
              ui->treeView->scrollTo(new_index);
-             new_index =model->index(namedir+ nameGroup +"/" +m.getNameFile());
-             qDebug() << namedir+ nameGroup +"/" +m.getNameFile();
+             new_index =model->index(namedir+ "/"+ nameGroup +"/" +m.getNameFile());
+             qDebug() << namedir+"/"+ nameGroup +"/" +m.getNameFile();
              ui->treeView->setCurrentIndex(new_index);
              ui->treeView->selectionModel()->select(new_index,
                     QItemSelectionModel::ClearAndSelect | QItemSelectionModel::Rows);
+              ui->treeView->edit(new_index);
 
             }
 
@@ -286,20 +289,23 @@ void MainWindow::new_project(){
 
 void MainWindow::on_actionNew_Group_triggered()
 {   int m;
+    QString indice;
     if (namedir==s+"/workspace"){
     QModelIndex index =model->index(namedir+"/Cubicle",0);
-    QString name ="New Group";
+    QString name ="NewGroup";
     QDir dir(namedir+"/Cubicle");
     QFileInfoList entries = dir.entryInfoList(QDir::NoDotAndDotDot | QDir::AllEntries);
     dir.setSorting( QDir::Name);
     m=entries.size();
     if (m<10){
-        s = "0"+QString::number(m)+"_";
+        indice = "0"+QString::number(m)+"_";
     }else {
-        s = QString::number(m)+"_";
+       indice = QString::number(m)+"_";
 
     }
-    name = s + name;
+    qDebug() << "s contient "+ s;
+    name = indice + name;
+     qDebug() << "s contient "+ name;
     model->mkdir(index,name);
     qDebug()<<"j'ai crée un dossier ds "+namedir;
        new_index =model->index(namedir+"/Cubicle");
