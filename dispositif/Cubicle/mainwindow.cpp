@@ -63,7 +63,7 @@ MainWindow::MainWindow(QWidget *parent) :
     connect(ui->treeView,SIGNAL(doubleClicked(const QModelIndex &)),this,SLOT(doubleClick()));
     connect(ui->actionCut_pattern,SIGNAL(triggered(bool)),this,SLOT(couper()));
     connect(ui->actionSave_as,SIGNAL(triggered(bool)),this,SLOT(controlSaveAs()));
-   // connect(ui->treeView,SIGNAL(doubleClicked(QModelIndex)),this,SLOT(controlRename()));
+     //connect(ui->treeView,SIGNAL(clicked(QModelIndex)),this,SLOT(reordonneGroup()));
 
     this->setWindowTitle("Cubicle");
     deletePlanLed(0);
@@ -211,7 +211,7 @@ void MainWindow::tree(){
     ui->actionCut_pattern->setDisabled(false);
     ui->actionSave->setDisabled(false);
     ui->actionNew_Group->setDisabled(false);
-    reordonneGroup();
+    //connect(model,SIGNAL(),this,SLOT(reordonneGroup()));
 }
 
 //créer un nouveau motif
@@ -328,10 +328,11 @@ void MainWindow::on_actionNew_Group_triggered()
          QItemSelectionModel::ClearAndSelect | QItemSelectionModel::Rows);
   ui->treeView->edit(new_index);
 
+
 }
     else {
         QModelIndex index =model->index(namedir,0);
-        QString name ="New Group";
+        QString name ="NewGroup";
         QDir dir(namedir);
         QFileInfoList entries = dir.entryInfoList(QDir::NoDotAndDotDot | QDir::AllEntries);
         dir.setSorting( QDir::Name);
@@ -513,36 +514,58 @@ void MainWindow::removeDir(const QString& PathDir)
 // cette fonction supprime le dosier Cubicle dans le workspace lorsqu'on fait save as
 
 
-/*void MainWindow::controlRename(){
-    QModelIndex index=ui->treeView->currentIndex();
-     if (model->fileInfo(index).isFile()){
-            QString path = model->filePath(index);
-            QString name = model->fileName(index);
-            QString dir = path;
-            dir.remove(dir.size() - name.size(), name.size());
-            QFile file(path);
-            if(file.open(QIODevice::WriteOnly | QIODevice::Text))
-            {
-                //Interact with the file
-                file.close();
-                if(file.rename(QString("%1read %2").arg(dir, name)))
-                        qDebug() << "Renamed";
-            }
-     }
-}*/
 void MainWindow::reordonneGroup(){
-      QModelIndex index=model->index(namedir);
-     if (model->fileInfo(index).isDir()){
-         QString path = model->filePath(index);
-         QString name = model->fileName(index);
-         qDebug() << "le path du dossier est "+ path;
-         qDebug() << "le nom du dossier est "+ name;
+    qDebug()<<" j'entre dans reordonne group";
+      QDir dir0(namedir+"/Cubicle");
+      QDirIterator dirIterator(dir0, QDirIterator::Subdirectories);
 
+       //On récupère les fichiers et dossiers grâce à l'itérateur
+       QFileInfoList fileList;
+
+       while(dirIterator.hasNext())
+       {
+            if (dirIterator.fileName()!=" " &&dirIterator.fileName()!="."){
+
+           fileList << dirIterator.fileInfo();}
+             dirIterator.next();
+       }
+       QString t;
+       t=QString::number(fileList.size());
+       qDebug()<<"la taille de la liste est "+t;
+       //On parcours les éléments
+       QStringList directories;
+     //  for(int i = fileList.count() - 1; i > 0; i--)
+        qDebug()<<"le count de la liste est "+fileList.count();
+        for(int i = 0; i <fileList.count(); i++)
+       {
+
+          if( fileList.at(i).isDir() ){
+
+         directories << fileList.at(i).absolutePath()+"/"+fileList.at(i).completeBaseName();
+         QDir dir(fileList.at(i).absolutePath());
+         QString nameGroup=fileList.at(i).completeBaseName();
+         if (i<10){
+             s = "0"+QString::number(i)+"_";
+         }else {
+             s = QString::number(i)+"_";
+
+         }
+         qDebug() << "l'indice est égal à "+s;
+         QString nameRest ;
+         if (nameGroup[2]=='_')
+         nameRest = nameGroup.mid(3);
+         else nameRest = nameGroup;
+         QString newNameGroup=s+nameRest;
+
+         QString pathTotalOld = fileList.at(i).absolutePath()+"/"+nameGroup;
+         QString pathTotalNew = fileList.at(i).absolutePath()+"/"+newNameGroup;
+          dir.rename(pathTotalOld,pathTotalNew);
+            tree();
+         qDebug()<<"on lit le dossier "+fileList.at(i).completeBaseName();
+
+       }
+       }
      }
-
-
-
-}
 
 extern "C" int* parser_file(const char* name);
 
