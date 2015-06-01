@@ -59,7 +59,7 @@ QString GestionFichier::getLinePlan(int nplan,int nligne,Cube c){
 
 //parser le fichier du moutif et renvoyer une liste de vecteurs 3D de leds allumées
 
-QList<QVector3D> GestionFichier:: parser(QString empl){
+QList<QVector3D> GestionFichier:: parser(QString empl, QList<QVector3D> list){
     QFile file(empl);
     if(!file.open(QIODevice::ReadOnly | QIODevice::Text)){
         qDebug()<<"le fichier n'est pas ouvert";
@@ -68,7 +68,6 @@ QList<QVector3D> GestionFichier:: parser(QString empl){
     qDebug()<<"fichier ouvert";
     QTextStream flux(&file);
     QString  Line;
-    QList<QVector3D> list;
     list.clear();
     //lire la première ligne: version
     Line= flux.readLine()+'\n';

@@ -503,7 +503,7 @@ bool MainWindow::removeDir(const QString& dirPath) //dirPath = le chemin du rép
             }
      }
 }*/
-extern "C" int* parser_file(const char* name);
+ //extern "C" int* parser_file(const char* name);
 
 // supprimer  le plan 2D Lors d'un double clic sur un nouveau motif
 void MainWindow::doubleClick(){
@@ -534,36 +534,42 @@ void MainWindow::doubleClick(){
              this->liste_vecteur3D.clear();
              this->ui->widget->setListPoints(liste_vecteur3D);
              ui->widget->setListPlan(liste_vecteur3D);
-             int* tab;
+       //      int* tab;
 
 
-           //std::string nameStd = name.toStdString();
-           //const char* nomFichier= nameStd.c_str();
-           //tab=parser_file(nomFichier);
+         //  std::string nameStd = name.toStdString();
+         //  const char* nomFichier= nameStd.c_str();
+         //  tab=parser_file(nomFichier);
+         //  if(tab!=NULL){
+           //        int h=tab[1];
+             //      QString lh=QString::number(h);
+               //    qDebug()<<"premier elmt ds tab "+lh;
+                   GestionFichier ges;
 
-           GestionFichier ges;
+                 //  QList<QVector3D> l=ges.tabToVector3D(tab);
+                   // int x=l.first().x();
+                   // QString lll=QString::number(x);
+                  //  qDebug()<<"premier elmt "+lll;
 
-           //QList<QVector3D> l=ges.tabToVector3D(tab);
+                    QList<QVector3D> l;
+                    l=ges.parser(name,l);
+                     if(!l.empty()){
 
+                         this->ui->widget->setListPoints(l);
 
-            QList<QVector3D> l=ges.parser(name);
-             if(!l.empty()){
+                         for (QVector3D u:l){
+                           Led l=this->c.getList1()->value(u.y()).getLed(fabs(8-u.z()),fabs(8-u.x()));
+                           l.modifierEtat();
+                           Plan p=c.getList1()->value(u.y());
+                           p.updatePlan(l,fabs(8-u.z()),fabs(8-u.x()),u.y());
+                           this->c.updateCube(p,u.y());
+                           liste_vecteur3D.append(u);
+                           this->ui->widget->setListPoints(liste_vecteur3D);
+                         }
+                     }
 
-                 this->ui->widget->setListPoints(l);
-
-                 for (QVector3D u:l){
-                   Led l=this->c.getList1()->value(u.y()).getLed(fabs(8-u.z()),fabs(8-u.x()));
-                   l.modifierEtat();
-                   Plan p=c.getList1()->value(u.y());
-                   p.updatePlan(l,fabs(8-u.z()),fabs(8-u.x()),u.y());
-                   this->c.updateCube(p,u.y());
-                   liste_vecteur3D.append(u);
-                   this->ui->widget->setListPoints(liste_vecteur3D);
+        //}
                  }
-             }
-
-
-         }
     else {
         dirOrFile=true;
     }
