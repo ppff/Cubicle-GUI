@@ -413,6 +413,9 @@ void MainWindow::controlDelete(){
 void MainWindow::controlSave(){
     GestionFichier ges;
     ges.ouvrir(this->emplMotif,this->c);
+    QMessageBox msgBox;
+    msgBox.setText("Your pattern "+currentPattern +" has been succesfully saved");
+    msgBox.exec();
 }
 void MainWindow::xCopy2 (const QString &sourcePath, const QString &destPath, const QString &name)
 {
@@ -464,6 +467,9 @@ void MainWindow::controlSaveAs(){
     namedir= destPath+"/Cubicle";
     qDebug()<< "le nouveau path est" + namedir;
     this->setWindowTitle("Cubicle["+destPath+"/Cubicle"+"]") ;
+    QMessageBox msgBox;
+    msgBox.setText("Your project Cubicle has been succesfully saved");
+    msgBox.exec();
     tree();
 
 }
@@ -577,9 +583,11 @@ void MainWindow::doubleClick(){
 
 
          QString name=model->fileInfo(index).absoluteFilePath();
+         this->currentPattern=model->fileInfo(index).baseName();
          if(name.compare(this->getEmplMotif())!=0){
              this->setEmpMotif(name);
              qDebug ()<< "nouveau motif "+this->getEmplMotif();
+             qDebug ()<< "nom pattern "+currentPattern;
              this->c=Cube();
              deletePlanLed(1);
              desactivePlan(1);

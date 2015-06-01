@@ -91,6 +91,7 @@ public:
     QString nom_copie;
     bool dirOrFile;//false if file
     QString emplMotif;
+    QString currentPattern;
     QPushButton* buttons[90];
     int OrienPlan;
     int NumeroPlan;
