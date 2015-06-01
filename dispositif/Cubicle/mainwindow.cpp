@@ -482,7 +482,7 @@ void MainWindow::removeDir(const QString& PathDir)
   qDebug()<<"la taille de la liste est "+t;
   //On parcours les éléments
   QStringList directories;
-  for(int i = fileList.count() - 1; i > 0; i--)
+  for(int i = fileList.count() - 1; i >=0 ; i--)
   {
     //Si l'élément est un fichier, on le supprime
     if(fileList.at(i).isFile()) {
