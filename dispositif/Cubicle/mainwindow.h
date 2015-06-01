@@ -109,7 +109,7 @@ public slots:
     void Monter();
 
 public slots:
-    void insertGroup();
+    //void insertGroup();
     void controlQuit();
     void controlDelete();
     void controlSave();

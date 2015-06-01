@@ -291,9 +291,9 @@ void MainWindow::on_actionNew_Group_triggered()
 
 }
 
-void MainWindow::Monter()
-{
+void MainWindow::Monter(){
     QString nameGroup;
+    QString newNameGroup;
        QModelIndex index=ui->treeView->currentIndex();
        if (index.isValid()){
            if (model->fileInfo(index).isDir()) {
@@ -302,7 +302,100 @@ void MainWindow::Monter()
                 qDebug()<<nameGroup;
                 qDebug()<<dir;
 
-                QFileInfoList entries = dire.entryInfoList(QDir::NoDotAndDotDot | QDir::AllEntries);
+                QString numero = nameGroup.left(2);
+                QString nameRest = nameGroup.mid(3);
+                int num = numero.toInt();
+
+                if (num<11){
+                    newNameGroup = "0"+QString::number(num-1)+"_"+nameRest;
+                }else {
+                    newNameGroup = QString::number(num-1)+"_"+nameRest;
+                }
+                QString pathTotalOld = dir+"/"+nameGroup;
+                QString pathTotalNew = dir+"/"+newNameGroup;
+
+                if (num<10){
+                    QDir repertoire(pathTotalNew);
+                    if (repertoire.exists()){
+                        QString nameGroupMoinsUn = "0"+QString::number(num-1)+"_"+nameRest;
+                        QString totalnameGroupMoinsUn = dir+"/"+nameGroupMoinsUn;
+
+                        QString nameGroupMoinsUnChange = nameRest;
+                        QString totalnameGroupMoinsUnChange = dir+"/"+nameGroupMoinsUnChange;
+
+                        QDir directory(totalnameGroupMoinsUn);
+                        directory.rename(totalnameGroupMoinsUn,totalnameGroupMoinsUnChange);
+
+                        QDir dir1(pathTotalOld);
+                        dir1.rename(pathTotalOld, pathTotalNew);
+
+                        QString nameGroupMoinsUnChangeCorrect = "0"+QString::number(num)+"_"+nameRest;
+                        QString totalnameGroupMoinsUnCorrect = dir+"/"+nameGroupMoinsUnChangeCorrect;
+                        QDir dir2(totalnameGroupMoinsUnCorrect);
+                        dir2.rename(totalnameGroupMoinsUnChange, totalnameGroupMoinsUnCorrect);
+                        dir2.setSorting(QDir::Name);
+                    }else{
+                        QDir dir1(pathTotalOld);
+                        dir1.rename(pathTotalOld, pathTotalNew);
+                        dir1.setSorting(QDir::Name);
+                    }
+                }else if(num==10){
+                    QDir repertoire(pathTotalNew);
+                    if (repertoire.exists()){
+                        QString nameGroupMoinsUn = "0"+QString::number(num-1)+"_"+nameRest;
+                        QString totalnameGroupMoinsUn = dir+"/"+nameGroupMoinsUn;
+
+                        QString nameGroupMoinsUnChange = nameRest;
+                        QString totalnameGroupMoinsUnChange = dir+"/"+nameGroupMoinsUnChange;
+
+                        QDir directory(totalnameGroupMoinsUn);
+                        directory.rename(totalnameGroupMoinsUn,totalnameGroupMoinsUnChange);
+
+                        QDir dir1(pathTotalOld);
+                        dir1.rename(pathTotalOld, pathTotalNew);
+
+                        QString nameGroupMoinsUnChangeCorrect = QString::number(num)+"_"+nameRest;
+                        QString totalnameGroupMoinsUnCorrect = dir+"/"+nameGroupMoinsUnChangeCorrect;
+                        QDir dir2(totalnameGroupMoinsUnCorrect);
+                        dir2.rename(totalnameGroupMoinsUnChange, totalnameGroupMoinsUnCorrect);
+                        dir2.setSorting(QDir::Name);
+                    }else{
+                        QDir dir1(pathTotalOld);
+                        dir1.rename(pathTotalOld, pathTotalNew);
+                        dir1.setSorting(QDir::Name);
+                    }
+                }else if(num>10){
+                    QDir repertoire(pathTotalNew);
+                    if (repertoire.exists()){
+                        QString nameGroupMoinsUn = QString::number(num-1)+"_"+nameRest;
+                        QString totalnameGroupMoinsUn = dir+"/"+nameGroupMoinsUn;
+
+                        QString nameGroupMoinsUnChange = nameRest;
+                        QString totalnameGroupMoinsUnChange = dir+"/"+nameGroupMoinsUnChange;
+
+                        QDir directory(totalnameGroupMoinsUn);
+                        directory.rename(totalnameGroupMoinsUn,totalnameGroupMoinsUnChange);
+
+                        QDir dir1(pathTotalOld);
+                        dir1.rename(pathTotalOld, pathTotalNew);
+
+                        QString nameGroupMoinsUnChangeCorrect = QString::number(num)+"_"+nameRest;
+                        QString totalnameGroupMoinsUnCorrect = dir+"/"+nameGroupMoinsUnChangeCorrect;
+                        QDir dir2(totalnameGroupMoinsUnCorrect);
+                        dir2.rename(totalnameGroupMoinsUnChange, totalnameGroupMoinsUnCorrect);
+                        dir2.setSorting(QDir::Name);
+                    }else{
+                        QDir dir1(pathTotalOld);
+                        dir1.rename(pathTotalOld, pathTotalNew);
+                        dir1.setSorting(QDir::Name);
+                    }
+                }
+                this->tree();
+               // if (check == true){
+               //     QMessageBox::warning(this,"Error","Renamed successfully!", QMessageBox::Ok);
+               // }else{
+              //      QMessageBox::warning(this,"Error","Error renamed! Please try again.", QMessageBox::Ok);
+              //  }
 
          }
    }
