@@ -72,8 +72,6 @@ MainWindow::MainWindow(QWidget *parent) :
     dirOpen=false;
 
 
-
-
 }
 
 //ouvre le répertoire de travail
@@ -366,12 +364,26 @@ void MainWindow::on_actionNew_Group_triggered()
 
 
 void MainWindow::controlQuit(){
-    int reponse = QMessageBox::question(this, "Quit", " Are you sure you want to quit ?");
+    if (this->saved) {
+        int enregistrer=QMessageBox::question(this, "Quit", " Do you want to save the project before you quit ?");
+        if (enregistrer==QMessageBox::Save){
+            controlSaveAs();
+            this->close();
+        }
+        else
+        {
+            this->close();
+        }
+    }
+        else {
+        this->close();
+    }
+    /*int reponse = QMessageBox::question(this, "Quit", " Are you sure you want to quit ?");
 
         if (reponse == QMessageBox::Yes)
         {
             this->close();
-        }
+        }*/
 }
 
 void MainWindow::controlDelete(){
@@ -441,7 +453,7 @@ void MainWindow::controlSaveAs(){
     qDebug()<<"l'origine est "+namedir;
     qDebug()<<"la destination est"+destPath;
     xCopy2(originPath,destPath,"Cubicle");
-
+    saved=true;
     namedir= destPath+"/Cubicle";
     qDebug()<< "le nouveau path est" + namedir;
     this->setWindowTitle("Cubicle["+destPath+"/Cubicle"+"]") ;
