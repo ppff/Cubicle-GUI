@@ -602,9 +602,7 @@ void MainWindow::Descendre(){
 
        if (index.isValid()){
            if (model->fileInfo(index).isDir()) {
-               while(model->fileInfo(indexPlusUn).isFile()){
-                   indexPlusUn=ui->treeView->indexBelow(indexPlusUn);
-               }
+
                 QString dir=model->fileInfo(index).absolutePath();
                 nameGroup=model->fileInfo(index).baseName();
                 QDir temp(dir);
@@ -617,6 +615,9 @@ void MainWindow::Descendre(){
                     return;
                 }
 
+                while(model->fileInfo(indexPlusUn).isFile()){
+                    indexPlusUn=ui->treeView->indexBelow(indexPlusUn);
+                }
                 nameGroupDessous=model->fileInfo(indexPlusUn).baseName();
                 QString nameRest = nameGroup.mid(3);
                 QString numeroDessous = nameGroupDessous.left(2);
@@ -1335,8 +1336,22 @@ MainWindow::~MainWindow()
     delete ui;
 }
 
+void MainWindow::on_pushButton_clicked()
+{
+    Monter();
+}
 
+void MainWindow::on_pushButton_2_clicked()
+{
+    Descendre();
+}
 
+void MainWindow::on_pushButton_3_clicked()
+{
+    ajouter_motif();
+}
 
-
-
+void MainWindow::on_pushButton_4_clicked()
+{
+    on_actionNew_Group_triggered();
+}
