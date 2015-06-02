@@ -982,6 +982,7 @@ void MainWindow::removeDir(const QString& PathDir)
 
 void MainWindow::reordonneGroup(){
          QModelIndex index = ui->treeView->currentIndex();
+         if (model->fileInfo(index).isDir()){
         int i= index.row();
         qDebug() << "le rang du groupe est"+ QString::number(i);
          QString nameGroup = model->fileName(index);
@@ -1000,6 +1001,7 @@ void MainWindow::reordonneGroup(){
          QString pathTotalOld = path+"/"+nameGroup;
          QString pathTotalNew = path+"/"+newNameGroup;
           dir.rename(pathTotalOld,pathTotalNew);
+         }
 
 
      }
