@@ -290,13 +290,11 @@ void MainWindow::ajouter_motif(){
 }
 void MainWindow::new_project(){
 
-  // s=QCoreApplication::applicationDirPath();
-    model = new QDirModel(this);
+     model = new QDirModel(this);
      model->setReadOnly(false);
      model->setSorting(QDir::DirsFirst | QDir::IgnoreCase | QDir::Name);
-
-         QModelIndex index=model->index(s);
-        model->mkdir(index,"workspace");
+     QModelIndex index=model->index(s);
+     model->mkdir(index,"workspace");
         //namedir=s+"/workspace"
         QDir dir(s+"/workspace/Cubicle");
         if (dir.exists()){
@@ -306,7 +304,8 @@ void MainWindow::new_project(){
        qDebug()<<"je crée cubicle pour la 1ere fois";
        new_index=model->index(s+"/workspace");
        model->mkdir(new_index,"Cubicle");
-
+      namedir="";
+      saved=false;
     dirOpen=true;
     this->setWindowTitle("Cubicle") ;
             tree();
