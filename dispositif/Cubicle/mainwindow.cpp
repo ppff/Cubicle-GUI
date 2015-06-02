@@ -253,40 +253,33 @@ void MainWindow::ajouter_motif(){
                     NouveauMotif m=NouveauMotif("New Pattern",dir+"/"+nameGroup);
                     tree();
                     if(namedir==s+"/workspace"){
-                    new_index =model->index(namedir+"/Cubicle/"+ nameGroup );
-                 ui->treeView->expand(new_index);
-                 ui->treeView->scrollTo(new_index);
+                            new_index =model->index(namedir+"/Cubicle/"+ nameGroup );
+                            ui->treeView->expand(new_index);
+                            ui->treeView->scrollTo(new_index);
 
-                 new_index =model->index(m.getNameFile());
-                 ui->treeView->setCurrentIndex(new_index);
-                 ui->treeView->selectionModel()->select(new_index,
-                        QItemSelectionModel::ClearAndSelect | QItemSelectionModel::Rows);
-                  ui->treeView->edit(new_index);
-
+                            new_index =model->index(m.getNameFile());
+                            ui->treeView->setCurrentIndex(new_index);
+                            ui->treeView->selectionModel()->select(new_index,
+                            QItemSelectionModel::ClearAndSelect | QItemSelectionModel::Rows);
+                            ui->treeView->edit(new_index);
                     }
-
-                else{
-                    new_index =model->index(namedir+"/"+ nameGroup );
-                 ui->treeView->expand(new_index);
-                 ui->treeView->scrollTo(new_index);
-                 new_index =model->index(m.getNameFile());
-                 ui->treeView->setCurrentIndex(new_index);
-                 ui->treeView->selectionModel()->select(new_index,
-                        QItemSelectionModel::ClearAndSelect | QItemSelectionModel::Rows);
-                    ui->treeView->edit(new_index);
-
-                }
-
-
+                    else{
+                            new_index =model->index(namedir+"/"+ nameGroup );
+                            ui->treeView->expand(new_index);
+                             ui->treeView->scrollTo(new_index);
+                             new_index =model->index(m.getNameFile());
+                             ui->treeView->setCurrentIndex(new_index);
+                             ui->treeView->selectionModel()->select(new_index,
+                             QItemSelectionModel::ClearAndSelect | QItemSelectionModel::Rows);
+                             ui->treeView->edit(new_index);
+                    }
             }
-             else {
+            else {
                QMessageBox::information(this,tr("warning"),"cannot add a pattern, please choose or add a group");
-             }
-
+            }
         }
+       }
     }
-
-}
 }
 void MainWindow::new_project(){
 
@@ -787,10 +780,11 @@ void MainWindow::doubleClick(){
         ui->plane8->setDisabled(false);
         ui->plane9->setDisabled(false);
 
-
          QString name=model->fileInfo(index).absoluteFilePath();
          this->currentPattern=model->fileInfo(index).baseName();
          if(name.compare(this->getEmplMotif())!=0){
+             GestionFichier ges;
+             ges.ouvrir(this->emplMotif,this->c);
              this->setEmpMotif(name);
              qDebug ()<< "nouveau motif "+this->getEmplMotif();
              qDebug ()<< "nom pattern "+currentPattern;
@@ -808,7 +802,7 @@ void MainWindow::doubleClick(){
            //        int h=tab[1];
              //      QString lh=QString::number(h);
                //    qDebug()<<"premier elmt ds tab "+lh;
-                   GestionFichier ges;
+                   //GestionFichier ges;
 
                  //  QList<QVector3D> l=ges.tabToVector3D(tab);
                    // int x=l.first().x();
