@@ -223,7 +223,8 @@ void MainWindow::tree(){
     //qDebug() << "le namedir est" + namedir;
 
      ui->treeView->setRootIndex(index);
-     ui->treeView->setExpanded(index,true);
+     //ui->treeView->setExpanded(index,true);
+        connect(model,SIGNAL(dataChanged(QModelIndex,QModelIndex,QVector<int>)),this,SLOT(reordonneGroup()));
 
   /*  ui->treeView->selectionModel()->select(new_index,
        QItemSelectionModel::ClearAndSelect | QItemSelectionModel::Rows);*/
@@ -240,6 +241,7 @@ void MainWindow::tree(){
     ui->actionRaise->setDisabled(false);
     ui->actionLower->setDisabled(false);
     ui->actionNew_Group->setDisabled(false);
+
 
 }
 
@@ -979,56 +981,27 @@ void MainWindow::removeDir(const QString& PathDir)
 
 
 void MainWindow::reordonneGroup(){
-    qDebug()<<" j'entre dans reordonne group";
-      QDir dir0(namedir+"/Cubicle");
-      QDirIterator dirIterator(dir0, QDirIterator::Subdirectories);
+         QModelIndex index = ui->treeView->currentIndex();
+        int i= index.row();
+        qDebug() << "le rang du groupe est"+ QString::number(i);
+         QString nameGroup = model->fileName(index);
+         qDebug() << "le nom du groupe à modifier est "+ nameGroup;
+         QString path = model->fileInfo(index).absolutePath();
+         qDebug() << "le path du groupe est "+ path;
+         QDir dir(path);
+        QString indice;
+        if (i<10){
+            indice = "0"+QString::number(i)+"_";
+            }else {
+             indice = QString::number(i)+"_";
+                  }
 
-       //On récupère les fichiers et dossiers grâce à l'itérateur
-       QFileInfoList fileList;
-
-       while(dirIterator.hasNext())
-       {
-            if (dirIterator.fileName()!=" " &&dirIterator.fileName()!="."){
-
-           fileList << dirIterator.fileInfo();}
-             dirIterator.next();
-       }
-       QString t;
-       t=QString::number(fileList.size());
-       qDebug()<<"la taille de la liste est "+t;
-       //On parcours les éléments
-       QStringList directories;
-     //  for(int i = fileList.count() - 1; i > 0; i--)
-        qDebug()<<"le count de la liste est "+fileList.count();
-        for(int i = 0; i <fileList.count(); i++)
-       {
-
-          if( fileList.at(i).isDir() ){
-
-         directories << fileList.at(i).absolutePath()+"/"+fileList.at(i).completeBaseName();
-         QDir dir(fileList.at(i).absolutePath());
-         QString nameGroup=fileList.at(i).completeBaseName();
-         if (i<10){
-             s = "0"+QString::number(i)+"_";
-         }else {
-             s = QString::number(i)+"_";
-
-         }
-         qDebug() << "l'indice est égal à "+s;
-         QString nameRest ;
-         if (nameGroup[2]=='_')
-         nameRest = nameGroup.mid(3);
-         else nameRest = nameGroup;
-         QString newNameGroup=s+nameRest;
-
-         QString pathTotalOld = fileList.at(i).absolutePath()+"/"+nameGroup;
-         QString pathTotalNew = fileList.at(i).absolutePath()+"/"+newNameGroup;
+        QString newNameGroup=indice+nameGroup;
+         QString pathTotalOld = path+"/"+nameGroup;
+         QString pathTotalNew = path+"/"+newNameGroup;
           dir.rename(pathTotalOld,pathTotalNew);
-            tree();
-         qDebug()<<"on lit le dossier "+fileList.at(i).completeBaseName();
 
-       }
-       }
+
      }
 
 
