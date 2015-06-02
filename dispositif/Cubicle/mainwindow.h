@@ -109,6 +109,7 @@ void couper();
 void copier();
 void coller();
  void reordonneGroup();
+void reordonneMotif();
     void Monter();
     void Descendre();
     void controlQuit();
