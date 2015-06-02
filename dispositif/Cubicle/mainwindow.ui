@@ -23,57 +23,17 @@
    <layout class="QGridLayout" name="gridLayout_2">
     <item row="1" column="0">
      <layout class="QGridLayout" name="gridLayout">
+      <item row="5" column="2" rowspan="2">
+       <widget class="QPushButton" name="plane7">
+        <property name="text">
+         <string>Plane7</string>
+        </property>
+       </widget>
+      </item>
       <item row="14" column="2" rowspan="2">
        <widget class="QPushButton" name="plane1">
         <property name="text">
          <string>Plane1</string>
-        </property>
-       </widget>
-      </item>
-      <item row="9" column="1">
-       <spacer name="horizontalSpacer">
-        <property name="orientation">
-         <enum>Qt::Horizontal</enum>
-        </property>
-        <property name="sizeHint" stdset="0">
-         <size>
-          <width>40</width>
-          <height>20</height>
-         </size>
-        </property>
-       </spacer>
-      </item>
-      <item row="0" column="3" rowspan="16">
-       <widget class="simulation_cube" name="widget" native="true">
-        <property name="sizePolicy">
-         <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
-          <horstretch>0</horstretch>
-          <verstretch>0</verstretch>
-         </sizepolicy>
-        </property>
-       </widget>
-      </item>
-      <item row="0" column="0" rowspan="16">
-       <widget class="QTreeView" name="treeView">
-        <property name="sizePolicy">
-         <sizepolicy hsizetype="Minimum" vsizetype="Expanding">
-          <horstretch>0</horstretch>
-          <verstretch>0</verstretch>
-         </sizepolicy>
-        </property>
-       </widget>
-      </item>
-      <item row="13" column="2">
-       <widget class="QPushButton" name="plane2">
-        <property name="text">
-         <string>Plane2</string>
-        </property>
-       </widget>
-      </item>
-      <item row="11" column="2" rowspan="2">
-       <widget class="QPushButton" name="plane3">
-        <property name="text">
-         <string>Plane3</string>
         </property>
        </widget>
       </item>
@@ -91,17 +51,47 @@
         </property>
        </widget>
       </item>
+      <item row="9" column="1">
+       <spacer name="horizontalSpacer">
+        <property name="orientation">
+         <enum>Qt::Horizontal</enum>
+        </property>
+        <property name="sizeHint" stdset="0">
+         <size>
+          <width>40</width>
+          <height>20</height>
+         </size>
+        </property>
+       </spacer>
+      </item>
+      <item row="0" column="0" rowspan="16">
+       <widget class="QTreeView" name="treeView">
+        <property name="sizePolicy">
+         <sizepolicy hsizetype="Minimum" vsizetype="Expanding">
+          <horstretch>0</horstretch>
+          <verstretch>0</verstretch>
+         </sizepolicy>
+        </property>
+       </widget>
+      </item>
+      <item row="2" column="2" rowspan="2">
+       <widget class="QPushButton" name="plane9">
+        <property name="text">
+         <string>Plane9</string>
+        </property>
+       </widget>
+      </item>
+      <item row="13" column="2">
+       <widget class="QPushButton" name="plane2">
+        <property name="text">
+         <string>Plane2</string>
+        </property>
+       </widget>
+      </item>
       <item row="7" column="2">
        <widget class="QPushButton" name="plane6">
         <property name="text">
          <string>Plane6</string>
-        </property>
-       </widget>
-      </item>
-      <item row="5" column="2" rowspan="2">
-       <widget class="QPushButton" name="plane7">
-        <property name="text">
-         <string>Plane7</string>
         </property>
        </widget>
       </item>
@@ -112,10 +102,107 @@
         </property>
        </widget>
       </item>
-      <item row="2" column="2" rowspan="2">
-       <widget class="QPushButton" name="plane9">
+      <item row="11" column="2" rowspan="2">
+       <widget class="QPushButton" name="plane3">
         <property name="text">
-         <string>Plane9</string>
+         <string>Plane3</string>
+        </property>
+       </widget>
+      </item>
+      <item row="16" column="0">
+       <widget class="QGroupBox" name="groupBox">
+        <property name="title">
+         <string/>
+        </property>
+        <widget class="QPushButton" name="pushButton">
+         <property name="geometry">
+          <rect>
+           <x>130</x>
+           <y>0</y>
+           <width>61</width>
+           <height>27</height>
+          </rect>
+         </property>
+         <property name="toolTip">
+          <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Raise an item&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+         </property>
+         <property name="text">
+          <string/>
+         </property>
+         <property name="icon">
+          <iconset resource="ressource.qrc">
+           <normaloff>:/Images/up.png</normaloff>:/Images/up.png</iconset>
+         </property>
+        </widget>
+        <widget class="QPushButton" name="pushButton_2">
+         <property name="geometry">
+          <rect>
+           <x>190</x>
+           <y>0</y>
+           <width>61</width>
+           <height>27</height>
+          </rect>
+         </property>
+         <property name="toolTip">
+          <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Lower an item&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+         </property>
+         <property name="text">
+          <string/>
+         </property>
+         <property name="icon">
+          <iconset resource="ressource.qrc">
+           <normaloff>:/Images/down.png</normaloff>:/Images/down.png</iconset>
+         </property>
+        </widget>
+        <widget class="QPushButton" name="pushButton_3">
+         <property name="geometry">
+          <rect>
+           <x>60</x>
+           <y>0</y>
+           <width>71</width>
+           <height>27</height>
+          </rect>
+         </property>
+         <property name="toolTip">
+          <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Create a new pattern&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+         </property>
+         <property name="text">
+          <string/>
+         </property>
+         <property name="icon">
+          <iconset resource="ressource.qrc">
+           <normaloff>:/Images/new_pattern.gif</normaloff>:/Images/new_pattern.gif</iconset>
+         </property>
+        </widget>
+        <widget class="QPushButton" name="pushButton_4">
+         <property name="geometry">
+          <rect>
+           <x>0</x>
+           <y>0</y>
+           <width>61</width>
+           <height>27</height>
+          </rect>
+         </property>
+         <property name="toolTip">
+          <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Create a new group&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+         </property>
+         <property name="text">
+          <string/>
+         </property>
+         <property name="icon">
+          <iconset resource="ressource.qrc">
+           <normaloff>:/Images/new_group.png</normaloff>:/Images/new_group.png</iconset>
+         </property>
+        </widget>
+       </widget>
+      </item>
+      <item row="0" column="3" rowspan="17">
+       <widget class="simulation_cube" name="widget" native="true">
+        <property name="sizePolicy">
+         <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
+          <horstretch>0</horstretch>
+          <verstretch>0</verstretch>
+         </sizepolicy>
         </property>
        </widget>
       </item>
@@ -182,8 +269,6 @@
    </attribute>
    <addaction name="actionNew_project"/>
    <addaction name="actionOpen_directory"/>
-   <addaction name="actionNew_Group"/>
-   <addaction name="actionNew_Pattern"/>
    <addaction name="actionSave"/>
   </widget>
   <widget class="QToolBar" name="toolBar">
@@ -201,6 +286,7 @@
    </attribute>
    <addaction name="actionDuplicate"/>
    <addaction name="actionSelect"/>
+   <addaction name="separator"/>
   </widget>
   <action name="actionNew_Group">
    <property name="icon">
@@ -209,6 +295,9 @@
    </property>
    <property name="text">
     <string>new Group</string>
+   </property>
+   <property name="shortcut">
+    <string>Ctrl+G</string>
    </property>
   </action>
   <action name="actionNew_Pattern">
@@ -219,6 +308,9 @@
    <property name="text">
     <string>new Pattern</string>
    </property>
+   <property name="shortcut">
+    <string>Ctrl+P</string>
+   </property>
   </action>
   <action name="actionSave">
    <property name="icon">
@@ -227,6 +319,9 @@
    </property>
    <property name="text">
     <string>save pattern</string>
+   </property>
+   <property name="shortcut">
+    <string>Ctrl+S</string>
    </property>
   </action>
   <action name="actionQuit">
@@ -246,6 +341,9 @@
    <property name="text">
     <string>copy pattern</string>
    </property>
+   <property name="shortcut">
+    <string>Ctrl+C</string>
+   </property>
   </action>
   <action name="actionOpen_directory">
    <property name="icon">
@@ -254,6 +352,9 @@
    </property>
    <property name="text">
     <string>open directory</string>
+   </property>
+   <property name="shortcut">
+    <string>Ctrl+O</string>
    </property>
   </action>
   <action name="actionPaste_pattern">
@@ -264,6 +365,9 @@
    <property name="text">
     <string>paste pattern</string>
    </property>
+   <property name="shortcut">
+    <string>Ctrl+V</string>
+   </property>
   </action>
   <action name="actionDelete_pattern">
    <property name="icon">
@@ -272,6 +376,9 @@
    </property>
    <property name="text">
     <string>delete pattern</string>
+   </property>
+   <property name="shortcut">
+    <string>Ctrl+F</string>
    </property>
   </action>
   <action name="actionSelect_a_group_of_atoms">
@@ -291,6 +398,9 @@
    <property name="text">
     <string>Select</string>
    </property>
+   <property name="shortcut">
+    <string>Ctrl+A</string>
+   </property>
   </action>
   <action name="actionDuplicate">
    <property name="icon">
@@ -299,6 +409,9 @@
    </property>
    <property name="text">
     <string>Duplicate</string>
+   </property>
+   <property name="shortcut">
+    <string>Ctrl+T</string>
    </property>
   </action>
   <action name="actionCut_pattern">
@@ -309,6 +422,9 @@
    <property name="text">
     <string>cut pattern</string>
    </property>
+   <property name="shortcut">
+    <string>Ctrl+X</string>
+   </property>
   </action>
   <action name="actionSave_as">
    <property name="icon">
@@ -317,6 +433,9 @@
    </property>
    <property name="text">
     <string>save as</string>
+   </property>
+   <property name="shortcut">
+    <string>Ctrl+R</string>
    </property>
   </action>
   <action name="actionQuit_2">
@@ -327,6 +446,9 @@
    <property name="text">
     <string>quit</string>
    </property>
+   <property name="shortcut">
+    <string>Ctrl+Q</string>
+   </property>
   </action>
   <action name="actionNew_project">
    <property name="icon">
@@ -335,6 +457,9 @@
    </property>
    <property name="text">
     <string>new project</string>
+   </property>
+   <property name="shortcut">
+    <string>Ctrl+N</string>
    </property>
   </action>
   <action name="actionRaise">
@@ -345,6 +470,9 @@
    <property name="text">
     <string>Raise</string>
    </property>
+   <property name="shortcut">
+    <string>Ctrl+U</string>
+   </property>
   </action>
   <action name="actionLower">
    <property name="icon">
@@ -353,6 +481,9 @@
    </property>
    <property name="text">
     <string>Lower</string>
+   </property>
+   <property name="shortcut">
+    <string>Ctrl+D</string>
    </property>
   </action>
  </widget>
