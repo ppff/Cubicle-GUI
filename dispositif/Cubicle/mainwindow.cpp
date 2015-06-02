@@ -82,10 +82,13 @@ void MainWindow::ouvrir_explorer(){
       return;
   }
   else {
-      namedir=tmpdir;
+      QFileInfo f=QFileInfo(tmpdir);
+      //QDir dir(tmpdir);
+      namedir = f.absolutePath();
+      qDebug()<<" le chemin estttttt "+namedir;
   }
 
-  QDir dir(namedir);
+  QDir dir(namedir+"/Cubicle");
   QStringList nameFilter;
   nameFilter<<"*.txt";
   QFileInfoList list=dir.entryInfoList(nameFilter,QDir::Files);
@@ -96,7 +99,9 @@ void MainWindow::ouvrir_explorer(){
        qDebug()<<"impossible";
        return;
   }
-  this->setWindowTitle("Cubicle["+namedir+"/Cubicle"+"]") ;
+  this->setWindowTitle("Cubicle["+namedir+"/Cubicle"+"]");
+  new_project();
+  xCopy2(namedir,s+"/workspace","Cubicle");
   tree();
   dirOpen=true;
   saved=false;
@@ -217,9 +222,10 @@ void MainWindow::tree(){
             model->setSorting(QDir::DirsFirst | QDir::IgnoreCase | QDir::Name);
 
     ui->treeView->setModel(model);
-    qDebug() << "le namedir est" + namedir;
-    QModelIndex index=model->index(namedir);
-    if (index.isValid()){
+
+    //qDebug() << "le namedir est" + namedir;
+    QModelIndex index=model->index(s+"/workspace");
+ // if (index.isValid()){
      ui->treeView->setRootIndex(index);
      ui->treeView->setExpanded(index,true);
 
@@ -229,9 +235,9 @@ void MainWindow::tree(){
         ui->treeView->hideColumn(i);
 
     }
-   connect(model,SIGNAL(dataChanged(QModelIndex,QModelIndex,QVector<int>)),this,SLOT(reordonneGroup()));
-   connect(model,SIGNAL(dataChanged(QModelIndex,QModelIndex,QVector<int>)),this,SLOT(reordonneMotif()));
-    }
+  // connect(model,SIGNAL(dataChanged(QModelIndex,QModelIndex,QVector<int>)),this,SLOT(reordonneGroup()));
+   //connect(model,SIGNAL(dataChanged(QModelIndex,QModelIndex,QVector<int>)),this,SLOT(reordonneMotif()));
+   // }
     ui->treeView->resizeColumnToContents(0);
     ui->actionNew_Pattern->setEnabled(true);
     ui->actionDelete_pattern->setEnabled(true);
@@ -266,40 +272,33 @@ void MainWindow::ajouter_motif(){
                     NouveauMotif m=NouveauMotif("New Pattern",dir+"/"+nameGroup);
                     tree();
                     if(namedir==s+"/workspace"){
-                    new_index =model->index(namedir+"/Cubicle/"+ nameGroup );
-                 ui->treeView->expand(new_index);
-                 ui->treeView->scrollTo(new_index);
+                            new_index =model->index(namedir+"/Cubicle/"+ nameGroup );
+                            ui->treeView->expand(new_index);
+                            ui->treeView->scrollTo(new_index);
 
-                 new_index =model->index(m.getNameFile());
-                 ui->treeView->setCurrentIndex(new_index);
-                 ui->treeView->selectionModel()->select(new_index,
-                        QItemSelectionModel::ClearAndSelect | QItemSelectionModel::Rows);
-                  ui->treeView->edit(new_index);
-
+                            new_index =model->index(m.getNameFile());
+                            ui->treeView->setCurrentIndex(new_index);
+                            ui->treeView->selectionModel()->select(new_index,
+                            QItemSelectionModel::ClearAndSelect | QItemSelectionModel::Rows);
+                            ui->treeView->edit(new_index);
                     }
-
-                else{
-                    new_index =model->index(namedir+"/"+ nameGroup );
-                 ui->treeView->expand(new_index);
-                 ui->treeView->scrollTo(new_index);
-                 new_index =model->index(m.getNameFile());
-                 ui->treeView->setCurrentIndex(new_index);
-                 ui->treeView->selectionModel()->select(new_index,
-                        QItemSelectionModel::ClearAndSelect | QItemSelectionModel::Rows);
-                    ui->treeView->edit(new_index);
-
-                }
-
-
+                    else{
+                            new_index =model->index(namedir+"/"+ nameGroup );
+                            ui->treeView->expand(new_index);
+                             ui->treeView->scrollTo(new_index);
+                             new_index =model->index(m.getNameFile());
+                             ui->treeView->setCurrentIndex(new_index);
+                             ui->treeView->selectionModel()->select(new_index,
+                             QItemSelectionModel::ClearAndSelect | QItemSelectionModel::Rows);
+                             ui->treeView->edit(new_index);
+                    }
             }
-             else {
+            else {
                QMessageBox::information(this,tr("warning"),"cannot add a pattern, please choose or add a group");
-             }
-
+            }
         }
+       }
     }
-
-}
 }
 void MainWindow::new_project(){
 
@@ -310,14 +309,14 @@ void MainWindow::new_project(){
 
          QModelIndex index=model->index(s);
         model->mkdir(index,"workspace");
-        namedir=s+"/workspace";
-        QDir dir(namedir+"/Cubicle");
+        //namedir=s+"/workspace"
+        QDir dir(s+"/workspace/Cubicle");
         if (dir.exists()){
-            qDebug()<<"avant removeDir :"+namedir+"/Cubicle";
-            removeDir(namedir+"/Cubicle");
+            //qDebug()<<"avant removeDir :"+namedir+"/Cubicle";
+            removeDir(s+"/workspace/Cubicle");
         }
        qDebug()<<"je crée cubicle pour la 1ere fois";
-       new_index=model->index(namedir);
+       new_index=model->index(s+"/workspace");
        model->mkdir(new_index,"Cubicle");
 
     dirOpen=true;
@@ -338,18 +337,17 @@ void MainWindow::new_project(){
 void MainWindow::on_actionNew_Group_triggered()
 {   int m;
     QString indice;
-    if (namedir==s+"/workspace"){
-    QModelIndex index =model->index(namedir+"/Cubicle",0);
+    //if (namedir==s+"/workspace"){
+    QModelIndex index =model->index(s+"/workspace/Cubicle",0);
     QString name ="NewGroup";
-    QDir dir(namedir+"/Cubicle");
+    QDir dir(s+"/workspace/Cubicle");
     QFileInfoList entries = dir.entryInfoList(QDir::NoDotAndDotDot | QDir::AllEntries);
     dir.setSorting( QDir::Name);
     m=entries.size();
     if (m<10){
-        indice = "0"+QString::number(m)+"_";
+        indice ="0"+QString::number(m)+"_";
     }else {
-       indice = QString::number(m)+"_";
-
+       indice=QString::number(m)+"_";
     }
     qDebug() << "s contient "+ s;
     name = indice + name;
@@ -370,7 +368,7 @@ void MainWindow::on_actionNew_Group_triggered()
 
 
 }
-    else {
+    /*else {
         QModelIndex index =model->index(namedir,0);
         QString name ="NewGroup";
         QDir dir(namedir);
@@ -398,20 +396,26 @@ void MainWindow::on_actionNew_Group_triggered()
              QItemSelectionModel::ClearAndSelect | QItemSelectionModel::Rows);
       ui->treeView->edit(new_index);
 
-    }
-}
+    }*/
+
 
 
 void MainWindow::Monter(){
     QString nameGroup;
     QString newNameGroup;
     QString nameGroupDessus;
+    QString nameMotif;
+    QString newNameMotif;
+    QString nameMotifDessus;
     QModelIndex index=ui->treeView->currentIndex();
-
     QModelIndex indexMoinsUn=ui->treeView->indexAbove(index);
 
-       if (index.isValid()){
+    if (index.isValid()){
            if (model->fileInfo(index).isDir()) {
+               while(model->fileInfo(indexMoinsUn).isFile()){
+                   indexMoinsUn=ui->treeView->indexAbove(indexMoinsUn);
+               }
+
                 QString dir=model->fileInfo(index).absolutePath();
                 nameGroup=model->fileInfo(index).baseName();
                 nameGroupDessus=model->fileInfo(indexMoinsUn).baseName();
@@ -499,20 +503,120 @@ void MainWindow::Monter(){
                     }
                 }
                 this->tree();
+         }else{
+                QString dir=model->fileInfo(index).absolutePath();
+                nameMotif=model->fileInfo(index).baseName();
+                nameMotifDessus=model->fileInfo(indexMoinsUn).baseName();
+                qDebug()<<nameMotif;
+                 qDebug()<<"hahahahhahhahhahhahhah";
+                qDebug()<<dir;
+
+                QString numero = nameMotif.left(2);
+                QString nameRest = nameMotif.mid(3);
+                QString numeroDessus = nameMotifDessus.left(2);
+                QString nameDessusRest = nameMotifDessus.mid(3);
+                int num = numero.toInt();
+                int numDessus = numeroDessus.toInt();
+                if(num==0){
+                    return;
+                }
+                if (num<11){
+                    newNameMotif = "0"+QString::number(num-1)+"_"+nameRest;
+                }else {
+                    newNameMotif = QString::number(num-1)+"_"+nameRest;
+                }
+                QString pathTotalOld = dir+"/"+nameMotif+".txt";
+                QString pathTotalNew = dir+"/"+newNameMotif+".txt";
+
+                if (num<10){
+                    if (numDessus==num-1){
+                        QString nameMotifMoinsUn = "0"+QString::number(num-1)+"_"+nameDessusRest+".txt";
+                        qDebug()<<"hahahahhahhahhahhahhah";
+                        qDebug()<<nameMotifMoinsUn;
+                        QString totalnameMotifMoinsUn = dir+"/"+nameMotifMoinsUn;
+                         qDebug()<<"ooooooooooooooooooooooo";
+                        qDebug()<<totalnameMotifMoinsUn;
+
+                        QString nameMotifMoinsUnChange = nameDessusRest;
+                        QString totalnameMotifMoinsUnChange = dir+"/"+nameMotifMoinsUnChange+".txt";
+                         qDebug()<<"avdfgdfgdffdgdfgfdgdfgd";
+                        qDebug()<<totalnameMotifMoinsUnChange;
+
+                        QFile directory(totalnameMotifMoinsUn);
+                        directory.rename(totalnameMotifMoinsUnChange);
+
+                        QFile dir1(pathTotalOld);
+                        dir1.rename(pathTotalOld, pathTotalNew);
+
+                        QString nameMotifMoinsUnChangeCorrect = "0"+QString::number(num)+"_"+nameDessusRest+".txt";
+                        qDebug()<<"hahahahhahhahhahhahhah";
+                        qDebug()<<nameMotifMoinsUnChangeCorrect;
+                        QString totalnameMotifMoinsUnCorrect = dir+"/"+nameMotifMoinsUnChangeCorrect;
+                        qDebug()<<"aaaaaaaaaaaaaaaaaaaaaaaaaaa";
+                        qDebug()<<totalnameMotifMoinsUnCorrect;
+                        QFile dir2(totalnameMotifMoinsUnChange);
+                        dir2.rename(totalnameMotifMoinsUnChange, totalnameMotifMoinsUnCorrect);
+                    }
+                }else if(num==10){
+                    if (numDessus==num-1){
+                        QString nameMotifMoinsUn = "0"+QString::number(num-1)+"_"+nameDessusRest+".txt";
+                        QString totalnameMotifMoinsUn = dir+"/"+nameMotifMoinsUn;
+
+                        QString nameMotifMoinsUnChange = nameDessusRest;
+                        QString totalnameMotifMoinsUnChange = dir+"/"+nameMotifMoinsUnChange+".txt";
+
+                        QFile directory(totalnameMotifMoinsUn);
+                        directory.rename(totalnameMotifMoinsUn,totalnameMotifMoinsUnChange);
+
+                        QFile dir1(pathTotalOld);
+                        dir1.rename(pathTotalOld, pathTotalNew);
+
+                        QString nameMotifMoinsUnChangeCorrect = QString::number(num)+"_"+nameDessusRest+".txt";
+                        QString totalnameMotifMoinsUnCorrect = dir+"/"+nameMotifMoinsUnChangeCorrect;
+                        QFile dir2(totalnameMotifMoinsUnCorrect);
+                        dir2.rename(totalnameMotifMoinsUnChange, totalnameMotifMoinsUnCorrect);
+                    }
+                }else if(num>10){
+                    if (numDessus==num-1){
+                        QString nameMotifMoinsUn = QString::number(num-1)+"_"+nameDessusRest+".txt";
+                        QString totalnameMotifMoinsUn = dir+"/"+nameMotifMoinsUn;
+
+                        QString nameMotifMoinsUnChange = nameDessusRest;
+                        QString totalnameMotifMoinsUnChange = dir+"/"+nameMotifMoinsUnChange+".txt";
+
+                        QFile directory(totalnameMotifMoinsUn);
+                        directory.rename(totalnameMotifMoinsUn,totalnameMotifMoinsUnChange);
+
+                        QFile dir1(pathTotalOld);
+                        dir1.rename(pathTotalOld, pathTotalNew);
+
+                        QString nameMotifMoinsUnChangeCorrect = QString::number(num)+"_"+nameDessusRest+".txt";
+                        QString totalnameMotifMoinsUnCorrect = dir+"/"+nameMotifMoinsUnChangeCorrect;
+                        QFile dir2(totalnameMotifMoinsUnCorrect);
+                        dir2.rename(totalnameMotifMoinsUnChange, totalnameMotifMoinsUnCorrect);
+                    }
+                }
+                this->tree();
+
          }
-   }
-       return;
+    }
 }
 ////////////////////////////////////////////////////////////////////////////////
 void MainWindow::Descendre(){
     QString nameGroup;
     QString newNameGroup;
     QString nameGroupDessous;
+    QString nameMotif;
+    QString newNameMotif;
+    QString nameMotifDessous;
     QModelIndex index=ui->treeView->currentIndex();
     QModelIndex indexPlusUn=ui->treeView->indexBelow(index);
 
        if (index.isValid()){
            if (model->fileInfo(index).isDir()) {
+               while(model->fileInfo(indexPlusUn).isFile()){
+                   indexPlusUn=ui->treeView->indexBelow(indexPlusUn);
+               }
                 QString dir=model->fileInfo(index).absolutePath();
                 nameGroup=model->fileInfo(index).baseName();
                 QDir temp(dir);
@@ -607,17 +711,108 @@ void MainWindow::Descendre(){
 
                 this->tree();
 
+         }else{
+               QString dir=model->fileInfo(index).absolutePath();
+               nameMotif=model->fileInfo(index).baseName();
+               QDir temp(dir);
+               QFileInfoList entries = temp.entryInfoList(QDir::NoDotAndDotDot | QDir::AllEntries);
+               int m=entries.size();
+               QString numero = nameMotif.left(2);
+               int num = numero.toInt();
+               if(num==m-1){
+                   qDebug()<<"Les numeros sont egaux";
+                   return;
+               }
+
+               nameMotifDessous=model->fileInfo(indexPlusUn).baseName();
+               QString nameRest = nameMotif.mid(3);
+               QString numeroDessous = nameMotifDessous.left(2);
+               QString nameDessousRest = nameMotifDessous.mid(3);
+
+               int numDessous = numeroDessous.toInt();
+
+
+               if (num<9){
+                   newNameMotif = "0"+QString::number(num+1)+"_"+nameRest;
+               }else {
+                   newNameMotif = QString::number(num+1)+"_"+nameRest;
+               }
+               QString pathTotalOld = dir+"/"+nameMotif+".txt";
+               QString pathTotalNew = dir+"/"+newNameMotif+".txt";
+
+               if (num<9){
+                   if (numDessous==num+1){
+                       QString nameMotifPlusUn = "0"+QString::number(num+1)+"_"+nameDessousRest+".txt";
+                       qDebug()<<nameMotifPlusUn;
+                       QString totalnameMotifPlusUn = dir+"/"+nameMotifPlusUn;
+
+                       QString nameMotifPlusUnChange = nameDessousRest;
+                       QString totalnameMotifPlusUnChange = dir+"/"+nameMotifPlusUnChange+".txt";
+
+                       QFile directory(totalnameMotifPlusUn);
+                       directory.rename(totalnameMotifPlusUn,totalnameMotifPlusUnChange);
+
+                       QFile dir1(pathTotalOld);
+                       dir1.rename(pathTotalOld, pathTotalNew);
+
+                       QString nameMotifPlusUnChangeCorrect = "0"+QString::number(num)+"_"+nameDessousRest+".txt";
+                       qDebug()<<nameMotifPlusUnChangeCorrect;
+                       QString totalnameMotifPlusUnCorrect = dir+"/"+nameMotifPlusUnChangeCorrect;
+                       QFile dir2(totalnameMotifPlusUnCorrect);
+                       dir2.rename(totalnameMotifPlusUnChange, totalnameMotifPlusUnCorrect);
+                   }
+               }else if(num==9){
+                   if (numDessous==num+1){
+                       QString nameMotifPlusUn = QString::number(num+1)+"_"+nameDessousRest+".txt";
+                       QString totalnameMotifPlusUn = dir+"/"+nameMotifPlusUn;
+
+                       QString nameMotifPlusUnChange = nameDessousRest;
+                       QString totalnameMotifPlusUnChange = dir+"/"+nameMotifPlusUnChange+".txt";
+
+                       QFile directory(totalnameMotifPlusUn);
+                       directory.rename(totalnameMotifPlusUn,totalnameMotifPlusUnChange);
+
+                       QFile dir1(pathTotalOld);
+                       dir1.rename(pathTotalOld, pathTotalNew);
+
+                       QString nameMotifPlusUnChangeCorrect = "0"+QString::number(num)+"_"+nameDessousRest+".txt";
+                       QString totalnameMotifPlusUnCorrect = dir+"/"+nameMotifPlusUnChangeCorrect;
+                       QFile dir2(totalnameMotifPlusUnCorrect);
+                       dir2.rename(totalnameMotifPlusUnChange, totalnameMotifPlusUnCorrect);
+                   }
+               }else if(num>9){
+                   if (numDessous==num+1){
+                       QString nameMotifPlusUn = QString::number(num+1)+"_"+nameDessousRest+".txt";
+                       QString totalnameMotifPlusUn = dir+"/"+nameMotifPlusUn;
+
+                       QString nameMotifPlusUnChange = nameDessousRest;
+                       QString totalnameMotifPlusUnChange = dir+"/"+nameMotifPlusUnChange+".txt";
+
+                       QFile directory(totalnameMotifPlusUn);
+                       directory.rename(totalnameMotifPlusUn,totalnameMotifPlusUnChange);
+
+                       QFile dir1(pathTotalOld);
+                       dir1.rename(pathTotalOld, pathTotalNew);
+
+                       QString nameMotifPlusUnChangeCorrect = QString::number(num)+"_"+nameDessousRest+".txt";
+                       QString totalnameMotifPlusUnCorrect = dir+"/"+nameMotifPlusUnChangeCorrect;
+                       QFile dir2(totalnameMotifPlusUnCorrect);
+                       dir2.rename(totalnameMotifPlusUnChange, totalnameMotifPlusUnCorrect);
+                   }
+               }
+
+               this->tree();
          }
 
    }
-       return;
+
 }
 
 void MainWindow::controlQuit(){
     if (!this->saved) {
         int enregistrer=QMessageBox::question(this, "Quit", " Do you want to save the project before you quit ?");
         if (enregistrer==QMessageBox::Yes){
-            controlSaveAs();
+            controlSave();
             this->close();
         }
         else
@@ -656,14 +851,26 @@ void MainWindow::controlDelete(){
         dirOrFile=true;
     }
 }
-
 void MainWindow::controlSave(){
+    if (namedir=="") {
+        controlSaveAs();
+    }
+    else {
+        removeDir(namedir);
+        xCopy2(s+"/workspace",namedir,"Cubicle");
+
+    }
+    saved=true;
+}
+
+/*void MainWindow::controlSave(){
     GestionFichier ges;
     ges.ouvrir(this->emplMotif,this->c);
     QMessageBox msgBox;
     msgBox.setText("Your pattern "+currentPattern +" has been succesfully saved");
     msgBox.exec();
-}
+}*/
+
 void MainWindow::xCopy2 (const QString &sourcePath, const QString &destPath, const QString &name)
 {
     static const QStringList filters = QStringList () << "*";
@@ -671,6 +878,10 @@ void MainWindow::xCopy2 (const QString &sourcePath, const QString &destPath, con
 
     QString sourceObjectPath = sourcePath+"/"+name;
     QString destObjectPath = destPath +"/"+name;
+    QDir dir(destObjectPath);
+    if (dir.exists()) {
+        removeDir(destObjectPath) ;
+    }
     QFileInfo fi (sourceObjectPath);
 
     if (fi.isDir ()) {
@@ -706,10 +917,20 @@ void MainWindow::controlSaveAs(){
                                                );
     if (destPath=="") {qDebug()<<destPath;
         return;}
-    QString originPath=namedir;
+    //QString originPath=namedir;
     qDebug()<<"l'origine est "+namedir;
     qDebug()<<"la destination est"+destPath;
-    xCopy2(originPath,destPath,"Cubicle");
+    QDir dir(destPath+"/Cubicle");
+    if (dir.exists()) {
+
+        int remplacer=QMessageBox::question(this, "Exist", "Project Cubicle already exists in this directory, do you want to replace it ?");
+        if (remplacer==QMessageBox::No){
+            controlSaveAs();
+        }
+
+    }
+    else {
+    xCopy2(s+"/workspace",destPath,"Cubicle");
     saved=true;
     namedir= destPath+"/Cubicle";
     qDebug()<< "le nouveau path est" + namedir;
@@ -717,7 +938,8 @@ void MainWindow::controlSaveAs(){
     QMessageBox msgBox;
     msgBox.setText("Your project Cubicle has been succesfully saved");
     msgBox.exec();
-    tree();
+    }
+
 
 }
 void MainWindow::removeDir(const QString& PathDir)
@@ -768,6 +990,7 @@ void MainWindow::removeDir(const QString& PathDir)
      qDebug()<<"je supprime le dossier "+StrDir;
      dir.rmdir(StrDir);
   }
+  dir.rmdir(PathDir); // on supprime finalement le dossier Cubicle.
 }
 
 
@@ -918,10 +1141,11 @@ void MainWindow::doubleClick(){
         ui->plane8->setDisabled(false);
         ui->plane9->setDisabled(false);
 
-
          QString name=model->fileInfo(index).absoluteFilePath();
          this->currentPattern=model->fileInfo(index).baseName();
          if(name.compare(this->getEmplMotif())!=0){
+             GestionFichier ges;
+             ges.ouvrir(this->emplMotif,this->c);
              this->setEmpMotif(name);
              qDebug ()<< "nouveau motif "+this->getEmplMotif();
              qDebug ()<< "nom pattern "+currentPattern;
@@ -939,7 +1163,7 @@ void MainWindow::doubleClick(){
            //        int h=tab[1];
              //      QString lh=QString::number(h);
                //    qDebug()<<"premier elmt ds tab "+lh;
-                   GestionFichier ges;
+                   //GestionFichier ges;
 
                  //  QList<QVector3D> l=ges.tabToVector3D(tab);
                    // int x=l.first().x();
