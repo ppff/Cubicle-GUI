@@ -845,7 +845,7 @@ void MainWindow::controlSave(){
         controlSaveAs();
     }
     else {
-        removeDir(namedir);
+        removeDir(namedir+'/Cubicle');
         xCopy2(s+"/workspace",namedir,"Cubicle");
 
     }
