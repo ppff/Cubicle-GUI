@@ -230,6 +230,7 @@ void MainWindow::tree(){
     for(int i=1;i<4;i++){
         ui->treeView->hideColumn(i);
     }
+    connect(model,SIGNAL(dataChanged(QModelIndex,QModelIndex,QVector<int>)),this,SLOT(reordonneGroup()));
     ui->treeView->resizeColumnToContents(0);
     ui->actionNew_Pattern->setEnabled(true);
     ui->actionDelete_pattern->setEnabled(true);
@@ -837,10 +838,16 @@ void MainWindow::controlDelete(){
 }
 void MainWindow::controlSave(){
     if (namedir=="") {
+        GestionFichier ges;
+        ges.ouvrir(this->emplMotif,this->c);
+        QMessageBox msgBox;
+        msgBox.setText("Your pattern "+currentPattern +" has been succesfully saved");
+        msgBox.exec();
         controlSaveAs();
     }
     else {
-        removeDir(namedir+'/Cubicle');
+        qDebug()<< "remove et remplace";
+        removeDir(namedir+"/Cubicle");
         xCopy2(s+"/workspace",namedir,"Cubicle");
 
     }
@@ -899,8 +906,10 @@ void MainWindow::controlSaveAs(){
 
                                                    "/home"
                                                );
+
     if (destPath=="") {qDebug()<<destPath;
         return;}
+    namedir= destPath;
     //QString originPath=namedir;
     qDebug()<<"l'origine est "+namedir;
     qDebug()<<"la destination est"+destPath;
@@ -910,6 +919,9 @@ void MainWindow::controlSaveAs(){
         int remplacer=QMessageBox::question(this, "Exist", "Project Cubicle already exists in this directory, do you want to replace it ?");
         if (remplacer==QMessageBox::No){
             controlSaveAs();
+        }
+        else {
+            controlSave();
         }
 
     }
