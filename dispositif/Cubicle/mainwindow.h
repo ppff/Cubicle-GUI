@@ -78,7 +78,7 @@ public:
     QDirModel *model;
     QModelIndex new_index;
     QMenu* contextMenu;
-    QString namedir;
+    QString namedir="";
     QAction *insertMotif;
     QAction *insert_Group;
     QAction *deletePattern;
@@ -96,7 +96,7 @@ public:
     int dirOpen;  //vaut 0 si y a pas de directory ouvert, 1 si openDirectory et 2 si on ne choisit pas d'emplacement au début=>  saveAs
     bool copierCouper; // vaut 0 pour copier et 1 pour couper
     QList<QVector3D> liste_vecteur3D;
-     QString s;
+    QString s;
 
 
 
