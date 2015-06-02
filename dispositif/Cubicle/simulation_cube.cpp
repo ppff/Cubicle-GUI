@@ -134,60 +134,46 @@ void simulation_cube::calculer_coord_cam()
 void simulation_cube::dessiner_axes()
 {
     GLUquadricObj *pObj = gluNewQuadric();
-    ///////////////////////////////////////////////////////
     // Draw the blue Z axis first, with arrowed head
-    glColor3f(0.0f, 0.0f, 1.0f);
-    glPushMatrix();
-    glRotatef(90.0f, 0.0f, 0.0f, 1.0f);
-    gluCylinder(pObj, fAxisRadius, fAxisRadius, fAxisHeight, 10, 1);
-    glPushMatrix();
-    glTranslatef(0.0f,0.0f,4.0f);
-    gluCylinder(pObj, fArrowRadius, 0.0f, fArrowHeight, 10, 1);
-    glRotatef(180.0f, 1.0f, 0.0f, 0.0f);
-    gluDisk(pObj, fAxisRadius, fArrowRadius, 10, 1);
-    glDisable(GL_DEPTH_TEST);
-    glPushMatrix();
-    renderText(0, 0, -2, "Z");
-    glPopMatrix();
-    glPopMatrix();
-    glPopMatrix();
-    ///////////////////////////////////////////////////////
-    // Draw the Red X axis 2nd, with arrowed head
-    glColor3f(1.0f, 0.0f, 0.0f);
-    glPushMatrix();
-    glRotatef(90.0f, 0.0f, 1.0f, 0.0f);
-    gluCylinder(pObj, fAxisRadius, fAxisRadius, fAxisHeight, 10, 1);
-    glPushMatrix();
-    glTranslatef(0.0f, 0.0f, 4.0f);
-    gluCylinder(pObj, fArrowRadius, 0.0f, fArrowHeight, 10, 1);
-    glRotatef(180.0f, 0.0f, 1.0f, 0.0f);
-    gluDisk(pObj, fAxisRadius, fArrowRadius, 10, 1);
-    glDisable(GL_DEPTH_TEST);
-    glPushMatrix();
-    renderText(0, 0, -2, "X");
-    glPopMatrix();
-    glPopMatrix();
-    glPopMatrix();
+       glColor3f(0.0f, 0.0f, 1.0f);
+       glPushMatrix();
+       glRotatef(90.0f, 0.0f, 0.0f, 1.0f);
+       gluCylinder(pObj, fAxisRadius, fAxisRadius, fAxisHeight, 10, 1);
+       glTranslatef(0.0f, 0.0f, fAxisHeight);
+       gluCylinder(pObj, fArrowRadius, 0.0f, fArrowHeight, 10, 1);
+       glTranslatef(0.0f, 0.0f, fArrowHeight);
+       glDisable(GL_DEPTH_TEST);
+       renderText(0, 0, 0, "Z");
+       glPopMatrix();
+       glPopMatrix();
+       ///////////////////////////////////////////////////////
+       // Draw the Red X axis 2nd, with arrowed head
+       glColor3f(1.0f, 0.0f, 0.0f);
+       glPushMatrix();
+       glRotatef(90.0f, 0.0f, 1.0f, 0.0f);
+       gluCylinder(pObj, fAxisRadius, fAxisRadius, fAxisHeight, 10, 1);
+       glTranslatef(0.0f, 0.0f, fAxisHeight);
+       gluCylinder(pObj, fArrowRadius, 0.0f, fArrowHeight, 10, 1);
+       glTranslatef(0.0f, 0.0f, fArrowHeight);
+       glDisable(GL_DEPTH_TEST);
+       renderText(0, 0, 0, "X");
+       glPopMatrix();
+       glPopMatrix();
 
-    ///////////////////////////////////////////////////////
-    // Draw the Green Y axis 3rd, with arrowed head
-    glColor3f(0.0f, 1.0f, 0.0f);
-    glPushMatrix();
-    glRotatef(-90.0f, 1.0f, 0.0f, 0.0f);
-    gluCylinder(pObj, fAxisRadius, fAxisRadius, fAxisHeight, 10, 1);
-    glPushMatrix();
-    glTranslatef(0.0f, 0.0f, 4.0f);
-    gluCylinder(pObj, fArrowRadius, 0.0f, fArrowHeight, 10, 1);
-    glRotatef(180.0f, 1.0f, 0.0f, 0.0f);
-    gluDisk(pObj, fAxisRadius, fArrowRadius, 10, 1);
-    glDisable(GL_DEPTH_TEST);
-    glPushMatrix();
-    renderText(0,0,-2, "Y");
-    glPopMatrix();
-    glPopMatrix();
-    glPopMatrix();
+       ///////////////////////////////////////////////////////
+       // Draw the Green Y axis 3rd, with arrowed head
+       glColor3f(0.0f, 1.0f, 0.0f);
+       glPushMatrix();
+       glRotatef(-90.0f, 1.0f, 0.0f, 0.0f);
+       gluCylinder(pObj, fAxisRadius, fAxisRadius, fAxisHeight, 10, 1);
+       glTranslatef(0.0f, 0.0f, fAxisHeight);
+       gluCylinder(pObj, fArrowRadius, 0.0f, fArrowHeight, 10, 1);
+       glTranslatef(0.0f, 0.0f, fArrowHeight);
+       glDisable(GL_DEPTH_TEST);
+       renderText(0, 0, 0, "Y");
+       glPopMatrix();
+       glPopMatrix();
 
-    /////////////////////////////////////////////////////////
     // Delete the quadric
     gluDeleteQuadric(pObj);
 
