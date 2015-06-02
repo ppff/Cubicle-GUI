@@ -38,7 +38,10 @@ MainWindow::MainWindow(QWidget *parent) :
     ui->actionSave_as->setDisabled(true);
     ui->actionRaise->setDisabled(true);
     ui->actionLower->setDisabled(true);
-
+    ui->pushButton->setDisabled(true);
+    ui->pushButton_2->setDisabled(true);
+    ui->pushButton_3->setDisabled(true);
+    ui->pushButton_4->setDisabled(true);
     //désactiver la sélection des plans
     ui->plane1->setDisabled(true);
      ui->plane2->setDisabled(true);
@@ -240,7 +243,10 @@ void MainWindow::tree(){
     ui->actionRaise->setDisabled(false);
     ui->actionLower->setDisabled(false);
     ui->actionNew_Group->setDisabled(false);
-
+    ui->pushButton->setDisabled(false);
+    ui->pushButton_2->setDisabled(false);
+    ui->pushButton_3->setDisabled(false);
+    ui->pushButton_4->setDisabled(false);
 }
 
 //créer un nouveau motif
