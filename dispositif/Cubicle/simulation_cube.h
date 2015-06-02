@@ -14,9 +14,7 @@
 #include <QList>
 #include <QFile>
 #include <QTextStream>
-
 #include <iostream>
-
 #include <QtGui>
 #include <qgl.h>
 #include <QKeyEvent>
@@ -28,7 +26,6 @@
 
 
 #define TRANSPARENCE_SPHERE_ETEINTE 100
-
 #define TRANSPARENCE_SPHERE_ALLUMEE 250
 
 
@@ -60,14 +57,9 @@ class simulation_cube : public QGLWidget
 
     protected :
 
-        QVector3D coordonnees_cubicle_vers_opengl(QVector3D const& v) const;
-
-
-        void dessiner_axes();
-
         float fAxisRadius, fAxisHeight, fArrowRadius, fArrowHeight;
 
-
+        void dessiner_axes();
         void dessiner_sphere(const QColor &c, float const& rayon, float const& details) const;
         float camX, camY, camZ, camR, camT, camP; //rho, theta, phi pour les coordonnées sphériques.
         float camUpX, camUpY, camUpZ;
@@ -76,11 +68,6 @@ class simulation_cube : public QGLWidget
         QList<QVector3D> points;
         QList<QVector3D> plan;
         GLUquadric* sph;
-
-    public slots :
-
-        void recevoir_nouveaux_points(QList<QVector3D> const& p);
-
 };
 
 #endif // Simulation_cube_H

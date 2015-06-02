@@ -6,9 +6,15 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>1026</width>
-    <height>495</height>
+    <width>1200</width>
+    <height>600</height>
    </rect>
+  </property>
+  <property name="minimumSize">
+   <size>
+    <width>1200</width>
+    <height>600</height>
+   </size>
   </property>
   <property name="windowTitle">
    <string>MainWindow</string>
@@ -122,7 +128,7 @@
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>1026</width>
+     <width>1200</width>
      <height>25</height>
     </rect>
    </property>
@@ -179,13 +185,6 @@
    <addaction name="actionNew_Group"/>
    <addaction name="actionNew_Pattern"/>
    <addaction name="actionSave"/>
-   <addaction name="actionCopy"/>
-   <addaction name="actionPaste_pattern"/>
-   <addaction name="actionCut_pattern"/>
-   <addaction name="actionDelete_pattern"/>
-   <addaction name="actionRaise"/>
-   <addaction name="actionLower"/>
-   <addaction name="actionQuit"/>
   </widget>
   <widget class="QToolBar" name="toolBar">
    <property name="windowTitle">
@@ -227,7 +226,7 @@
      <normaloff>:/Images/save.png</normaloff>:/Images/save.png</iconset>
    </property>
    <property name="text">
-    <string>save</string>
+    <string>save pattern</string>
    </property>
   </action>
   <action name="actionQuit">

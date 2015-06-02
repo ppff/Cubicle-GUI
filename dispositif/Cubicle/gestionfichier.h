@@ -7,11 +7,6 @@
 #include <QString>
 #include <QVector3D>
 
-
-
-
-//#ifdef __cplusplus
-
 class GestionFichier
 {
 public:

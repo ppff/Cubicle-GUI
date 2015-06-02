@@ -18,7 +18,8 @@ void GestionFichier::ouvrir(QString empl,Cube c){
     QString version=flux.readLine(); // on lit la ligne de la version
     file.resize(0);
     flux<<version<<endl;
-   for(int cntP=0;cntP<9;cntP++){
+
+    for(int cntP=0;cntP<9;cntP++){
        y=QString::number(cntP);
        for(int cntL=0;cntL<9;cntL++){
            z=QString::number(abs(8-cntL));
@@ -30,14 +31,11 @@ void GestionFichier::ouvrir(QString empl,Cube c){
                    x=QString::number(abs(8-cntA));
                    qDebug()<<"led ("+x+y+z+") allumé ";
                    flux<<x+y+z<<endl;
-           }
+               }
 
+            }
        }
-   }
-
-
-
-}
+    }
    file.close();
 }
 

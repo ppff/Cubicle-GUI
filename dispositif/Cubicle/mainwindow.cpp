@@ -18,9 +18,6 @@
 #include <QPainter>
 #include <QPainterPath>
 
-
-
-
 using namespace std;
 
 //MainWindow *MainWindow::_instance = NULL;
@@ -29,9 +26,7 @@ MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent),
     ui(new Ui::MainWindow)
 {
-
     ui->setupUi(this);
-
 
     ui->actionCopy->setDisabled(true);
     ui->actionDelete_pattern->setDisabled(true);
@@ -40,6 +35,7 @@ MainWindow::MainWindow(QWidget *parent) :
     ui->actionPaste_pattern->setDisabled(true);
     ui->actionSave->setDisabled(true);
     ui->actionCut_pattern->setDisabled(true);
+    ui->actionSave_as->setDisabled(true);
     ui->actionRaise->setDisabled(true);
     ui->actionLower->setDisabled(true);
 
@@ -58,7 +54,7 @@ MainWindow::MainWindow(QWidget *parent) :
     connect(ui->actionCopy,SIGNAL(triggered(bool)),this,SLOT(copier()));
     connect(ui->actionPaste_pattern,SIGNAL(triggered(bool)),this,SLOT(coller()));
     connect(ui->actionNew_Pattern,SIGNAL(triggered(bool)),this,SLOT(ajouter_motif()));
-    connect(ui->actionQuit,SIGNAL(triggered(bool)),this,SLOT(controlQuit()));
+    connect(ui->actionQuit_2,SIGNAL(triggered(bool)),this,SLOT(controlQuit()));
     connect(ui->actionDelete_pattern,SIGNAL(triggered(bool)),this,SLOT(controlDelete()));
     connect(ui->actionSave,SIGNAL(triggered(bool)),this,SLOT(controlSave()));
     connect(ui->treeView,SIGNAL(doubleClicked(const QModelIndex &)),this,SLOT(doubleClick()));
@@ -67,23 +63,24 @@ MainWindow::MainWindow(QWidget *parent) :
     connect(ui->actionLower,SIGNAL(triggered(bool)),this,SLOT(Descendre()));
     connect(ui->actionSave_as,SIGNAL(triggered(bool)),this,SLOT(controlSaveAs()));
 
+     //connect(ui->treeView,SIGNAL(clicked(QModelIndex)),this,SLOT(reordonneGroup()));
+
+
     this->setWindowTitle("Cubicle");
     deletePlanLed(0);
     desactivePlan(0);
     connexion();
     dirOpen=false;
+   // reordonneGroup();
 }
 
 //ouvre le répertoire de travail
-
-
-
 void MainWindow::ouvrir_explorer(){
-  QString  tmpdir=QFileDialog::getExistingDirectory(this, tr("Open Directory"),
-                                                   "/home"
-                                               );
-  if (tmpdir=="") {qDebug()<<tmpdir;
-      return;}
+  QString  tmpdir=QFileDialog::getExistingDirectory(this, tr("Open Directory"), "/home");
+  if (tmpdir=="") {
+      qDebug()<<tmpdir;
+      return;
+  }
   else {
       namedir=tmpdir;
   }
@@ -99,8 +96,18 @@ void MainWindow::ouvrir_explorer(){
        qDebug()<<"impossible";
        return;
   }
+  this->setWindowTitle("Cubicle["+namedir+"/Cubicle"+"]") ;
   tree();
   dirOpen=true;
+  saved=false;
+  ui->actionSave_as->setDisabled(false);
+  this->c=Cube();
+  deletePlanLed(1);
+  desactivePlan(1);
+
+  this->liste_vecteur3D.clear();
+  this->ui->widget->setListPoints(liste_vecteur3D);
+  ui->widget->setListPlan(liste_vecteur3D);
 }
 
 void MainWindow::contextMenuEvent(QContextMenuEvent *event){
@@ -155,11 +162,8 @@ void MainWindow::contextMenuEvent(QContextMenuEvent *event){
 
     contextMenu->exec(QCursor::pos());
     }
-
 }
 
-
-///////////////////////////////////////////////////////////////////////////////
 
 void MainWindow::couper(){
     copier();
@@ -231,7 +235,7 @@ void MainWindow::tree(){
     ui->actionRaise->setDisabled(false);
     ui->actionLower->setDisabled(false);
     ui->actionNew_Group->setDisabled(false);
-    reordonneGroup();
+
 }
 
 //créer un nouveau motif
@@ -306,13 +310,19 @@ void MainWindow::new_project(){
        new_index=model->index(namedir);
        model->mkdir(new_index,"Cubicle");
 
-        /*qDebug()<<"je crée cubicle pour la 1ere fois";
-             QModelIndex index1=model->index(namedir);
-             model->mkdir(index1,"Cubicle");
-                    tree();*/
-
-
+    dirOpen=true;
+    this->setWindowTitle("Cubicle") ;
             tree();
+            ui->actionSave_as->setDisabled(false);
+            saved=false;
+            this->c=Cube();
+            deletePlanLed(1);
+            desactivePlan(1);
+
+            this->liste_vecteur3D.clear();
+            this->ui->widget->setListPoints(liste_vecteur3D);
+            ui->widget->setListPlan(liste_vecteur3D);
+
 }
 
 void MainWindow::on_actionNew_Group_triggered()
@@ -348,10 +358,11 @@ void MainWindow::on_actionNew_Group_triggered()
          QItemSelectionModel::ClearAndSelect | QItemSelectionModel::Rows);
   ui->treeView->edit(new_index);
 
+
 }
     else {
         QModelIndex index =model->index(namedir,0);
-        QString name ="New Group";
+        QString name ="NewGroup";
         QDir dir(namedir);
         QFileInfoList entries = dir.entryInfoList(QDir::NoDotAndDotDot | QDir::AllEntries);
         dir.setSorting( QDir::Name);
@@ -386,6 +397,7 @@ void MainWindow::Monter(){
     QString newNameGroup;
     QString nameGroupDessus;
     QModelIndex index=ui->treeView->currentIndex();
+
     QModelIndex indexMoinsUn=ui->treeView->indexAbove(index);
 
        if (index.isValid()){
@@ -402,7 +414,9 @@ void MainWindow::Monter(){
                 QString nameDessusRest = nameGroupDessus.mid(3);
                 int num = numero.toInt();
                 int numDessus = numeroDessus.toInt();
-
+                if(num==0){
+                    return;
+                }
                 if (num<11){
                     newNameGroup = "0"+QString::number(num-1)+"_"+nameRest;
                 }else {
@@ -432,11 +446,6 @@ void MainWindow::Monter(){
                         QDir dir2(totalnameGroupMoinsUnCorrect);
                         dir2.rename(totalnameGroupMoinsUnChange, totalnameGroupMoinsUnCorrect);
                         dir2.setSorting(QDir::Name);
-                    }else{
-                        //QDir dir1(pathTotalOld);
-                        //dir1.rename(pathTotalOld, pathTotalNew);
-                        //dir1.setSorting(QDir::Name);
-                        QMessageBox::warning(this,"Error","Please verify numbers are continued!", QMessageBox::Ok);
                     }
                 }else if(num==10){
                     if (numDessus==num-1){
@@ -457,11 +466,6 @@ void MainWindow::Monter(){
                         QDir dir2(totalnameGroupMoinsUnCorrect);
                         dir2.rename(totalnameGroupMoinsUnChange, totalnameGroupMoinsUnCorrect);
                         dir2.setSorting(QDir::Name);
-                    }else{
-                        //QDir dir1(pathTotalOld);
-                        //dir1.rename(pathTotalOld, pathTotalNew);
-                        //dir1.setSorting(QDir::Name);
-                        QMessageBox::warning(this,"Error","Please verify numbers are continued!", QMessageBox::Ok);
                     }
                 }else if(num>10){
                     if (numDessus==num-1){
@@ -482,22 +486,12 @@ void MainWindow::Monter(){
                         QDir dir2(totalnameGroupMoinsUnCorrect);
                         dir2.rename(totalnameGroupMoinsUnChange, totalnameGroupMoinsUnCorrect);
                         dir2.setSorting(QDir::Name);
-                    }else{
-                        //QDir dir1(pathTotalOld);
-                        //dir1.rename(pathTotalOld, pathTotalNew);
-                        //dir1.setSorting(QDir::Name);
-                        QMessageBox::warning(this,"Error","Please verify numbers are continued!", QMessageBox::Ok);
                     }
                 }
                 this->tree();
-               // if (check == true){
-               //     QMessageBox::warning(this,"Error","Renamed successfully!", QMessageBox::Ok);
-               // }else{
-              //      QMessageBox::warning(this,"Error","Error renamed! Please try again.", QMessageBox::Ok);
-              //  }
-
          }
    }
+       return;
 }
 ////////////////////////////////////////////////////////////////////////////////
 void MainWindow::Descendre(){
@@ -511,16 +505,23 @@ void MainWindow::Descendre(){
            if (model->fileInfo(index).isDir()) {
                 QString dir=model->fileInfo(index).absolutePath();
                 nameGroup=model->fileInfo(index).baseName();
-                nameGroupDessous=model->fileInfo(indexPlusUn).baseName();
-                qDebug()<<nameGroup;
-                qDebug()<<dir;
-
+                QDir temp(dir);
+                QFileInfoList entries = temp.entryInfoList(QDir::NoDotAndDotDot | QDir::AllEntries);
+                int m=entries.size();
                 QString numero = nameGroup.left(2);
+                int num = numero.toInt();
+                if(num==m-1){
+                    qDebug()<<"Les numeros sont egaux";
+                    return;
+                }
+
+                nameGroupDessous=model->fileInfo(indexPlusUn).baseName();
                 QString nameRest = nameGroup.mid(3);
                 QString numeroDessous = nameGroupDessous.left(2);
                 QString nameDessousRest = nameGroupDessous.mid(3);
-                int num = numero.toInt();
+
                 int numDessous = numeroDessous.toInt();
+
 
                 if (num<9){
                     newNameGroup = "0"+QString::number(num+1)+"_"+nameRest;
@@ -551,8 +552,6 @@ void MainWindow::Descendre(){
                         QDir dir2(totalnameGroupPlusUnCorrect);
                         dir2.rename(totalnameGroupPlusUnChange, totalnameGroupPlusUnCorrect);
                         dir2.setSorting(QDir::Name);
-                    }else{
-                        QMessageBox::warning(this,"Error","Please verify numbers are continued!", QMessageBox::Ok);
                     }
                 }else if(num==9){
                     if (numDessous==num+1){
@@ -573,8 +572,6 @@ void MainWindow::Descendre(){
                         QDir dir2(totalnameGroupPlusUnCorrect);
                         dir2.rename(totalnameGroupPlusUnChange, totalnameGroupPlusUnCorrect);
                         dir2.setSorting(QDir::Name);
-                    }else{
-                        QMessageBox::warning(this,"Error","Please verify numbers are continued!", QMessageBox::Ok);
                     }
                 }else if(num>9){
                     if (numDessous==num+1){
@@ -595,13 +592,15 @@ void MainWindow::Descendre(){
                         QDir dir2(totalnameGroupPlusUnCorrect);
                         dir2.rename(totalnameGroupPlusUnChange, totalnameGroupPlusUnCorrect);
                         dir2.setSorting(QDir::Name);
-                    }else{
-                        QMessageBox::warning(this,"Error","Please verify numbers are continued!", QMessageBox::Ok);
                     }
                 }
+
                 this->tree();
+
          }
+
    }
+       return;
 }
 
 void MainWindow::controlQuit(){
@@ -619,13 +618,14 @@ void MainWindow::controlQuit(){
         else {
         this->close();
     }
-    /*int reponse = QMessageBox::question(this, "Quit", " Are you sure you want to quit ?");
-
-        if (reponse == QMessageBox::Yes)
-        {
-            this->close();
-        }*/
 }
+
+
+void MainWindow::closeEvent(QCloseEvent *event)
+{
+    controlQuit();
+}
+
 
 void MainWindow::controlDelete(){
     QModelIndex index=ui->treeView->currentIndex();
@@ -650,6 +650,9 @@ void MainWindow::controlDelete(){
 void MainWindow::controlSave(){
     GestionFichier ges;
     ges.ouvrir(this->emplMotif,this->c);
+    QMessageBox msgBox;
+    msgBox.setText("Your pattern "+currentPattern +" has been succesfully saved");
+    msgBox.exec();
 }
 void MainWindow::xCopy2 (const QString &sourcePath, const QString &destPath, const QString &name)
 {
@@ -688,8 +691,11 @@ void MainWindow::xCopy2 (const QString &sourcePath, const QString &destPath, con
 void MainWindow::controlSaveAs(){
     qDebug()<<"je suis dans controlSaveAs";
     QString destPath=QFileDialog::getExistingDirectory(this, tr("Open Directory"),
+
                                                    "/home"
                                                );
+    if (destPath=="") {qDebug()<<destPath;
+        return;}
     QString originPath=namedir;
     qDebug()<<"l'origine est "+namedir;
     qDebug()<<"la destination est"+destPath;
@@ -698,6 +704,9 @@ void MainWindow::controlSaveAs(){
     namedir= destPath+"/Cubicle";
     qDebug()<< "le nouveau path est" + namedir;
     this->setWindowTitle("Cubicle["+destPath+"/Cubicle"+"]") ;
+    QMessageBox msgBox;
+    msgBox.setText("Your project Cubicle has been succesfully saved");
+    msgBox.exec();
     tree();
 
 }
@@ -751,43 +760,60 @@ void MainWindow::removeDir(const QString& PathDir)
   }
 }
 
-// cette fonction supprime le dosier Cubicle dans le workspace lorsqu'on fait save as
-
-
-
-/*void MainWindow::controlRename(){
-    QModelIndex index=ui->treeView->currentIndex();
-     if (model->fileInfo(index).isFile()){
-            QString path = model->filePath(index);
-            QString name = model->fileName(index);
-            QString dir = path;
-            dir.remove(dir.size() - name.size(), name.size());
-            QFile file(path);
-            if(file.open(QIODevice::WriteOnly | QIODevice::Text))
-            {
-                //Interact with the file
-                file.close();
-                if(file.rename(QString("%1read %2").arg(dir, name)))
-                        qDebug() << "Renamed";
-            }
-     }
-}*/
-
-
 
 void MainWindow::reordonneGroup(){
-      QModelIndex index=model->index(namedir);
-     if (model->fileInfo(index).isDir()){
-         QString path = model->filePath(index);
-         QString name = model->fileName(index);
-         qDebug() << "le path du dossier est "+ path;
-         qDebug() << "le nom du dossier est "+ name;
+    qDebug()<<" j'entre dans reordonne group";
+      QDir dir0(namedir+"/Cubicle");
+      QDirIterator dirIterator(dir0, QDirIterator::Subdirectories);
 
+       //On récupère les fichiers et dossiers grâce à l'itérateur
+       QFileInfoList fileList;
+
+       while(dirIterator.hasNext())
+       {
+            if (dirIterator.fileName()!=" " &&dirIterator.fileName()!="."){
+
+           fileList << dirIterator.fileInfo();}
+             dirIterator.next();
+       }
+       QString t;
+       t=QString::number(fileList.size());
+       qDebug()<<"la taille de la liste est "+t;
+       //On parcours les éléments
+       QStringList directories;
+     //  for(int i = fileList.count() - 1; i > 0; i--)
+        qDebug()<<"le count de la liste est "+fileList.count();
+        for(int i = 0; i <fileList.count(); i++)
+       {
+
+          if( fileList.at(i).isDir() ){
+
+         directories << fileList.at(i).absolutePath()+"/"+fileList.at(i).completeBaseName();
+         QDir dir(fileList.at(i).absolutePath());
+         QString nameGroup=fileList.at(i).completeBaseName();
+         if (i<10){
+             s = "0"+QString::number(i)+"_";
+         }else {
+             s = QString::number(i)+"_";
+
+         }
+         qDebug() << "l'indice est égal à "+s;
+         QString nameRest ;
+         if (nameGroup[2]=='_')
+         nameRest = nameGroup.mid(3);
+         else nameRest = nameGroup;
+         QString newNameGroup=s+nameRest;
+
+         QString pathTotalOld = fileList.at(i).absolutePath()+"/"+nameGroup;
+         QString pathTotalNew = fileList.at(i).absolutePath()+"/"+newNameGroup;
+          dir.rename(pathTotalOld,pathTotalNew);
+            tree();
+         qDebug()<<"on lit le dossier "+fileList.at(i).completeBaseName();
+
+       }
+       }
      }
 
-
-
-}
 
 //extern "C" int* parser_file(const char* name);
 
@@ -811,9 +837,11 @@ void MainWindow::doubleClick(){
 
 
          QString name=model->fileInfo(index).absoluteFilePath();
+         this->currentPattern=model->fileInfo(index).baseName();
          if(name.compare(this->getEmplMotif())!=0){
              this->setEmpMotif(name);
              qDebug ()<< "nouveau motif "+this->getEmplMotif();
+             qDebug ()<< "nom pattern "+currentPattern;
              this->c=Cube();
              deletePlanLed(1);
              desactivePlan(1);
@@ -822,12 +850,9 @@ void MainWindow::doubleClick(){
              this->ui->widget->setListPoints(liste_vecteur3D);
              ui->widget->setListPlan(liste_vecteur3D);
        //      int* tab;
-
-
          //  std::string nameStd = name.toStdString();
          //  const char* nomFichier= nameStd.c_str();
          //  tab=parser_file(nomFichier);
-         //  if(tab!=NULL){
            //        int h=tab[1];
              //      QString lh=QString::number(h);
                //    qDebug()<<"premier elmt ds tab "+lh;
@@ -854,16 +879,12 @@ void MainWindow::doubleClick(){
                            this->ui->widget->setListPoints(liste_vecteur3D);
                          }
                      }
-
-        //}
                  }
     else {
         dirOrFile=true;
     }
 }
 }
-
-
 
 
 void MainWindow::desactivePlan(int niemefois){
@@ -995,9 +1016,6 @@ void MainWindow::controlLed(const QString & valeur){
       this->ui->widget->setListPoints(liste_vecteur3D);
   }
 
-
-
-
   afficheLed(lig,col,l.getEtat());
 
 }
@@ -1022,8 +1040,6 @@ void MainWindow:: afficheLed(const int i, const int j,const  int etat )
 void MainWindow::connexion(){
 
     QSignalMapper *signalMapper = new QSignalMapper(this);
-
-
 
         connect(ui->plane1, SIGNAL(clicked()), signalMapper, SLOT(map()));
         signalMapper->setMapping(ui->plane1, "00");
