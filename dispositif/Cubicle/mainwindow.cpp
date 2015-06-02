@@ -82,12 +82,13 @@ void MainWindow::ouvrir_explorer(){
       return;
   }
   else {
-      QDir dir(tmpdir);
-      namedir=dir.absoluteFilePath(tmpdir);
+      QFileInfo f=QFileInfo(tmpdir);
+      //QDir dir(tmpdir);
+      namedir = f.absolutePath();
       qDebug()<<" le chemin estttttt "+namedir;
   }
 
-  QDir dir(namedir);
+  QDir dir(namedir+"/Cubicle");
   QStringList nameFilter;
   nameFilter<<"*.txt";
   QFileInfoList list=dir.entryInfoList(nameFilter,QDir::Files);
@@ -848,6 +849,7 @@ void MainWindow::controlSave(){
         xCopy2(s+"/workspace",namedir,"Cubicle");
 
     }
+    saved=true;
 }
 
 /*void MainWindow::controlSave(){
@@ -907,6 +909,16 @@ void MainWindow::controlSaveAs(){
     //QString originPath=namedir;
     qDebug()<<"l'origine est "+namedir;
     qDebug()<<"la destination est"+destPath;
+    QDir dir(destPath+"/Cubicle");
+    if (dir.exists()) {
+
+        int remplacer=QMessageBox::question(this, "Exist", "Project Cubicle already exists in this directory, do you want to replace it ?");
+        if (remplacer==QMessageBox::No){
+            controlSaveAs();
+        }
+
+    }
+    else {
     xCopy2(s+"/workspace",destPath,"Cubicle");
     saved=true;
     namedir= destPath+"/Cubicle";
@@ -915,7 +927,8 @@ void MainWindow::controlSaveAs(){
     QMessageBox msgBox;
     msgBox.setText("Your project Cubicle has been succesfully saved");
     msgBox.exec();
-   // tree();
+    }
+
 
 }
 void MainWindow::removeDir(const QString& PathDir)
