@@ -36,6 +36,7 @@
 #include <QDir>
 #include <QFileInfoList>
 #include <QFileInfo>
+#include <QAbstractItemModel>
 
 namespace Ui {
 class MainWindow;
@@ -96,7 +97,7 @@ public:
     int dirOpen;  //vaut 0 si y a pas de directory ouvert, 1 si openDirectory et 2 si on ne choisit pas d'emplacement au début=>  saveAs
     bool copierCouper; // vaut 0 pour copier et 1 pour couper
     QList<QVector3D> liste_vecteur3D;
-    QString s;
+    QString s=QCoreApplication::applicationDirPath();
 
 
 
@@ -109,6 +110,7 @@ void couper();
 void copier();
 void coller();
  void reordonneGroup();
+//void reordonneMotif();
     void Monter();
     void Descendre();
     void controlQuit();

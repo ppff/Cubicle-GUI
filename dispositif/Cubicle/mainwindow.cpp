@@ -218,12 +218,12 @@ void MainWindow::tree(){
             model = new QDirModel(this);
             model->setReadOnly(false);
             model->setSorting(QDir::DirsFirst | QDir::IgnoreCase | QDir::Name);
-
+    QModelIndex index=model->index(s+"/workspace");
     ui->treeView->setModel(model);
     //qDebug() << "le namedir est" + namedir;
-    QModelIndex index=model->index(s+"/workspace");
+
      ui->treeView->setRootIndex(index);
-    // ui->treeView->setExpanded(new_index,true);
+     ui->treeView->setExpanded(index,true);
 
   /*  ui->treeView->selectionModel()->select(new_index,
        QItemSelectionModel::ClearAndSelect | QItemSelectionModel::Rows);*/
@@ -258,28 +258,22 @@ void MainWindow::ajouter_motif(){
             qDebug()<<"l'emplacement du dossier est "+dir;
             qDebug()<<"le nom du dossier est "+nameGroup;
             if(nameGroup!="Cubicle"){
-                    NouveauMotif m=NouveauMotif("New Pattern",dir+"/"+nameGroup);
-                    tree();
-                    /*if(namedir==s+"/workspace"){
-                            new_index =model->index(namedir+"/Cubicle/"+ nameGroup );
-                            ui->treeView->expand(new_index);
-                            ui->treeView->scrollTo(new_index);
 
-                            new_index =model->index(m.getNameFile());
-                            ui->treeView->setCurrentIndex(new_index);
-                            ui->treeView->selectionModel()->select(new_index,
-                            QItemSelectionModel::ClearAndSelect | QItemSelectionModel::Rows);
-                            ui->treeView->edit(new_index);
-                    }
-                    else{*/
-                            new_index =model->index(s+"/workspace/Cubicle"+"/"+ nameGroup );
+                    NouveauMotif m=NouveauMotif("New Pattern",dir+"/"+nameGroup);
+
+
+                    tree();
+                    new_index =model->index(s+"/workspace/Cubicle"+"/"+ nameGroup );
                             ui->treeView->expand(new_index);
                              ui->treeView->scrollTo(new_index);
-                             new_index =model->index(m.getNameFile());
+                            new_index =model->index(m.getNameFile());
+
+                             qDebug() << "le path du pattern ajoute est "+ m.getNameFile();
                              ui->treeView->setCurrentIndex(new_index);
                              ui->treeView->selectionModel()->select(new_index,
                              QItemSelectionModel::ClearAndSelect | QItemSelectionModel::Rows);
                              ui->treeView->edit(new_index);
+
             }
             else {
                QMessageBox::information(this,tr("warning"),"cannot add a pattern, please choose or add a group");
@@ -290,7 +284,7 @@ void MainWindow::ajouter_motif(){
 }
 void MainWindow::new_project(){
 
-    s=QCoreApplication::applicationDirPath();
+  // s=QCoreApplication::applicationDirPath();
     model = new QDirModel(this);
      model->setReadOnly(false);
      model->setSorting(QDir::DirsFirst | QDir::IgnoreCase | QDir::Name);
@@ -342,13 +336,14 @@ void MainWindow::on_actionNew_Group_triggered()
      qDebug() << "s contient "+ name;
     model->mkdir(index,name);
     qDebug()<<"j'ai crée un dossier ds "+namedir;
-       new_index =model->index(namedir+"/Cubicle");
-     qDebug()<<"le new index est " + namedir+"/Cubicle";
-     new_index =model->index(namedir+"/Cubicle");
+       new_index =model->index(s+"/workspace/Cubicle");
+    // qDebug()<<"le new index est " + s+"/workspace/Cubicle";
+     new_index =model->index(s+"/workspace/Cubicle");
   ui->treeView->expand(new_index);
   ui->treeView->scrollTo(new_index);
 
-  new_index =model->index(namedir+"/Cubicle/"+name);
+  new_index =model->index(s+"/workspace/Cubicle/"+name);
+  qDebug() << "le nouveau index pointe sur "+s+"/workspace/Cubicle/"+name;
   ui->treeView->setCurrentIndex(new_index);
   ui->treeView->selectionModel()->select(new_index,
          QItemSelectionModel::ClearAndSelect | QItemSelectionModel::Rows);
