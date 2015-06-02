@@ -841,20 +841,55 @@ void MainWindow::controlDelete(){
     }
 }
 void MainWindow::controlSave(){
+    GestionFichier ges;
+    ges.ouvrir(this->emplMotif,this->c);
     if (namedir=="") {
         controlSaveAs();
     }
     else {
-        removeDir(namedir);
+        removeDir(namedir+"/Cubicle");
         xCopy2(s+"/workspace",namedir,"Cubicle");
+        saved=true;
+        QMessageBox msgBox;
+        msgBox.setText("Your project Cubicle has been succesfully saved");
+        msgBox.exec();
+    }
+
+}
+void MainWindow::controlSaveAs(){
+    qDebug()<<"je suis dans controlSaveAs";
+    QString destPath=QFileDialog::getExistingDirectory(this, tr("Open Directory"),
+
+                                                   "/home"
+                                               );
+    if (destPath=="") {qDebug()<<destPath;
+        return;}
+    qDebug()<<"l'origine est "+namedir;
+    qDebug()<<"la destination est"+destPath;
+    QDir dir(destPath+"/Cubicle");
+    if (dir.exists()) {
+
+        int remplacer=QMessageBox::question(this, "Exist", "Project Cubicle already exists in this directory, do you want to replace it ?");
+        if (remplacer==QMessageBox::No){
+            controlSaveAs();
+        }
+        else {
+            namedir=destPath;
+            controlSave();
+        }
 
     }
-    saved=true;
+    else {
+    namedir= destPath;
+    qDebug()<< "le nouveau path est" + namedir;
+    controlSave();
+    this->setWindowTitle("Cubicle["+destPath+"/Cubicle"+"]") ;
+
+    }
 }
 
 /*void MainWindow::controlSave(){
-    GestionFichier ges;
-    ges.ouvrir(this->emplMotif,this->c);
+
     QMessageBox msgBox;
     msgBox.setText("Your pattern "+currentPattern +" has been succesfully saved");
     msgBox.exec();
@@ -898,39 +933,7 @@ void MainWindow::xCopy2 (const QString &sourcePath, const QString &destPath, con
 
 
 }
-void MainWindow::controlSaveAs(){
-    qDebug()<<"je suis dans controlSaveAs";
-    QString destPath=QFileDialog::getExistingDirectory(this, tr("Open Directory"),
 
-                                                   "/home"
-                                               );
-    if (destPath=="") {qDebug()<<destPath;
-        return;}
-    //QString originPath=namedir;
-    qDebug()<<"l'origine est "+namedir;
-    qDebug()<<"la destination est"+destPath;
-    QDir dir(destPath+"/Cubicle");
-    if (dir.exists()) {
-
-        int remplacer=QMessageBox::question(this, "Exist", "Project Cubicle already exists in this directory, do you want to replace it ?");
-        if (remplacer==QMessageBox::No){
-            controlSaveAs();
-        }
-
-    }
-    else {
-    xCopy2(s+"/workspace",destPath,"Cubicle");
-    saved=true;
-    namedir= destPath+"/Cubicle";
-    qDebug()<< "le nouveau path est" + namedir;
-    this->setWindowTitle("Cubicle["+destPath+"/Cubicle"+"]") ;
-    QMessageBox msgBox;
-    msgBox.setText("Your project Cubicle has been succesfully saved");
-    msgBox.exec();
-    }
-
-
-}
 void MainWindow::removeDir(const QString& PathDir)
 {
  //Création de l'itérateur, on précise qu'on veut tous les sous-dossiers
