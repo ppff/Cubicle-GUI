@@ -97,18 +97,20 @@ public:
     bool copierCouper; // vaut 0 pour copier et 1 pour couper
     QList<QVector3D> liste_vecteur3D;
      QString s;
-     void reordonneGroup();
+
 
 
 public slots:
-    void ouvrir_explorer() ;
-    void ajouter_motif() ;
-    void couper();
-    void copier();
-    void coller();
+
+void new_project();
+void ouvrir_explorer() ;
+void ajouter_motif() ;
+void couper();
+void copier();
+void coller();
+ void reordonneGroup();
     void Monter();
     void Descendre();
-    void new_project();
     void controlQuit();
     void controlDelete();
     void controlSave();
