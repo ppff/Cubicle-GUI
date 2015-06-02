@@ -260,7 +260,7 @@ void MainWindow::ajouter_motif(){
             if(nameGroup!="Cubicle"){
                     NouveauMotif m=NouveauMotif("New Pattern",dir+"/"+nameGroup);
                     tree();
-                    if(namedir==s+"/workspace"){
+                    /*if(namedir==s+"/workspace"){
                             new_index =model->index(namedir+"/Cubicle/"+ nameGroup );
                             ui->treeView->expand(new_index);
                             ui->treeView->scrollTo(new_index);
@@ -271,8 +271,8 @@ void MainWindow::ajouter_motif(){
                             QItemSelectionModel::ClearAndSelect | QItemSelectionModel::Rows);
                             ui->treeView->edit(new_index);
                     }
-                    else{
-                            new_index =model->index(namedir+"/"+ nameGroup );
+                    else{*/
+                            new_index =model->index(s+"/workspace/Cubicle"+"/"+ nameGroup );
                             ui->treeView->expand(new_index);
                              ui->treeView->scrollTo(new_index);
                              new_index =model->index(m.getNameFile());
@@ -280,7 +280,6 @@ void MainWindow::ajouter_motif(){
                              ui->treeView->selectionModel()->select(new_index,
                              QItemSelectionModel::ClearAndSelect | QItemSelectionModel::Rows);
                              ui->treeView->edit(new_index);
-                    }
             }
             else {
                QMessageBox::information(this,tr("warning"),"cannot add a pattern, please choose or add a group");
