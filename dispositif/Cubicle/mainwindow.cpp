@@ -85,6 +85,12 @@ void MainWindow::ouvrir_explorer(){
       QFileInfo f=QFileInfo(tmpdir);
       //QDir dir(tmpdir);
       namedir = f.absolutePath();
+      QString nomDossier=f.baseName();
+      qDebug()<<" le nom duu dossier est "+nomDossier;
+      if (nomDossier!="Cubicle") {
+        QMessageBox::information(this,tr("warning"),"cannot open this directory, please choose the file Cubicle");
+        ouvrir_explorer();
+      }
       qDebug()<<" le chemin estttttt "+namedir;
   }
 
@@ -220,8 +226,6 @@ void MainWindow::tree(){
             model->setSorting(QDir::DirsFirst | QDir::IgnoreCase | QDir::Name);
     QModelIndex index=model->index(s+"/workspace");
     ui->treeView->setModel(model);
-    //qDebug() << "le namedir est" + namedir;
-
      ui->treeView->setRootIndex(index);
      //ui->treeView->setExpanded(index,true);
         connect(model,SIGNAL(dataChanged(QModelIndex,QModelIndex,QVector<int>)),this,SLOT(reordonneGroup()));
@@ -256,7 +260,7 @@ void MainWindow::ajouter_motif(){
             QString dir=model->fileInfo(index).absolutePath();
 
             QString nameGroup=model->fileInfo(index).baseName();
-             if((dir + "/" + nameGroup) !=namedir){
+             if((dir + "/" + nameGroup) !=s){
             qDebug()<<"le namedir est "+ namedir;
             qDebug()<<"l'emplacement du dossier est "+dir;
             qDebug()<<"le nom du dossier est "+nameGroup;
@@ -839,6 +843,8 @@ void MainWindow::controlDelete(){
     }
 }
 void MainWindow::controlSave(){
+    GestionFichier ges;
+    ges.ouvrir(this->emplMotif,this->c);
     if (namedir=="") {
         GestionFichier ges;
         ges.ouvrir(this->emplMotif,this->c);
@@ -848,17 +854,50 @@ void MainWindow::controlSave(){
         controlSaveAs();
     }
     else {
-        qDebug()<< "remove et remplace";
+
         removeDir(namedir+"/Cubicle");
         xCopy2(s+"/workspace",namedir,"Cubicle");
+        saved=true;
+        QMessageBox msgBox;
+        msgBox.setText("Your project Cubicle has been succesfully saved");
+        msgBox.exec();
+    }
+
+}
+void MainWindow::controlSaveAs(){
+    qDebug()<<"je suis dans controlSaveAs";
+    QString destPath=QFileDialog::getExistingDirectory(this, tr("Open Directory"),
+
+                                                   "/home"
+                                               );
+    if (destPath=="") {qDebug()<<destPath;
+        return;}
+    qDebug()<<"l'origine est "+namedir;
+    qDebug()<<"la destination est"+destPath;
+    QDir dir(destPath+"/Cubicle");
+    if (dir.exists()) {
+
+        int remplacer=QMessageBox::question(this, "Exist", "Project Cubicle already exists in this directory, do you want to replace it ?");
+        if (remplacer==QMessageBox::No){
+            controlSaveAs();
+        }
+        else {
+            namedir=destPath;
+            controlSave();
+        }
 
     }
-    saved=true;
+    else {
+    namedir= destPath;
+    qDebug()<< "le nouveau path est" + namedir;
+    controlSave();
+    this->setWindowTitle("Cubicle["+destPath+"/Cubicle"+"]") ;
+
+    }
 }
 
 /*void MainWindow::controlSave(){
-    GestionFichier ges;
-    ges.ouvrir(this->emplMotif,this->c);
+
     QMessageBox msgBox;
     msgBox.setText("Your pattern "+currentPattern +" has been succesfully saved");
     msgBox.exec();
@@ -874,6 +913,7 @@ void MainWindow::xCopy2 (const QString &sourcePath, const QString &destPath, con
     QDir dir(destObjectPath);
     if (dir.exists()) {
         removeDir(destObjectPath) ;
+        qDebug()<<"j'ai supprimé le dossier "+destObjectPath;
     }
     QFileInfo fi (sourceObjectPath);
 
@@ -902,6 +942,7 @@ void MainWindow::xCopy2 (const QString &sourcePath, const QString &destPath, con
 
 
 }
+/*
 void MainWindow::controlSaveAs(){
     qDebug()<<"je suis dans controlSaveAs";
     QString destPath=QFileDialog::getExistingDirectory(this, tr("Open Directory"),
@@ -938,10 +979,12 @@ void MainWindow::controlSaveAs(){
     msgBox.exec();
     }
 
-
 }
+*/
 void MainWindow::removeDir(const QString& PathDir)
 {
+
+
  //Création de l'itérateur, on précise qu'on veut tous les sous-dossiers
  QDirIterator dirIterator(PathDir, QDirIterator::Subdirectories);
 
