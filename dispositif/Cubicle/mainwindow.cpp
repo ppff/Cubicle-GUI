@@ -85,6 +85,12 @@ void MainWindow::ouvrir_explorer(){
       QFileInfo f=QFileInfo(tmpdir);
       //QDir dir(tmpdir);
       namedir = f.absolutePath();
+      QString nomDossier=f.baseName();
+      qDebug()<<" le nom duu dossier est "+nomDossier;
+      if (nomDossier!="Cubicle") {
+        QMessageBox::information(this,tr("warning"),"cannot open this directory, please choose the file Cubicle");
+        ouvrir_explorer();
+      }
       qDebug()<<" le chemin estttttt "+namedir;
   }
 
@@ -252,7 +258,7 @@ void MainWindow::ajouter_motif(){
             QString dir=model->fileInfo(index).absolutePath();
 
             QString nameGroup=model->fileInfo(index).baseName();
-             if((dir + "/" + nameGroup) !=namedir){
+             if((dir + "/" + nameGroup) !=s){
             qDebug()<<"le namedir est "+ namedir;
             qDebug()<<"l'emplacement du dossier est "+dir;
             qDebug()<<"le nom du dossier est "+nameGroup;
