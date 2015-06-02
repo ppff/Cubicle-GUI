@@ -96,7 +96,9 @@ void MainWindow::ouvrir_explorer(){
        qDebug()<<"impossible";
        return;
   }
-  this->setWindowTitle("Cubicle["+namedir+"/Cubicle"+"]") ;
+  this->setWindowTitle("Cubicle["+namedir+"/Cubicle"+"]");
+  new_project();
+  xCopy2(namedir,s+"/workspace","Cubicle");
   tree();
   dirOpen=true;
   saved=false;
@@ -215,8 +217,8 @@ void MainWindow::tree(){
             model->setSorting(QDir::DirsFirst | QDir::IgnoreCase | QDir::Name);
 
     ui->treeView->setModel(model);
-    qDebug() << "le namedir est" + namedir;
-    QModelIndex index=model->index(namedir);
+    //qDebug() << "le namedir est" + namedir;
+    QModelIndex index=model->index(s+"/workspace");
      ui->treeView->setRootIndex(index);
     // ui->treeView->setExpanded(new_index,true);
 
@@ -256,40 +258,33 @@ void MainWindow::ajouter_motif(){
                     NouveauMotif m=NouveauMotif("New Pattern",dir+"/"+nameGroup);
                     tree();
                     if(namedir==s+"/workspace"){
-                    new_index =model->index(namedir+"/Cubicle/"+ nameGroup );
-                 ui->treeView->expand(new_index);
-                 ui->treeView->scrollTo(new_index);
+                            new_index =model->index(namedir+"/Cubicle/"+ nameGroup );
+                            ui->treeView->expand(new_index);
+                            ui->treeView->scrollTo(new_index);
 
-                 new_index =model->index(m.getNameFile());
-                 ui->treeView->setCurrentIndex(new_index);
-                 ui->treeView->selectionModel()->select(new_index,
-                        QItemSelectionModel::ClearAndSelect | QItemSelectionModel::Rows);
-                  ui->treeView->edit(new_index);
-
+                            new_index =model->index(m.getNameFile());
+                            ui->treeView->setCurrentIndex(new_index);
+                            ui->treeView->selectionModel()->select(new_index,
+                            QItemSelectionModel::ClearAndSelect | QItemSelectionModel::Rows);
+                            ui->treeView->edit(new_index);
                     }
-
-                else{
-                    new_index =model->index(namedir+"/"+ nameGroup );
-                 ui->treeView->expand(new_index);
-                 ui->treeView->scrollTo(new_index);
-                 new_index =model->index(m.getNameFile());
-                 ui->treeView->setCurrentIndex(new_index);
-                 ui->treeView->selectionModel()->select(new_index,
-                        QItemSelectionModel::ClearAndSelect | QItemSelectionModel::Rows);
-                    ui->treeView->edit(new_index);
-
-                }
-
-
+                    else{
+                            new_index =model->index(namedir+"/"+ nameGroup );
+                            ui->treeView->expand(new_index);
+                             ui->treeView->scrollTo(new_index);
+                             new_index =model->index(m.getNameFile());
+                             ui->treeView->setCurrentIndex(new_index);
+                             ui->treeView->selectionModel()->select(new_index,
+                             QItemSelectionModel::ClearAndSelect | QItemSelectionModel::Rows);
+                             ui->treeView->edit(new_index);
+                    }
             }
-             else {
+            else {
                QMessageBox::information(this,tr("warning"),"cannot add a pattern, please choose or add a group");
-             }
-
+            }
         }
+       }
     }
-
-}
 }
 void MainWindow::new_project(){
 
@@ -300,14 +295,14 @@ void MainWindow::new_project(){
 
          QModelIndex index=model->index(s);
         model->mkdir(index,"workspace");
-        namedir=s+"/workspace";
-        QDir dir(namedir+"/Cubicle");
+        //namedir=s+"/workspace"
+        QDir dir(s+"/workspace/Cubicle");
         if (dir.exists()){
-            qDebug()<<"avant removeDir :"+namedir+"/Cubicle";
-            removeDir(namedir+"/Cubicle");
+            //qDebug()<<"avant removeDir :"+namedir+"/Cubicle";
+            removeDir(s+"/workspace/Cubicle");
         }
        qDebug()<<"je crée cubicle pour la 1ere fois";
-       new_index=model->index(namedir);
+       new_index=model->index(s+"/workspace");
        model->mkdir(new_index,"Cubicle");
 
     dirOpen=true;
@@ -328,18 +323,17 @@ void MainWindow::new_project(){
 void MainWindow::on_actionNew_Group_triggered()
 {   int m;
     QString indice;
-    if (namedir==s+"/workspace"){
-    QModelIndex index =model->index(namedir+"/Cubicle",0);
+    //if (namedir==s+"/workspace"){
+    QModelIndex index =model->index(s+"/workspace/Cubicle",0);
     QString name ="NewGroup";
-    QDir dir(namedir+"/Cubicle");
+    QDir dir(s+"/workspace/Cubicle");
     QFileInfoList entries = dir.entryInfoList(QDir::NoDotAndDotDot | QDir::AllEntries);
     dir.setSorting( QDir::Name);
     m=entries.size();
     if (m<10){
-        indice = "0"+QString::number(m)+"_";
+        indice ="0"+QString::number(m)+"_";
     }else {
-       indice = QString::number(m)+"_";
-
+       indice=QString::number(m)+"_";
     }
     qDebug() << "s contient "+ s;
     name = indice + name;
@@ -360,7 +354,7 @@ void MainWindow::on_actionNew_Group_triggered()
 
 
 }
-    else {
+    /*else {
         QModelIndex index =model->index(namedir,0);
         QString name ="NewGroup";
         QDir dir(namedir);
@@ -388,8 +382,8 @@ void MainWindow::on_actionNew_Group_triggered()
              QItemSelectionModel::ClearAndSelect | QItemSelectionModel::Rows);
       ui->treeView->edit(new_index);
 
-    }
-}
+    }*/
+
 
 
 void MainWindow::Monter(){
@@ -804,7 +798,7 @@ void MainWindow::controlQuit(){
     if (!this->saved) {
         int enregistrer=QMessageBox::question(this, "Quit", " Do you want to save the project before you quit ?");
         if (enregistrer==QMessageBox::Yes){
-            controlSaveAs();
+            controlSave();
             this->close();
         }
         else
@@ -843,14 +837,25 @@ void MainWindow::controlDelete(){
         dirOrFile=true;
     }
 }
-
 void MainWindow::controlSave(){
+    if (namedir=="") {
+        controlSaveAs();
+    }
+    else {
+        removeDir(namedir);
+        xCopy2(s+"/workspace",namedir,"Cubicle");
+
+    }
+}
+
+/*void MainWindow::controlSave(){
     GestionFichier ges;
     ges.ouvrir(this->emplMotif,this->c);
     QMessageBox msgBox;
     msgBox.setText("Your pattern "+currentPattern +" has been succesfully saved");
     msgBox.exec();
-}
+}*/
+
 void MainWindow::xCopy2 (const QString &sourcePath, const QString &destPath, const QString &name)
 {
     static const QStringList filters = QStringList () << "*";
@@ -893,10 +898,10 @@ void MainWindow::controlSaveAs(){
                                                );
     if (destPath=="") {qDebug()<<destPath;
         return;}
-    QString originPath=namedir;
+    //QString originPath=namedir;
     qDebug()<<"l'origine est "+namedir;
     qDebug()<<"la destination est"+destPath;
-    xCopy2(originPath,destPath,"Cubicle");
+    xCopy2(s+"/workspace",destPath,"Cubicle");
     saved=true;
     namedir= destPath+"/Cubicle";
     qDebug()<< "le nouveau path est" + namedir;
@@ -904,7 +909,7 @@ void MainWindow::controlSaveAs(){
     QMessageBox msgBox;
     msgBox.setText("Your project Cubicle has been succesfully saved");
     msgBox.exec();
-    tree();
+   // tree();
 
 }
 void MainWindow::removeDir(const QString& PathDir)
@@ -1032,10 +1037,11 @@ void MainWindow::doubleClick(){
         ui->plane8->setDisabled(false);
         ui->plane9->setDisabled(false);
 
-
          QString name=model->fileInfo(index).absoluteFilePath();
          this->currentPattern=model->fileInfo(index).baseName();
          if(name.compare(this->getEmplMotif())!=0){
+             GestionFichier ges;
+             ges.ouvrir(this->emplMotif,this->c);
              this->setEmpMotif(name);
              qDebug ()<< "nouveau motif "+this->getEmplMotif();
              qDebug ()<< "nom pattern "+currentPattern;
@@ -1053,7 +1059,7 @@ void MainWindow::doubleClick(){
            //        int h=tab[1];
              //      QString lh=QString::number(h);
                //    qDebug()<<"premier elmt ds tab "+lh;
-                   GestionFichier ges;
+                   //GestionFichier ges;
 
                  //  QList<QVector3D> l=ges.tabToVector3D(tab);
                    // int x=l.first().x();
