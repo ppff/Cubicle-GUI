@@ -106,7 +106,13 @@ void MainWindow::ouvrir_explorer(){
        return;
   }
   this->setWindowTitle("Cubicle["+namedir+"/Cubicle"+"]");
-  new_project();
+  // je copie le dossier Cubicle dans le workspace"
+  QDir dir2(s+"/workspace/Cubicle");
+  if (dir2.exists()){
+      //qDebug()<<"avant removeDir :"+namedir+"/Cubicle";
+      removeDir(s+"/workspace/Cubicle");
+  }
+  qDebug()<<"je crée cubicle pour la 1ere fois";
   xCopy2(namedir,s+"/workspace","Cubicle");
   tree();
   dirOpen=true;
@@ -115,7 +121,6 @@ void MainWindow::ouvrir_explorer(){
   this->c=Cube();
   deletePlanLed(1);
   desactivePlan(1);
-
   this->liste_vecteur3D.clear();
   this->ui->widget->setListPoints(liste_vecteur3D);
   ui->widget->setListPlan(liste_vecteur3D);
@@ -295,7 +300,6 @@ void MainWindow::new_project(){
      model->setSorting(QDir::DirsFirst | QDir::IgnoreCase | QDir::Name);
      QModelIndex index=model->index(s);
      model->mkdir(index,"workspace");
-        //namedir=s+"/workspace"
         QDir dir(s+"/workspace/Cubicle");
         if (dir.exists()){
             //qDebug()<<"avant removeDir :"+namedir+"/Cubicle";
@@ -314,7 +318,6 @@ void MainWindow::new_project(){
             this->c=Cube();
             deletePlanLed(1);
             desactivePlan(1);
-
             this->liste_vecteur3D.clear();
             this->ui->widget->setListPoints(liste_vecteur3D);
             ui->widget->setListPlan(liste_vecteur3D);
