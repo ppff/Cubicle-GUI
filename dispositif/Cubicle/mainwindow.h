@@ -63,7 +63,7 @@ public:
     void contextMenuEvent(QContextMenuEvent *event);
     void xCopy2 (const QString &sourcePath, const QString &destPath, const QString &name);
     void removeDir(const QString& dirPath) ;
-    void closeEvent(QCloseEvent *event);
+
 
     ~MainWindow();
 
@@ -119,6 +119,7 @@ void coller();
     void affichePlanLed(const QString & valeur);
     void afficheLed(const int i, const int j, const int etat);
     void controlLed(const QString & valeur);
+     void closeEvent(QCloseEvent *event);
 
 
 protected:
