@@ -601,7 +601,7 @@ void MainWindow::controlQuit(){
     if (!this->saved) {
         int enregistrer=QMessageBox::question(this, "Quit", " Do you want to save the project before you quit ?");
         if (enregistrer==QMessageBox::Yes){
-            controlSaveAs();
+            controlSave();
             this->close();
         }
         else
