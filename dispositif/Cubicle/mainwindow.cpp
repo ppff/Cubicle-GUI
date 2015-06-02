@@ -63,7 +63,7 @@ MainWindow::MainWindow(QWidget *parent) :
     connect(ui->actionLower,SIGNAL(triggered(bool)),this,SLOT(Descendre()));
     connect(ui->actionSave_as,SIGNAL(triggered(bool)),this,SLOT(controlSaveAs()));
 
-
+     //connect(ui->treeView,SIGNAL(clicked(QModelIndex)),this,SLOT(reordonneGroup()));
 
 
     this->setWindowTitle("Cubicle");
@@ -71,7 +71,7 @@ MainWindow::MainWindow(QWidget *parent) :
     desactivePlan(0);
     connexion();
     dirOpen=false;
-
+   // reordonneGroup();
 }
 
 //ouvre le répertoire de travail
@@ -207,9 +207,7 @@ void MainWindow::coller(){
                     if (!valid){
                        qDebug()<<"coller impossible";
                    }
-
                     tree();
-                    //reordonneMotif();
                 }
           }
         }
@@ -220,24 +218,18 @@ void MainWindow::tree(){
             model = new QDirModel(this);
             model->setReadOnly(false);
             model->setSorting(QDir::DirsFirst | QDir::IgnoreCase | QDir::Name);
-
-    ui->treeView->setModel(model);
-
-    //qDebug() << "le namedir est" + namedir;
     QModelIndex index=model->index(s+"/workspace");
- // if (index.isValid()){
+    ui->treeView->setModel(model);
+    //qDebug() << "le namedir est" + namedir;
+
      ui->treeView->setRootIndex(index);
      ui->treeView->setExpanded(index,true);
 
-   ui->treeView->selectionModel()->select(index,
-       QItemSelectionModel::ClearAndSelect | QItemSelectionModel::Rows);
+  /*  ui->treeView->selectionModel()->select(new_index,
+       QItemSelectionModel::ClearAndSelect | QItemSelectionModel::Rows);*/
     for(int i=1;i<4;i++){
         ui->treeView->hideColumn(i);
-
     }
-  // connect(model,SIGNAL(dataChanged(QModelIndex,QModelIndex,QVector<int>)),this,SLOT(reordonneGroup()));
-   //connect(model,SIGNAL(dataChanged(QModelIndex,QModelIndex,QVector<int>)),this,SLOT(reordonneMotif()));
-   // }
     ui->treeView->resizeColumnToContents(0);
     ui->actionNew_Pattern->setEnabled(true);
     ui->actionDelete_pattern->setEnabled(true);
@@ -248,9 +240,6 @@ void MainWindow::tree(){
     ui->actionRaise->setDisabled(false);
     ui->actionLower->setDisabled(false);
     ui->actionNew_Group->setDisabled(false);
-
-  //
-
 
 }
 
@@ -269,28 +258,22 @@ void MainWindow::ajouter_motif(){
             qDebug()<<"l'emplacement du dossier est "+dir;
             qDebug()<<"le nom du dossier est "+nameGroup;
             if(nameGroup!="Cubicle"){
-                    NouveauMotif m=NouveauMotif("New Pattern",dir+"/"+nameGroup);
-                    tree();
-                    /*if(namedir==s+"/workspace"){
-                            new_index =model->index(namedir+"/Cubicle/"+ nameGroup );
-                            ui->treeView->expand(new_index);
-                            ui->treeView->scrollTo(new_index);
 
-                            new_index =model->index(m.getNameFile());
-                            ui->treeView->setCurrentIndex(new_index);
-                            ui->treeView->selectionModel()->select(new_index,
-                            QItemSelectionModel::ClearAndSelect | QItemSelectionModel::Rows);
-                            ui->treeView->edit(new_index);
-                    }
-                    else{*/
-                            new_index =model->index(s+"/workspace/Cubicle"+"/"+ nameGroup );
+                    NouveauMotif m=NouveauMotif("New Pattern",dir+"/"+nameGroup);
+
+
+                    tree();
+                    new_index =model->index(s+"/workspace/Cubicle"+"/"+ nameGroup );
                             ui->treeView->expand(new_index);
                              ui->treeView->scrollTo(new_index);
-                             new_index =model->index(m.getNameFile());
+                            new_index =model->index(m.getNameFile());
+
+                             qDebug() << "le path du pattern ajoute est "+ m.getNameFile();
                              ui->treeView->setCurrentIndex(new_index);
                              ui->treeView->selectionModel()->select(new_index,
                              QItemSelectionModel::ClearAndSelect | QItemSelectionModel::Rows);
                              ui->treeView->edit(new_index);
+
             }
             else {
                QMessageBox::information(this,tr("warning"),"cannot add a pattern, please choose or add a group");
@@ -301,7 +284,7 @@ void MainWindow::ajouter_motif(){
 }
 void MainWindow::new_project(){
 
-    s=QCoreApplication::applicationDirPath();
+  // s=QCoreApplication::applicationDirPath();
     model = new QDirModel(this);
      model->setReadOnly(false);
      model->setSorting(QDir::DirsFirst | QDir::IgnoreCase | QDir::Name);
@@ -353,13 +336,14 @@ void MainWindow::on_actionNew_Group_triggered()
      qDebug() << "s contient "+ name;
     model->mkdir(index,name);
     qDebug()<<"j'ai crée un dossier ds "+namedir;
-       new_index =model->index(namedir+"/Cubicle");
-     qDebug()<<"le new index est " + namedir+"/Cubicle";
-     new_index =model->index(namedir+"/Cubicle");
+       new_index =model->index(s+"/workspace/Cubicle");
+    // qDebug()<<"le new index est " + s+"/workspace/Cubicle";
+     new_index =model->index(s+"/workspace/Cubicle");
   ui->treeView->expand(new_index);
   ui->treeView->scrollTo(new_index);
 
-  new_index =model->index(namedir+"/Cubicle/"+name);
+  new_index =model->index(s+"/workspace/Cubicle/"+name);
+  qDebug() << "le nouveau index pointe sur "+s+"/workspace/Cubicle/"+name;
   ui->treeView->setCurrentIndex(new_index);
   ui->treeView->selectionModel()->select(new_index,
          QItemSelectionModel::ClearAndSelect | QItemSelectionModel::Rows);
@@ -996,129 +980,56 @@ void MainWindow::removeDir(const QString& PathDir)
 
 void MainWindow::reordonneGroup(){
     qDebug()<<" j'entre dans reordonne group";
-     // QDir dir0(namedir+"/Cubicle");
-     QDirIterator dirIterator(namedir+"/Cubicle",QDir::NoDotAndDotDot|QDir::AllDirs,QDirIterator::Subdirectories);
+      QDir dir0(namedir+"/Cubicle");
+      QDirIterator dirIterator(dir0, QDirIterator::Subdirectories);
 
        //On récupère les fichiers et dossiers grâce à l'itérateur
        QFileInfoList fileList;
 
        while(dirIterator.hasNext())
+       {
+            if (dirIterator.fileName()!=" " &&dirIterator.fileName()!="."){
 
-       { dirIterator.next();
-           if(dirIterator.fileInfo().baseName()!="")
-
-
-           fileList << dirIterator.fileInfo();
-
+           fileList << dirIterator.fileInfo();}
+             dirIterator.next();
        }
        QString t;
        t=QString::number(fileList.size());
        qDebug()<<"la taille de la liste est "+t;
        //On parcours les éléments
-
-   // for(int i = fileList.size()-1 ; i  0; i--)
-       for(int i =0 ; i< fileList.size(); i++)
+       QStringList directories;
+     //  for(int i = fileList.count() - 1; i > 0; i--)
+        qDebug()<<"le count de la liste est "+fileList.count();
+        for(int i = 0; i <fileList.count(); i++)
        {
-          QDir dir(fileList.at(i).absolutePath());
+
+          if( fileList.at(i).isDir() ){
+
+         directories << fileList.at(i).absolutePath()+"/"+fileList.at(i).completeBaseName();
+         QDir dir(fileList.at(i).absolutePath());
          QString nameGroup=fileList.at(i).completeBaseName();
-         QString indice;
          if (i<10){
-             indice = "0"+QString::number(i)+"_";
+             s = "0"+QString::number(i)+"_";
          }else {
-             indice = QString::number(i)+"_";
+             s = QString::number(i)+"_";
 
          }
-         qDebug() << "l'indice est égal à "+indice;
+         qDebug() << "l'indice est égal à "+s;
          QString nameRest ;
          if (nameGroup[2]=='_')
          nameRest = nameGroup.mid(3);
-         else {qDebug() << "j'entre ici ";
-             nameRest = nameGroup;}
-         QString newNameGroup=indice+nameRest;
+         else nameRest = nameGroup;
+         QString newNameGroup=s+nameRest;
 
          QString pathTotalOld = fileList.at(i).absolutePath()+"/"+nameGroup;
          QString pathTotalNew = fileList.at(i).absolutePath()+"/"+newNameGroup;
           dir.rename(pathTotalOld,pathTotalNew);
+            tree();
          qDebug()<<"on lit le dossier "+fileList.at(i).completeBaseName();
 
-
+       }
        }
      }
-
-void MainWindow::reordonneMotif(){
-    qDebug()<<" j'entre dans reordonne motif";
-   QDirIterator dirIterator0(namedir+"/Cubicle",QDir::NoDotAndDotDot|QDir::AllDirs,QDirIterator::Subdirectories);
-
-     //On récupère les fichiers et dossiers grâce à l'itérateur
-     QFileInfoList fileList0;
-
-     while(dirIterator0.hasNext())
-
-     { dirIterator0.next();
-         if(dirIterator0.fileInfo().baseName()!="")
-
-
-         fileList0 << dirIterator0.fileInfo();
-
-     }
-
-
-  //  for(int i = fileList0.count()-1 ; i >=0; i--)
-      for(int i = 0; i <fileList0.size(); i++)
-     {
-
-                   //directories << fileList0.at(i).absolutePath()+"/"+fileList0.at(i).completeBaseName();
-                  QString nameGroup=fileList0.at(i).completeBaseName();
-                  qDebug()<<"j'entre dans le groupe "+ nameGroup;
-                  QDirIterator dirIterator1(namedir+"/Cubicle/"+nameGroup,QDir::NoDotAndDotDot|QDir::Files,QDirIterator::Subdirectories);
-
-                    //On récupère les fichiers  grâce à l'itérateur
-                      QFileInfoList fileList1;
-
-                      while(dirIterator1.hasNext())
-
-                     {
-
-                          if(dirIterator1.fileInfo().baseName()!="")
-                            fileList1 << dirIterator1.fileInfo();
-                          qDebug()<<"on lit le fichier "+dirIterator1.fileInfo().baseName();
-                            dirIterator1.next();
-                      }
-                      QString t;
-                      t=QString::number(fileList0.size());
-                      qDebug()<<"la taille de la liste des motifs est "+t;
-
-                 //for(int j = fileList1.count()-1 ;j >= 0; j--)
-                      for(int j = 0 ;j <fileList1.size(); j++)
-
-
-                 {
-                    //directories << fileList.at(i).absolutePath()+"/"+fileList.at(i).completeBaseName();
-                     QDir dir(fileList1.at(i).absolutePath());
-                    QString nameMotif=fileList1.at(i).completeBaseName();
-                     QString indice;
-                    if (j<10){
-                        indice = "0"+QString::number(i)+"_";
-                        }else {
-                         indice = QString::number(i)+"_";
-                         }
-
-                        QString nameRest ;
-                        if (nameMotif[2]=='_')
-                          nameRest = nameMotif.mid(3);
-                        else {
-                         nameRest = nameMotif;}
-                       QString newNameMotif=indice+nameRest;
-                       QString pathTotalOld = fileList1.at(i).absolutePath()+"/"+nameMotif;
-                       QString pathTotalNew = fileList1.at(i).absolutePath()+"/"+newNameMotif;
-                       qDebug ()<<"l'ancien path du fichier est "+pathTotalOld;
-                       qDebug ()<<"le nouveau path du fichier est "+ pathTotalNew;
-                       dir.rename(pathTotalOld,pathTotalNew);
-                       //qDebug()<<"on lit le fichier "+fileList1.at(i).completeBaseName();
-                       //tree();
-                    }
-        }
-}
 
 
 //extern "C" int* parser_file(const char* name);
