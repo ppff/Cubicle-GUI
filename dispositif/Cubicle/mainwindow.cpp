@@ -82,7 +82,9 @@ void MainWindow::ouvrir_explorer(){
       return;
   }
   else {
-      namedir=tmpdir;
+      QDir dir(tmpdir);
+      namedir=dir.absoluteFilePath(tmpdir);
+      qDebug()<<" le chemin estttttt "+namedir;
   }
 
   QDir dir(namedir);
@@ -666,6 +668,10 @@ void MainWindow::xCopy2 (const QString &sourcePath, const QString &destPath, con
 
     QString sourceObjectPath = sourcePath+"/"+name;
     QString destObjectPath = destPath +"/"+name;
+    QDir dir(destObjectPath);
+    if (dir.exists()) {
+        removeDir(destObjectPath) ;
+    }
     QFileInfo fi (sourceObjectPath);
 
     if (fi.isDir ()) {
@@ -763,6 +769,7 @@ void MainWindow::removeDir(const QString& PathDir)
      qDebug()<<"je supprime le dossier "+StrDir;
      dir.rmdir(StrDir);
   }
+  dir.rmdir(PathDir); // on supprime finalement le dossier Cubicle.
 }
 
 
