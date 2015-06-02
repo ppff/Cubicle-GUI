@@ -220,7 +220,6 @@ void MainWindow::tree(){
             model->setSorting(QDir::DirsFirst | QDir::IgnoreCase | QDir::Name);
 
     ui->treeView->setModel(model);
-    //qDebug() << "le namedir est" + namedir;
     QModelIndex index=model->index(s+"/workspace");
      ui->treeView->setRootIndex(index);
     // ui->treeView->setExpanded(new_index,true);
@@ -905,6 +904,7 @@ void MainWindow::xCopy2 (const QString &sourcePath, const QString &destPath, con
     QDir dir(destObjectPath);
     if (dir.exists()) {
         removeDir(destObjectPath) ;
+        qDebug()<<"j'ai supprimé le dossier "+destObjectPath;
     }
     QFileInfo fi (sourceObjectPath);
 
@@ -936,6 +936,8 @@ void MainWindow::xCopy2 (const QString &sourcePath, const QString &destPath, con
 
 void MainWindow::removeDir(const QString& PathDir)
 {
+
+
  //Création de l'itérateur, on précise qu'on veut tous les sous-dossiers
  QDirIterator dirIterator(PathDir, QDirIterator::Subdirectories);
 
