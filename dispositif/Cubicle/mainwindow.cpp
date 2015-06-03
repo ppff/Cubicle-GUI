@@ -39,7 +39,10 @@ MainWindow::MainWindow(QWidget *parent) :
     ui->actionRaise->setDisabled(true);
     ui->actionLower->setDisabled(true);
     ui->actionNew_Group->setDisabled(true);
-
+    ui->pushButton->setDisabled(true);
+    ui->pushButton_2->setDisabled(true);
+    ui->pushButton_3->setDisabled(true);
+    ui->pushButton_4->setDisabled(true);
 
     connect(ui->actionNew_project,SIGNAL(triggered(bool)),this,SLOT(new_project()));
     connect(ui->actionOpen_directory,SIGNAL(triggered(bool)),this,SLOT(ouvrir_explorer()));
@@ -83,6 +86,14 @@ void MainWindow::desactiveSelectPlan(){
 
 //ouvre le répertoire de travail
 void MainWindow::ouvrir_explorer(){
+   if (!saved) {
+        int enregistrer=QMessageBox::question(this, "Quit", " Do you want to save the current project ?");
+        if (enregistrer==QMessageBox::Yes){
+            controlSave();
+
+        }
+
+    }
 
   desactiveSelectPlan();
   QString  tmpdir=QFileDialog::getExistingDirectory(this, tr("Open Directory"), "/home");
@@ -97,7 +108,7 @@ void MainWindow::ouvrir_explorer(){
       QString nomDossier=f.baseName();
       qDebug()<<" le nom duu dossier est "+nomDossier;
       if (nomDossier!="Cubicle") {
-        QMessageBox::information(this,tr("warning"),"cannot open this directory, please choose the file Cubicle");
+        QMessageBox::information(this,tr("warning"),"cannot open this directory, please choose the folder Cubicle");
         ouvrir_explorer();
       }
       qDebug()<<" le chemin estttttt "+namedir;
