@@ -72,8 +72,6 @@ public:
     void setEmpMotif(QString nom);
     QString getEmplMotif();
     void deletePlanLed(int i);
-    void setOrientationPlan(int i);
-    int getOrientationPlan();
     int getNumeroPlan();
     void setNumeroPlan(int i);
     void desactivePlan();
@@ -81,7 +79,7 @@ public:
     void contextMenuEvent(QContextMenuEvent *event);
     void xCopy2 (const QString &sourcePath, const QString &destPath, const QString &name);
     void removeDir(const QString& dirPath) ;
-    void desactiveSelectPlan();
+    void desactiveSelectPlan(bool b);
 
 
     ~MainWindow();
