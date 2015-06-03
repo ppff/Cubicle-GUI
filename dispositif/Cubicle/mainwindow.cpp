@@ -148,7 +148,7 @@ void MainWindow::ouvrir_explorer(){
 }
 
 void MainWindow::contextMenuEvent(QContextMenuEvent *event){
-    if(dirOpen){
+    if(dirOpen!=0){
         contextMenu = new QMenu(ui->treeView);
         QModelIndex index=ui->treeView->currentIndex();
         if (model->fileInfo(index).isDir()) {
@@ -367,7 +367,7 @@ void MainWindow::new_project(){
        model->mkdir(new_index,"Cubicle");
       namedir="";
       saved=false;
-    dirOpen=true;
+    dirOpen=2;
     this->setWindowTitle("Cubicle") ;
             tree();
             ui->actionSave_as->setDisabled(false);
