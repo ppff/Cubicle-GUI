@@ -73,9 +73,7 @@ void MainWindow::ouvrir_explorer(){
         int enregistrer=QMessageBox::question(this, "Quit", " Do you want to save the current project ?");
         if (enregistrer==QMessageBox::Yes){
             controlSave();
-
         }
-
     }
 
   desactiveSelectPlan();
@@ -120,6 +118,7 @@ void MainWindow::ouvrir_explorer(){
   tree();
   dirOpen=1;
   saved=false;
+  emplMotif="";
   ui->actionSave_as->setDisabled(false);
   this->c=Cube();
   deletePlanLed(1);
@@ -351,6 +350,7 @@ void MainWindow::new_project(){
       namedir="";
       saved=false;
     dirOpen=2;
+    emplMotif="";
     this->setWindowTitle("Cubicle") ;
             tree();
             ui->actionSave_as->setDisabled(false);
@@ -1112,9 +1112,6 @@ void MainWindow::reordonneGroup(){
          QString pathTotalNew = path+"/"+newNameGroup;
           dir.rename(pathTotalOld,pathTotalNew);
          }
-
-
-
      }
 
 
@@ -1141,11 +1138,15 @@ void MainWindow::doubleClick(){
          QString name=model->fileInfo(index).absoluteFilePath();
          this->currentPattern=model->fileInfo(index).baseName();
          if(name.compare(this->getEmplMotif())!=0){
+
              GestionFichier ges;
-             ges.ouvrir(this->emplMotif,this->c);
+             //enregister les modifications du dernier motif que si on est en train de modifier un projet
+             if(this->emplMotif!=""){
+                  ges.ouvrir(this->emplMotif,this->c);
+             }
+
              this->setEmpMotif(name);
-             qDebug ()<< "nouveau motif "+this->getEmplMotif();
-             qDebug ()<< "nom pattern "+currentPattern;
+
              this->c=Cube();
              deletePlanLed(1);
              desactivePlan();
