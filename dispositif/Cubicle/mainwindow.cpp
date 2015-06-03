@@ -148,7 +148,7 @@ void MainWindow::ouvrir_explorer(){
 }
 
 void MainWindow::contextMenuEvent(QContextMenuEvent *event){
-    if(dirOpen!=0){
+    if(dirOpen!=2){
         contextMenu = new QMenu(ui->treeView);
         QModelIndex index=ui->treeView->currentIndex();
         if (model->fileInfo(index).isDir()) {
@@ -412,6 +412,7 @@ void MainWindow::on_actionNew_Group_triggered()
   ui->treeView->selectionModel()->select(new_index,
          QItemSelectionModel::ClearAndSelect | QItemSelectionModel::Rows);
   ui->treeView->edit(new_index);
+  dirOpen=1;
 
 
 }
