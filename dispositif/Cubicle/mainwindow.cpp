@@ -1171,6 +1171,7 @@ void MainWindow::doubleClick(){
                            this->c.updateCube(p,u.y());
                            liste_vecteur3D.append(u);
                            this->ui->widget->setListPoints(liste_vecteur3D);
+                           affichePlanLed("00");
                          }
                      }
                  }
