@@ -38,6 +38,7 @@ MainWindow::MainWindow(QWidget *parent) :
     ui->actionSave_as->setDisabled(true);
     ui->actionRaise->setDisabled(true);
     ui->actionLower->setDisabled(true);
+    ui->actionNew_Group->setDisabled(true);
 
     //désactiver la sélection des plans
     ui->plane1->setDisabled(true);
@@ -127,6 +128,7 @@ void MainWindow::ouvrir_explorer(){
   this->liste_vecteur3D.clear();
   this->ui->widget->setListPoints(liste_vecteur3D);
   ui->widget->setListPlan(liste_vecteur3D);
+  ui->actionNew_Group->setDisabled(true);
 }
 
 void MainWindow::contextMenuEvent(QContextMenuEvent *event){
@@ -349,6 +351,7 @@ void MainWindow::new_project(){
             this->liste_vecteur3D.clear();
             this->ui->widget->setListPoints(liste_vecteur3D);
             ui->widget->setListPlan(liste_vecteur3D);
+            ui->actionNew_Group->setDisabled(true);
 
 }
 
