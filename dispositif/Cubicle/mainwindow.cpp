@@ -858,8 +858,10 @@ void MainWindow::controlDelete(){
     }
 }
 void MainWindow::controlSave(){
+    //enregistrer les modifications du dernier motifs
     GestionFichier ges;
     ges.ouvrir(this->emplMotif,this->c);
+    //si on n'as pas fait saveAs on doit choisir un répertoir
     if (namedir=="") {
         controlSaveAs();
     }
