@@ -921,9 +921,9 @@ void MainWindow::controlSave(){
     GestionFichier ges;
     ges.ouvrir(this->emplMotif,this->c);
     if (namedir=="") {
-        QMessageBox msgBox;
-        msgBox.setText("Your pattern "+currentPattern +" has been succesfully saved");
-        msgBox.exec();
+       /* QMessageBox msgBox;
+        msgBox.setText("Please select a valid directory");
+        msgBox.exec();*/
         controlSaveAs();
     }
     else {
