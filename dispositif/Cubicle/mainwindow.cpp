@@ -49,6 +49,11 @@ MainWindow::MainWindow(QWidget *parent) :
            ui->plane7->setDisabled(true);
             ui->plane8->setDisabled(true);
             ui->plane9->setDisabled(true);
+
+            ui->pushButton->setDisabled(true);
+            ui->pushButton_2->setDisabled(true);
+            ui->pushButton_3->setDisabled(true);
+            ui->pushButton_4->setDisabled(true);
     connect(ui->actionNew_project,SIGNAL(triggered(bool)),this,SLOT(new_project()));
     connect(ui->actionOpen_directory,SIGNAL(triggered(bool)),this,SLOT(ouvrir_explorer()));
     connect(ui->actionCopy,SIGNAL(triggered(bool)),this,SLOT(copier()));
@@ -258,6 +263,7 @@ void MainWindow::tree(){
     for(int i=1;i<4;i++){
         ui->treeView->hideColumn(i);
     }
+    ui->treeView->setEditTriggers(QAbstractItemView::SelectedClicked);
     ui->treeView->resizeColumnToContents(0);
     ui->actionNew_Pattern->setEnabled(true);
     ui->actionDelete_pattern->setEnabled(true);
@@ -268,6 +274,11 @@ void MainWindow::tree(){
     ui->actionRaise->setDisabled(false);
     ui->actionLower->setDisabled(false);
     ui->actionNew_Group->setDisabled(false);
+
+    ui->pushButton->setDisabled(false);
+    ui->pushButton_2->setDisabled(false);
+    ui->pushButton_3->setDisabled(false);
+    ui->pushButton_4->setDisabled(false);
 
 
 }
@@ -1017,6 +1028,7 @@ void MainWindow::removeDir(const QString& PathDir)
 void MainWindow::reordonneGroup(){
          QModelIndex index = ui->treeView->currentIndex();
          if (model->fileInfo(index).isDir()){
+
         int i= index.row();
         qDebug() << "le rang du groupe est"+ QString::number(i);
          QString nameGroup = model->fileName(index);
