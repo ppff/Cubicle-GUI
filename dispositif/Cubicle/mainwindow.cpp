@@ -39,16 +39,7 @@ MainWindow::MainWindow(QWidget *parent) :
     ui->actionRaise->setDisabled(true);
     ui->actionLower->setDisabled(true);
 
-    //désactiver la sélection des plans
-    ui->plane1->setDisabled(true);
-     ui->plane2->setDisabled(true);
-      ui->plane3->setDisabled(true);
-       ui->plane4->setDisabled(true);
-         ui->plane5->setDisabled(true);
-          ui->plane6->setDisabled(true);
-           ui->plane7->setDisabled(true);
-            ui->plane8->setDisabled(true);
-            ui->plane9->setDisabled(true);
+
     connect(ui->actionNew_project,SIGNAL(triggered(bool)),this,SLOT(new_project()));
     connect(ui->actionOpen_directory,SIGNAL(triggered(bool)),this,SLOT(ouvrir_explorer()));
     connect(ui->actionCopy,SIGNAL(triggered(bool)),this,SLOT(copier()));
@@ -64,7 +55,7 @@ MainWindow::MainWindow(QWidget *parent) :
     connect(ui->actionSave_as,SIGNAL(triggered(bool)),this,SLOT(controlSaveAs()));
 
      //connect(ui->treeView,SIGNAL(clicked(QModelIndex)),this,SLOT(reordonneGroup()));
-
+    desactiveSelectPlan();
 
     this->setWindowTitle("Cubicle");
     deletePlanLed(0);
@@ -74,8 +65,23 @@ MainWindow::MainWindow(QWidget *parent) :
    // reordonneGroup();
 }
 
+void MainWindow::desactiveSelectPlan(){
+    //désactiver la sélection des plans
+    ui->plane1->setDisabled(true);
+     ui->plane2->setDisabled(true);
+      ui->plane3->setDisabled(true);
+       ui->plane4->setDisabled(true);
+         ui->plane5->setDisabled(true);
+          ui->plane6->setDisabled(true);
+           ui->plane7->setDisabled(true);
+            ui->plane8->setDisabled(true);
+            ui->plane9->setDisabled(true);
+}
+
 //ouvre le répertoire de travail
 void MainWindow::ouvrir_explorer(){
+
+  desactiveSelectPlan();
   QString  tmpdir=QFileDialog::getExistingDirectory(this, tr("Open Directory"), "/home");
   if (tmpdir=="") {
       qDebug()<<tmpdir;
@@ -295,7 +301,7 @@ void MainWindow::ajouter_motif(){
     }
 }
 void MainWindow::new_project(){
-
+    desactiveSelectPlan();
      model = new QDirModel(this);
      model->setReadOnly(false);
      model->setSorting(QDir::DirsFirst | QDir::IgnoreCase | QDir::Name);
@@ -848,8 +854,6 @@ void MainWindow::controlSave(){
     GestionFichier ges;
     ges.ouvrir(this->emplMotif,this->c);
     if (namedir=="") {
-        GestionFichier ges;
-        ges.ouvrir(this->emplMotif,this->c);
         QMessageBox msgBox;
         msgBox.setText("Your pattern "+currentPattern +" has been succesfully saved");
         msgBox.exec();
