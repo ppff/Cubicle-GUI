@@ -100,7 +100,7 @@ void MainWindow::ouvrir_explorer(){
       QString nomDossier=f.baseName();
       qDebug()<<" le nom duu dossier est "+nomDossier;
       if (nomDossier!="Cubicle") {
-        QMessageBox::information(this,tr("warning"),"cannot open this directory, please choose the file Cubicle");
+        QMessageBox::information(this,tr("warning"),"cannot open this directory, please choose the folder Cubicle");
         ouvrir_explorer();
       }
       qDebug()<<" le chemin estttttt "+namedir;
