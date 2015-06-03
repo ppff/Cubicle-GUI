@@ -39,7 +39,10 @@ MainWindow::MainWindow(QWidget *parent) :
     ui->actionRaise->setDisabled(true);
     ui->actionLower->setDisabled(true);
     ui->actionNew_Group->setDisabled(true);
-
+    ui->pushButton->setDisabled(true);
+    ui->pushButton_2->setDisabled(true);
+    ui->pushButton_3->setDisabled(true);
+    ui->pushButton_4->setDisabled(true);
 
     connect(ui->actionNew_project,SIGNAL(triggered(bool)),this,SLOT(new_project()));
     connect(ui->actionOpen_directory,SIGNAL(triggered(bool)),this,SLOT(ouvrir_explorer()));
