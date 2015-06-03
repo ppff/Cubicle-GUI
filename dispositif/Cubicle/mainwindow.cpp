@@ -939,7 +939,7 @@ void MainWindow::controlSave(){
 }
 void MainWindow::controlSaveAs(){
     qDebug()<<"je suis dans controlSaveAs";
-    QString destPath=QFileDialog::getExistingDirectory(this, tr("Open Directory"),"/home");
+    QString destPath=QFileDialog::getExistingDirectory(this, tr("Save as"),"/home");
     if (destPath=="") {qDebug()<<destPath;
         return;}
     qDebug()<<"l'origine est "+namedir;
