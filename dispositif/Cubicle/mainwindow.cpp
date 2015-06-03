@@ -212,10 +212,11 @@ void MainWindow::coller(){
             if (model->fileInfo(index).isDir()) {
                 QString dir=model->fileInfo(index).absolutePath();
                 nameGroup=model->fileInfo(index).baseName();
-                if((dir+'/'+nameGroup)!=namedir){
+                // on vérifie qu'on ne colle pas dans Cubicle(répertoire des groupes)
+                if((dir+'/'+nameGroup)!=s+"/workspace/Cubicle"){
                     QFile file(paste_element);
                      qDebug()<<"je vais coller  :"+dir+"/"+nameGroup+"/"+nom_copie+"_copie.txt";
-                    bool valid = file.copy(dir+"/"+nameGroup+"/"+nom_copie+"_copie.txt");
+                    bool valid = file.copy(dir+"/"+nameGroup+"/"+nom_copie+".txt");
                     if (copierCouper==1){
                         QFile file(paste_element);
                         file.remove();
