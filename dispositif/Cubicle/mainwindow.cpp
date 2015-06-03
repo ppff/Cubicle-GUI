@@ -40,16 +40,7 @@ MainWindow::MainWindow(QWidget *parent) :
     ui->actionLower->setDisabled(true);
     ui->actionNew_Group->setDisabled(true);
 
-    //désactiver la sélection des plans
-    ui->plane1->setDisabled(true);
-     ui->plane2->setDisabled(true);
-      ui->plane3->setDisabled(true);
-       ui->plane4->setDisabled(true);
-         ui->plane5->setDisabled(true);
-          ui->plane6->setDisabled(true);
-           ui->plane7->setDisabled(true);
-            ui->plane8->setDisabled(true);
-            ui->plane9->setDisabled(true);
+
     connect(ui->actionNew_project,SIGNAL(triggered(bool)),this,SLOT(new_project()));
     connect(ui->actionOpen_directory,SIGNAL(triggered(bool)),this,SLOT(ouvrir_explorer()));
     connect(ui->actionCopy,SIGNAL(triggered(bool)),this,SLOT(copier()));
@@ -65,6 +56,10 @@ MainWindow::MainWindow(QWidget *parent) :
     connect(ui->actionSave_as,SIGNAL(triggered(bool)),this,SLOT(controlSaveAs()));
 
 
+     //connect(ui->treeView,SIGNAL(clicked(QModelIndex)),this,SLOT(reordonneGroup()));
+    desactiveSelectPlan();
+
+
     this->setWindowTitle("Cubicle");
     deletePlanLed(0);
     desactivePlan(0);
@@ -73,8 +68,23 @@ MainWindow::MainWindow(QWidget *parent) :
 
 }
 
+void MainWindow::desactiveSelectPlan(){
+    //désactiver la sélection des plans
+    ui->plane1->setDisabled(true);
+     ui->plane2->setDisabled(true);
+      ui->plane3->setDisabled(true);
+       ui->plane4->setDisabled(true);
+         ui->plane5->setDisabled(true);
+          ui->plane6->setDisabled(true);
+           ui->plane7->setDisabled(true);
+            ui->plane8->setDisabled(true);
+            ui->plane9->setDisabled(true);
+}
+
 //ouvre le répertoire de travail
 void MainWindow::ouvrir_explorer(){
+
+  desactiveSelectPlan();
   QString  tmpdir=QFileDialog::getExistingDirectory(this, tr("Open Directory"), "/home");
   if (tmpdir=="") {
       qDebug()<<tmpdir;
@@ -206,10 +216,11 @@ void MainWindow::coller(){
             if (model->fileInfo(index).isDir()) {
                 QString dir=model->fileInfo(index).absolutePath();
                 nameGroup=model->fileInfo(index).baseName();
-                if((dir+'/'+nameGroup)!=namedir){
+                // on vérifie qu'on ne colle pas dans Cubicle(répertoire des groupes)
+                if((dir+'/'+nameGroup)!=s+"/workspace/Cubicle"){
                     QFile file(paste_element);
                      qDebug()<<"je vais coller  :"+dir+"/"+nameGroup+"/"+nom_copie+"_copie.txt";
-                    bool valid = file.copy(dir+"/"+nameGroup+"/"+nom_copie+"_copie.txt");
+                    bool valid = file.copy(dir+"/"+nameGroup+"/"+nom_copie+".txt");
                     if (copierCouper==1){
                         QFile file(paste_element);
                         file.remove();
@@ -260,6 +271,10 @@ void MainWindow::tree(){
     for(int i=1;i<4;i++){
         ui->treeView->hideColumn(i);
     }
+
+    connect(model,SIGNAL(dataChanged(QModelIndex,QModelIndex,QVector<int>)),this,SLOT(reordonneGroup()));
+
+    ui->treeView->setEditTriggers(QAbstractItemView::SelectedClicked);
     ui->treeView->resizeColumnToContents(0);
     ui->actionNew_Pattern->setEnabled(true);
     ui->actionDelete_pattern->setEnabled(true);
@@ -270,6 +285,11 @@ void MainWindow::tree(){
     ui->actionRaise->setDisabled(false);
     ui->actionLower->setDisabled(false);
     ui->actionNew_Group->setDisabled(false);
+
+    ui->pushButton->setDisabled(false);
+    ui->pushButton_2->setDisabled(false);
+    ui->pushButton_3->setDisabled(false);
+    ui->pushButton_4->setDisabled(false);
 
 
 }
@@ -321,6 +341,7 @@ void MainWindow::new_project(){
         }
 
     }
+    desactiveSelectPlan();
 
      model = new QDirModel(this);
      model->setReadOnly(false);
@@ -880,9 +901,13 @@ void MainWindow::controlSave(){
     GestionFichier ges;
     ges.ouvrir(this->emplMotif,this->c);
     if (namedir=="") {
+        QMessageBox msgBox;
+        msgBox.setText("Your pattern "+currentPattern +" has been succesfully saved");
+        msgBox.exec();
         controlSaveAs();
     }
     else {
+
         removeDir(namedir+"/Cubicle");
         xCopy2(s+"/workspace",namedir,"Cubicle");
         saved=true;
@@ -970,7 +995,45 @@ void MainWindow::xCopy2 (const QString &sourcePath, const QString &destPath, con
 
 
 }
+/*
+void MainWindow::controlSaveAs(){
+    qDebug()<<"je suis dans controlSaveAs";
+    QString destPath=QFileDialog::getExistingDirectory(this, tr("Open Directory"),
 
+                                                   "/home"
+                                               );
+
+    if (destPath=="") {qDebug()<<destPath;
+        return;}
+    namedir= destPath;
+    //QString originPath=namedir;
+    qDebug()<<"l'origine est "+namedir;
+    qDebug()<<"la destination est"+destPath;
+    QDir dir(destPath+"/Cubicle");
+    if (dir.exists()) {
+
+        int remplacer=QMessageBox::question(this, "Exist", "Project Cubicle already exists in this directory, do you want to replace it ?");
+        if (remplacer==QMessageBox::No){
+            controlSaveAs();
+        }
+        else {
+            controlSave();
+        }
+
+    }
+    else {
+    xCopy2(s+"/workspace",destPath,"Cubicle");
+    saved=true;
+    namedir= destPath+"/Cubicle";
+    qDebug()<< "le nouveau path est" + namedir;
+    this->setWindowTitle("Cubicle["+destPath+"/Cubicle"+"]") ;
+    QMessageBox msgBox;
+    msgBox.setText("Your project Cubicle has been succesfully saved");
+    msgBox.exec();
+    }
+
+}
+*/
 void MainWindow::removeDir(const QString& PathDir)
 {
 
@@ -1028,6 +1091,7 @@ void MainWindow::removeDir(const QString& PathDir)
 void MainWindow::reordonneGroup(){
          QModelIndex index = ui->treeView->currentIndex();
          if (model->fileInfo(index).isDir()){
+
         int i= index.row();
         qDebug() << "le rang du groupe est"+ QString::number(i);
          QString nameGroup = model->fileName(index);
