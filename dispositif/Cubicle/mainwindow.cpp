@@ -313,6 +313,14 @@ void MainWindow::ajouter_motif(){
     }
 }
 void MainWindow::new_project(){
+    if (!saved) {
+        int enregistrer=QMessageBox::question(this, "Quit", " Do you want to save the current project ?");
+        if (enregistrer==QMessageBox::Yes){
+            controlSave();
+
+        }
+
+    }
 
      model = new QDirModel(this);
      model->setReadOnly(false);
