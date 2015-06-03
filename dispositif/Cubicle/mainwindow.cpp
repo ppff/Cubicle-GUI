@@ -83,6 +83,14 @@ void MainWindow::desactiveSelectPlan(){
 
 //ouvre le répertoire de travail
 void MainWindow::ouvrir_explorer(){
+   if (!saved) {
+        int enregistrer=QMessageBox::question(this, "Quit", " Do you want to save the current project ?");
+        if (enregistrer==QMessageBox::Yes){
+            controlSave();
+
+        }
+
+    }
 
   desactiveSelectPlan();
   QString  tmpdir=QFileDialog::getExistingDirectory(this, tr("Open Directory"), "/home");
