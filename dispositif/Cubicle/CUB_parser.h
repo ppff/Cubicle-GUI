@@ -14,7 +14,7 @@
 #include <stdlib.h>
 #include <stdio.h>
 #include "applications/crystal_structure/CUB_LED_list.h"
-#include "fatfs.h"
+/*#include "fatfs.h"
 
 #define LIST_TYPE CUB_LED_list_t *l
 #define FOPEN(FILENAME) FIL *file = NULL;\
@@ -27,4 +27,4 @@ CUB_LED_list_add(l, &led)
 
 int CUB_parse_file(char *filename, LIST_TYPE);
 #endif
-
+*/
