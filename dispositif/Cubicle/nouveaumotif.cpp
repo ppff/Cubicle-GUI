@@ -1,8 +1,4 @@
 #include "nouveaumotif.h"
-#include "QFile"
-#include "QTextStream"
-#include "QDebug"
-#include "QDir"
 
 
 //cette classe crée un nouveau fichier avec le nom du groupe, du nouveau motif et des 0 dans toutes les leds

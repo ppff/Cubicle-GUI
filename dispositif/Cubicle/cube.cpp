@@ -1,7 +1,5 @@
 #include "cube.h"
-#include <QString>
-#include <QList>
-#include "plan.h"
+
 
 Cube::Cube()
 {

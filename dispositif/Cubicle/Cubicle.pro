@@ -20,7 +20,8 @@ SOURCES += main.cpp\
     nouveaumotif.cpp\
     gestionfichier.cpp\
     simulation_cube.cpp \
-    parser.c
+    parser.c\
+    CUB_parser.c
 
 
 
@@ -33,7 +34,8 @@ HEADERS  += mainwindow.h\
     gestionfichier.h\
     simulation_cube.h\
     adapt.h \
-    parser.h
+    parser.h\
+    CUB_parser.h
 
 
 
@@ -59,7 +61,7 @@ win32 {
 
 CONFIG += c++11
 
-
+DEFINES += CUBICLE_SOFTWARE
 
 RESOURCES +=\
     ressource.qrc

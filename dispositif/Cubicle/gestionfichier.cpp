@@ -91,7 +91,7 @@ QList<QVector3D> GestionFichier:: parser(QString empl, QList<QVector3D> list){
 }
 
 
-
+/*
 
  QList<QVector3D> GestionFichier::tabToVector3D(int* tab){
      QList<QVector3D> listVect;
@@ -108,3 +108,4 @@ QList<QVector3D> GestionFichier:: parser(QString empl, QList<QVector3D> list){
     }
      return listVect;
  }
+*/

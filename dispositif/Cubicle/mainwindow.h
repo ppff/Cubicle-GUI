@@ -37,6 +37,23 @@
 #include <QFileInfoList>
 #include <QFileInfo>
 #include <QAbstractItemModel>
+#include "QTreeWidgetItem"
+#include"QInputDialog"
+#include "nouveaumotif.h"
+#include "QMenu"
+#include "QPoint"
+#include "QMessageBox"
+#include "QDirIterator"
+#include "QDebug"
+#include <strstream>
+#include <string>
+#include <sstream>
+#include <iostream>
+#include "gestionfichier.h"
+#include "cube.h"
+#include <QPushButton>
+#include <QPainter>
+#include <QPainterPath>
 
 namespace Ui {
 class MainWindow;
@@ -59,7 +76,7 @@ public:
     int getOrientationPlan();
     int getNumeroPlan();
     void setNumeroPlan(int i);
-    void desactivePlan(int i);
+    void desactivePlan();
     void connexion();
     void contextMenuEvent(QContextMenuEvent *event);
     void xCopy2 (const QString &sourcePath, const QString &destPath, const QString &name);

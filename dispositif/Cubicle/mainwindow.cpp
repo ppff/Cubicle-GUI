@@ -1,22 +1,5 @@
 #include "mainwindow.h"
 #include "ui_mainwindow.h"
-#include "QTreeWidgetItem"
-#include"QInputDialog"
-#include "nouveaumotif.h"
-#include "QMenu"
-#include "QPoint"
-#include "QMessageBox"
-#include "QDirIterator"
-#include "QDebug"
-#include <strstream>
-#include <string>
-#include <sstream>
-#include <iostream>
-#include "gestionfichier.h"
-#include "cube.h"
-#include <QPushButton>
-#include <QPainter>
-#include <QPainterPath>
 
 using namespace std;
 
@@ -65,7 +48,7 @@ MainWindow::MainWindow(QWidget *parent) :
 
     this->setWindowTitle("Cubicle");
     deletePlanLed(0);
-    desactivePlan(0);
+    desactivePlan();
     connexion();
     dirOpen=false;
 
@@ -140,7 +123,7 @@ void MainWindow::ouvrir_explorer(){
   ui->actionSave_as->setDisabled(false);
   this->c=Cube();
   deletePlanLed(1);
-  desactivePlan(1);
+  desactivePlan();
   this->liste_vecteur3D.clear();
   this->ui->widget->setListPoints(liste_vecteur3D);
   ui->widget->setListPlan(liste_vecteur3D);
@@ -374,7 +357,7 @@ void MainWindow::new_project(){
             saved=false;
             this->c=Cube();
             deletePlanLed(1);
-            desactivePlan(1);
+            desactivePlan();
             this->liste_vecteur3D.clear();
             this->ui->widget->setListPoints(liste_vecteur3D);
             ui->widget->setListPlan(liste_vecteur3D);
@@ -911,7 +894,7 @@ void MainWindow::controlDelete(){
                      QItemSelectionModel::ClearAndSelect | QItemSelectionModel::Rows);
 
                this->deletePlanLed(1);
-               this->desactivePlan(1);
+               this->desactivePlan();
            }
     }
     else {
@@ -1165,7 +1148,7 @@ void MainWindow::doubleClick(){
              qDebug ()<< "nom pattern "+currentPattern;
              this->c=Cube();
              deletePlanLed(1);
-             desactivePlan(1);
+             desactivePlan();
 
              this->liste_vecteur3D.clear();
              this->ui->widget->setListPoints(liste_vecteur3D);
@@ -1210,21 +1193,18 @@ void MainWindow::doubleClick(){
 }
 
 
-void MainWindow::desactivePlan(int niemefois){
-
+void MainWindow::desactivePlan(){
 
             //déselectionner les plans
             ui->plane1->setStyleSheet("QPushButton { background-color: rgba(240,240,240,255); }");
-             ui->plane2->setStyleSheet("QPushButton { background-color: rgba(240,240,240,255); }");
-              ui->plane3->setStyleSheet("QPushButton { background-color: rgba(240,240,240,255); }");
-               ui->plane4->setStyleSheet("QPushButton { background-color: rgba(240,240,240,255); }");
-                 ui->plane5->setStyleSheet("QPushButton { background-color: rgba(240,240,240,255); }");
-                  ui->plane6->setStyleSheet("QPushButton { background-color: rgba(240,240,240,255); }");
-                   ui->plane7->setStyleSheet("QPushButton { background-color: rgba(240,240,240,255); }");
-                    ui->plane8->setStyleSheet("QPushButton { background-color: rgba(240,240,240,255); }");
-                    ui->plane9->setStyleSheet("QPushButton { background-color: rgba(240,240,240,255); }");
-
-
+            ui->plane2->setStyleSheet("QPushButton { background-color: rgba(240,240,240,255); }");
+            ui->plane3->setStyleSheet("QPushButton { background-color: rgba(240,240,240,255); }");
+            ui->plane4->setStyleSheet("QPushButton { background-color: rgba(240,240,240,255); }");
+            ui->plane5->setStyleSheet("QPushButton { background-color: rgba(240,240,240,255); }");
+            ui->plane6->setStyleSheet("QPushButton { background-color: rgba(240,240,240,255); }");
+            ui->plane7->setStyleSheet("QPushButton { background-color: rgba(240,240,240,255); }");
+            ui->plane8->setStyleSheet("QPushButton { background-color: rgba(240,240,240,255); }");
+            ui->plane9->setStyleSheet("QPushButton { background-color: rgba(240,240,240,255); }");
 }
 
 

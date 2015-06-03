@@ -3,6 +3,8 @@
 #include "led.h"
 #include <QObject>
 #include<QVector>
+#include <iostream>
+#include <cstdlib>
 
 
 class Plan

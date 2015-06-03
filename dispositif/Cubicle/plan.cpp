@@ -1,7 +1,4 @@
 #include "plan.h"
-#include <iostream>
-#include <cstdlib>
-
 
 Plan::Plan(){
 
