@@ -430,15 +430,23 @@ void MainWindow::Monter(){
 
     if (index.isValid()){
            if (model->fileInfo(index).isDir()) {
+               nameGroup=model->fileInfo(index).baseName();
+
+               if (nameGroup=="Cubicle"){
+                   return;
+               }
+
                while(model->fileInfo(indexMoinsUn).isFile()){
                    indexMoinsUn=ui->treeView->indexAbove(indexMoinsUn);
                }
 
                 QString dir=model->fileInfo(index).absolutePath();
-                nameGroup=model->fileInfo(index).baseName();
+
+
                 nameGroupDessus=model->fileInfo(indexMoinsUn).baseName();
                 qDebug()<<nameGroup;
                 qDebug()<<dir;
+
 
                 QString numero = nameGroup.left(2);
                 QString nameRest = nameGroup.mid(3);
@@ -632,9 +640,12 @@ void MainWindow::Descendre(){
 
        if (index.isValid()){
            if (model->fileInfo(index).isDir()) {
-
-                QString dir=model->fileInfo(index).absolutePath();
                 nameGroup=model->fileInfo(index).baseName();
+                if (nameGroup=="Cubicle"){
+                    return;
+                }
+                QString dir=model->fileInfo(index).absolutePath();
+
                 QDir temp(dir);
                 QFileInfoList entries = temp.entryInfoList(QDir::NoDotAndDotDot | QDir::AllEntries);
                 int m=entries.size();
@@ -895,10 +906,7 @@ void MainWindow::controlSave(){
 }
 void MainWindow::controlSaveAs(){
     qDebug()<<"je suis dans controlSaveAs";
-    QString destPath=QFileDialog::getExistingDirectory(this, tr("Open Directory"),
-
-                                                   "/home"
-                                               );
+    QString destPath=QFileDialog::getExistingDirectory(this, tr("Open Directory"),"/home");
     if (destPath=="") {qDebug()<<destPath;
         return;}
     qDebug()<<"l'origine est "+namedir;
