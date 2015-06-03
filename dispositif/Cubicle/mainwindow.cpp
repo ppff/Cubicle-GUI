@@ -50,7 +50,7 @@ MainWindow::MainWindow(QWidget *parent) :
     deletePlanLed(0);
     desactivePlan();
     connexion();
-    dirOpen=false;
+    dirOpen=0;
 
 }
 
@@ -118,7 +118,7 @@ void MainWindow::ouvrir_explorer(){
   qDebug()<<"je crée cubicle pour la 1ere fois";
   xCopy2(namedir,s+"/workspace","Cubicle");
   tree();
-  dirOpen=true;
+  dirOpen=1;
   saved=false;
   ui->actionSave_as->setDisabled(false);
   this->c=Cube();
@@ -131,7 +131,7 @@ void MainWindow::ouvrir_explorer(){
 }
 
 void MainWindow::contextMenuEvent(QContextMenuEvent *event){
-    if(dirOpen!=2){
+    if(dirOpen==1){
         contextMenu = new QMenu(ui->treeView);
         QModelIndex index=ui->treeView->currentIndex();
         if (model->fileInfo(index).isDir()) {
@@ -1281,7 +1281,7 @@ void MainWindow::deletePlanLed(int nfois){
                   if(nfois==0){
                          buttons[num]=new QPushButton("",this);
                          buttons[num]->setGeometry(30, 30, 30, 30);
-                         buttons[num]->move(30*i+320, 30*j+90);
+                         buttons[num]->move(30*i+280, 30*j+90);
                   }
                  buttons[num]->hide();
              }
