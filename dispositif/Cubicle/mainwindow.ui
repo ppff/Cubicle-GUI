@@ -216,7 +216,7 @@
      <x>0</x>
      <y>0</y>
      <width>1200</width>
-     <height>25</height>
+     <height>22</height>
     </rect>
    </property>
    <property name="nativeMenuBar">
@@ -318,7 +318,7 @@
      <normaloff>:/Images/save.png</normaloff>:/Images/save.png</iconset>
    </property>
    <property name="text">
-    <string>save pattern</string>
+    <string>save </string>
    </property>
    <property name="shortcut">
     <string>Ctrl+S</string>
