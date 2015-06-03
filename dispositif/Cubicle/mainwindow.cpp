@@ -38,6 +38,7 @@ MainWindow::MainWindow(QWidget *parent) :
     ui->actionSave_as->setDisabled(true);
     ui->actionRaise->setDisabled(true);
     ui->actionLower->setDisabled(true);
+    ui->actionNew_Group->setDisabled(true);
 
 
     connect(ui->actionNew_project,SIGNAL(triggered(bool)),this,SLOT(new_project()));
@@ -54,15 +55,17 @@ MainWindow::MainWindow(QWidget *parent) :
     connect(ui->actionLower,SIGNAL(triggered(bool)),this,SLOT(Descendre()));
     connect(ui->actionSave_as,SIGNAL(triggered(bool)),this,SLOT(controlSaveAs()));
 
+
      //connect(ui->treeView,SIGNAL(clicked(QModelIndex)),this,SLOT(reordonneGroup()));
     desactiveSelectPlan();
+
 
     this->setWindowTitle("Cubicle");
     deletePlanLed(0);
     desactivePlan(0);
     connexion();
     dirOpen=false;
-   // reordonneGroup();
+
 }
 
 void MainWindow::desactiveSelectPlan(){
@@ -130,6 +133,7 @@ void MainWindow::ouvrir_explorer(){
   this->liste_vecteur3D.clear();
   this->ui->widget->setListPoints(liste_vecteur3D);
   ui->widget->setListPlan(liste_vecteur3D);
+  ui->actionNew_Group->setDisabled(true);
 }
 
 void MainWindow::contextMenuEvent(QContextMenuEvent *event){
@@ -220,12 +224,29 @@ void MainWindow::coller(){
                     if (copierCouper==1){
                         QFile file(paste_element);
                         file.remove();
+
+                        new_index=model->index(dir+"/"+nameGroup);
                         tree();
+                       index=model->index(dir+"/"+nameGroup+"/"+nom_copie+"_copie.txt");
+                        ui->treeView->setCurrentIndex(index);
+                        ui->treeView->selectionModel()->select(index,
+                        QItemSelectionModel::ClearAndSelect | QItemSelectionModel::Rows);
+                        ui->treeView->edit(index);
+
+
                     }
                     if (!valid){
                        qDebug()<<"coller impossible";
                    }
+
+                    new_index=model->index(dir+"/"+nameGroup);
                     tree();
+                   new_index=model->index(dir+"/"+nameGroup+"/"+nom_copie+"_copie.txt");
+                    ui->treeView->setCurrentIndex(new_index);
+                    ui->treeView->selectionModel()->select(new_index,
+                    QItemSelectionModel::ClearAndSelect | QItemSelectionModel::Rows);
+                    ui->treeView->edit(new_index);
+
                 }
           }
         }
@@ -239,15 +260,21 @@ void MainWindow::tree(){
     QModelIndex index=model->index(s+"/workspace");
     ui->treeView->setModel(model);
      ui->treeView->setRootIndex(index);
-     //ui->treeView->setExpanded(index,true);
-        connect(model,SIGNAL(dataChanged(QModelIndex,QModelIndex,QVector<int>)),this,SLOT(reordonneGroup()));
-
-  /*  ui->treeView->selectionModel()->select(new_index,
-       QItemSelectionModel::ClearAndSelect | QItemSelectionModel::Rows);*/
+     index= model->index(s+"/workspace/Cubicle");
+     ui->treeView->setExpanded(index,true);
+     ui->treeView->scrollTo(index);
+      connect(model,SIGNAL(dataChanged(QModelIndex,QModelIndex,QVector<int>)),this,SLOT(reordonneGroup()));
+     if(new_index.isValid()){
+     ui->treeView->setExpanded(new_index,true);
+     ui->treeView->scrollTo(new_index);
+     }
     for(int i=1;i<4;i++){
         ui->treeView->hideColumn(i);
     }
+
     connect(model,SIGNAL(dataChanged(QModelIndex,QModelIndex,QVector<int>)),this,SLOT(reordonneGroup()));
+
+    ui->treeView->setEditTriggers(QAbstractItemView::SelectedClicked);
     ui->treeView->resizeColumnToContents(0);
     ui->actionNew_Pattern->setEnabled(true);
     ui->actionDelete_pattern->setEnabled(true);
@@ -258,6 +285,11 @@ void MainWindow::tree(){
     ui->actionRaise->setDisabled(false);
     ui->actionLower->setDisabled(false);
     ui->actionNew_Group->setDisabled(false);
+
+    ui->pushButton->setDisabled(false);
+    ui->pushButton_2->setDisabled(false);
+    ui->pushButton_3->setDisabled(false);
+    ui->pushButton_4->setDisabled(false);
 
 
 }
@@ -281,10 +313,9 @@ void MainWindow::ajouter_motif(){
                     NouveauMotif m=NouveauMotif("New Pattern",dir+"/"+nameGroup);
 
 
-                    tree();
+
                     new_index =model->index(s+"/workspace/Cubicle"+"/"+ nameGroup );
-                            ui->treeView->expand(new_index);
-                             ui->treeView->scrollTo(new_index);
+                           tree();
                             new_index =model->index(m.getNameFile());
 
                              qDebug() << "le path du pattern ajoute est "+ m.getNameFile();
@@ -329,6 +360,7 @@ void MainWindow::new_project(){
             this->liste_vecteur3D.clear();
             this->ui->widget->setListPoints(liste_vecteur3D);
             ui->widget->setListPlan(liste_vecteur3D);
+            ui->actionNew_Group->setDisabled(true);
 
 }
 
@@ -355,9 +387,7 @@ void MainWindow::on_actionNew_Group_triggered()
        new_index =model->index(s+"/workspace/Cubicle");
     // qDebug()<<"le new index est " + s+"/workspace/Cubicle";
      new_index =model->index(s+"/workspace/Cubicle");
-  ui->treeView->expand(new_index);
-  ui->treeView->scrollTo(new_index);
-
+    tree();
   new_index =model->index(s+"/workspace/Cubicle/"+name);
   qDebug() << "le nouveau index pointe sur "+s+"/workspace/Cubicle/"+name;
   ui->treeView->setCurrentIndex(new_index);
@@ -838,11 +868,18 @@ void MainWindow::controlDelete(){
         dirOrFile=false;
 
          QString name=model->fileInfo(index).absoluteFilePath();
+         QString path=model->fileInfo(index).absolutePath();
+         qDebug() << "le path du fichier à supprimer est "+path;
          QFile file(name);
          int reponse = QMessageBox::question(this, "Quit", " Are you sure you want to delete this pattern ?");
            if (reponse == QMessageBox::Yes) {
                file.remove();
-               tree();
+              new_index=model->index(path);
+              tree();
+              ui->treeView->setCurrentIndex(new_index);
+              ui->treeView->selectionModel()->select(new_index,
+                     QItemSelectionModel::ClearAndSelect | QItemSelectionModel::Rows);
+
                this->deletePlanLed(1);
                this->desactivePlan(1);
            }
@@ -1045,6 +1082,7 @@ void MainWindow::removeDir(const QString& PathDir)
 void MainWindow::reordonneGroup(){
          QModelIndex index = ui->treeView->currentIndex();
          if (model->fileInfo(index).isDir()){
+
         int i= index.row();
         qDebug() << "le rang du groupe est"+ QString::number(i);
          QString nameGroup = model->fileName(index);
@@ -1064,6 +1102,7 @@ void MainWindow::reordonneGroup(){
          QString pathTotalNew = path+"/"+newNameGroup;
           dir.rename(pathTotalOld,pathTotalNew);
          }
+
 
 
      }
