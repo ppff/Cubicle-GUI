@@ -1,17 +1,17 @@
-#include "CUB_parser.h"
+/*#include "CUB_parser.h"
 
 int CUB_parse_file(char *filename, LIST_TYPE)
 {
 	FOPEN(filename);
 	char buff[64];
 
-	/* Version */
+    // Version
 	READ_LINE(buff);
 	uint32_t version = strtol(buff, NULL, 10);
 	if (version > MAX_SUPPORTED_VERSION)
 	return 1;
 
-	/* Vectors */
+    // Vectors
 	while ((READ_LINE(buff)) != NULL) {
 		char *p1 = buff;
 		char *p2 = NULL;
@@ -23,5 +23,5 @@ int CUB_parse_file(char *filename, LIST_TYPE)
 FCLOSE;
 return 0;
 }
-
+*/
     
