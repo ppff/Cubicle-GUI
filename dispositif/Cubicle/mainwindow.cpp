@@ -361,7 +361,7 @@ void MainWindow::new_project(){
             this->liste_vecteur3D.clear();
             this->ui->widget->setListPoints(liste_vecteur3D);
             ui->widget->setListPlan(liste_vecteur3D);
-            ui->actionNew_Group->setDisabled(true);
+            //ui->actionNew_Group->setDisabled(true);
 
 }
 
