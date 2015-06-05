@@ -140,9 +140,9 @@ void coller();
     void affichePlanLed(const QString & valeur);
     void afficheLed(const int i, const int j, const int etat);
     void controlLed(const QString & valeur);
-     void closeEvent(QCloseEvent *event);
-     void helpwindow();
-
+    void closeEvent(QCloseEvent *event);
+    void helpwindow();
+    void About();
 
 protected:
     QDir *aDir;

@@ -43,7 +43,7 @@ MainWindow::MainWindow(QWidget *parent) :
     connect(ui->actionLower,SIGNAL(triggered(bool)),this,SLOT(Descendre()));
     connect(ui->actionSave_as,SIGNAL(triggered(bool)),this,SLOT(controlSaveAs()));
     connect(ui->actionHelp,SIGNAL(triggered(bool)),this,SLOT(helpwindow()));
-
+    connect(ui->actionAbout_CUBICLE,SIGNAL(triggered(bool)),this,SLOT(About()));
 
      //connect(ui->treeView,SIGNAL(clicked(QModelIndex)),this,SLOT(reordonneGroup()));
     desactiveSelectPlan();
@@ -1438,9 +1438,15 @@ void MainWindow::on_pushButton_4_clicked()
 {
     on_actionNew_Group_triggered();
 }
+
 void MainWindow::helpwindow(){
 
-DialogHelp h;
-h.show();
-h.exec();
+    DialogHelp h;
+    h.show();
+    h.exec();
+}
+
+void MainWindow::About(){
+    DialogHelp h;
+    h.AboutUS();
 }

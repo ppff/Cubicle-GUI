@@ -19,11 +19,6 @@ DialogHelp::DialogHelp(QWidget *parent) :
     group = new QAction("Groups",this);
     ui->treeWidget->addAction(group);
     connect(ui->treeWidget,SIGNAL(clicked(QModelIndex)),this,SLOT(afficher_help()));
-
-    QAction* About;
-    About = new QAction("About CUBICLE",this);
-    ui->treeWidget->addAction(About);
-    connect(ui->treeWidget,SIGNAL(clicked(QModelIndex)),this,SLOT(AboutUS()));
 }
 
 DialogHelp::~DialogHelp()
@@ -32,7 +27,7 @@ DialogHelp::~DialogHelp()
 }
 
 void DialogHelp::AboutUS(){
-    QMessageBox::information(this,"About CUBICLE","CUBICLE 1.0.0 \n");
+    QMessageBox::information(this,"About CUBICLE","CUBICLE 1.0.0 \n Built on Mai 12 2015 at 12:12:12 \n Copyright 2015 CUBICLE. All rights reserved \n Contributors are : Wafa, Sarah, Zeineb, Wanwan, Jingbo");
 }
 
 void DialogHelp::afficher_help(){
