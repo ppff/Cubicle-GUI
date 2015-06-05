@@ -1,5 +1,5 @@
 #include "mainwindow.h"
-#include "ui_mainwindow.h"
+
 
 using namespace std;
 
@@ -30,6 +30,9 @@ MainWindow::MainWindow(QWidget *parent) :
     ui->pushButton_3->setDisabled(true);
     ui->pushButton_4->setDisabled(true);
 
+    this->ctlPlan=ControlPlan2D();
+    this->ctlCube=ControlCube3D();
+
     connect(ui->actionNew_project,SIGNAL(triggered(bool)),this,SLOT(new_project()));
     connect(ui->actionOpen_directory,SIGNAL(triggered(bool)),this,SLOT(ouvrir_explorer()));
     connect(ui->actionCopy,SIGNAL(triggered(bool)),this,SLOT(copier()));
@@ -52,7 +55,7 @@ MainWindow::MainWindow(QWidget *parent) :
 
     this->setWindowTitle("Cubicle");
     deletePlanLed(0);
-    desactivePlan();
+    ctlCube.desactivePlan(this->ui);
     connexion();
     dirOpen=0;
 
@@ -65,7 +68,7 @@ void MainWindow::savePattern(){
     GestionFichier ges;
     // ges.ouvrir(this->emplMotif,this->c);
     if(this->emplMotif!=""){
-         ges.ouvrir(this->emplMotif,this->c);
+         ges.ouvrir(this->emplMotif,this->cubeMotif);
     }
 
 }
@@ -123,9 +126,9 @@ void MainWindow::ouvrir_explorer(){
   saved=false;
   emplMotif="";
   ui->actionSave_as->setDisabled(false);
-  this->c=Cube();
+  this->cubeMotif=Cube();
   deletePlanLed(1);
-  desactivePlan();
+   ctlCube.desactivePlan(this->ui);
   this->liste_vecteur3D.clear();
   this->ui->widget->setListPoints(liste_vecteur3D);
   ui->widget->setListPlan(liste_vecteur3D);
@@ -358,9 +361,9 @@ void MainWindow::new_project(){
             tree();
             ui->actionSave_as->setDisabled(false);
             saved=false;
-            this->c=Cube();
+            this->cubeMotif=Cube();
             deletePlanLed(1);
-            desactivePlan();
+            ctlCube.desactivePlan(this->ui);
             this->liste_vecteur3D.clear();
             this->ui->widget->setListPoints(liste_vecteur3D);
             ui->widget->setListPlan(liste_vecteur3D);
@@ -866,7 +869,7 @@ void MainWindow::controlDelete(){
                      QItemSelectionModel::ClearAndSelect | QItemSelectionModel::Rows);
 
                this->deletePlanLed(1);
-               this->desactivePlan();
+               ctlCube.desactivePlan(this->ui);
            }
     }
     else {
@@ -876,7 +879,7 @@ void MainWindow::controlDelete(){
 void MainWindow::controlSave(){
     //enregistrer les modifications du dernier motifs
     GestionFichier ges;
-    ges.ouvrir(this->emplMotif,this->c);
+    ges.ouvrir(this->emplMotif,this->cubeMotif);
     //si on n'as pas fait saveAs on doit choisir un répertoir
     if (namedir=="") {
         controlSaveAs();
@@ -1051,9 +1054,9 @@ void MainWindow::doubleClick(){
 
              this->setEmpMotif(name);
 
-             this->c=Cube();
+             this->cubeMotif=Cube();
              deletePlanLed(1);
-             desactivePlan();
+              ctlCube.desactivePlan(this->ui);
 
              this->liste_vecteur3D.clear();
              this->ui->widget->setListPoints(liste_vecteur3D);
@@ -1067,18 +1070,18 @@ void MainWindow::doubleClick(){
                          this->ui->widget->setListPoints(l);
 
                          for (QVector3D u:l){
-                           Led l=this->c.getList1()->value(u.y()).getLed(fabs(8-u.z()),fabs(8-u.x()));
+                           Led l=this->cubeMotif.getList1()->value(u.y()).getLed(fabs(8-u.z()),fabs(8-u.x()));
                            l.modifierEtat();
-                           Plan p=c.getList1()->value(u.y());
+                           Plan p=this->cubeMotif.getList1()->value(u.y());
                            p.updatePlan(l,fabs(8-u.z()),fabs(8-u.x()),u.y());
-                           this->c.updateCube(p,u.y());
+                           this->cubeMotif.updateCube(p,u.y());
                            liste_vecteur3D.append(u);
                            this->ui->widget->setListPoints(liste_vecteur3D);
                          }
 
                      }
                      //séléctionner le 1er plan par défaut et l'afficher pour guider l'utilisateur
-                     affichePlanLed("00");
+                      this->setNumeroPlan(ctlCube.affichePlanLed("00",this->ui,this->buttons,this->cubeMotif,this->NumeroPlan));
                  }
     else {
         dirOrFile=true;
@@ -1102,7 +1105,8 @@ void MainWindow::desactiveSelectPlan(bool b){
     ui->plane9->setDisabled(b);
 }
 
-void MainWindow::desactivePlan(){
+//rendre les leds transparents
+/*void MainWindow::desactivePlan(){
 
             //déselectionner les plans
             ui->plane1->setStyleSheet("QPushButton { background-color: rgba(240,240,240,255); }");
@@ -1114,10 +1118,10 @@ void MainWindow::desactivePlan(){
             ui->plane7->setStyleSheet("QPushButton { background-color: rgba(240,240,240,255); }");
             ui->plane8->setStyleSheet("QPushButton { background-color: rgba(240,240,240,255); }");
             ui->plane9->setStyleSheet("QPushButton { background-color: rgba(240,240,240,255); }");
-}
+}*/
 
 
-void MainWindow::affichePlanLed(const QString & valeur){
+/*void MainWindow::affichePlanLed(const QString & valeur){
 
     ui->plane1->setStyleSheet("QPushButton { background-color: rgba(240,240,240,255); }");
      ui->plane2->setStyleSheet("QPushButton { background-color: rgba(240,240,240,255); }");
@@ -1128,6 +1132,8 @@ void MainWindow::affichePlanLed(const QString & valeur){
      ui->plane7->setStyleSheet("QPushButton { background-color: rgba(240,240,240,255); }");
      ui->plane8->setStyleSheet("QPushButton { background-color: rgba(240,240,240,255); }");
      ui->plane9->setStyleSheet("QPushButton { background-color: rgba(240,240,240,255); }");
+
+    desactivePlan();
 
     QString stnplan=valeur[1];
 
@@ -1166,7 +1172,7 @@ void MainWindow::affichePlanLed(const QString & valeur){
            buttons[num]->setVisible(true);
 
            Led l;
-           l=c.getList1()->value(this->NumeroPlan).getLed(j,i);
+           l=this->cubeMotif.getList1()->value(this->NumeroPlan).getLed(j,i);
 
            if(l.getEtat()==0){
                buttons[num]->setIcon(QIcon(":/icone/nvatomeblanc.png"));
@@ -1176,7 +1182,7 @@ void MainWindow::affichePlanLed(const QString & valeur){
            }
        }
     }
-}
+}*/
 
 void MainWindow::deletePlanLed(int nfois){
 
@@ -1196,19 +1202,26 @@ void MainWindow::deletePlanLed(int nfois){
              }
     }
 }
+void MainWindow::allume_led(const QString & valeur){
+    this->liste_vecteur3D=ctlPlan.controlLed(valeur,this->cubeMotif,this->NumeroPlan,this->liste_vecteur3D,this->ui,this->buttons);
+}
+void MainWindow::affiche_plan_Cube(const QString &valeur){
+    this->setNumeroPlan(ctlCube.affichePlanLed(valeur,this->ui,this->buttons,this->cubeMotif,this->NumeroPlan));
 
-void MainWindow::controlLed(const QString & valeur){
+}
+
+/*void MainWindow::controlLed(const QString & valeur){
    QString strlig=valeur[0];
    QString strcol=valeur[1];
    int lig=strlig.toInt(0,10);
    int col=strcol.toInt(0,10);
   Led l;
-  l= this->c.getList1()->value(NumeroPlan).getLed(lig,col);
+  l= this->cubeMotif.getList1()->value(NumeroPlan).getLed(lig,col);
   l.modifierEtat();
 
-  Plan p1=c.getList1()->value(this->NumeroPlan);
+  Plan p1=this->cubeMotif.getList1()->value(this->NumeroPlan);
   p1.updatePlan(l,lig,col,NumeroPlan);
-  c.updateCube(p1,NumeroPlan);
+  this->cubeMotif.updateCube(p1,NumeroPlan);
 
   QVector3D v;
   v=QVector3D(abs(8-col),NumeroPlan,abs(8-lig));
@@ -1217,7 +1230,7 @@ void MainWindow::controlLed(const QString & valeur){
   liste_vecteur3D.append(v);
   this->ui->widget->setListPoints(liste_vecteur3D);
 
-  if(this->c.getList1()->value(NumeroPlan).getLed(lig,col).getEtat()==1){
+  if(this->cubeMotif.getList1()->value(NumeroPlan).getLed(lig,col).getEtat()==1){
 
         liste_vecteur3D.append(v);
         this->ui->widget->setListPoints(liste_vecteur3D);
@@ -1228,12 +1241,13 @@ void MainWindow::controlLed(const QString & valeur){
       this->ui->widget->setListPoints(liste_vecteur3D);
   }
 
-  afficheLed(lig,col,l.getEtat());
+  this->ctlPlan.afficheLed(this->buttons,lig,col,l.getEtat());
+  //afficheLed(lig,col,l.getEtat());
 
 }
+*/
 
-
-void MainWindow:: afficheLed(const int i, const int j,const  int etat )
+/*void MainWindow:: afficheLed(const int i, const int j,const  int etat )
 {
        QString lig=QString::number(i);
        QString col=QString::number(j);
@@ -1248,7 +1262,7 @@ void MainWindow:: afficheLed(const int i, const int j,const  int etat )
     }
 
 }
-
+*/
 void MainWindow::connexion(){
 
     QSignalMapper *signalMapper = new QSignalMapper(this);
@@ -1272,7 +1286,7 @@ void MainWindow::connexion(){
         connect(ui->plane9, SIGNAL(clicked()), signalMapper, SLOT(map()));
         signalMapper->setMapping(ui->plane9, "08");
 
-    connect(signalMapper, SIGNAL(mapped(const QString &)), this, SLOT(affichePlanLed(const QString &)));
+    connect(signalMapper, SIGNAL(mapped(const QString &)), this, SLOT(affiche_plan_Cube(const QString &valeur)));
 
     QSignalMapper *signalMapper1 = new QSignalMapper(this);
     for (int i = 0; i < 9; i++) {
@@ -1286,7 +1300,7 @@ void MainWindow::connexion(){
             signalMapper1->setMapping(buttons[num], text);
         }
     }
-     connect(signalMapper1, SIGNAL(mapped(const QString &)), this, SLOT(controlLed(const QString &)));
+     connect(signalMapper1, SIGNAL(mapped(const QString &)), this, SLOT(allume_led(const QString &)));
 
 
 }
