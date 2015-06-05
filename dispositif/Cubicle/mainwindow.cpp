@@ -12,8 +12,20 @@ MainWindow::MainWindow(QWidget *parent) :
     tmpDir(QDir::tempPath()),
     ui(new Ui::MainWindow)
 {
-    ui->setupUi(this);
+    initUi();
+    initControleur();
+    connectAction();
+    //connect(ui->treeView,SIGNAL(clicked(QModelIndex)),this,SLOT(reordonneGroup()));
+    desactiveSelectPlan(true);
+    this->setWindowTitle("Cubicle");
+    deletePlanLed(0);
+    ctlCube.desactivePlan(this->ui);
+    connexion();
+    dirOpen=0;
+}
 
+void MainWindow::initUi(){
+    ui->setupUi(this);
     ui->actionCopy->setDisabled(true);
     ui->actionDelete_pattern->setDisabled(true);
     ui->actionNew_Group->setDisabled(true);
@@ -29,10 +41,16 @@ MainWindow::MainWindow(QWidget *parent) :
     ui->pushButton_2->setDisabled(true);
     ui->pushButton_3->setDisabled(true);
     ui->pushButton_4->setDisabled(true);
+}
 
+
+void MainWindow::initControleur() {
     this->ctlPlan=ControlPlan2D();
     this->ctlCube=ControlCube3D();
+}
 
+
+void MainWindow::connectAction(){
     connect(ui->actionNew_project,SIGNAL(triggered(bool)),this,SLOT(new_project()));
     connect(ui->actionOpen_directory,SIGNAL(triggered(bool)),this,SLOT(ouvrir_explorer()));
     connect(ui->actionCopy,SIGNAL(triggered(bool)),this,SLOT(copier()));
@@ -47,20 +65,7 @@ MainWindow::MainWindow(QWidget *parent) :
     connect(ui->actionLower,SIGNAL(triggered(bool)),this,SLOT(Descendre()));
     connect(ui->actionSave_as,SIGNAL(triggered(bool)),this,SLOT(controlSaveAs()));
     connect(ui->treeView,SIGNAL(pressed(QModelIndex)),this,SLOT(savePattern()));
-
-
-     //connect(ui->treeView,SIGNAL(clicked(QModelIndex)),this,SLOT(reordonneGroup()));
-    desactiveSelectPlan(true);
-
-
-    this->setWindowTitle("Cubicle");
-    deletePlanLed(0);
-    ctlCube.desactivePlan(this->ui);
-    connexion();
-    dirOpen=0;
-
 }
-
 
 
 void MainWindow::savePattern(){
@@ -1105,89 +1110,9 @@ void MainWindow::desactiveSelectPlan(bool b){
     ui->plane9->setDisabled(b);
 }
 
-//rendre les leds transparents
-/*void MainWindow::desactivePlan(){
-
-            //déselectionner les plans
-            ui->plane1->setStyleSheet("QPushButton { background-color: rgba(240,240,240,255); }");
-            ui->plane2->setStyleSheet("QPushButton { background-color: rgba(240,240,240,255); }");
-            ui->plane3->setStyleSheet("QPushButton { background-color: rgba(240,240,240,255); }");
-            ui->plane4->setStyleSheet("QPushButton { background-color: rgba(240,240,240,255); }");
-            ui->plane5->setStyleSheet("QPushButton { background-color: rgba(240,240,240,255); }");
-            ui->plane6->setStyleSheet("QPushButton { background-color: rgba(240,240,240,255); }");
-            ui->plane7->setStyleSheet("QPushButton { background-color: rgba(240,240,240,255); }");
-            ui->plane8->setStyleSheet("QPushButton { background-color: rgba(240,240,240,255); }");
-            ui->plane9->setStyleSheet("QPushButton { background-color: rgba(240,240,240,255); }");
-}*/
-
-
-/*void MainWindow::affichePlanLed(const QString & valeur){
-
-    ui->plane1->setStyleSheet("QPushButton { background-color: rgba(240,240,240,255); }");
-     ui->plane2->setStyleSheet("QPushButton { background-color: rgba(240,240,240,255); }");
-     ui->plane3->setStyleSheet("QPushButton { background-color: rgba(240,240,240,255); }");
-     ui->plane4->setStyleSheet("QPushButton { background-color: rgba(240,240,240,255); }");
-     ui->plane5->setStyleSheet("QPushButton { background-color: rgba(240,240,240,255); }");
-     ui->plane6->setStyleSheet("QPushButton { background-color: rgba(240,240,240,255); }");
-     ui->plane7->setStyleSheet("QPushButton { background-color: rgba(240,240,240,255); }");
-     ui->plane8->setStyleSheet("QPushButton { background-color: rgba(240,240,240,255); }");
-     ui->plane9->setStyleSheet("QPushButton { background-color: rgba(240,240,240,255); }");
-
-    desactivePlan();
-
-    QString stnplan=valeur[1];
-
-    int nplan=stnplan.toInt(0,10);
-
-    this->setNumeroPlan(nplan);
-
-    switch(nplan){
-    case 0:ui->plane1->setStyleSheet("QPushButton { background-color: red; }"); break;
-    case 1:ui->plane2->setStyleSheet("QPushButton { background-color: red; }"); break;
-    case 2:ui->plane3->setStyleSheet("QPushButton { background-color: red; }"); break;
-    case 3:ui->plane4->setStyleSheet("QPushButton { background-color: red; }"); break;
-    case 4:ui->plane5->setStyleSheet("QPushButton { background-color: red; }"); break;
-    case 5:ui->plane6->setStyleSheet("QPushButton { background-color: red; }"); break;
-    case 6:ui->plane7->setStyleSheet("QPushButton { background-color: red; }"); break;
-    case 7:ui->plane8->setStyleSheet("QPushButton { background-color: red; }"); break;
-    case 8:ui->plane9->setStyleSheet("QPushButton { background-color: red; }"); break;
-    }
-
-    QList<QVector3D> ll;
-    for(int i=0;i<9;i++)
-        for(int k=0;k<9;k++)
-        {QVector3D v;
-            v= QVector3D(i,nplan,k);
-            ll.append(v);
-            this->ui->widget->setListPlan(ll);
-        }
-
-   for (int i = 0; i < 9; i++) {
-        for (int j=0;j<9; j++){
-           QString col=QString::number(i);
-           QString lig=QString::number(j);
-           QString text=lig+col;
-
-           int num=text.toInt(0,10);
-           buttons[num]->setVisible(true);
-
-           Led l;
-           l=this->cubeMotif.getList1()->value(this->NumeroPlan).getLed(j,i);
-
-           if(l.getEtat()==0){
-               buttons[num]->setIcon(QIcon(":/icone/nvatomeblanc.png"));
-           }
-           else {
-               buttons[num]->setIcon(QIcon(":/icone/atome.gif"));
-           }
-       }
-    }
-}*/
 
 void MainWindow::deletePlanLed(int nfois){
-
-
-        for (int i = 0; i < 9; i++) {
+    for (int i = 0; i < 9; i++) {
              for (int j=0;j<9; j++){
                  QString col=QString::number(i);
                  QString lig=QString::number(j);
@@ -1210,59 +1135,6 @@ void MainWindow::affiche_plan_Cube(const QString &valeur){
 
 }
 
-/*void MainWindow::controlLed(const QString & valeur){
-   QString strlig=valeur[0];
-   QString strcol=valeur[1];
-   int lig=strlig.toInt(0,10);
-   int col=strcol.toInt(0,10);
-  Led l;
-  l= this->cubeMotif.getList1()->value(NumeroPlan).getLed(lig,col);
-  l.modifierEtat();
-
-  Plan p1=this->cubeMotif.getList1()->value(this->NumeroPlan);
-  p1.updatePlan(l,lig,col,NumeroPlan);
-  this->cubeMotif.updateCube(p1,NumeroPlan);
-
-  QVector3D v;
-  v=QVector3D(abs(8-col),NumeroPlan,abs(8-lig));
-
-
-  liste_vecteur3D.append(v);
-  this->ui->widget->setListPoints(liste_vecteur3D);
-
-  if(this->cubeMotif.getList1()->value(NumeroPlan).getLed(lig,col).getEtat()==1){
-
-        liste_vecteur3D.append(v);
-        this->ui->widget->setListPoints(liste_vecteur3D);
-
-  }
-  else {
-      liste_vecteur3D.removeAll(v);
-      this->ui->widget->setListPoints(liste_vecteur3D);
-  }
-
-  this->ctlPlan.afficheLed(this->buttons,lig,col,l.getEtat());
-  //afficheLed(lig,col,l.getEtat());
-
-}
-*/
-
-/*void MainWindow:: afficheLed(const int i, const int j,const  int etat )
-{
-       QString lig=QString::number(i);
-       QString col=QString::number(j);
-       QString text=lig+col;
-       int num=text.toInt(0,10);
-
-    if(etat==0){
-        this->buttons[num]->setIcon(QIcon(":/icone/nvatomeblanc.png"));
-      }
-    else {
-        this->buttons[num]->setIcon(QIcon(":/icone/atome.gif"));
-    }
-
-}
-*/
 void MainWindow::connexion(){
 
     QSignalMapper *signalMapper = new QSignalMapper(this);
@@ -1285,24 +1157,20 @@ void MainWindow::connexion(){
         signalMapper->setMapping(ui->plane8, "07");
         connect(ui->plane9, SIGNAL(clicked()), signalMapper, SLOT(map()));
         signalMapper->setMapping(ui->plane9, "08");
+        connect(signalMapper, SIGNAL(mapped(const QString &)), this, SLOT(affiche_plan_Cube(const QString &valeur)));
 
-    connect(signalMapper, SIGNAL(mapped(const QString &)), this, SLOT(affiche_plan_Cube(const QString &valeur)));
-
-    QSignalMapper *signalMapper1 = new QSignalMapper(this);
-    for (int i = 0; i < 9; i++) {
-         for (int j=0;j<9; j++){
-            QString col=QString::number(i);
-            QString lig=QString::number(j);
-            QString text=lig+col;
-
-            int num=text.toInt(0,10);
-            connect(buttons[num], SIGNAL(clicked()), signalMapper1, SLOT(map()));
-            signalMapper1->setMapping(buttons[num], text);
+        QSignalMapper *signalMapper1 = new QSignalMapper(this);
+        for (int i = 0; i < 9; i++) {
+            for (int j=0;j<9; j++){
+                QString col=QString::number(i);
+                QString lig=QString::number(j);
+                QString text=lig+col;
+                int num=text.toInt(0,10);
+                connect(buttons[num], SIGNAL(clicked()), signalMapper1, SLOT(map()));
+                signalMapper1->setMapping(buttons[num], text);
+            }
         }
-    }
      connect(signalMapper1, SIGNAL(mapped(const QString &)), this, SLOT(allume_led(const QString &)));
-
-
 }
 
 int MainWindow::getNumeroPlan()

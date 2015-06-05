@@ -85,6 +85,11 @@ public:
     void removeDir(const QString& dirPath) ;
     void desactiveSelectPlan(bool b);
 
+    void initUi();
+    void initControleur();
+    void connectAction();
+
+
 
     ~MainWindow();
 
