@@ -1132,7 +1132,6 @@ void MainWindow::allume_led(const QString & valeur){
 }
 void MainWindow::affiche_plan_Cube(const QString &valeur){
     this->setNumeroPlan(ctlCube.affichePlanLed(valeur,this->ui,this->buttons,this->cubeMotif,this->NumeroPlan));
-
 }
 
 void MainWindow::connexion(){
@@ -1157,7 +1156,7 @@ void MainWindow::connexion(){
         signalMapper->setMapping(ui->plane8, "07");
         connect(ui->plane9, SIGNAL(clicked()), signalMapper, SLOT(map()));
         signalMapper->setMapping(ui->plane9, "08");
-        connect(signalMapper, SIGNAL(mapped(const QString &)), this, SLOT(affiche_plan_Cube(const QString &valeur)));
+        connect(signalMapper, SIGNAL(mapped(const QString &)), this, SLOT(affiche_plan_Cube(const QString &)));
 
         QSignalMapper *signalMapper1 = new QSignalMapper(this);
         for (int i = 0; i < 9; i++) {
