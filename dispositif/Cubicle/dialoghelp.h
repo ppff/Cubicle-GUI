@@ -21,6 +21,7 @@ private:
 
 public slots:
 void afficher_help();
+void AboutUS();
 };
 
 #endif // DIALOGHELP_H

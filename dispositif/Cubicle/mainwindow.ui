@@ -216,7 +216,7 @@
      <x>0</x>
      <y>0</y>
      <width>1200</width>
-     <height>21</height>
+     <height>25</height>
     </rect>
    </property>
    <property name="nativeMenuBar">
@@ -257,6 +257,7 @@
      <string>Help</string>
     </property>
     <addaction name="actionHelp"/>
+    <addaction name="actionAbout_CUBICLE"/>
    </widget>
    <addaction name="menuFile"/>
    <addaction name="menuEdit"/>
@@ -495,7 +496,15 @@
   </action>
   <action name="actionHelp">
    <property name="text">
-    <string>help</string>
+    <string>Help</string>
+   </property>
+   <property name="toolTip">
+    <string>Help</string>
+   </property>
+  </action>
+  <action name="actionAbout_CUBICLE">
+   <property name="text">
+    <string>About CUBICLE</string>
    </property>
   </action>
  </widget>
