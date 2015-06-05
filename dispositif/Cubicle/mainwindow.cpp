@@ -42,6 +42,7 @@ MainWindow::MainWindow(QWidget *parent) :
     connect(ui->actionRaise,SIGNAL(triggered(bool)),this,SLOT(Monter()));
     connect(ui->actionLower,SIGNAL(triggered(bool)),this,SLOT(Descendre()));
     connect(ui->actionSave_as,SIGNAL(triggered(bool)),this,SLOT(controlSaveAs()));
+    connect(ui->actionHelp,SIGNAL(triggered(bool)),this,SLOT(helpwindow()));
 
 
      //connect(ui->treeView,SIGNAL(clicked(QModelIndex)),this,SLOT(reordonneGroup()));
@@ -1436,4 +1437,10 @@ void MainWindow::on_pushButton_3_clicked()
 void MainWindow::on_pushButton_4_clicked()
 {
     on_actionNew_Group_triggered();
+}
+void MainWindow::helpwindow(){
+
+DialogHelp h;
+h.show();
+h.exec();
 }

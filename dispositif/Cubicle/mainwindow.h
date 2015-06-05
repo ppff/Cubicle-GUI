@@ -54,6 +54,7 @@
 #include <QPushButton>
 #include <QPainter>
 #include <QPainterPath>
+#include <dialoghelp.h>
 
 namespace Ui {
 class MainWindow;
@@ -140,6 +141,7 @@ void coller();
     void afficheLed(const int i, const int j, const int etat);
     void controlLed(const QString & valeur);
      void closeEvent(QCloseEvent *event);
+     void helpwindow();
 
 
 protected:
