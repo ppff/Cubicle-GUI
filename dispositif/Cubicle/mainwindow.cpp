@@ -7,6 +7,7 @@ using namespace std;
 
 MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent),
+    saveDir(""),
     tmpDir(QDir::tempPath()),
     ui(new Ui::MainWindow)
 {
@@ -86,17 +87,17 @@ void MainWindow::ouvrir_explorer(){
   else {
       QFileInfo f=QFileInfo(tmpdir);
       //QDir dir(tmpdir);
-      namedir = f.absolutePath();
+      saveDir = f.absolutePath();
       QString nomDossier=f.baseName();
       qDebug()<<" le nom duu dossier est "+nomDossier;
       if (nomDossier!="Cubicle") {
         QMessageBox::information(this,tr("warning"),"cannot open this directory, please choose the folder Cubicle");
         ouvrir_explorer();
       }
-      qDebug()<<" le chemin estttttt "+namedir;
+      qDebug()<<" le chemin estttttt "+saveDir;
   }
 
-  QDir dir(namedir+"/Cubicle");
+  QDir dir(saveDir+"/Cubicle");
   QStringList nameFilter;
   nameFilter<<"*.txt";
   QFileInfoList list=dir.entryInfoList(nameFilter,QDir::Files);
@@ -107,15 +108,15 @@ void MainWindow::ouvrir_explorer(){
        qDebug()<<"impossible";
        return;
   }
-  this->setWindowTitle("Cubicle["+namedir+"/Cubicle"+"]");
+  this->setWindowTitle("Cubicle["+saveDir+"/Cubicle"+"]");
   // je copie le dossier Cubicle dans le workspace"
   QDir dir2(tmpDir+"/workspace/Cubicle");
   if (dir2.exists()){
-      //qDebug()<<"avant removeDir :"+namedir+"/Cubicle";
+      //qDebug()<<"avant removeDir :"+saveDir+"/Cubicle";
       removeDir(tmpDir+"/workspace/Cubicle");
   }
   qDebug()<<"je crée cubicle pour la 1ere fois";
-  xCopy2(namedir,tmpDir+"/workspace","Cubicle");
+  xCopy2(saveDir,tmpDir+"/workspace","Cubicle");
   tree();
   dirOpen=1;
   saved=false;
@@ -140,7 +141,7 @@ void MainWindow::contextMenuEvent(QContextMenuEvent *event){
                   ui->treeView->setContextMenuPolicy(Qt::ActionsContextMenu);
                   QString dir=model->fileInfo(index).absolutePath();
                   QString nameGroup=model->fileInfo(index).baseName();
-                  if((dir+'/'+nameGroup)!=namedir){
+                  if((dir+'/'+nameGroup)!=saveDir){
                           insertMotif = contextMenu->addAction("new pattern");
                           connect(insertMotif,SIGNAL(triggered(bool)),this, SLOT(ajouter_motif()));
 
@@ -297,7 +298,7 @@ void MainWindow::ajouter_motif(){
 
             QString nameGroup=model->fileInfo(index).baseName();
              if((dir + "/" + nameGroup) !=tmpDir){
-            qDebug()<<"le namedir est "+ namedir;
+            qDebug()<<"le saveDir est "+saveDir;
             qDebug()<<"l'emplacement du dossier est "+dir;
             qDebug()<<"le nom du dossier est "+nameGroup;
             if(nameGroup!="Cubicle"){
@@ -342,13 +343,13 @@ void MainWindow::new_project(){
      model->mkdir(index,"workspace");
         QDir dir(tmpDir+"/workspace/Cubicle");
         if (dir.exists()){
-            //qDebug()<<"avant removeDir :"+namedir+"/Cubicle";
+            //qDebug()<<"avant removeDir :"+saveDir+"/Cubicle";
             removeDir(tmpDir+"/workspace/Cubicle");
         }
        qDebug()<<"je crée cubicle pour la 1ere fois";
        new_index=model->index(tmpDir+"/workspace");
        model->mkdir(new_index,"Cubicle");
-      namedir="";
+      saveDir="";
       saved=false;
     dirOpen=2;
     emplMotif="";
@@ -369,7 +370,7 @@ void MainWindow::new_project(){
 void MainWindow::on_actionNew_Group_triggered()
 {   int m;
     QString indice;
-    //if (namedir==s+"/workspace"){
+    //if (saveDir==s+"/workspace"){
     QModelIndex index =model->index(tmpDir+"/workspace/Cubicle",0);
     QString name ="NewGroup";
     QDir dir(tmpDir+"/workspace/Cubicle");
@@ -385,7 +386,7 @@ void MainWindow::on_actionNew_Group_triggered()
     name = indice + name;
      qDebug() << "s contient "+ name;
     model->mkdir(index,name);
-    qDebug()<<"j'ai crée un dossier ds "+namedir;
+    qDebug()<<"j'ai crée un dossier ds "+saveDir;
        new_index =model->index(tmpDir+"/workspace/Cubicle");
     // qDebug()<<"le new index est " + s+"/workspace/Cubicle";
      new_index =model->index(tmpDir+"/workspace/Cubicle");
@@ -401,9 +402,9 @@ void MainWindow::on_actionNew_Group_triggered()
 
 }
     /*else {
-        QModelIndex index =model->index(namedir,0);
+        QModelIndex index =model->index(saveDir,0);
         QString name ="NewGroup";
-        QDir dir(namedir);
+        QDir dir(saveDir);
         QFileInfoList entries = dir.entryInfoList(QDir::NoDotAndDotDot | QDir::AllEntries);
         dir.setSorting( QDir::Name);
         m=entries.size();
@@ -415,14 +416,14 @@ void MainWindow::on_actionNew_Group_triggered()
         }
         name = s + name;
         model->mkdir(index,name);
-        qDebug()<<"j'ai crée un dossier ds "+namedir;
-           new_index =model->index(namedir);
-         qDebug()<<"le new index est " + namedir;
-         new_index =model->index(namedir);
+        qDebug()<<"j'ai crée un dossier ds "+saveDir;
+           new_index =model->index(saveDir);
+         qDebug()<<"le new index est " + saveDir;
+         new_index =model->index(saveDir);
       ui->treeView->expand(new_index);
       ui->treeView->scrollTo(new_index);
 
-      new_index =model->index(namedir+"/"+name);
+      new_index =model->index(saveDir+"/"+name);
       ui->treeView->setCurrentIndex(new_index);
       ui->treeView->selectionModel()->select(new_index,
              QItemSelectionModel::ClearAndSelect | QItemSelectionModel::Rows);
@@ -907,13 +908,13 @@ void MainWindow::controlSave(){
     GestionFichier ges;
     ges.ouvrir(this->emplMotif,this->c);
     //si on n'as pas fait saveAs on doit choisir un répertoir
-    if (namedir=="") {
+    if (saveDir=="") {
         controlSaveAs();
     }
     else {
 
-        removeDir(namedir+"/Cubicle");
-        xCopy2(tmpDir+"/workspace",namedir,"Cubicle");
+        removeDir(saveDir+"/Cubicle");
+        xCopy2(tmpDir+"/workspace",saveDir,"Cubicle");
         saved=true;
         QMessageBox msgBox;
         msgBox.setText("Your project Cubicle has been succesfully saved");
@@ -926,7 +927,7 @@ void MainWindow::controlSaveAs(){
     QString destPath=QFileDialog::getExistingDirectory(this, tr("Save as"),"/home");
     if (destPath=="") {qDebug()<<destPath;
         return;}
-    qDebug()<<"l'origine est "+namedir;
+    qDebug()<<"l'origine est "+saveDir;
     qDebug()<<"la destination est"+destPath;
     QDir dir(destPath+"/Cubicle");
     if (dir.exists()) {
@@ -936,14 +937,14 @@ void MainWindow::controlSaveAs(){
             controlSaveAs();
         }
         else {
-            namedir=destPath;
+            saveDir=destPath;
             controlSave();
         }
 
     }
     else {
-    namedir= destPath;
-    qDebug()<< "le nouveau path est" + namedir;
+    saveDir= destPath;
+    qDebug()<< "le nouveau path est" + saveDir;
     controlSave();
     this->setWindowTitle("Cubicle["+destPath+"/Cubicle"+"]") ;
 
@@ -1006,9 +1007,9 @@ void MainWindow::controlSaveAs(){
 
     if (destPath=="") {qDebug()<<destPath;
         return;}
-    namedir= destPath;
-    //QString originPath=namedir;
-    qDebug()<<"l'origine est "+namedir;
+    saveDir= destPath;
+    //QString originPath=saveDir;
+    qDebug()<<"l'origine est "+saveDir;
     qDebug()<<"la destination est"+destPath;
     QDir dir(destPath+"/Cubicle");
     if (dir.exists()) {
@@ -1025,8 +1026,8 @@ void MainWindow::controlSaveAs(){
     else {
     xCopy2(s+"/workspace",destPath,"Cubicle");
     saved=true;
-    namedir= destPath+"/Cubicle";
-    qDebug()<< "le nouveau path est" + namedir;
+    saveDir= destPath+"/Cubicle";
+    qDebug()<< "le nouveau path est" + saveDir;
     this->setWindowTitle("Cubicle["+destPath+"/Cubicle"+"]") ;
     QMessageBox msgBox;
     msgBox.setText("Your project Cubicle has been succesfully saved");

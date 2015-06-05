@@ -97,7 +97,7 @@ public:
     QDirModel *model;
     QModelIndex new_index;
     QMenu* contextMenu;
-    QString namedir="";
+    QString saveDir;
     QAction *insertMotif;
     QAction *insert_Group;
     QAction *deletePattern;
