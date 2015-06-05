@@ -115,7 +115,7 @@ public:
     int dirOpen;  //vaut 0 si y a pas de directory ouvert, 1 si openDirectory et 2 si on ne choisit pas d'emplacement au début (new project)=>  saveAs
     bool copierCouper; // vaut 0 pour copier et 1 pour couper
     QList<QVector3D> liste_vecteur3D;
-    QString s=QCoreApplication::applicationDirPath();
+    QString tmpDir;
 
 
 

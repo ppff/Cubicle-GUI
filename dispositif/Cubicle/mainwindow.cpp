@@ -7,6 +7,7 @@ using namespace std;
 
 MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent),
+    tmpDir(QDir::tempPath()),
     ui(new Ui::MainWindow)
 {
     ui->setupUi(this);
@@ -108,13 +109,13 @@ void MainWindow::ouvrir_explorer(){
   }
   this->setWindowTitle("Cubicle["+namedir+"/Cubicle"+"]");
   // je copie le dossier Cubicle dans le workspace"
-  QDir dir2(s+"/workspace/Cubicle");
+  QDir dir2(tmpDir+"/workspace/Cubicle");
   if (dir2.exists()){
       //qDebug()<<"avant removeDir :"+namedir+"/Cubicle";
-      removeDir(s+"/workspace/Cubicle");
+      removeDir(tmpDir+"/workspace/Cubicle");
   }
   qDebug()<<"je crée cubicle pour la 1ere fois";
-  xCopy2(namedir,s+"/workspace","Cubicle");
+  xCopy2(namedir,tmpDir+"/workspace","Cubicle");
   tree();
   dirOpen=1;
   saved=false;
@@ -210,7 +211,7 @@ void MainWindow::coller(){
                 QString dir=model->fileInfo(index).absolutePath();
                 nameGroup=model->fileInfo(index).baseName();
                 // on vérifie qu'on ne colle pas dans Cubicle(répertoire des groupes)
-                if((dir+'/'+nameGroup)!=s+"/workspace/Cubicle"){
+                if((dir+'/'+nameGroup)!=tmpDir+"/workspace/Cubicle"){
                     QFile file(paste_element);
                      qDebug()<<"je vais coller  :"+dir+"/"+nameGroup+"/"+nom_copie+"_copie.txt";
                     bool valid = file.copy(dir+"/"+nameGroup+"/"+nom_copie+".txt");
@@ -250,10 +251,10 @@ void MainWindow::tree(){
             model = new QDirModel(this);
             model->setReadOnly(false);
             model->setSorting(QDir::DirsFirst | QDir::IgnoreCase | QDir::Name);
-    QModelIndex index=model->index(s+"/workspace");
+    QModelIndex index=model->index(tmpDir+"/workspace");
     ui->treeView->setModel(model);
      ui->treeView->setRootIndex(index);
-     index= model->index(s+"/workspace/Cubicle");
+     index= model->index(tmpDir+"/workspace/Cubicle");
      ui->treeView->setExpanded(index,true);
      ui->treeView->scrollTo(index);
       connect(model,SIGNAL(dataChanged(QModelIndex,QModelIndex,QVector<int>)),this,SLOT(reordonneGroup()));
@@ -295,7 +296,7 @@ void MainWindow::ajouter_motif(){
             QString dir=model->fileInfo(index).absolutePath();
 
             QString nameGroup=model->fileInfo(index).baseName();
-             if((dir + "/" + nameGroup) !=s){
+             if((dir + "/" + nameGroup) !=tmpDir){
             qDebug()<<"le namedir est "+ namedir;
             qDebug()<<"l'emplacement du dossier est "+dir;
             qDebug()<<"le nom du dossier est "+nameGroup;
@@ -305,7 +306,7 @@ void MainWindow::ajouter_motif(){
 
 
 
-                    new_index =model->index(s+"/workspace/Cubicle"+"/"+ nameGroup );
+                    new_index =model->index(tmpDir+"/workspace/Cubicle"+"/"+ nameGroup );
                            tree();
                             new_index =model->index(m.getNameFile());
 
@@ -337,15 +338,15 @@ void MainWindow::new_project(){
      model = new QDirModel(this);
      model->setReadOnly(false);
      model->setSorting(QDir::DirsFirst | QDir::IgnoreCase | QDir::Name);
-     QModelIndex index=model->index(s);
+     QModelIndex index=model->index(tmpDir);
      model->mkdir(index,"workspace");
-        QDir dir(s+"/workspace/Cubicle");
+        QDir dir(tmpDir+"/workspace/Cubicle");
         if (dir.exists()){
             //qDebug()<<"avant removeDir :"+namedir+"/Cubicle";
-            removeDir(s+"/workspace/Cubicle");
+            removeDir(tmpDir+"/workspace/Cubicle");
         }
        qDebug()<<"je crée cubicle pour la 1ere fois";
-       new_index=model->index(s+"/workspace");
+       new_index=model->index(tmpDir+"/workspace");
        model->mkdir(new_index,"Cubicle");
       namedir="";
       saved=false;
@@ -369,9 +370,9 @@ void MainWindow::on_actionNew_Group_triggered()
 {   int m;
     QString indice;
     //if (namedir==s+"/workspace"){
-    QModelIndex index =model->index(s+"/workspace/Cubicle",0);
+    QModelIndex index =model->index(tmpDir+"/workspace/Cubicle",0);
     QString name ="NewGroup";
-    QDir dir(s+"/workspace/Cubicle");
+    QDir dir(tmpDir+"/workspace/Cubicle");
     QFileInfoList entries = dir.entryInfoList(QDir::NoDotAndDotDot | QDir::AllEntries);
     dir.setSorting( QDir::Name);
     m=entries.size();
@@ -380,17 +381,17 @@ void MainWindow::on_actionNew_Group_triggered()
     }else {
        indice=QString::number(m)+"_";
     }
-    qDebug() << "s contient "+ s;
+    qDebug() << "s contient "+ tmpDir;
     name = indice + name;
      qDebug() << "s contient "+ name;
     model->mkdir(index,name);
     qDebug()<<"j'ai crée un dossier ds "+namedir;
-       new_index =model->index(s+"/workspace/Cubicle");
+       new_index =model->index(tmpDir+"/workspace/Cubicle");
     // qDebug()<<"le new index est " + s+"/workspace/Cubicle";
-     new_index =model->index(s+"/workspace/Cubicle");
+     new_index =model->index(tmpDir+"/workspace/Cubicle");
     tree();
-  new_index =model->index(s+"/workspace/Cubicle/"+name);
-  qDebug() << "le nouveau index pointe sur "+s+"/workspace/Cubicle/"+name;
+  new_index =model->index(tmpDir+"/workspace/Cubicle/"+name);
+  qDebug() << "le nouveau index pointe sur "+tmpDir+"/workspace/Cubicle/"+name;
   ui->treeView->setCurrentIndex(new_index);
   ui->treeView->selectionModel()->select(new_index,
          QItemSelectionModel::ClearAndSelect | QItemSelectionModel::Rows);
@@ -912,7 +913,7 @@ void MainWindow::controlSave(){
     else {
 
         removeDir(namedir+"/Cubicle");
-        xCopy2(s+"/workspace",namedir,"Cubicle");
+        xCopy2(tmpDir+"/workspace",namedir,"Cubicle");
         saved=true;
         QMessageBox msgBox;
         msgBox.setText("Your project Cubicle has been succesfully saved");
