@@ -23,7 +23,8 @@ SOURCES += main.cpp\
     parser.c\
     CUB_parser.c \
     controlplan2d.cpp \
-    controlcube3d.cpp
+    controlcube3d.cpp \
+    controlarborescence.cpp
 
 
 
@@ -40,7 +41,8 @@ HEADERS  += mainwindow.h\
     CUB_parser.h \
     global.h \
     controlplan2d.h \
-    controlcube3d.h
+    controlcube3d.h \
+    controlarborescence.h
 
 
 
