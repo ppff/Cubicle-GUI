@@ -72,10 +72,11 @@ void MainWindow::connectAction(){
 
 
 void MainWindow::savePattern(){
-    qDebug()<<"je suis dans savePattern";
+
     GestionFichier ges;
     // ges.ouvrir(this->emplMotif,this->c);
     if(this->emplMotif!=""){
+         qDebug()<<"je suis dans savePattern";
          ges.ouvrir(this->emplMotif,this->cubeMotif);
     }
 
@@ -294,7 +295,7 @@ void MainWindow::tree(){
     }
 
 
-    ui->treeView->setEditTriggers(QAbstractItemView::SelectedClicked);
+   // ui->treeView->setEditTriggers(QAbstractItemView::SelectedClicked);
     ui->treeView->resizeColumnToContents(0);
     ui->actionNew_Pattern->setEnabled(true);
     ui->actionDelete_pattern->setEnabled(true);
@@ -1016,29 +1017,40 @@ bool MainWindow::removeDir(const QString& PathDir)
 
 
 void MainWindow::reordonneGroup(){
-         QModelIndex index = ui->treeView->currentIndex();
-         if (model->fileInfo(index).isDir()){
+    QModelIndex index = ui->treeView->currentIndex();
 
-        int i= index.row();
-        qDebug() << "le rang du groupe est"+ QString::number(i);
-         QString nameGroup = model->fileName(index);
-         qDebug() << "le nom du groupe à modifier est "+ nameGroup;
-         QString path = model->fileInfo(index).absolutePath();
-         qDebug() << "le path du groupe est "+ path;
-         QDir dir(path);
-        QString indice;
-        if (i<10){
-            indice = "0"+QString::number(i)+"_";
-            }else {
-             indice = QString::number(i)+"_";
-                  }
 
-        QString newNameGroup=indice+nameGroup;
-         QString pathTotalOld = path+"/"+nameGroup;
-         QString pathTotalNew = path+"/"+newNameGroup;
-          dir.rename(pathTotalOld,pathTotalNew);
-         }
-     }
+    int i= index.row();
+    qDebug() << "le rang du groupe est"+ QString::number(i);
+    QString nameGroup = model->fileName(index);
+    qDebug() << "le nom du groupe à modifier est "+ nameGroup;
+    QString path = model->fileInfo(index).absolutePath();
+    qDebug() << "le path du groupe est "+ path;
+    QDir dir(path);
+    QString indice;
+    if (i<10){
+        indice = "0"+QString::number(i)+"_";
+    }else {
+        indice = QString::number(i)+"_";
+    }
+
+    QString newNameGroup=indice+nameGroup;
+    QString pathTotalOld = path+"/"+nameGroup;
+    QString pathTotalNew = path+"/"+newNameGroup;
+    if (model->fileInfo(index).isDir()){
+        dir.rename(pathTotalOld,pathTotalNew);
+    }
+    else{
+        qDebug()<<"je suis un fichier qui veut etre renomme mais peut pas";
+        this->setEmpMotif(pathTotalNew);
+        QFile file(pathTotalOld);
+        file.rename(pathTotalNew);
+
+    }
+}
+
+
+
 
 
 //extern "C" int* parser_file(const char* name);
@@ -1046,6 +1058,7 @@ void MainWindow::reordonneGroup(){
 
 // supprimer  le plan 2D Lors d'un double clic sur un nouveau motif
 void MainWindow::doubleClick(){
+    qDebug() << "je suis entre dans le double clic";
      QModelIndex index=ui->treeView->currentIndex();
      if (model->fileInfo(index).isFile()) {
         dirOrFile=false;

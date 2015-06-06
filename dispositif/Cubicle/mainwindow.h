@@ -32,6 +32,7 @@
 #include <sstream>
 #include <iostream>
 #include "gestionfichier.h"
+#include <QFile>
 
 
 #include <QPainter>
