@@ -37,6 +37,8 @@ void MainWindow::initUi(){
     ui->actionRaise->setDisabled(true);
     ui->actionLower->setDisabled(true);
     ui->actionNew_Group->setDisabled(true);
+    ui->actionSelect->setDisabled(true);
+    ui->actionDuplicate->setDisabled(true);
     ui->pushButton->setDisabled(true);
     ui->pushButton_2->setDisabled(true);
     ui->pushButton_3->setDisabled(true);
@@ -47,6 +49,7 @@ void MainWindow::initUi(){
 void MainWindow::initControleur() {
     this->ctlPlan=ControlPlan2D();
     this->ctlCube=ControlCube3D();
+    this->dupPlan=DuppliquerPlan();
 }
 
 
@@ -65,6 +68,9 @@ void MainWindow::connectAction(){
     connect(ui->actionLower,SIGNAL(triggered(bool)),this,SLOT(Descendre()));
     connect(ui->actionSave_as,SIGNAL(triggered(bool)),this,SLOT(controlSaveAs()));
     connect(ui->treeView,SIGNAL(pressed(QModelIndex)),this,SLOT(savePattern()));
+    connect(ui->actionSelect,SIGNAL(triggered(bool)),this,SLOT(selectPlanToDuplicate()));
+    connect(ui->actionDuplicate,SIGNAL(triggered(bool)),this,SLOT(duplicate()));
+
 }
 
 
@@ -293,6 +299,8 @@ void MainWindow::tree(){
     ui->pushButton_2->setDisabled(false);
     ui->pushButton_3->setDisabled(false);
     ui->pushButton_4->setDisabled(false);
+    ui->actionSelect->setDisabled(false);
+    ui->actionDuplicate->setDisabled(false);
 
 }
 
@@ -1134,8 +1142,32 @@ void MainWindow::affiche_plan_Cube(const QString &valeur){
     this->setNumeroPlan(ctlCube.affichePlanLed(valeur,this->ui,this->buttons,this->cubeMotif,this->NumeroPlan));
 }
 
-void MainWindow::connexion(){
+void MainWindow::selectPlanToDuplicate(){
+    this->dupPlan.DeconnecterPlan(ui);
+    connectPlanToDuplicate();
 
+    this->dupPlan.SelectPlan(this->ui,this->cubeMotif,this->NumeroPlan,this->liste_vecteur3D,this->buttons);
+}
+
+void MainWindow::choixPlanADupliquer(const QString &valeur){
+    QString stnplan=valeur[1];
+    int nplan=stnplan.toInt(0,10);
+    this->listePlanADupliquer.append(nplan);
+    int size=listePlanADupliquer.size();
+    QString s=QString:: number(size);
+    qDebug()<<"taille liste dup"+s;
+    this->dupPlan.colorePlan(ui,nplan);
+
+}
+
+void MainWindow:: duplicate(){
+    qDebug()<<"duplicate";
+    this->dupPlan.dupliquer(ui, cubeMotif,NumeroPlan, listePlanADupliquer,liste_vecteur3D,emplMotif);
+    connectPlanToAffiche();
+}
+
+//connecter tous les plans au signal affiche_plan_cube
+void MainWindow::connectPlanToAffiche(){
     QSignalMapper *signalMapper = new QSignalMapper(this);
 
         connect(ui->plane1, SIGNAL(clicked()), signalMapper, SLOT(map()));
@@ -1157,6 +1189,36 @@ void MainWindow::connexion(){
         connect(ui->plane9, SIGNAL(clicked()), signalMapper, SLOT(map()));
         signalMapper->setMapping(ui->plane9, "08");
         connect(signalMapper, SIGNAL(mapped(const QString &)), this, SLOT(affiche_plan_Cube(const QString &)));
+
+}
+
+void MainWindow:: connectPlanToDuplicate(){
+    QSignalMapper *signalMapper = new QSignalMapper(this);
+
+        connect(ui->plane1, SIGNAL(clicked()), signalMapper, SLOT(map()));
+        signalMapper->setMapping(ui->plane1, "00");
+        connect(ui->plane2, SIGNAL(clicked()), signalMapper, SLOT(map()));
+        signalMapper->setMapping(ui->plane2, "01");
+        connect(ui->plane3, SIGNAL(clicked()), signalMapper, SLOT(map()));
+        signalMapper->setMapping(ui->plane3, "02");
+        connect(ui->plane4, SIGNAL(clicked()), signalMapper, SLOT(map()));
+        signalMapper->setMapping(ui->plane4, "03");
+        connect(ui->plane5, SIGNAL(clicked()), signalMapper, SLOT(map()));
+        signalMapper->setMapping(ui->plane5, "04");
+        connect(ui->plane6, SIGNAL(clicked()), signalMapper, SLOT(map()));
+        signalMapper->setMapping(ui->plane6, "05");
+        connect(ui->plane7, SIGNAL(clicked()), signalMapper, SLOT(map()));
+        signalMapper->setMapping(ui->plane7, "06");
+        connect(ui->plane8, SIGNAL(clicked()), signalMapper, SLOT(map()));
+        signalMapper->setMapping(ui->plane8, "07");
+        connect(ui->plane9, SIGNAL(clicked()), signalMapper, SLOT(map()));
+        signalMapper->setMapping(ui->plane9, "08");
+        connect(signalMapper, SIGNAL(mapped(const QString &)), this, SLOT(choixPlanADupliquer(const QString &)));
+}
+
+void MainWindow::connexion(){
+
+    connectPlanToAffiche();
 
         QSignalMapper *signalMapper1 = new QSignalMapper(this);
         for (int i = 0; i < 9; i++) {

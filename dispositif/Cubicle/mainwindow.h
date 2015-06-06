@@ -58,6 +58,7 @@
 #include <QPushButton>
 #include <QPainter>
 #include <QPainterPath>
+#include "duppliquerplan.h"
 
 namespace Ui {
 class MainWindow;
@@ -80,6 +81,8 @@ public:
     void setNumeroPlan(int i);
     //void desactivePlan();
     void connexion();
+    void connectPlanToAffiche();
+    void connectPlanToDuplicate();
     void contextMenuEvent(QContextMenuEvent *event);
     void xCopy2 (const QString &sourcePath, const QString &destPath, const QString &name);
     void removeDir(const QString& dirPath) ;
@@ -121,11 +124,14 @@ public:
     int dirOpen;  //vaut 0 si y a pas de directory ouvert, 1 si openDirectory et 2 si on ne choisit pas d'emplacement au début (new project)=>  saveAs
     bool copierCouper; // vaut 0 pour copier et 1 pour couper
     QList<QVector3D> liste_vecteur3D;
+    QList<int> listePlanADupliquer;
 
     Cube cubeMotif;
     QString tmpDir;
     ControlPlan2D ctlPlan;
     ControlCube3D ctlCube;
+    DuppliquerPlan dupPlan;
+
 
 
 
@@ -154,6 +160,10 @@ void savePattern();
 
      void allume_led(const QString & valeur);
      void affiche_plan_Cube(const QString &valeur);
+     void selectPlanToDuplicate();
+     void choixPlanADupliquer(const QString &valeur);
+     void duplicate();
+
 
 
 protected:
