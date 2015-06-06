@@ -1,6 +1,10 @@
 #ifndef MAINWINDOW_H
 #define MAINWINDOW_H
 
+#include "global.h"
+#include "controlplan2d.h"
+#include "controlcube3d.h"
+
 #include <QMainWindow>
 #include <QtCore>
 #include <QtGui>
@@ -28,8 +32,8 @@
 #include <sstream>
 #include <iostream>
 #include "gestionfichier.h"
-#include "cube.h"
-#include <QPushButton>
+
+
 #include <QPainter>
 #include <QPainterPath>
 #include "simulation_cube.h"
@@ -42,7 +46,7 @@
 #include "nouveaumotif.h"
 #include "QMenu"
 #include "QPoint"
-#include "QMessageBox"
+
 #include "QDirIterator"
 #include "QDebug"
 #include <strstream>
@@ -72,16 +76,19 @@ public:
     void setEmpMotif(QString nom);
     QString getEmplMotif();
     void deletePlanLed(int i);
-    void setOrientationPlan(int i);
-    int getOrientationPlan();
     int getNumeroPlan();
     void setNumeroPlan(int i);
-    void desactivePlan();
+    //void desactivePlan();
     void connexion();
     void contextMenuEvent(QContextMenuEvent *event);
     void xCopy2 (const QString &sourcePath, const QString &destPath, const QString &name);
+
     bool removeDir(const QString& dirPath) ;
-    void desactiveSelectPlan();
+    void desactiveSelectPlan(bool b);
+
+    void initUi();
+    void initControleur();
+    void connectAction();
 
 
     ~MainWindow();
@@ -110,12 +117,15 @@ public:
     int OrienPlan;
     int NumeroPlan;
     QPushButton* plans[30];
-    Cube c;
     bool saved=true ;
     int dirOpen;  //vaut 0 si y a pas de directory ouvert, 1 si openDirectory et 2 si on ne choisit pas d'emplacement au début (new project)=>  saveAs
     bool copierCouper; // vaut 0 pour copier et 1 pour couper
     QList<QVector3D> liste_vecteur3D;
+
+    Cube cubeMotif;
     QString tmpDir;
+    ControlPlan2D ctlPlan;
+    ControlCube3D ctlCube;
 
 
 
@@ -127,6 +137,7 @@ void ajouter_motif() ;
 void couper();
 void copier();
 void coller();
+void savePattern();
  void reordonneGroup();
 //void reordonneMotif();
     void Monter();
@@ -136,10 +147,13 @@ void coller();
     void controlSave();
     void controlSaveAs();
     void doubleClick();
-    void affichePlanLed(const QString & valeur);
-    void afficheLed(const int i, const int j, const int etat);
-    void controlLed(const QString & valeur);
+    //void affichePlanLed(const QString & valeur);
+    //void afficheLed(const int i, const int j, const int etat);
+    //void controlLed(const QString & valeur);
      void closeEvent(QCloseEvent *event);
+
+     void allume_led(const QString & valeur);
+     void affiche_plan_Cube(const QString &valeur);
 
 
 protected:

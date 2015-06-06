@@ -21,7 +21,10 @@ SOURCES += main.cpp\
     gestionfichier.cpp\
     simulation_cube.cpp \
     parser.c\
-    CUB_parser.c
+    CUB_parser.c \
+    controlplan2d.cpp \
+    controlcube3d.cpp \
+    controlarborescence.cpp
 
 
 
@@ -35,7 +38,11 @@ HEADERS  += mainwindow.h\
     simulation_cube.h\
     adapt.h \
     parser.h\
-    CUB_parser.h
+    CUB_parser.h \
+    global.h \
+    controlplan2d.h \
+    controlcube3d.h \
+    controlarborescence.h
 
 
 
