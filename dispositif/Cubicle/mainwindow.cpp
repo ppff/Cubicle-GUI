@@ -8,9 +8,13 @@ using namespace std;
 MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent),
     tmpDir(QDir::tempPath()),
-    ui(new Ui::MainWindow)
+    ui(new Ui::MainWindow),
+    model(new QDirModel(this)),
+    namedir("")
 {
     ui->setupUi(this);
+
+
 
     ui->actionCopy->setDisabled(true);
     ui->actionDelete_pattern->setDisabled(true);
@@ -41,7 +45,7 @@ MainWindow::MainWindow(QWidget *parent) :
     connect(ui->actionRaise,SIGNAL(triggered(bool)),this,SLOT(Monter()));
     connect(ui->actionLower,SIGNAL(triggered(bool)),this,SLOT(Descendre()));
     connect(ui->actionSave_as,SIGNAL(triggered(bool)),this,SLOT(controlSaveAs()));
-
+   connect(model,SIGNAL(dataChanged(QModelIndex,QModelIndex,QVector<int>)),this,SLOT(reordonneGroup()));
 
      //connect(ui->treeView,SIGNAL(clicked(QModelIndex)),this,SLOT(reordonneGroup()));
     desactiveSelectPlan();
@@ -70,64 +74,71 @@ void MainWindow::desactiveSelectPlan(){
 
 //ouvre le répertoire de travail
 void MainWindow::ouvrir_explorer(){
-   if (!saved) {
+    if (!saved) {
         int enregistrer=QMessageBox::question(this, "Quit", " Do you want to save the current project ?");
         if (enregistrer==QMessageBox::Yes){
             controlSave();
         }
     }
 
-  desactiveSelectPlan();
-  QString  tmpdir=QFileDialog::getExistingDirectory(this, tr("Open Directory"), "/home");
-  if (tmpdir=="") {
-      qDebug()<<tmpdir;
-      return;
-  }
-  else {
-      QFileInfo f=QFileInfo(tmpdir);
-      //QDir dir(tmpdir);
-      namedir = f.absolutePath();
-      QString nomDossier=f.baseName();
-      qDebug()<<" le nom duu dossier est "+nomDossier;
-      if (nomDossier!="Cubicle") {
-        QMessageBox::information(this,tr("warning"),"cannot open this directory, please choose the folder Cubicle");
-        ouvrir_explorer();
-      }
-      qDebug()<<" le chemin estttttt "+namedir;
-  }
+    desactiveSelectPlan();
+    QString  tempdir=QFileDialog::getExistingDirectory(this, tr("Open Directory"), "/home");
+    if (tempdir=="") {
+        qDebug()<<tempdir;
+        return;
+    }
+    else {
+        QFileInfo f=QFileInfo(tempdir);
 
-  QDir dir(namedir+"/Cubicle");
-  QStringList nameFilter;
-  nameFilter<<"*.txt";
-  QFileInfoList list=dir.entryInfoList(nameFilter,QDir::Files);
-  QFileInfoList list2=dir.entryInfoList(QDir::Dirs);
-  //on ne doit pas charger le dossier d'un groupe de motif mais plutot le repertoire des groupes de motif
-  if ((!list.isEmpty()) and (!list2.isEmpty())) {
-       QMessageBox::information(this,tr("warning"),"cannot open this directory, please choose the source directory");
-       qDebug()<<"impossible";
-       return;
-  }
-  this->setWindowTitle("Cubicle["+namedir+"/Cubicle"+"]");
-  // je copie le dossier Cubicle dans le workspace"
-  QDir dir2(tmpDir+"/workspace/Cubicle");
-  if (dir2.exists()){
-      //qDebug()<<"avant removeDir :"+namedir+"/Cubicle";
-      removeDir(tmpDir+"/workspace/Cubicle");
-  }
-  qDebug()<<"je crée cubicle pour la 1ere fois";
-  xCopy2(namedir,tmpDir+"/workspace","Cubicle");
-  tree();
-  dirOpen=1;
-  saved=false;
-  emplMotif="";
-  ui->actionSave_as->setDisabled(false);
-  this->c=Cube();
-  deletePlanLed(1);
-  desactivePlan();
-  this->liste_vecteur3D.clear();
-  this->ui->widget->setListPoints(liste_vecteur3D);
-  ui->widget->setListPlan(liste_vecteur3D);
-  ui->actionNew_Group->setDisabled(true);
+        namedir = f.absolutePath();
+
+        QString nomDossier=f.baseName();
+        qDebug()<<" le nom duu dossier est "+nomDossier;
+        if (nomDossier!="Cubicle") {
+            QMessageBox::information(this,tr("warning"),"cannot open this directory, please choose the folder Cubicle");
+            ouvrir_explorer();
+        }
+        qDebug()<<" le chemin du namedir est"+namedir;
+    }
+
+    QDir dir(namedir+"/Cubicle");
+    QStringList nameFilter;
+    nameFilter<<"*.txt";
+    QFileInfoList list=dir.entryInfoList(nameFilter,QDir::Files);
+    QFileInfoList list2=dir.entryInfoList(QDir::Dirs);
+    //on ne doit pas charger le dossier d'un groupe de motif mais plutot le repertoire des groupes de motif
+    if ((!list.isEmpty()) and (!list2.isEmpty())) {
+        QMessageBox::information(this,tr("warning"),"cannot open this directory, please choose the source directory");
+        qDebug()<<"impossible";
+        return;
+    }
+    this->setWindowTitle("Cubicle["+namedir+"/Cubicle"+"]");
+    // je copie le dossier Cubicle dans le workspace"
+    QDir dir0(tmpDir+"/workspace");
+
+    if (!dir0.exists()){
+        dir0.mkpath(".");
+    }
+
+    QDir dir2(tmpDir+"/workspace/Cubicle");
+    if (dir2.exists()){
+        removeDir(tmpDir+"/workspace/Cubicle");
+    }
+    qDebug()<<"je crée cubicle pour la 1ere fois";
+    xCopy2(namedir,tmpDir+"/workspace","Cubicle");
+
+    tree();
+    dirOpen=1;
+    saved=false;
+    emplMotif="";
+    ui->actionSave_as->setDisabled(false);
+    this->c=Cube();
+    deletePlanLed(1);
+    desactivePlan();
+    this->liste_vecteur3D.clear();
+    this->ui->widget->setListPoints(liste_vecteur3D);
+    ui->widget->setListPlan(liste_vecteur3D);
+    ui->actionNew_Group->setDisabled(true);
 }
 
 void MainWindow::contextMenuEvent(QContextMenuEvent *event){
@@ -248,25 +259,34 @@ void MainWindow::coller(){
 }
 
 void MainWindow::tree(){
-            model = new QDirModel(this);
-            model->setReadOnly(false);
-            model->setSorting(QDir::DirsFirst | QDir::IgnoreCase | QDir::Name);
-    QModelIndex index=model->index(tmpDir+"/workspace");
+
+
+    model->setReadOnly(false);
+    model->setSorting(QDir::DirsFirst | QDir::IgnoreCase | QDir::Name);
     ui->treeView->setModel(model);
-     ui->treeView->setRootIndex(index);
-     index= model->index(tmpDir+"/workspace/Cubicle");
-     ui->treeView->setExpanded(index,true);
-     ui->treeView->scrollTo(index);
-      connect(model,SIGNAL(dataChanged(QModelIndex,QModelIndex,QVector<int>)),this,SLOT(reordonneGroup()));
-     if(new_index.isValid()){
-     ui->treeView->setExpanded(new_index,true);
-     ui->treeView->scrollTo(new_index);
-     }
+    qDebug() << "j'entre ici 0";
+    QModelIndex index=model->index(tmpDir+"/workspace");
+    qDebug() << "j'entre ici 1";
+
+
+    if(index.isValid()){
+
+        ui->treeView->setRootIndex(index);
+
+
+    }
+    //on ouvre toujours le dossier de travail présent sur le workspace
+    index= model->index(tmpDir+"/workspace/Cubicle");
+    if(index.isValid()){
+        ui->treeView->setExpanded(index,true);
+        ui->treeView->scrollTo(index);
+
+    }
+
     for(int i=1;i<4;i++){
         ui->treeView->hideColumn(i);
     }
 
-    connect(model,SIGNAL(dataChanged(QModelIndex,QModelIndex,QVector<int>)),this,SLOT(reordonneGroup()));
 
     ui->treeView->setEditTriggers(QAbstractItemView::SelectedClicked);
     ui->treeView->resizeColumnToContents(0);
@@ -296,32 +316,32 @@ void MainWindow::ajouter_motif(){
             QString dir=model->fileInfo(index).absolutePath();
 
             QString nameGroup=model->fileInfo(index).baseName();
-             if((dir + "/" + nameGroup) !=tmpDir){
-            qDebug()<<"le namedir est "+ namedir;
-            qDebug()<<"l'emplacement du dossier est "+dir;
-            qDebug()<<"le nom du dossier est "+nameGroup;
-            if(nameGroup!="Cubicle"){
+            if((dir + "/" + nameGroup) !=tmpDir){
+                qDebug()<<"le namedir est "+ namedir;
+                qDebug()<<"l'emplacement du dossier est "+dir;
+                qDebug()<<"le nom du dossier est "+nameGroup;
+                if(nameGroup!="Cubicle"){
 
                     NouveauMotif m=NouveauMotif("New Pattern",dir+"/"+nameGroup);
 
 
 
                     new_index =model->index(tmpDir+"/workspace/Cubicle"+"/"+ nameGroup );
-                           tree();
-                            new_index =model->index(m.getNameFile());
+                    tree();
+                    new_index =model->index(m.getNameFile());
 
-                             qDebug() << "le path du pattern ajoute est "+ m.getNameFile();
-                             ui->treeView->setCurrentIndex(new_index);
-                             ui->treeView->selectionModel()->select(new_index,
-                             QItemSelectionModel::ClearAndSelect | QItemSelectionModel::Rows);
-                             ui->treeView->edit(new_index);
+                    qDebug() << "le path du pattern ajoute est "+ m.getNameFile();
+                    ui->treeView->setCurrentIndex(new_index);
+                    ui->treeView->selectionModel()->select(new_index,
+                                                           QItemSelectionModel::ClearAndSelect | QItemSelectionModel::Rows);
+                    ui->treeView->edit(new_index);
 
-            }
-            else {
-               QMessageBox::information(this,tr("warning"),"cannot add a pattern, please choose or add a group");
+                }
+                else {
+                    QMessageBox::information(this,tr("warning"),"cannot add a pattern, please choose or add a group");
+                }
             }
         }
-       }
     }
 }
 void MainWindow::new_project(){
@@ -335,34 +355,43 @@ void MainWindow::new_project(){
     }
     desactiveSelectPlan();
 
-     model = new QDirModel(this);
-     model->setReadOnly(false);
-     model->setSorting(QDir::DirsFirst | QDir::IgnoreCase | QDir::Name);
-     QModelIndex index=model->index(tmpDir);
-     model->mkdir(index,"workspace");
-        QDir dir(tmpDir+"/workspace/Cubicle");
-        if (dir.exists()){
-            //qDebug()<<"avant removeDir :"+namedir+"/Cubicle";
-            removeDir(tmpDir+"/workspace/Cubicle");
+    QModelIndex index=model->index(tmpDir);
+    QDir dir0(tmpDir+"/workspace");
+    if(!dir0.exists()){
+
+        dir0.mkpath(".");
+
+    }
+    QDir dir(tmpDir+"/workspace/Cubicle");
+    if (dir.exists()){
+
+        removeDir(tmpDir+"/workspace/Cubicle");
+        if(!dir0.exists()){
+            dir0.mkpath(".");
+
         }
-       qDebug()<<"je crée cubicle pour la 1ere fois";
-       new_index=model->index(tmpDir+"/workspace");
-       model->mkdir(new_index,"Cubicle");
-      namedir="";
-      saved=false;
+    }
+    qDebug()<<"je crée cubicle pour la 1ere fois";
+    index=model->index(tmpDir+"/workspace");
+
+    if(!dir.exists()){
+        dir.mkpath(".");
+    }
+    namedir="";
+    saved=false;
     dirOpen=2;
     emplMotif="";
     this->setWindowTitle("Cubicle") ;
-            tree();
-            ui->actionSave_as->setDisabled(false);
-            saved=false;
-            this->c=Cube();
-            deletePlanLed(1);
-            desactivePlan();
-            this->liste_vecteur3D.clear();
-            this->ui->widget->setListPoints(liste_vecteur3D);
-            ui->widget->setListPlan(liste_vecteur3D);
-            ui->actionNew_Group->setDisabled(true);
+    tree();
+    ui->actionSave_as->setDisabled(false);
+    saved=false;
+    this->c=Cube();
+    deletePlanLed(1);
+    desactivePlan();
+    this->liste_vecteur3D.clear();
+    this->ui->widget->setListPoints(liste_vecteur3D);
+    ui->widget->setListPlan(liste_vecteur3D);
+    ui->actionNew_Group->setDisabled(true);
 
 }
 
@@ -1035,57 +1064,29 @@ void MainWindow::controlSaveAs(){
 
 }
 */
-void MainWindow::removeDir(const QString& PathDir)
+bool MainWindow::removeDir(const QString& PathDir)
 {
+    bool result = true;
+    QDir dir(PathDir);
 
+    if (dir.exists(PathDir)) {
+        Q_FOREACH(QFileInfo info, dir.entryInfoList(QDir::NoDotAndDotDot | QDir::System | QDir::Hidden  | QDir::AllDirs | QDir::Files, QDir::DirsFirst)) {
+            if (info.isDir()) {
+                result = removeDir(info.absoluteFilePath());
+            }
+            else {
+                result = QFile::remove(info.absoluteFilePath());
+            }
 
- //Création de l'itérateur, on précise qu'on veut tous les sous-dossiers
- QDirIterator dirIterator(PathDir, QDirIterator::Subdirectories);
-
-  //On récupère les fichiers et dossiers grâce à l'itérateur
-  QFileInfoList fileList;
-
-  while(dirIterator.hasNext())
-  {
-      dirIterator.next();
-      fileList << dirIterator.fileInfo();
-  }
-  QString t;
-  t=QString::number(fileList.size());
-  qDebug()<<"la taille de la liste est "+t;
-  //On parcours les éléments
-  QStringList directories;
-  for(int i = fileList.count() - 1; i >=0 ; i--)
-  {
-    //Si l'élément est un fichier, on le supprime
-    if(fileList.at(i).isFile()) {
-        QFile::remove(fileList.at(i).absoluteFilePath());
-    //On stocke le dossier contenant cet élément dans un liste (si ce n'est pas déjà fait)
-    if(!directories.contains(fileList.at(i).absolutePath()))
-        directories << fileList.at(i).absolutePath();
+            if (!result) {
+                return result;
+            }
+        }
+        result = dir.rmdir(PathDir);
     }
-    else if( fileList.at(i).isDir() && (!directories.contains(fileList.at(i).completeBaseName()))){
+    return result;
 
 
-    directories << fileList.at(i).absolutePath()+"/"+fileList.at(i).completeBaseName();
-
-    qDebug()<<"j'ajoute le dossier "+fileList.at(i).completeBaseName();
-
-  }
-  }
-
-  QDir dir = QDir::root();
-
-  //Finalement, on supprime tous les dossiers
-  QString s;
-  s=QString::number(directories.size());
-  qDebug()<<"la taille de la liste dir est "+s;
-  foreach( const QString StrDir, directories)
-  {
-     qDebug()<<"je supprime le dossier "+StrDir;
-     dir.rmdir(StrDir);
-  }
-  dir.rmdir(PathDir); // on supprime finalement le dossier Cubicle.
 }
 
 

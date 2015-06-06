@@ -80,7 +80,7 @@ public:
     void connexion();
     void contextMenuEvent(QContextMenuEvent *event);
     void xCopy2 (const QString &sourcePath, const QString &destPath, const QString &name);
-    void removeDir(const QString& dirPath) ;
+    bool removeDir(const QString& dirPath) ;
     void desactiveSelectPlan();
 
 
@@ -97,7 +97,7 @@ public:
     QDirModel *model;
     QModelIndex new_index;
     QMenu* contextMenu;
-    QString namedir="";
+    QString namedir;
     QAction *insertMotif;
     QAction *insert_Group;
     QAction *deletePattern;
