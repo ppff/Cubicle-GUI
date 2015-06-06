@@ -32,6 +32,7 @@
 #include <sstream>
 #include <iostream>
 #include "gestionfichier.h"
+#include <QFile>
 
 
 #include <QPainter>
@@ -85,13 +86,13 @@ public:
     void connectPlanToDuplicate();
     void contextMenuEvent(QContextMenuEvent *event);
     void xCopy2 (const QString &sourcePath, const QString &destPath, const QString &name);
-    void removeDir(const QString& dirPath) ;
+
+    bool removeDir(const QString& dirPath) ;
     void desactiveSelectPlan(bool b);
 
     void initUi();
     void initControleur();
     void connectAction();
-
 
 
     ~MainWindow();
