@@ -49,3 +49,16 @@ QList<QVector3D> ControlPlan2D::controlLed(const QString & valeur,Cube cubeMotif
         return liste_vecteur3D;
 }
 
+
+void ControlPlan2D::desactiveSelectPlan(Ui::MainWindow *ui,bool b){
+    ui->plane1->setDisabled(b);
+    ui->plane2->setDisabled(b);
+    ui->plane3->setDisabled(b);
+    ui->plane4->setDisabled(b);
+    ui->plane5->setDisabled(b);
+    ui->plane6->setDisabled(b);
+    ui->plane7->setDisabled(b);
+    ui->plane8->setDisabled(b);
+    ui->plane9->setDisabled(b);
+}
+

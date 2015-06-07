@@ -17,7 +17,7 @@ MainWindow::MainWindow(QWidget *parent) :
     initControleur();
     connectAction();
     //connect(ui->treeView,SIGNAL(clicked(QModelIndex)),this,SLOT(reordonneGroup()));
-    desactiveSelectPlan(true);
+    this->ctlPlan.desactiveSelectPlan(ui,true);
     this->setWindowTitle("Cubicle");
     deletePlanLed(0);
     ctlCube.desactivePlan(this->ui);
@@ -69,7 +69,7 @@ void MainWindow::connectAction(){
     connect(ui->actionRaise,SIGNAL(triggered(bool)),this,SLOT(Monter()));
     connect(ui->actionLower,SIGNAL(triggered(bool)),this,SLOT(Descendre()));
     connect(ui->actionSave_as,SIGNAL(triggered(bool)),this,SLOT(controlSaveAs()));
-   connect(model,SIGNAL(dataChanged(QModelIndex,QModelIndex,QVector<int>)),this,SLOT(reordonneGroup()));
+    connect(model,SIGNAL(dataChanged(QModelIndex,QModelIndex,QVector<int>)),this,SLOT(reordonneGroup()));
     connect(ui->treeView,SIGNAL(pressed(QModelIndex)),this,SLOT(save()));
     connect(ui->actionSelect,SIGNAL(triggered(bool)),this,SLOT(selectPlanToDuplicate()));
     connect(ui->actionDuplicate,SIGNAL(triggered(bool)),this,SLOT(duplicate()));
@@ -92,7 +92,7 @@ void MainWindow::ouvrir_explorer(){
             controlSave();
         }
     }
-    desactiveSelectPlan(true);
+    this->ctlPlan.desactiveSelectPlan(ui,true);
     QString  tempdir=QFileDialog::getExistingDirectory(this, tr("Open Directory"), "/home");
     if (tempdir=="") {
         qDebug()<<tempdir;
@@ -364,8 +364,7 @@ void MainWindow::new_project(){
         }
 
     }
-    desactiveSelectPlan(true);
-
+    this->ctlPlan.desactiveSelectPlan(ui,true);
     QModelIndex index=model->index(tmpDir);
     QDir dir0(tmpDir+"/workspace");
     if(!dir0.exists()){
@@ -660,7 +659,7 @@ void MainWindow::doubleClick(){
         dirOrFile=false;
 
         //réactiver la sélection des plans
-        desactiveSelectPlan(false);
+       this->ctlPlan.desactiveSelectPlan(ui,false);
 
          QString name=model->fileInfo(index).absoluteFilePath();
          this->currentPattern=model->fileInfo(index).baseName();
@@ -680,7 +679,6 @@ void MainWindow::doubleClick(){
                     QList<QVector3D> l;
                     l=ges.parser(name,l);
                      if(!l.empty()){
-
                          this->ui->widget->setListPoints(l);
 
                          for (QVector3D u:l){
@@ -695,28 +693,12 @@ void MainWindow::doubleClick(){
 
                      }
                      //séléctionner le 1er plan par défaut et l'afficher pour guider l'utilisateur
-                      this->setNumeroPlan(ctlCube.affichePlanLed("00",this->ui,this->buttons,this->cubeMotif,this->NumeroPlan));
+                      this->setNumeroPlan(ctlCube.affichePlanLed("00",this->ui,this->buttons,this->cubeMotif));
                  }
     else {
         dirOrFile=true;
     }
 }
-}
-
-
-
-// activer ou désactiver la sélection des plans
-void MainWindow::desactiveSelectPlan(bool b){
-
-    ui->plane1->setDisabled(b);
-    ui->plane2->setDisabled(b);
-    ui->plane3->setDisabled(b);
-    ui->plane4->setDisabled(b);
-    ui->plane5->setDisabled(b);
-    ui->plane6->setDisabled(b);
-    ui->plane7->setDisabled(b);
-    ui->plane8->setDisabled(b);
-    ui->plane9->setDisabled(b);
 }
 
 
@@ -740,7 +722,7 @@ void MainWindow::allume_led(const QString & valeur){
     this->liste_vecteur3D=ctlPlan.controlLed(valeur,this->cubeMotif,this->NumeroPlan,this->liste_vecteur3D,this->ui,this->buttons);
 }
 void MainWindow::affiche_plan_Cube(const QString &valeur){
-    this->setNumeroPlan(ctlCube.affichePlanLed(valeur,this->ui,this->buttons,this->cubeMotif,this->NumeroPlan));
+    this->setNumeroPlan(ctlCube.affichePlanLed(valeur,this->ui,this->buttons,this->cubeMotif));
 }
 
 void MainWindow::selectPlanToDuplicate(){

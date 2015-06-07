@@ -88,7 +88,7 @@ public:
     void xCopy2 (const QString &sourcePath, const QString &destPath, const QString &name);
 
     bool removeDir(const QString& dirPath) ;
-    void desactiveSelectPlan(bool b);
+   // void desactiveSelectPlan(bool b);
 
     void initUi();
     void initControleur();

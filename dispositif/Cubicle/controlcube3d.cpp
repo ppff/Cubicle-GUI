@@ -18,15 +18,13 @@ void ControlCube3D::desactivePlan(Ui::MainWindow *ui){
             ui->plane9->setStyleSheet("QPushButton { background-color: rgba(240,240,240,255); }");
 }
 
-int ControlCube3D::affichePlanLed(const QString & valeur,Ui::MainWindow *ui,QPushButton* buttons[90],Cube cubeMotif,int numeroPlan){
+int ControlCube3D::affichePlanLed(const QString & valeur,Ui::MainWindow *ui,QPushButton* buttons[90],Cube cubeMotif){
 
     desactivePlan(ui);
 
     QString stnplan=valeur[1];
 
     int nplan=stnplan.toInt(0,10);
-
-    //this->setNumeroPlan(nplan);
 
     switch(nplan){
     case 0:ui->plane1->setStyleSheet("QPushButton { background-color: red; }"); break;
@@ -59,7 +57,7 @@ int ControlCube3D::affichePlanLed(const QString & valeur,Ui::MainWindow *ui,QPus
            buttons[num]->setVisible(true);
 
            Led l;
-           l=cubeMotif.getList1()->value(numeroPlan).getLed(j,i);
+           l=cubeMotif.getList1()->value(nplan).getLed(j,i);
 
            if(l.getEtat()==0){
                buttons[num]->setIcon(QIcon(":/icone/nvatomeblanc.png"));
