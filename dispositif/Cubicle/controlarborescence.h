@@ -12,6 +12,8 @@ class ControlArborescence
 public:
     ControlArborescence();
     void ctlSave(Cube cubeMotif, QString emplMotif);
+    void monter(Ui::MainWindow *ui,QDirModel *model);
+    void descendre(Ui::MainWindow *ui,QDirModel *model);
 
 };
 
