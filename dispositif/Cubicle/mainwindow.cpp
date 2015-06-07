@@ -51,6 +51,7 @@ void MainWindow::initControleur() {
     this->ctlPlan=ControlPlan2D();
     this->ctlCube=ControlCube3D();
     this->dupPlan=DuppliquerPlan();
+    this->ctlArbr=ControlArborescence();
 }
 
 
@@ -69,7 +70,7 @@ void MainWindow::connectAction(){
     connect(ui->actionLower,SIGNAL(triggered(bool)),this,SLOT(Descendre()));
     connect(ui->actionSave_as,SIGNAL(triggered(bool)),this,SLOT(controlSaveAs()));
    connect(model,SIGNAL(dataChanged(QModelIndex,QModelIndex,QVector<int>)),this,SLOT(reordonneGroup()));
-    connect(ui->treeView,SIGNAL(pressed(QModelIndex)),this,SLOT(savePattern()));
+    connect(ui->treeView,SIGNAL(pressed(QModelIndex)),this,SLOT(save()));
     connect(ui->actionSelect,SIGNAL(triggered(bool)),this,SLOT(selectPlanToDuplicate()));
     connect(ui->actionDuplicate,SIGNAL(triggered(bool)),this,SLOT(duplicate()));
 
@@ -77,14 +78,9 @@ void MainWindow::connectAction(){
 
 
 
-void MainWindow::savePattern(){
+void MainWindow::save(){
 
-    GestionFichier ges;
-    // ges.ouvrir(this->emplMotif,this->c);
-    if(this->emplMotif!=""){
-         qDebug()<<"je suis dans savePattern";
-         ges.ouvrir(this->emplMotif,this->cubeMotif);
-    }
+    this->ctlArbr.ctlSave(cubeMotif,emplMotif);
 
 }
 

@@ -47,7 +47,7 @@
 #include "nouveaumotif.h"
 #include "QMenu"
 #include "QPoint"
-
+#include "controlarborescence.h"
 #include "QDirIterator"
 #include "QDebug"
 #include <strstream>
@@ -132,6 +132,7 @@ public:
     ControlPlan2D ctlPlan;
     ControlCube3D ctlCube;
     DuppliquerPlan dupPlan;
+    ControlArborescence ctlArbr;
 
 
 
@@ -144,7 +145,7 @@ void ajouter_motif() ;
 void couper();
 void copier();
 void coller();
-void savePattern();
+void save();
  void reordonneGroup();
 //void reordonneMotif();
     void Monter();
