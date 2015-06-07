@@ -1158,25 +1158,29 @@ void MainWindow::affiche_plan_Cube(const QString &valeur){
 void MainWindow::selectPlanToDuplicate(){
     this->dupPlan.DeconnecterPlan(ui);
     connectPlanToDuplicate();
-
-    this->dupPlan.SelectPlan(this->ui,this->cubeMotif,this->NumeroPlan,this->liste_vecteur3D,this->buttons);
 }
 
 void MainWindow::choixPlanADupliquer(const QString &valeur){
     QString stnplan=valeur[1];
     int nplan=stnplan.toInt(0,10);
-    this->listePlanADupliquer.append(nplan);
-    int size=listePlanADupliquer.size();
-    QString s=QString:: number(size);
-    qDebug()<<"taille liste dup"+s;
-    this->dupPlan.colorePlan(ui,nplan);
-
+     if(!listePlanADupliquer.contains(nplan)){
+         this->listePlanADupliquer.append(nplan);
+         int size=listePlanADupliquer.size();
+         QString s=QString:: number(size);
+         qDebug()<<"taille liste dup"+s;
+         this->dupPlan.colorePlan(ui,nplan);
+     }
 }
 
 void MainWindow:: duplicate(){
-    qDebug()<<"duplicate";
-    this->dupPlan.dupliquer(ui, cubeMotif,NumeroPlan, listePlanADupliquer,liste_vecteur3D,emplMotif);
+
+    QList<QVector3D> l=this->dupPlan.dupliquer(ui, cubeMotif,NumeroPlan, listePlanADupliquer,liste_vecteur3D,emplMotif);
+
+    liste_vecteur3D=l;
+    this->ui->widget->setListPoints(liste_vecteur3D);
+    this->ui->widget->setListPlan(liste_vecteur3D);
     connectPlanToAffiche();
+    this->listePlanADupliquer.clear();
 }
 
 //connecter tous les plans au signal affiche_plan_cube
@@ -1246,6 +1250,7 @@ void MainWindow::connexion(){
         }
      connect(signalMapper1, SIGNAL(mapped(const QString &)), this, SLOT(allume_led(const QString &)));
 }
+
 
 int MainWindow::getNumeroPlan()
 {
