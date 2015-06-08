@@ -62,6 +62,7 @@
 #include <dialoghelp.h>
 #include "duppliquerplan.h"
 
+
 namespace Ui {
 class MainWindow;
 }
@@ -81,15 +82,14 @@ public:
     void deletePlanLed(int i);
     int getNumeroPlan();
     void setNumeroPlan(int i);
-    //void desactivePlan();
     void connexion();
     void connectPlanToAffiche();
     void connectPlanToDuplicate();
-    void contextMenuEvent(QContextMenuEvent *event);
     void xCopy2 (const QString &sourcePath, const QString &destPath, const QString &name);
 
+
     bool removeDir(const QString& dirPath) ;
-   // void desactiveSelectPlan(bool b);
+
      void reordonneGroup(QString namegroup);
 
     void initUi();
@@ -130,6 +130,7 @@ public:
     QList<QVector3D> liste_vecteur3D;
     QList<int> listePlanADupliquer;
     bool enfonce;
+    QDir *aDir;
 
 
     Cube cubeMotif;
@@ -138,6 +139,7 @@ public:
     ControlCube3D ctlCube;
     DuppliquerPlan dupPlan;
     ControlArborescence ctlArbr;
+
 
 
 
@@ -152,7 +154,7 @@ void copier();
 void coller();
 void save();
  void reordonneRenommage();
-//void reordonneMotif();
+
     void Monter();
     void Descendre();
     void controlQuit();
@@ -170,14 +172,17 @@ void save();
      void choixPlanADupliquer(const QString &valeur);
      void duplicate();
 
+     void ShowContextMenu(const QPoint& p);
+
     //void clignotement();
 
-protected:
-    QDir *aDir;
+
+
+
+
 
 private slots:
 void on_actionNew_Group_triggered();
-
 void on_pushButton_clicked();
 void on_pushButton_2_clicked();
 void on_pushButton_3_clicked();
