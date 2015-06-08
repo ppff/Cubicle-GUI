@@ -30,7 +30,7 @@ void GestionFichier::ouvrir(QString empl,Cube c){
 
                    x=QString::number(abs(8-cntA));
                    qDebug()<<"led ("+x+y+z+") allumé ";
-                   flux<<x+y+z<<endl;
+                   flux<<x+" "+y+" "+z<<endl;
                }
 
             }
@@ -74,8 +74,8 @@ QList<QVector3D> GestionFichier:: parser(QString empl, QList<QVector3D> list){
         Line=flux.readLine()+'\n';
         if(Line.size()>1){
                 QString sx=(QString)Line[0];
-                QString sy=(QString)Line[1];
-                QString sz=(QString)Line[2];
+                QString sy=(QString)Line[2];
+                QString sz=(QString)Line[4];
                 int x=sx.toInt(0,10);
                 int y=sy.toInt(0,10);
                 int z=sz.toInt(0,10);
