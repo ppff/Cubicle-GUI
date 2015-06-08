@@ -16,7 +16,7 @@ MainWindow::MainWindow(QWidget *parent) :
     initUi();
     initControleur();
     connectAction();
-    //connect(ui->treeView,SIGNAL(clicked(QModelIndex)),this,SLOT(reordonneGroup()));
+
     desactiveSelectPlan(true);
     this->setWindowTitle("Cubicle");
     deletePlanLed(0);
@@ -214,6 +214,8 @@ void MainWindow::contextMenuEvent(QContextMenuEvent *event){
 void MainWindow::couper(){
     copier();
     copierCouper=1;
+
+
 }
 
 void MainWindow::copier(){
@@ -228,8 +230,8 @@ void MainWindow::copier(){
     }
 }
 void MainWindow::coller(){
-     QString nameGroup;
-     if (!dirOrFile){
+    QString nameGroup;
+    if (!dirOrFile){
 
         QModelIndex index=ui->treeView->currentIndex();
         if (index.isValid()){
@@ -239,33 +241,79 @@ void MainWindow::coller(){
                 // on vérifie qu'on ne colle pas dans Cubicle(répertoire des groupes)
                 if((dir+'/'+nameGroup)!=tmpDir+"/workspace/Cubicle"){
                     QFile file(paste_element);
-                     qDebug()<<"je vais coller  :"+dir+"/"+nameGroup+"/"+nom_copie+"_copie.txt";
-                    bool valid = file.copy(dir+"/"+nameGroup+"/"+nom_copie+".txt");
+
+
                     if (copierCouper==1){
-                        QFile file(paste_element);
-                        file.remove();
+                        int dernierRang0=-1 ;
+                        int i=0;
+                        while(index.child(i,0).isValid()){
+                            dernierRang0=index.child(i,0).row();
+                            i++;
+                        }
+                        QString nouveauRang0=QString::number(dernierRang0+1);
+                        if((dernierRang0+1)<10)
+                            nouveauRang0="0"+nouveauRang0;
+                        nom_copie=nouveauRang0+nom_copie.mid(2);
+                        file.copy(dir+"/"+nameGroup+"/"+nom_copie+".txt");
+                        this->setEmpMotif(dir+"/"+nameGroup+"/"+nom_copie+".txt");
+                        qDebug()<< "le nouveau fichier apres cut paste est "+ dir+"/"+nameGroup+"/"+nom_copie+".txt";
+                        if(file.fileName()!=dir+"/"+nameGroup+"/"+nom_copie+".txt"){
+                            qDebug() << "le nom de fichier a couper est"+file.fileName();
+                            file.remove();
+                            /*QModelIndex index0=ui->treeView->
+                            QModelIndex index1= index0.parent();
+                            int i=0;
+                            while(index1.child(i,0).isValid()){
+                                QFile file(model->fileInfo(index1).absoluteFilePath());
+                                QString ii=QString::number(i);
+                                file.rename(ii+"_"+file.fileName().mid(3));
+                                 i++;
+                            }*/
 
-                        new_index=model->index(dir+"/"+nameGroup);
+
+
+                        }
+                        /*int i=0;
+                        while(index.child(i,0).isValid()){
+                        QFile file(model->fileInfo(index).absoluteFilePath());
+                        QString i=
+                        file.rename(i)
+                        i++;
+                        }*/
+
+
+
+
                         tree();
-                       index=model->index(dir+"/"+nameGroup+"/"+nom_copie+"_copie.txt");
-                        ui->treeView->setCurrentIndex(index);
-                        ui->treeView->selectionModel()->select(index,
-                        QItemSelectionModel::ClearAndSelect | QItemSelectionModel::Rows);
-                        ui->treeView->edit(index);
-
-
                     }
-                    if (!valid){
-                       qDebug()<<"coller impossible";
-                   }
+                    else {
+                        int dernierRang=-1 ;
+                        int i=0;
+                        while(index.child(i,0).isValid()){
+                         dernierRang=index.child(i,0).row();
+                        i++;
+                        }
+                        QString nouveauRang=QString::number(dernierRang+1);
+                        if((dernierRang+1)<10)
+                            nouveauRang="0"+nouveauRang;
 
-                    new_index=model->index(dir+"/"+nameGroup);
-                    tree();
-                   new_index=model->index(dir+"/"+nameGroup+"/"+nom_copie+"_copie.txt");
-                    ui->treeView->setCurrentIndex(new_index);
-                    ui->treeView->selectionModel()->select(new_index,
-                    QItemSelectionModel::ClearAndSelect | QItemSelectionModel::Rows);
-                    ui->treeView->edit(new_index);
+                        qDebug() << "le dernier rang est "+ nouveauRang;
+
+                         nom_copie=nouveauRang+nom_copie.mid(2);
+                        bool valid = file.copy(dir+"/"+nameGroup+"/"+nom_copie+"_copie.txt");
+                        tree();
+                       new_index=model->index(dir+"/"+nameGroup+"/"+nom_copie+"_copie.txt");
+                        ui->treeView->setCurrentIndex(new_index);
+                        ui->treeView->selectionModel()->select(new_index,
+                        QItemSelectionModel::ClearAndSelect | QItemSelectionModel::Rows);
+                        ui->treeView->edit(new_index);
+                        this->setEmpMotif(dir+"/"+nameGroup+"/"+nom_copie+"_copie.txt");
+
+                    if (!valid){
+                       qDebug()<<"copier coller impossible";
+                   }
+                    }
+
 
                 }
           }
@@ -337,7 +385,7 @@ void MainWindow::ajouter_motif(){
                 qDebug()<<"le nom du dossier est "+nameGroup;
                 if(nameGroup!="Cubicle"){
 
-                    NouveauMotif m=NouveauMotif("New Pattern",dir+"/"+nameGroup);
+                    NouveauMotif m=NouveauMotif("New Pattern.txt",dir+"/"+nameGroup);
 
 
 
@@ -654,6 +702,7 @@ void MainWindow::Monter(){
          }
     }
 }
+
 
 void MainWindow::Descendre(){
     QString nameGroup;
@@ -1050,9 +1099,10 @@ void MainWindow::reordonneGroup(){
     }
     else{
         qDebug()<<"je suis un fichier qui veut etre renomme mais peut pas";
-        this->setEmpMotif(pathTotalNew);
+
         QFile file(pathTotalOld);
-        file.rename(pathTotalNew);
+        file.rename(pathTotalNew+".txt");
+        this->setEmpMotif(pathTotalNew+".txt");
 
     }
 }
