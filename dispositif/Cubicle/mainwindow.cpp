@@ -161,7 +161,7 @@ void MainWindow::contextMenuEvent(QContextMenuEvent *event){
     if(dirOpen==1){
         contextMenu = new QMenu(ui->treeView);
         QModelIndex index=ui->treeView->currentIndex();
-     //   bool QWidget::underMouse ();
+
         if (model->fileInfo(index).isDir()) {
              QString s =model->fileInfo(index).absoluteFilePath();
              if(index.isValid()){
@@ -209,6 +209,7 @@ void MainWindow::contextMenuEvent(QContextMenuEvent *event){
         }
 
     contextMenu->exec(QCursor::pos());
+
     }
 }
 
@@ -487,18 +488,20 @@ void MainWindow::on_actionNew_Group_triggered()
 
 }
 
+
 void MainWindow::Monter(){
     this->ctlArbr.monter(ui,model);
+    this->setEmpMotif("");
     this->tree();
 }
 
 
 void MainWindow::Descendre(){
     this->ctlArbr.descendre(ui,model);
+    this->setEmpMotif("");
     this->tree();
-
-
 }
+
 
 void MainWindow::controlQuit(){
     if (!this->saved) {
@@ -574,7 +577,11 @@ void MainWindow::controlSaveAs(){
     QString destPath=QFileDialog::getExistingDirectory(this, tr("Save as"),"/home");
     if (destPath=="") {qDebug()<<destPath;
         return;}
-    qDebug()<<"l'origine est "+namedir;
+    QDir dir0(destPath);
+    if(dir0.dirName()=="Cubicle"){
+         QMessageBox::information(this,tr("warning"),"This directory is already named Cubicle, please choose an other directory");
+         controlSaveAs();
+    }
     qDebug()<<"la destination est"+destPath;
     QDir dir(destPath+"/Cubicle");
     if (dir.exists()) {

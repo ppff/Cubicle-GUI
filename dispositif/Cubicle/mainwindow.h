@@ -164,8 +164,8 @@ void save();
      void selectPlanToDuplicate();
      void choixPlanADupliquer(const QString &valeur);
      void duplicate();
- //    void clignotement();
 
+    //void clignotement();
 
 
 protected:
