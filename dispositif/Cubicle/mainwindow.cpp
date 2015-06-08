@@ -24,6 +24,7 @@ MainWindow::MainWindow(QWidget *parent) :
     this->setWindowTitle("Cubicle");
     deletePlanLed(0);
     ctlCube.desactivePlan(this->ui);
+    //timer = new QTimer(this);
     connexion();
     dirOpen=0;
 }
@@ -159,6 +160,7 @@ void MainWindow::contextMenuEvent(QContextMenuEvent *event){
     if(dirOpen==1){
         contextMenu = new QMenu(ui->treeView);
         QModelIndex index=ui->treeView->currentIndex();
+     //   bool QWidget::underMouse ();
         if (model->fileInfo(index).isDir()) {
              QString s =model->fileInfo(index).absoluteFilePath();
              if(index.isValid()){
@@ -1081,9 +1083,10 @@ void MainWindow::reordonneGroup(){
     }
     else{
         qDebug()<<"je suis un fichier qui veut etre renomme mais peut pas";
-        this->setEmpMotif(pathTotalNew);
+
         QFile file(pathTotalOld);
         file.rename(pathTotalNew);
+        this->setEmpMotif("");
 
     }
 }
@@ -1172,8 +1175,23 @@ void MainWindow::affiche_plan_Cube(const QString &valeur){
 void MainWindow::selectPlanToDuplicate(){
     this->dupPlan.DeconnecterPlan(ui);
     connectPlanToDuplicate();
+/*
+    dupPlan.clignotementPlan(ui,NumeroPlan);
+
+    connect(timer, SIGNAL(timeout()), this, SLOT(clignotement()));
+    timer->setInterval(1);
+    timer->start();
+
+    this->enfonce = false;
+    */
 }
 
+/*
+void MainWindow::clignotement(){
+   bool etat=dupPlan.clignotement(ui,this->enfonce);
+   this->enfonce=etat;
+
+}*/
 void MainWindow::choixPlanADupliquer(const QString &valeur){
     QString stnplan=valeur[1];
     int nplan=stnplan.toInt(0,10);
@@ -1193,6 +1211,10 @@ void MainWindow:: duplicate(){
     liste_vecteur3D=l;
     this->ui->widget->setListPoints(liste_vecteur3D);
     this->ui->widget->setListPlan(liste_vecteur3D);
+    //timer->stop();
+    //timer->disconnect(SIGNAL(timeout()));
+    //ui->plane1->setCheckable(false);
+
     connectPlanToAffiche();
     this->listePlanADupliquer.clear();
 }
