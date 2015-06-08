@@ -6,7 +6,7 @@ NouveauMotif::NouveauMotif(QString nomMotif, QString Dir)
 {
     QDir dir(Dir);
     QStringList nameFilter;
-    nameFilter<<"*.txt";
+    //nameFilter<<"*.txt";
     QFileInfoList list=dir.entryInfoList(nameFilter,QDir::Files);
     int num=list.size();
     QString snum;
@@ -14,10 +14,10 @@ NouveauMotif::NouveauMotif(QString nomMotif, QString Dir)
 
 
     if(num<10){
-        nameFile=Dir+"/0"+snum+"_"+nomMotif+".txt";
+        nameFile=Dir+"/0"+snum+"_"+nomMotif;
     }
     else if(num<100){
-        nameFile=Dir+"/"+snum+"_"+nomMotif+".txt";
+        nameFile=Dir+"/"+snum+"_"+nomMotif;
           }
 
      QFile motif(nameFile);

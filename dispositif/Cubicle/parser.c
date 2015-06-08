@@ -1,6 +1,6 @@
 #include "parser.h"
 
-
+/*
 int* parser_file(const char* name ){
 
 char chaine[LG_MAX] ;
@@ -31,7 +31,7 @@ int j;
 
 return tab;
 }
-/*
+
 main(){
 	int* tab;
 	tab=parser_file("parser.txt");
