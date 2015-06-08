@@ -496,6 +496,7 @@ void MainWindow::on_actionNew_Group_triggered()
 
 
 void MainWindow::Monter(){
+    this->ctlArbr.ctlSave(cubeMotif,emplMotif);
     this->ctlArbr.monter(ui,model);
     this->setEmpMotif("");
     this->tree();
@@ -503,6 +504,7 @@ void MainWindow::Monter(){
 
 
 void MainWindow::Descendre(){
+    this->ctlArbr.ctlSave(cubeMotif,emplMotif);
     this->ctlArbr.descendre(ui,model);
     this->setEmpMotif("");
     this->tree();
