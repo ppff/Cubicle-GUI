@@ -8,7 +8,7 @@ public:
     ControlCube3D();
     void desactivePlan(Ui::MainWindow *ui);
     int affichePlanLed(const QString & valeur,Ui::MainWindow *ui,
-                       QPushButton* buttons[90],Cube cubeMotif,int numeroPlan);
+                       QPushButton* buttons[90],Cube cubeMotif);
 };
 
 #endif // CONTROLCUBE3D_H

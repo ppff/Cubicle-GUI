@@ -29,7 +29,7 @@ Led** Plan::getMatrice(){
     return this->led_list;
 }
 
-void Plan::updatePlan(const Led l, const int i, const int j,const int nplan ){
+void Plan::updatePlan(const Led l, const int i, const int j){
 
       this->setLed(l,i,j);
 }

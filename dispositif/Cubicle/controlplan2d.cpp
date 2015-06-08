@@ -28,7 +28,7 @@ QList<QVector3D> ControlPlan2D::controlLed(const QString & valeur,Cube cubeMotif
         l=cubeMotif.getList1()->value(NumeroPlan).getLed(lig,col);
         l.modifierEtat();
         Plan p1=cubeMotif.getList1()->value(NumeroPlan);
-        p1.updatePlan(l,lig,col,NumeroPlan);
+        p1.updatePlan(l,lig,col);
         cubeMotif.updateCube(p1,NumeroPlan);
         QVector3D v;
         v=QVector3D(abs(8-col),NumeroPlan,abs(8-lig));
@@ -47,5 +47,18 @@ QList<QVector3D> ControlPlan2D::controlLed(const QString & valeur,Cube cubeMotif
         }
         afficheLed(buttons,lig,col,l.getEtat());
         return liste_vecteur3D;
+}
+
+
+void ControlPlan2D::desactiveSelectPlan(Ui::MainWindow *ui,bool b){
+    ui->plane1->setDisabled(b);
+    ui->plane2->setDisabled(b);
+    ui->plane3->setDisabled(b);
+    ui->plane4->setDisabled(b);
+    ui->plane5->setDisabled(b);
+    ui->plane6->setDisabled(b);
+    ui->plane7->setDisabled(b);
+    ui->plane8->setDisabled(b);
+    ui->plane9->setDisabled(b);
 }
 

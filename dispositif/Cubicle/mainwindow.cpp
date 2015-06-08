@@ -7,17 +7,20 @@ using namespace std;
 
 MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent),
+
+
+
+    ui(new Ui::MainWindow),
+    model(new QDirModel(this)),
     namedir(""),
     emplMotif(""),
-    tmpDir(QDir::tempPath()),
-    ui(new Ui::MainWindow),
-    model(new QDirModel(this))
+    tmpDir(QDir::tempPath())
 {
     initUi();
     initControleur();
     connectAction();
-
-    desactiveSelectPlan(true);
+    //connect(ui->treeView,SIGNAL(clicked(QModelIndex)),this,SLOT(reordonneGroup()));
+    this->ctlPlan.desactiveSelectPlan(ui,true);
     this->setWindowTitle("Cubicle");
     deletePlanLed(0);
     ctlCube.desactivePlan(this->ui);
@@ -51,6 +54,7 @@ void MainWindow::initControleur() {
     this->ctlPlan=ControlPlan2D();
     this->ctlCube=ControlCube3D();
     this->dupPlan=DuppliquerPlan();
+    this->ctlArbr=ControlArborescence();
 }
 
 
@@ -68,8 +72,8 @@ void MainWindow::connectAction(){
     connect(ui->actionRaise,SIGNAL(triggered(bool)),this,SLOT(Monter()));
     connect(ui->actionLower,SIGNAL(triggered(bool)),this,SLOT(Descendre()));
     connect(ui->actionSave_as,SIGNAL(triggered(bool)),this,SLOT(controlSaveAs()));
-   connect(model,SIGNAL(dataChanged(QModelIndex,QModelIndex,QVector<int>)),this,SLOT(reordonneGroup()));
-    connect(ui->treeView,SIGNAL(pressed(QModelIndex)),this,SLOT(savePattern()));
+    connect(model,SIGNAL(dataChanged(QModelIndex,QModelIndex,QVector<int>)),this,SLOT(reordonneGroup()));
+    connect(ui->treeView,SIGNAL(pressed(QModelIndex)),this,SLOT(save()));
     connect(ui->actionSelect,SIGNAL(triggered(bool)),this,SLOT(selectPlanToDuplicate()));
     connect(ui->actionDuplicate,SIGNAL(triggered(bool)),this,SLOT(duplicate()));
 
@@ -77,14 +81,9 @@ void MainWindow::connectAction(){
 
 
 
-void MainWindow::savePattern(){
+void MainWindow::save(){
 
-    GestionFichier ges;
-    // ges.ouvrir(this->emplMotif,this->c);
-    if(this->emplMotif!=""){
-         qDebug()<<"je suis dans savePattern";
-         ges.ouvrir(this->emplMotif,this->cubeMotif);
-    }
+    this->ctlArbr.ctlSave(cubeMotif,emplMotif);
 
 }
 
@@ -96,7 +95,7 @@ void MainWindow::ouvrir_explorer(){
             controlSave();
         }
     }
-    desactiveSelectPlan(true);
+    this->ctlPlan.desactiveSelectPlan(ui,true);
     QString  tempdir=QFileDialog::getExistingDirectory(this, tr("Open Directory"), "/home");
     if (tempdir=="") {
         qDebug()<<tempdir;
@@ -416,8 +415,7 @@ void MainWindow::new_project(){
         }
 
     }
-    desactiveSelectPlan(true);
-
+    this->ctlPlan.desactiveSelectPlan(ui,true);
     QModelIndex index=model->index(tmpDir);
     QDir dir0(tmpDir+"/workspace");
     if(!dir0.exists()){
@@ -494,423 +492,15 @@ void MainWindow::on_actionNew_Group_triggered()
 }
 
 void MainWindow::Monter(){
-    QString nameGroup;
-    QString newNameGroup;
-    QString nameGroupDessus;
-    QString nameMotif;
-    QString newNameMotif;
-    QString nameMotifDessus;
-    QModelIndex index=ui->treeView->currentIndex();
-    QModelIndex indexMoinsUn=ui->treeView->indexAbove(index);
-
-    if (index.isValid()){
-           if (model->fileInfo(index).isDir()) {
-               nameGroup=model->fileInfo(index).baseName();
-
-               if (nameGroup=="Cubicle"){
-                   return;
-               }
-
-               while(model->fileInfo(indexMoinsUn).isFile()){
-                   indexMoinsUn=ui->treeView->indexAbove(indexMoinsUn);
-               }
-
-                QString dir=model->fileInfo(index).absolutePath();
-
-
-                nameGroupDessus=model->fileInfo(indexMoinsUn).baseName();
-                qDebug()<<nameGroup;
-                qDebug()<<dir;
-
-
-                QString numero = nameGroup.left(2);
-                QString nameRest = nameGroup.mid(3);
-                QString numeroDessus = nameGroupDessus.left(2);
-                QString nameDessusRest = nameGroupDessus.mid(3);
-                int num = numero.toInt();
-                int numDessus = numeroDessus.toInt();
-                if(num==0){
-                    return;
-                }
-                if (num<11){
-                    newNameGroup = "0"+QString::number(num-1)+"_"+nameRest;
-                }else {
-                    newNameGroup = QString::number(num-1)+"_"+nameRest;
-                }
-                QString pathTotalOld = dir+"/"+nameGroup;
-                QString pathTotalNew = dir+"/"+newNameGroup;
-
-                if (num<10){
-                    if (numDessus==num-1){
-                        QString nameGroupMoinsUn = "0"+QString::number(num-1)+"_"+nameDessusRest;
-                        qDebug()<<nameGroupMoinsUn;
-                        QString totalnameGroupMoinsUn = dir+"/"+nameGroupMoinsUn;
-
-                        QString nameGroupMoinsUnChange = nameDessusRest;
-                        QString totalnameGroupMoinsUnChange = dir+"/"+nameGroupMoinsUnChange;
-
-                        QDir directory(totalnameGroupMoinsUn);
-                        directory.rename(totalnameGroupMoinsUn,totalnameGroupMoinsUnChange);
-
-                        QDir dir1(pathTotalOld);
-                        dir1.rename(pathTotalOld, pathTotalNew);
-
-                        QString nameGroupMoinsUnChangeCorrect = "0"+QString::number(num)+"_"+nameDessusRest;
-                        qDebug()<<nameGroupMoinsUnChangeCorrect;
-                        QString totalnameGroupMoinsUnCorrect = dir+"/"+nameGroupMoinsUnChangeCorrect;
-                        QDir dir2(totalnameGroupMoinsUnCorrect);
-                        dir2.rename(totalnameGroupMoinsUnChange, totalnameGroupMoinsUnCorrect);
-                        dir2.setSorting(QDir::Name);
-                    }
-                }else if(num==10){
-                    if (numDessus==num-1){
-                        QString nameGroupMoinsUn = "0"+QString::number(num-1)+"_"+nameDessusRest;
-                        QString totalnameGroupMoinsUn = dir+"/"+nameGroupMoinsUn;
-
-                        QString nameGroupMoinsUnChange = nameDessusRest;
-                        QString totalnameGroupMoinsUnChange = dir+"/"+nameGroupMoinsUnChange;
-
-                        QDir directory(totalnameGroupMoinsUn);
-                        directory.rename(totalnameGroupMoinsUn,totalnameGroupMoinsUnChange);
-
-                        QDir dir1(pathTotalOld);
-                        dir1.rename(pathTotalOld, pathTotalNew);
-
-                        QString nameGroupMoinsUnChangeCorrect = QString::number(num)+"_"+nameDessusRest;
-                        QString totalnameGroupMoinsUnCorrect = dir+"/"+nameGroupMoinsUnChangeCorrect;
-                        QDir dir2(totalnameGroupMoinsUnCorrect);
-                        dir2.rename(totalnameGroupMoinsUnChange, totalnameGroupMoinsUnCorrect);
-                        dir2.setSorting(QDir::Name);
-                    }
-                }else if(num>10){
-                    if (numDessus==num-1){
-                        QString nameGroupMoinsUn = QString::number(num-1)+"_"+nameDessusRest;
-                        QString totalnameGroupMoinsUn = dir+"/"+nameGroupMoinsUn;
-
-                        QString nameGroupMoinsUnChange = nameDessusRest;
-                        QString totalnameGroupMoinsUnChange = dir+"/"+nameGroupMoinsUnChange;
-
-                        QDir directory(totalnameGroupMoinsUn);
-                        directory.rename(totalnameGroupMoinsUn,totalnameGroupMoinsUnChange);
-
-                        QDir dir1(pathTotalOld);
-                        dir1.rename(pathTotalOld, pathTotalNew);
-
-                        QString nameGroupMoinsUnChangeCorrect = QString::number(num)+"_"+nameDessusRest;
-                        QString totalnameGroupMoinsUnCorrect = dir+"/"+nameGroupMoinsUnChangeCorrect;
-                        QDir dir2(totalnameGroupMoinsUnCorrect);
-                        dir2.rename(totalnameGroupMoinsUnChange, totalnameGroupMoinsUnCorrect);
-                        dir2.setSorting(QDir::Name);
-                    }
-                }
-                this->tree();
-         }else{
-                QString dir=model->fileInfo(index).absolutePath();
-                nameMotif=model->fileInfo(index).baseName();
-                nameMotifDessus=model->fileInfo(indexMoinsUn).baseName();
-                qDebug()<<nameMotif;
-                 qDebug()<<"hahahahhahhahhahhahhah";
-                qDebug()<<dir;
-
-                QString numero = nameMotif.left(2);
-                QString nameRest = nameMotif.mid(3);
-                QString numeroDessus = nameMotifDessus.left(2);
-                QString nameDessusRest = nameMotifDessus.mid(3);
-                int num = numero.toInt();
-                int numDessus = numeroDessus.toInt();
-                if(num==0){
-                    return;
-                }
-                if (num<11){
-                    newNameMotif = "0"+QString::number(num-1)+"_"+nameRest;
-                }else {
-                    newNameMotif = QString::number(num-1)+"_"+nameRest;
-                }
-                QString pathTotalOld = dir+"/"+nameMotif+".txt";
-                QString pathTotalNew = dir+"/"+newNameMotif+".txt";
-
-                if (num<10){
-                    if (numDessus==num-1){
-                        QString nameMotifMoinsUn = "0"+QString::number(num-1)+"_"+nameDessusRest+".txt";
-                        qDebug()<<"hahahahhahhahhahhahhah";
-                        qDebug()<<nameMotifMoinsUn;
-                        QString totalnameMotifMoinsUn = dir+"/"+nameMotifMoinsUn;
-                         qDebug()<<"ooooooooooooooooooooooo";
-                        qDebug()<<totalnameMotifMoinsUn;
-
-                        QString nameMotifMoinsUnChange = nameDessusRest;
-                        QString totalnameMotifMoinsUnChange = dir+"/"+nameMotifMoinsUnChange+".txt";
-                         qDebug()<<"avdfgdfgdffdgdfgfdgdfgd";
-                        qDebug()<<totalnameMotifMoinsUnChange;
-
-                        QFile directory(totalnameMotifMoinsUn);
-                        directory.rename(totalnameMotifMoinsUnChange);
-
-                        QFile dir1(pathTotalOld);
-                        dir1.rename(pathTotalOld, pathTotalNew);
-
-                        QString nameMotifMoinsUnChangeCorrect = "0"+QString::number(num)+"_"+nameDessusRest+".txt";
-                        qDebug()<<"hahahahhahhahhahhahhah";
-                        qDebug()<<nameMotifMoinsUnChangeCorrect;
-                        QString totalnameMotifMoinsUnCorrect = dir+"/"+nameMotifMoinsUnChangeCorrect;
-                        qDebug()<<"aaaaaaaaaaaaaaaaaaaaaaaaaaa";
-                        qDebug()<<totalnameMotifMoinsUnCorrect;
-                        QFile dir2(totalnameMotifMoinsUnChange);
-                        dir2.rename(totalnameMotifMoinsUnChange, totalnameMotifMoinsUnCorrect);
-                    }
-                }else if(num==10){
-                    if (numDessus==num-1){
-                        QString nameMotifMoinsUn = "0"+QString::number(num-1)+"_"+nameDessusRest+".txt";
-                        QString totalnameMotifMoinsUn = dir+"/"+nameMotifMoinsUn;
-
-                        QString nameMotifMoinsUnChange = nameDessusRest;
-                        QString totalnameMotifMoinsUnChange = dir+"/"+nameMotifMoinsUnChange+".txt";
-
-                        QFile directory(totalnameMotifMoinsUn);
-                        directory.rename(totalnameMotifMoinsUn,totalnameMotifMoinsUnChange);
-
-                        QFile dir1(pathTotalOld);
-                        dir1.rename(pathTotalOld, pathTotalNew);
-
-                        QString nameMotifMoinsUnChangeCorrect = QString::number(num)+"_"+nameDessusRest+".txt";
-                        QString totalnameMotifMoinsUnCorrect = dir+"/"+nameMotifMoinsUnChangeCorrect;
-                        QFile dir2(totalnameMotifMoinsUnCorrect);
-                        dir2.rename(totalnameMotifMoinsUnChange, totalnameMotifMoinsUnCorrect);
-                    }
-                }else if(num>10){
-                    if (numDessus==num-1){
-                        QString nameMotifMoinsUn = QString::number(num-1)+"_"+nameDessusRest+".txt";
-                        QString totalnameMotifMoinsUn = dir+"/"+nameMotifMoinsUn;
-
-                        QString nameMotifMoinsUnChange = nameDessusRest;
-                        QString totalnameMotifMoinsUnChange = dir+"/"+nameMotifMoinsUnChange+".txt";
-
-                        QFile directory(totalnameMotifMoinsUn);
-                        directory.rename(totalnameMotifMoinsUn,totalnameMotifMoinsUnChange);
-
-                        QFile dir1(pathTotalOld);
-                        dir1.rename(pathTotalOld, pathTotalNew);
-
-                        QString nameMotifMoinsUnChangeCorrect = QString::number(num)+"_"+nameDessusRest+".txt";
-                        QString totalnameMotifMoinsUnCorrect = dir+"/"+nameMotifMoinsUnChangeCorrect;
-                        QFile dir2(totalnameMotifMoinsUnCorrect);
-                        dir2.rename(totalnameMotifMoinsUnChange, totalnameMotifMoinsUnCorrect);
-                    }
-                }
-                this->tree();
-
-         }
-    }
+    this->ctlArbr.monter(ui,model);
+    this->tree();
 }
 
 
 void MainWindow::Descendre(){
-    QString nameGroup;
-    QString newNameGroup;
-    QString nameGroupDessous;
-    QString nameMotif;
-    QString newNameMotif;
-    QString nameMotifDessous;
-    QModelIndex index=ui->treeView->currentIndex();
-    QModelIndex indexPlusUn=ui->treeView->indexBelow(index);
+    this->ctlArbr.descendre(ui,model);
+    this->tree();
 
-       if (index.isValid()){
-           if (model->fileInfo(index).isDir()) {
-                nameGroup=model->fileInfo(index).baseName();
-                if (nameGroup=="Cubicle"){
-                    return;
-                }
-                QString dir=model->fileInfo(index).absolutePath();
-
-                QDir temp(dir);
-                QFileInfoList entries = temp.entryInfoList(QDir::NoDotAndDotDot | QDir::AllEntries);
-                int m=entries.size();
-                QString numero = nameGroup.left(2);
-                int num = numero.toInt();
-                if(num==m-1){
-                    qDebug()<<"Les numeros sont egaux";
-                    return;
-                }
-
-                while(model->fileInfo(indexPlusUn).isFile()){
-                    indexPlusUn=ui->treeView->indexBelow(indexPlusUn);
-                }
-                nameGroupDessous=model->fileInfo(indexPlusUn).baseName();
-                QString nameRest = nameGroup.mid(3);
-                QString numeroDessous = nameGroupDessous.left(2);
-                QString nameDessousRest = nameGroupDessous.mid(3);
-
-                int numDessous = numeroDessous.toInt();
-
-
-                if (num<9){
-                    newNameGroup = "0"+QString::number(num+1)+"_"+nameRest;
-                }else {
-                    newNameGroup = QString::number(num+1)+"_"+nameRest;
-                }
-                QString pathTotalOld = dir+"/"+nameGroup;
-                QString pathTotalNew = dir+"/"+newNameGroup;
-
-                if (num<9){
-                    if (numDessous==num+1){
-                        QString nameGroupPlusUn = "0"+QString::number(num+1)+"_"+nameDessousRest;
-                        qDebug()<<nameGroupPlusUn;
-                        QString totalnameGroupPlusUn = dir+"/"+nameGroupPlusUn;
-
-                        QString nameGroupPlusUnChange = nameDessousRest;
-                        QString totalnameGroupPlusUnChange = dir+"/"+nameGroupPlusUnChange;
-
-                        QDir directory(totalnameGroupPlusUn);
-                        directory.rename(totalnameGroupPlusUn,totalnameGroupPlusUnChange);
-
-                        QDir dir1(pathTotalOld);
-                        dir1.rename(pathTotalOld, pathTotalNew);
-
-                        QString nameGroupPlusUnChangeCorrect = "0"+QString::number(num)+"_"+nameDessousRest;
-                        qDebug()<<nameGroupPlusUnChangeCorrect;
-                        QString totalnameGroupPlusUnCorrect = dir+"/"+nameGroupPlusUnChangeCorrect;
-                        QDir dir2(totalnameGroupPlusUnCorrect);
-                        dir2.rename(totalnameGroupPlusUnChange, totalnameGroupPlusUnCorrect);
-                        dir2.setSorting(QDir::Name);
-                    }
-                }else if(num==9){
-                    if (numDessous==num+1){
-                        QString nameGroupPlusUn = QString::number(num+1)+"_"+nameDessousRest;
-                        QString totalnameGroupPlusUn = dir+"/"+nameGroupPlusUn;
-
-                        QString nameGroupPlusUnChange = nameDessousRest;
-                        QString totalnameGroupPlusUnChange = dir+"/"+nameGroupPlusUnChange;
-
-                        QDir directory(totalnameGroupPlusUn);
-                        directory.rename(totalnameGroupPlusUn,totalnameGroupPlusUnChange);
-
-                        QDir dir1(pathTotalOld);
-                        dir1.rename(pathTotalOld, pathTotalNew);
-
-                        QString nameGroupPlusUnChangeCorrect = "0"+QString::number(num)+"_"+nameDessousRest;
-                        QString totalnameGroupPlusUnCorrect = dir+"/"+nameGroupPlusUnChangeCorrect;
-                        QDir dir2(totalnameGroupPlusUnCorrect);
-                        dir2.rename(totalnameGroupPlusUnChange, totalnameGroupPlusUnCorrect);
-                        dir2.setSorting(QDir::Name);
-                    }
-                }else if(num>9){
-                    if (numDessous==num+1){
-                        QString nameGroupPlusUn = QString::number(num+1)+"_"+nameDessousRest;
-                        QString totalnameGroupPlusUn = dir+"/"+nameGroupPlusUn;
-
-                        QString nameGroupPlusUnChange = nameDessousRest;
-                        QString totalnameGroupPlusUnChange = dir+"/"+nameGroupPlusUnChange;
-
-                        QDir directory(totalnameGroupPlusUn);
-                        directory.rename(totalnameGroupPlusUn,totalnameGroupPlusUnChange);
-
-                        QDir dir1(pathTotalOld);
-                        dir1.rename(pathTotalOld, pathTotalNew);
-
-                        QString nameGroupPlusUnChangeCorrect = QString::number(num)+"_"+nameDessousRest;
-                        QString totalnameGroupPlusUnCorrect = dir+"/"+nameGroupPlusUnChangeCorrect;
-                        QDir dir2(totalnameGroupPlusUnCorrect);
-                        dir2.rename(totalnameGroupPlusUnChange, totalnameGroupPlusUnCorrect);
-                        dir2.setSorting(QDir::Name);
-                    }
-                }
-
-                this->tree();
-
-         }else{
-               QString dir=model->fileInfo(index).absolutePath();
-               nameMotif=model->fileInfo(index).baseName();
-               QDir temp(dir);
-               QFileInfoList entries = temp.entryInfoList(QDir::NoDotAndDotDot | QDir::AllEntries);
-               int m=entries.size();
-               QString numero = nameMotif.left(2);
-               int num = numero.toInt();
-               if(num==m-1){
-                   qDebug()<<"Les numeros sont egaux";
-                   return;
-               }
-
-               nameMotifDessous=model->fileInfo(indexPlusUn).baseName();
-               QString nameRest = nameMotif.mid(3);
-               QString numeroDessous = nameMotifDessous.left(2);
-               QString nameDessousRest = nameMotifDessous.mid(3);
-
-               int numDessous = numeroDessous.toInt();
-
-
-               if (num<9){
-                   newNameMotif = "0"+QString::number(num+1)+"_"+nameRest;
-               }else {
-                   newNameMotif = QString::number(num+1)+"_"+nameRest;
-               }
-               QString pathTotalOld = dir+"/"+nameMotif+".txt";
-               QString pathTotalNew = dir+"/"+newNameMotif+".txt";
-
-               if (num<9){
-                   if (numDessous==num+1){
-                       QString nameMotifPlusUn = "0"+QString::number(num+1)+"_"+nameDessousRest+".txt";
-                       qDebug()<<nameMotifPlusUn;
-                       QString totalnameMotifPlusUn = dir+"/"+nameMotifPlusUn;
-
-                       QString nameMotifPlusUnChange = nameDessousRest;
-                       QString totalnameMotifPlusUnChange = dir+"/"+nameMotifPlusUnChange+".txt";
-
-                       QFile directory(totalnameMotifPlusUn);
-                       directory.rename(totalnameMotifPlusUn,totalnameMotifPlusUnChange);
-
-                       QFile dir1(pathTotalOld);
-                       dir1.rename(pathTotalOld, pathTotalNew);
-
-                       QString nameMotifPlusUnChangeCorrect = "0"+QString::number(num)+"_"+nameDessousRest+".txt";
-                       qDebug()<<nameMotifPlusUnChangeCorrect;
-                       QString totalnameMotifPlusUnCorrect = dir+"/"+nameMotifPlusUnChangeCorrect;
-                       QFile dir2(totalnameMotifPlusUnCorrect);
-                       dir2.rename(totalnameMotifPlusUnChange, totalnameMotifPlusUnCorrect);
-                   }
-               }else if(num==9){
-                   if (numDessous==num+1){
-                       QString nameMotifPlusUn = QString::number(num+1)+"_"+nameDessousRest+".txt";
-                       QString totalnameMotifPlusUn = dir+"/"+nameMotifPlusUn;
-
-                       QString nameMotifPlusUnChange = nameDessousRest;
-                       QString totalnameMotifPlusUnChange = dir+"/"+nameMotifPlusUnChange+".txt";
-
-                       QFile directory(totalnameMotifPlusUn);
-                       directory.rename(totalnameMotifPlusUn,totalnameMotifPlusUnChange);
-
-                       QFile dir1(pathTotalOld);
-                       dir1.rename(pathTotalOld, pathTotalNew);
-
-                       QString nameMotifPlusUnChangeCorrect = "0"+QString::number(num)+"_"+nameDessousRest+".txt";
-                       QString totalnameMotifPlusUnCorrect = dir+"/"+nameMotifPlusUnChangeCorrect;
-                       QFile dir2(totalnameMotifPlusUnCorrect);
-                       dir2.rename(totalnameMotifPlusUnChange, totalnameMotifPlusUnCorrect);
-                   }
-               }else if(num>9){
-                   if (numDessous==num+1){
-                       QString nameMotifPlusUn = QString::number(num+1)+"_"+nameDessousRest+".txt";
-                       QString totalnameMotifPlusUn = dir+"/"+nameMotifPlusUn;
-
-                       QString nameMotifPlusUnChange = nameDessousRest;
-                       QString totalnameMotifPlusUnChange = dir+"/"+nameMotifPlusUnChange+".txt";
-
-                       QFile directory(totalnameMotifPlusUn);
-                       directory.rename(totalnameMotifPlusUn,totalnameMotifPlusUnChange);
-
-                       QFile dir1(pathTotalOld);
-                       dir1.rename(pathTotalOld, pathTotalNew);
-
-                       QString nameMotifPlusUnChangeCorrect = QString::number(num)+"_"+nameDessousRest+".txt";
-                       QString totalnameMotifPlusUnCorrect = dir+"/"+nameMotifPlusUnChangeCorrect;
-                       QFile dir2(totalnameMotifPlusUnCorrect);
-                       dir2.rename(totalnameMotifPlusUnChange, totalnameMotifPlusUnCorrect);
-                   }
-               }
-
-               this->tree();
-         }
-
-   }
 
 }
 
@@ -1122,7 +712,7 @@ void MainWindow::doubleClick(){
         dirOrFile=false;
 
         //réactiver la sélection des plans
-        desactiveSelectPlan(false);
+       this->ctlPlan.desactiveSelectPlan(ui,false);
 
          QString name=model->fileInfo(index).absoluteFilePath();
          this->currentPattern=model->fileInfo(index).baseName();
@@ -1142,14 +732,13 @@ void MainWindow::doubleClick(){
                     QList<QVector3D> l;
                     l=ges.parser(name,l);
                      if(!l.empty()){
-
                          this->ui->widget->setListPoints(l);
 
                          for (QVector3D u:l){
                            Led l=this->cubeMotif.getList1()->value(u.y()).getLed(fabs(8-u.z()),fabs(8-u.x()));
                            l.modifierEtat();
                            Plan p=this->cubeMotif.getList1()->value(u.y());
-                           p.updatePlan(l,fabs(8-u.z()),fabs(8-u.x()),u.y());
+                           p.updatePlan(l,fabs(8-u.z()),fabs(8-u.x()));
                            this->cubeMotif.updateCube(p,u.y());
                            liste_vecteur3D.append(u);
                            this->ui->widget->setListPoints(liste_vecteur3D);
@@ -1157,28 +746,12 @@ void MainWindow::doubleClick(){
 
                      }
                      //séléctionner le 1er plan par défaut et l'afficher pour guider l'utilisateur
-                      this->setNumeroPlan(ctlCube.affichePlanLed("00",this->ui,this->buttons,this->cubeMotif,this->NumeroPlan));
+                      this->setNumeroPlan(ctlCube.affichePlanLed("00",this->ui,this->buttons,this->cubeMotif));
                  }
     else {
         dirOrFile=true;
     }
 }
-}
-
-
-
-// activer ou désactiver la sélection des plans
-void MainWindow::desactiveSelectPlan(bool b){
-
-    ui->plane1->setDisabled(b);
-    ui->plane2->setDisabled(b);
-    ui->plane3->setDisabled(b);
-    ui->plane4->setDisabled(b);
-    ui->plane5->setDisabled(b);
-    ui->plane6->setDisabled(b);
-    ui->plane7->setDisabled(b);
-    ui->plane8->setDisabled(b);
-    ui->plane9->setDisabled(b);
 }
 
 
@@ -1202,31 +775,35 @@ void MainWindow::allume_led(const QString & valeur){
     this->liste_vecteur3D=ctlPlan.controlLed(valeur,this->cubeMotif,this->NumeroPlan,this->liste_vecteur3D,this->ui,this->buttons);
 }
 void MainWindow::affiche_plan_Cube(const QString &valeur){
-    this->setNumeroPlan(ctlCube.affichePlanLed(valeur,this->ui,this->buttons,this->cubeMotif,this->NumeroPlan));
+    this->setNumeroPlan(ctlCube.affichePlanLed(valeur,this->ui,this->buttons,this->cubeMotif));
 }
 
 void MainWindow::selectPlanToDuplicate(){
     this->dupPlan.DeconnecterPlan(ui);
     connectPlanToDuplicate();
-
-    this->dupPlan.SelectPlan(this->ui,this->cubeMotif,this->NumeroPlan,this->liste_vecteur3D,this->buttons);
 }
 
 void MainWindow::choixPlanADupliquer(const QString &valeur){
     QString stnplan=valeur[1];
     int nplan=stnplan.toInt(0,10);
-    this->listePlanADupliquer.append(nplan);
-    int size=listePlanADupliquer.size();
-    QString s=QString:: number(size);
-    qDebug()<<"taille liste dup"+s;
-    this->dupPlan.colorePlan(ui,nplan);
-
+     if(!listePlanADupliquer.contains(nplan)){
+         this->listePlanADupliquer.append(nplan);
+         int size=listePlanADupliquer.size();
+         QString s=QString:: number(size);
+         qDebug()<<"taille liste dup"+s;
+         this->dupPlan.colorePlan(ui,nplan);
+     }
 }
 
 void MainWindow:: duplicate(){
-    qDebug()<<"duplicate";
-    this->dupPlan.dupliquer(ui, cubeMotif,NumeroPlan, listePlanADupliquer,liste_vecteur3D,emplMotif);
+
+    QList<QVector3D> l=this->dupPlan.dupliquer(ui, cubeMotif,NumeroPlan, listePlanADupliquer,liste_vecteur3D,emplMotif);
+
+    liste_vecteur3D=l;
+    this->ui->widget->setListPoints(liste_vecteur3D);
+    this->ui->widget->setListPlan(liste_vecteur3D);
     connectPlanToAffiche();
+    this->listePlanADupliquer.clear();
 }
 
 //connecter tous les plans au signal affiche_plan_cube
@@ -1296,6 +873,7 @@ void MainWindow::connexion(){
         }
      connect(signalMapper1, SIGNAL(mapped(const QString &)), this, SLOT(allume_led(const QString &)));
 }
+
 
 int MainWindow::getNumeroPlan()
 {

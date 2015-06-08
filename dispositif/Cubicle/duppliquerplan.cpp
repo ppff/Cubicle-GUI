@@ -3,12 +3,6 @@
 DuppliquerPlan::DuppliquerPlan()
 {
 }
-void DuppliquerPlan::SelectPlan(Ui::MainWindow *ui,Cube c, int n,QList<QVector3D> l, QPushButton* buttons[90]){
-    QList<int> listePlanADupliquer;
-    listePlanADupliquer.clear();
-
-}
-
 //déconnecter tous les plans du signal affichePlanLed
 void DuppliquerPlan:: DeconnecterPlan(Ui::MainWindow *ui){
     ui->plane1->disconnect(SIGNAL(clicked()));
@@ -22,7 +16,7 @@ void DuppliquerPlan:: DeconnecterPlan(Ui::MainWindow *ui){
     ui->plane9->disconnect(SIGNAL(clicked()));
 }
 
-
+//colorer les plans choisis à dupliquer en jaune
 void DuppliquerPlan::colorePlan(Ui::MainWindow *ui,int nplan){
 
     switch(nplan){
@@ -53,57 +47,61 @@ void DuppliquerPlan:: decolorePlan(Ui::MainWindow *ui,int nplan){
 
 }
 
-QList<QVector3D> DuppliquerPlan:: parcoursCube(int NumeroPlan, QList<QVector3D> liste_vecteur3D,Cube cubeMotif,int nplan){
+//mise à jour de la liste de vecteurs 3D après chaque duplication
+QList<QVector3D> DuppliquerPlan:: parcoursCube(int NumeroPlanADupliquer, QList<QVector3D> liste_vecteur3D,Cube cubeMotif,int nplan){
 
     for(int i=0;i<9;i++){
         for (int j=0;j<9;j++){
-             Led led=cubeMotif.getList1()->value(NumeroPlan).getLed(i,j);
+             Led led=cubeMotif.getList1()->value(NumeroPlanADupliquer).getLed(i,j);
              if(led.getEtat()==1){
                  QVector3D v;
                  v=QVector3D(abs(8-j),nplan,abs(8-i));
-                 liste_vecteur3D.append(v);
-                 int size=liste_vecteur3D.size();
-                 QString s=QString::number(size);
-                 qDebug()<<"taille de liste vecteur3D "+s;
-                 cubeMotif.getList1()->value(nplan).getLed(i,j).modifierEtat();
+                 if(!liste_vecteur3D.contains(v)){
+                     liste_vecteur3D.append(v);
+                     int size=liste_vecteur3D.size();
+                     QString s=QString::number(size);
+                     qDebug()<<"taille de liste vecteur3D "+s;
+                     cubeMotif.getList1()->value(nplan).getLed(i,j).modifierEtat();
+                 }
+
              }
         }
     }
     return liste_vecteur3D;
 }
 
-
-Cube DuppliquerPlan::updateCube(Cube nouveauCube,int NumeroPlan,int nplan){
+//mise à jour de l'instance du cube après chaque duplication
+Cube DuppliquerPlan::updateCube(Cube nouveauCube,int NumeroPlanADupliquer,int nplan){
 
     for(int i=0;i<9;i++){
         for (int j=0;j<9;j++){
-             Led led=nouveauCube.getList1()->value(NumeroPlan).getLed(i,j);
+             Led led=nouveauCube.getList1()->value(NumeroPlanADupliquer).getLed(i,j);
              if(led.getEtat()==1){
                  Led led1=nouveauCube.getList1()->value(nplan).getLed(i,j);
-                 led1.modifierEtat();
-                 Plan p1=nouveauCube.getList1()->value(nplan);
-                 p1.updatePlan(led1,i,j,nplan);
-                 nouveauCube.updateCube(p1,nplan);
+                 if(led1.getEtat()==0){
+                     led1.modifierEtat();
+                     Plan p1=nouveauCube.getList1()->value(nplan);
+                     p1.updatePlan(led1,i,j);
+                     nouveauCube.updateCube(p1,nplan);
+                 }
+
              }
         }
     }
     return nouveauCube;
 }
 
-void DuppliquerPlan::dupliquer(Ui::MainWindow *ui,
-                  Cube cubeMotif,int NumeroPlan, QList<int> l,QList<QVector3D> liste_vecteur3D,QString emplMotif){
+QList<QVector3D> DuppliquerPlan::dupliquer(Ui::MainWindow *ui,
+                  Cube cubeMotif,int NumeroPlanADupliquer, QList<int> l,QList<QVector3D> liste_vecteur3D,QString emplMotif){
 
     QList<QVector3D> Nouvelleliste;
     Cube nouveauCube=cubeMotif;
     Nouvelleliste=liste_vecteur3D;
     for(int i=0; i<l.size();i++){
         int nplan=l.value(i);
-        QString nn=QString::number(nplan);
-        qDebug()<<"nplan "+nn;
-        Nouvelleliste=parcoursCube(NumeroPlan,Nouvelleliste,cubeMotif,nplan);
-        nouveauCube=updateCube(nouveauCube,NumeroPlan,nplan);
+        Nouvelleliste=parcoursCube(NumeroPlanADupliquer,Nouvelleliste,cubeMotif,nplan);
+        nouveauCube=updateCube(nouveauCube,NumeroPlanADupliquer,nplan);
 
-        ui->widget->setListPoints(Nouvelleliste);
     }
     GestionFichier gestion;
     gestion.ouvrir(emplMotif,nouveauCube);
@@ -115,4 +113,5 @@ void DuppliquerPlan::dupliquer(Ui::MainWindow *ui,
     }
 
     DeconnecterPlan(ui);
+    return Nouvelleliste;
 }
