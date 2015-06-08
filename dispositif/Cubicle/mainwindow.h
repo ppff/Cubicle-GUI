@@ -59,11 +59,8 @@
 #include <QPushButton>
 #include <QPainter>
 #include <QPainterPath>
-<<<<<<< HEAD
 #include <dialoghelp.h>
-=======
 #include "duppliquerplan.h"
->>>>>>> Nettoyage
 
 namespace Ui {
 class MainWindow;
@@ -162,13 +159,9 @@ void save();
     void controlSave();
     void controlSaveAs();
     void doubleClick();
-    void affichePlanLed(const QString & valeur);
-    void afficheLed(const int i, const int j, const int etat);
-    void controlLed(const QString & valeur);
     void closeEvent(QCloseEvent *event);
     void helpwindow();
     void About();
-    void closeEvent(QCloseEvent *event);
 
      void allume_led(const QString & valeur);
      void affiche_plan_Cube(const QString &valeur);

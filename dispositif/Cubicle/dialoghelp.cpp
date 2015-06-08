@@ -128,7 +128,7 @@ void DialogHelp::afficher_help(){
        }else if(str=="Duplicate"){
            ui->textEdit->setText("Duplicate a part of plan by: \n");
            ui->textEdit->append("Method 1 : By shortcut “Ctrl+T” \n");
-           ui->textEdit->append("Method 2 : Click on botton: <img src=':/icone/Dupliquer.gif' width='20' height='20'>");
+           ui->textEdit->append("Method 2 : Click on botton: <img src=':/icone/Dupliquer.jpg' width='40' height='40'>");
            ui->textEdit->append("");
            ui->textEdit->append("Method 3 : Select “Duplicate” in the menu “Tools” \n");
            //ui->textEdit->append("");
