@@ -15,6 +15,7 @@ MainWindow::MainWindow(QWidget *parent) :
     namedir(""),
     emplMotif(""),
     tmpDir(QDir::tempPath())
+    //tmpDir(QCoreApplication::applicationDirPath())
 {
     initUi();
     initControleur();
@@ -261,7 +262,10 @@ void MainWindow::coller(){
                         if(file.fileName()!=dir+"/"+nameGroup+"/"+nom_copie+".txt"){
                             qDebug() << "le nom de fichier a couper est"+file.fileName();
                             file.remove();
-                            /*QModelIndex index0=ui->treeView->
+                            //file.fileName().
+                            QDir dir0;
+                            QString groupeoriginal=dir0.absoluteFilePath(file.fileName());
+                            QModelIndex index0=model->index(groupeoriginal);
                             QModelIndex index1= index0.parent();
                             int i=0;
                             while(index1.child(i,0).isValid()){
@@ -269,19 +273,9 @@ void MainWindow::coller(){
                                 QString ii=QString::number(i);
                                 file.rename(ii+"_"+file.fileName().mid(3));
                                  i++;
-                            }*/
-
-
+                            }
 
                         }
-                        /*int i=0;
-                        while(index.child(i,0).isValid()){
-                        QFile file(model->fileInfo(index).absoluteFilePath());
-                        QString i=
-                        file.rename(i)
-                        i++;
-                        }*/
-
 
 
 
