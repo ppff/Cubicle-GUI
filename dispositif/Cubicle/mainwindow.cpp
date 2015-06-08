@@ -247,28 +247,31 @@ void MainWindow::coller(){
 
 
                     if (copierCouper==1){
-                        int dernierRang0=-1 ;
-                        int i=0;
-                        while(index.child(i,0).isValid()){
-                            dernierRang0=index.child(i,0).row();
-                            i++;
-                        }
-                        QString nouveauRang0=QString::number(dernierRang0+1);
-                        if((dernierRang0+1)<10)
-                            nouveauRang0="0"+nouveauRang0;
-                        nom_copie=nouveauRang0+nom_copie.mid(2);
+
                         file.copy(dir+"/"+nameGroup+"/"+nom_copie+".txt");
                         this->setEmpMotif("");
                         qDebug()<< "le nouveau fichier apres cut paste est "+ dir+"/"+nameGroup+"/"+nom_copie+".txt";
                         if(file.fileName()!=dir+"/"+nameGroup+"/"+nom_copie+".txt"){
                             qDebug() << "le nom de fichier a couper est"+file.fileName();
                             file.remove();
+                            int dernierRang0=-1 ;
+                           int i=0;
+                            while(index.child(i,0).isValid()){
+                                dernierRang0=index.child(i,0).row();
+                                i++;
+                            }
+                            QString nouveauRang0=QString::number(dernierRang0+1);
+                            if((dernierRang0+1)<10)
+                                nouveauRang0="0"+nouveauRang0;
+                            nom_copie=nouveauRang0+nom_copie.mid(2);
+                             file.rename(dir+"/"+nameGroup+"/"+nom_copie+".txt");
+                            //reordonneGroup();
                             //file.fileName().
                             QDir dir0;
                             QString groupeoriginal=dir0.absoluteFilePath(file.fileName());
                             QModelIndex index0=model->index(groupeoriginal);
                             QModelIndex index1= index0.parent();
-                            int i=0;
+                            i=0;
                             while(index1.child(i,0).isValid()){
                                 QFile file(model->fileInfo(index1).absoluteFilePath());
                                 QString ii=QString::number(i);
