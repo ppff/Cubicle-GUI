@@ -59,6 +59,7 @@
 #include <QPushButton>
 #include <QPainter>
 #include <QPainterPath>
+#include <dialoghelp.h>
 #include "duppliquerplan.h"
 
 namespace Ui {
@@ -108,6 +109,7 @@ public:
     QFileSystemModel *model;
     QModelIndex new_index;
     QMenu* contextMenu;
+    QString saveDir;
     QString namedir;
     QAction *insertMotif;
     QAction *insert_Group;
@@ -158,6 +160,8 @@ void save();
     void controlSaveAs();
     void doubleClick();
     void closeEvent(QCloseEvent *event);
+    void helpwindow();
+    void About();
 
      void allume_led(const QString & valeur);
      void affiche_plan_Cube(const QString &valeur);
@@ -166,7 +170,6 @@ void save();
      void duplicate();
 
     //void clignotement();
-
 
 protected:
     QDir *aDir;
