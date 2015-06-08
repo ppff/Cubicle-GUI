@@ -41,7 +41,6 @@ void MainWindow::initUi(){
     ui->actionSave_as->setDisabled(true);
     ui->actionRaise->setDisabled(true);
     ui->actionLower->setDisabled(true);
-    ui->actionNew_Group->setDisabled(true);
     ui->actionSelect->setDisabled(true);
     ui->actionDuplicate->setDisabled(true);
     ui->pushButton->setDisabled(true);
@@ -152,7 +151,7 @@ void MainWindow::ouvrir_explorer(){
     this->liste_vecteur3D.clear();
     this->ui->widget->setListPoints(liste_vecteur3D);
     ui->widget->setListPlan(liste_vecteur3D);
-    ui->actionNew_Group->setDisabled(true);
+    ui->actionNew_Group->setDisabled(false);
 }
 
 void MainWindow::contextMenuEvent(QContextMenuEvent *event){
