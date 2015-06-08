@@ -15,7 +15,7 @@ void DuppliquerPlan:: DeconnecterPlan(Ui::MainWindow *ui){
     ui->plane8->disconnect(SIGNAL(clicked()));
     ui->plane9->disconnect(SIGNAL(clicked()));
 }
-
+/*
 void DuppliquerPlan::clignotementPlan(Ui::MainWindow *ui,int NumeroPlan){
 
     ui->plane1->setCheckable(true);
@@ -36,7 +36,7 @@ bool DuppliquerPlan::clignotement(Ui::MainWindow *ui,bool enfonce){
 
     return enfonce;
 }
-
+*/
 //colorer les plans choisis à dupliquer en jaune
 void DuppliquerPlan::colorePlan(Ui::MainWindow *ui,int nplan){
 

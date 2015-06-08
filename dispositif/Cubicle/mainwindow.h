@@ -127,7 +127,7 @@ public:
     QList<QVector3D> liste_vecteur3D;
     QList<int> listePlanADupliquer;
     bool enfonce;
-    QTimer * timer;
+
 
     Cube cubeMotif;
     QString tmpDir;
@@ -164,7 +164,7 @@ void save();
      void selectPlanToDuplicate();
      void choixPlanADupliquer(const QString &valeur);
      void duplicate();
-     void clignotement();
+ //    void clignotement();
 
 
 
