@@ -7,11 +7,14 @@ using namespace std;
 
 MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent),
+
+
+
+    ui(new Ui::MainWindow),
+    model(new QDirModel(this)),
     namedir(""),
     emplMotif(""),
-    tmpDir(QDir::tempPath()),
-    ui(new Ui::MainWindow),
-    model(new QDirModel(this))
+    tmpDir(QDir::tempPath())
 {
     initUi();
     initControleur();
@@ -1126,7 +1129,7 @@ void MainWindow::doubleClick(){
                            Led l=this->cubeMotif.getList1()->value(u.y()).getLed(fabs(8-u.z()),fabs(8-u.x()));
                            l.modifierEtat();
                            Plan p=this->cubeMotif.getList1()->value(u.y());
-                           p.updatePlan(l,fabs(8-u.z()),fabs(8-u.x()),u.y());
+                           p.updatePlan(l,fabs(8-u.z()),fabs(8-u.x()));
                            this->cubeMotif.updateCube(p,u.y());
                            liste_vecteur3D.append(u);
                            this->ui->widget->setListPoints(liste_vecteur3D);

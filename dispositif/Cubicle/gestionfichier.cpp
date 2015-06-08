@@ -47,7 +47,7 @@ QString GestionFichier::getLinePlan(int nplan,int nligne,Cube c){
     for(int i=0;i<9;i++){
        Led l=c.getList1()->value(nplan).getLed(nligne,i);
        int e=l.getEtat() ;
-       if (e=1) {
+       if (e==1) {
            x=QString::number(i);
            str+=x+y+z+'\n';
        }
