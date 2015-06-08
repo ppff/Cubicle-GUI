@@ -24,7 +24,6 @@ MainWindow::MainWindow(QWidget *parent) :
     this->setWindowTitle("Cubicle");
     deletePlanLed(0);
     ctlCube.desactivePlan(this->ui);
-    //timer = new QTimer(this);
     connexion();
     dirOpen=0;
 }
@@ -55,6 +54,7 @@ void MainWindow::initControleur() {
     this->ctlCube=ControlCube3D();
     this->dupPlan=DuppliquerPlan();
     this->ctlArbr=ControlArborescence();
+
 }
 
 
@@ -78,8 +78,40 @@ void MainWindow::connectAction(){
     connect(ui->treeView,SIGNAL(pressed(QModelIndex)),this,SLOT(save()));
     connect(ui->actionSelect,SIGNAL(triggered(bool)),this,SLOT(selectPlanToDuplicate()));
     connect(ui->actionDuplicate,SIGNAL(triggered(bool)),this,SLOT(duplicate()));
+    ui->treeView->setContextMenuPolicy(Qt::CustomContextMenu);
+    connect(ui->treeView, SIGNAL(customContextMenuRequested(const QPoint&)),
+        this, SLOT(ShowContextMenu(const QPoint&)));
 }
 
+
+void MainWindow::ShowContextMenu(const QPoint& p){
+        QPoint globalPos = ui->treeView->mapToGlobal(p);
+        QMenu myMenu;
+        QModelIndex index=ui->treeView->currentIndex();
+        QString dir=model->fileInfo(index).absolutePath();
+        QString nameGroup=model->fileInfo(index).baseName();
+        if(nameGroup=="Cubicle"){
+            return;
+        }
+         if(index.isValid()){
+             if (model->fileInfo(index).isDir()) {
+                  if((dir+'/'+nameGroup)!=saveDir){
+
+                      myMenu.addAction(ui->actionNew_Pattern);
+                      myMenu.addAction(ui->actionPaste_pattern);
+                      myMenu.addAction(ui->actionRaise);
+                      myMenu.addAction(ui->actionLower);
+                }
+             }
+             else {
+                      myMenu.addAction(ui->actionSave);
+                      myMenu.addAction(ui->actionCopy);
+                      myMenu.addAction(ui->actionCut_pattern);
+                      myMenu.addAction(ui->actionDelete_pattern);
+             }
+        }
+         QAction* selectedItem = myMenu.exec(globalPos);
+}
 
 void MainWindow::save(){
 
@@ -154,68 +186,9 @@ void MainWindow::ouvrir_explorer(){
     ui->actionNew_Group->setDisabled(false);
 }
 
-void MainWindow::contextMenuEvent(QContextMenuEvent *event){
-    if(dirOpen==1){
-        contextMenu = new QMenu(ui->treeView);
-        QModelIndex index=ui->treeView->currentIndex();
-
-        if (model->fileInfo(index).isDir()) {
-             QString s =model->fileInfo(index).absoluteFilePath();
-             if(index.isValid()){
-                  ui->treeView->setContextMenuPolicy(Qt::ActionsContextMenu);
-                  QString dir=model->fileInfo(index).absolutePath();
-                  QString nameGroup=model->fileInfo(index).baseName();
-                  if((dir+'/'+nameGroup)!=saveDir){
-                          insertMotif = contextMenu->addAction("new pattern");
-                          connect(insertMotif,SIGNAL(triggered(bool)),this, SLOT(ajouter_motif()));
-
-                          QAction * paste;
-                          paste = contextMenu->addAction("paste pattern");
-                          connect(paste,SIGNAL(triggered(bool)),this, SLOT(coller()));
-
-                          QAction * monter;
-                          monter = contextMenu->addAction("Raise a repertory");
-                          connect(monter, SIGNAL(triggered(bool)),this, SLOT(Monter()));
-
-                          QAction * descendre;
-                          descendre = contextMenu->addAction("Lower a repertory");
-                          connect(descendre, SIGNAL(triggered(bool)),this, SLOT(Descendre()));
-                  }
-             }
-    }
-
-        if (model->fileInfo(index).isFile()){
-              QString sp =model->fileInfo(index).absoluteFilePath();
-              if(index.isValid()){
-                   ui->treeView->setContextMenuPolicy(Qt::ActionsContextMenu);
-
-                   QAction * save;
-                   save = contextMenu->addAction("save");
-                   connect(save,SIGNAL(triggered(bool)),this, SLOT(controlSave()));
-
-                   QAction * copy;
-                   copy = contextMenu->addAction("copy pattern");
-                   connect(copy,SIGNAL(triggered(bool)),this, SLOT(copier()));
-
-                   QAction *cut = contextMenu->addAction("cut pattern");
-                   connect(cut,SIGNAL(triggered(bool)),this, SLOT(couper()));
-
-                   deletePattern = contextMenu->addAction("delete pattern");
-                   connect(deletePattern,SIGNAL(triggered(bool)),this, SLOT(controlDelete()));
-                }
-        }
-
-    contextMenu->exec(QCursor::pos());
-
-    }
-}
-
-
 void MainWindow::couper(){
     copier();
     copierCouper=1;
-
-
 }
 
 void MainWindow::copier(){

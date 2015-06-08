@@ -62,6 +62,7 @@
 #include <dialoghelp.h>
 #include "duppliquerplan.h"
 
+
 namespace Ui {
 class MainWindow;
 }
@@ -81,16 +82,11 @@ public:
     void deletePlanLed(int i);
     int getNumeroPlan();
     void setNumeroPlan(int i);
-    //void desactivePlan();
     void connexion();
     void connectPlanToAffiche();
     void connectPlanToDuplicate();
-    void contextMenuEvent(QContextMenuEvent *event);
     void xCopy2 (const QString &sourcePath, const QString &destPath, const QString &name);
-
-    bool removeDir(const QString& dirPath) ;
-   // void desactiveSelectPlan(bool b);
-
+    bool removeDir(const QString& dirPath) ; 
     void initUi();
     void initControleur();
     void connectAction();
@@ -129,6 +125,7 @@ public:
     QList<QVector3D> liste_vecteur3D;
     QList<int> listePlanADupliquer;
     bool enfonce;
+    QDir *aDir;
 
 
     Cube cubeMotif;
@@ -137,6 +134,7 @@ public:
     ControlCube3D ctlCube;
     DuppliquerPlan dupPlan;
     ControlArborescence ctlArbr;
+
 
 
 
@@ -150,33 +148,28 @@ void couper();
 void copier();
 void coller();
 void save();
- void reordonneGroup();
-//void reordonneMotif();
-    void Monter();
-    void Descendre();
-    void controlQuit();
-    void controlDelete();
-    void controlSave();
-    void controlSaveAs();
-    void doubleClick();
-    void closeEvent(QCloseEvent *event);
-    void helpwindow();
-    void About();
+void reordonneGroup();
+void Monter();
+void Descendre();
+void controlQuit();
+void controlDelete();
+void controlSave();
+void controlSaveAs();
+void doubleClick();
+void closeEvent(QCloseEvent *event);
+void helpwindow();
+void About();
+void allume_led(const QString & valeur);
+void affiche_plan_Cube(const QString &valeur);
+void selectPlanToDuplicate();
+void choixPlanADupliquer(const QString &valeur);
+void duplicate();
+void ShowContextMenu(const QPoint& p);
 
-     void allume_led(const QString & valeur);
-     void affiche_plan_Cube(const QString &valeur);
-     void selectPlanToDuplicate();
-     void choixPlanADupliquer(const QString &valeur);
-     void duplicate();
 
-    //void clignotement();
-
-protected:
-    QDir *aDir;
 
 private slots:
 void on_actionNew_Group_triggered();
-
 void on_pushButton_clicked();
 void on_pushButton_2_clicked();
 void on_pushButton_3_clicked();
