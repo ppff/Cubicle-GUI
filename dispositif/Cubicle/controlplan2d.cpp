@@ -28,7 +28,7 @@ QList<QVector3D> ControlPlan2D::controlLed(const QString & valeur,Cube cubeMotif
         l=cubeMotif.getList1()->value(NumeroPlan).getLed(lig,col);
         l.modifierEtat();
         Plan p1=cubeMotif.getList1()->value(NumeroPlan);
-        p1.updatePlan(l,lig,col,NumeroPlan);
+        p1.updatePlan(l,lig,col);
         cubeMotif.updateCube(p1,NumeroPlan);
         QVector3D v;
         v=QVector3D(abs(8-col),NumeroPlan,abs(8-lig));
