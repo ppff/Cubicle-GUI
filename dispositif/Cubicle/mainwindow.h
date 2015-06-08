@@ -165,8 +165,8 @@ void save();
      void selectPlanToDuplicate();
      void choixPlanADupliquer(const QString &valeur);
      void duplicate();
-
-
+    //void monter(Ui::MainWindow *ui,QDirModel *model);
+    //void descendre(Ui::MainWindow *ui,QDirModel *model);
 
 protected:
     QDir *aDir;
