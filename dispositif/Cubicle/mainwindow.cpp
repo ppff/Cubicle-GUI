@@ -693,7 +693,7 @@ void MainWindow::reordonneGroup(){
         qDebug()<<"je suis un fichier qui veut etre renomme mais peut pas";
 
         QFile file(pathTotalOld);
-        file.rename(pathTotalNew);
+        file.rename(pathTotalNew+".txt");
         this->setEmpMotif("");
     }
 }
