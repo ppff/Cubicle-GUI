@@ -81,7 +81,7 @@ Cube DuppliquerPlan::updateCube(Cube nouveauCube,int NumeroPlanADupliquer,int np
                  if(led1.getEtat()==0){
                      led1.modifierEtat();
                      Plan p1=nouveauCube.getList1()->value(nplan);
-                     p1.updatePlan(led1,i,j,nplan);
+                     p1.updatePlan(led1,i,j);
                      nouveauCube.updateCube(p1,nplan);
                  }
 
