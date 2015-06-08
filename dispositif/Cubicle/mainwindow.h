@@ -126,6 +126,8 @@ public:
     bool copierCouper; // vaut 0 pour copier et 1 pour couper
     QList<QVector3D> liste_vecteur3D;
     QList<int> listePlanADupliquer;
+    bool enfonce;
+
 
     Cube cubeMotif;
     QString tmpDir;
@@ -155,16 +157,14 @@ void save();
     void controlSave();
     void controlSaveAs();
     void doubleClick();
-    //void affichePlanLed(const QString & valeur);
-    //void afficheLed(const int i, const int j, const int etat);
-    //void controlLed(const QString & valeur);
-     void closeEvent(QCloseEvent *event);
+    void closeEvent(QCloseEvent *event);
 
      void allume_led(const QString & valeur);
      void affiche_plan_Cube(const QString &valeur);
      void selectPlanToDuplicate();
      void choixPlanADupliquer(const QString &valeur);
      void duplicate();
+ //    void clignotement();
 
 
 

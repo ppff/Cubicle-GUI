@@ -3,6 +3,7 @@
 
 #include "global.h"
 #include "gestionfichier.h"
+#include "QTimer"
 class DuppliquerPlan
 {
 public:
@@ -15,6 +16,14 @@ public:
     void decolorePlan(Ui::MainWindow *ui,int nplan);
     QList<QVector3D> parcoursCube(int NumeroPlanADupliquer,QList<QVector3D> liste_vecteur3D,Cube cubeMotif,int nplan);
     Cube updateCube(Cube nouveauCube,int NumeroPlanADupliquer,int nplan);
+ //   void clignotementPlan(Ui::MainWindow *ui,int NumeroPlan);
+  //  bool clignotement(Ui::MainWindow *ui,bool enfonce);
+
+private:
+    bool enfonce;
+    Ui::MainWindow *ui;
+
+
 };
 
 #endif // DUPPLIQUERPLAN_H
