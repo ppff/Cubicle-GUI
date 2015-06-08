@@ -11,7 +11,7 @@ MainWindow::MainWindow(QWidget *parent) :
 
 
     ui(new Ui::MainWindow),
-    model(new QDirModel(this)),
+    model(new QFileSystemModel(this)),
     namedir(""),
     emplMotif(""),
     tmpDir(QDir::tempPath())
@@ -74,7 +74,7 @@ void MainWindow::connectAction(){
     connect(ui->actionRaise,SIGNAL(triggered(bool)),this,SLOT(Monter()));
     connect(ui->actionLower,SIGNAL(triggered(bool)),this,SLOT(Descendre()));
     connect(ui->actionSave_as,SIGNAL(triggered(bool)),this,SLOT(controlSaveAs()));
-    connect(model,SIGNAL(dataChanged(QModelIndex,QModelIndex,QVector<int>)),this,SLOT(reordonneGroup()));
+    //connect(model,SIGNAL(dataChanged(QModelIndex,QModelIndex,QVector<int>)),this,SLOT(reordonneGroup()));
     connect(ui->treeView,SIGNAL(pressed(QModelIndex)),this,SLOT(save()));
     connect(ui->actionSelect,SIGNAL(triggered(bool)),this,SLOT(selectPlanToDuplicate()));
     connect(ui->actionDuplicate,SIGNAL(triggered(bool)),this,SLOT(duplicate()));
@@ -280,7 +280,7 @@ void MainWindow::coller(){
 
 
 
-                        tree();
+
                     }
                     else {
                         int dernierRang=-1 ;
@@ -297,7 +297,7 @@ void MainWindow::coller(){
 
                          nom_copie=nouveauRang+nom_copie.mid(2);
                         bool valid = file.copy(dir+"/"+nameGroup+"/"+nom_copie+"_copie.txt");
-                        tree();
+
                        new_index=model->index(dir+"/"+nameGroup+"/"+nom_copie+"_copie.txt");
                         ui->treeView->setCurrentIndex(new_index);
                         ui->treeView->selectionModel()->select(new_index,
@@ -319,10 +319,12 @@ void MainWindow::coller(){
 
 void MainWindow::tree(){
 
-
-    model->setReadOnly(false);
-    model->setSorting(QDir::DirsFirst | QDir::IgnoreCase | QDir::Name);
     ui->treeView->setModel(model);
+    ui->treeView->setRootIndex(model->setRootPath(tmpDir + "/workspace"));
+    connect(model,SIGNAL(dataChanged(QModelIndex,QModelIndex,QVector<int>)),this,SLOT(reordonneGroup()));
+    model->setReadOnly(false);
+    //model->setSorting(QDir::DirsFirst | QDir::IgnoreCase | QDir::Name);
+    //ui->treeView->setModel(model);
     QModelIndex index=model->index(tmpDir+"/workspace");
 
 
@@ -386,7 +388,7 @@ void MainWindow::ajouter_motif(){
 
 
                     new_index =model->index(tmpDir+"/workspace/Cubicle"+"/"+ nameGroup );
-                    tree();
+
                     new_index =model->index(m.getNameFile());
 
                     qDebug() << "le path du pattern ajoute est "+ m.getNameFile();
@@ -435,6 +437,7 @@ void MainWindow::new_project(){
     if(!dir.exists()){
         dir.mkpath(".");
     }
+
     namedir="";
     saved=false;
     dirOpen=2;
@@ -476,7 +479,7 @@ void MainWindow::on_actionNew_Group_triggered()
        new_index =model->index(tmpDir+"/workspace/Cubicle");
     // qDebug()<<"le new index est " + s+"/workspace/Cubicle";
      new_index =model->index(tmpDir+"/workspace/Cubicle");
-    tree();
+
   new_index =model->index(tmpDir+"/workspace/Cubicle/"+name);
   qDebug() << "le nouveau index pointe sur "+tmpDir+"/workspace/Cubicle/"+name;
   ui->treeView->setCurrentIndex(new_index);
@@ -492,14 +495,14 @@ void MainWindow::on_actionNew_Group_triggered()
 void MainWindow::Monter(){
     this->ctlArbr.monter(ui,model);
     this->setEmpMotif("");
-    this->tree();
+
 }
 
 
 void MainWindow::Descendre(){
     this->ctlArbr.descendre(ui,model);
     this->setEmpMotif("");
-    this->tree();
+
 }
 
 
@@ -540,7 +543,7 @@ void MainWindow::controlDelete(){
            if (reponse == QMessageBox::Yes) {
                file.remove();
               new_index=model->index(path);
-              tree();
+
               ui->treeView->setCurrentIndex(new_index);
               ui->treeView->selectionModel()->select(new_index,
                      QItemSelectionModel::ClearAndSelect | QItemSelectionModel::Rows);
@@ -668,8 +671,6 @@ bool MainWindow::removeDir(const QString& PathDir)
 
 void MainWindow::reordonneGroup(){
     QModelIndex index = ui->treeView->currentIndex();
-
-
     int i= index.row();
     qDebug() << "le rang du groupe est"+ QString::number(i);
     QString nameGroup = model->fileName(index);

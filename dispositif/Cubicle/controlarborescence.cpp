@@ -13,7 +13,7 @@ void ControlArborescence:: ctlSave(Cube cubeMotif, QString emplMotif){
     }
 }
 
-void ControlArborescence::monter(Ui::MainWindow *ui,QDirModel *model){
+void ControlArborescence::monter(Ui::MainWindow *ui,QFileSystemModel *model){
     QString nameGroup;
     QString newNameGroup;
     QString nameGroupDessus;
@@ -237,7 +237,7 @@ void ControlArborescence::monter(Ui::MainWindow *ui,QDirModel *model){
     }
 }
 
-void ControlArborescence::descendre(Ui::MainWindow *ui,QDirModel *model){
+void ControlArborescence::descendre(Ui::MainWindow *ui,QFileSystemModel *model){
     QString nameGroup;
     QString newNameGroup;
     QString nameGroupDessous;

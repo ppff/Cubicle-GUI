@@ -105,7 +105,7 @@ public:
 public:
     Ui::MainWindow *ui;
 
-    QDirModel *model;
+    QFileSystemModel *model;
     QModelIndex new_index;
     QMenu* contextMenu;
     QString namedir;
