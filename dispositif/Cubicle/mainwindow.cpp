@@ -256,7 +256,7 @@ void MainWindow::coller(){
                             nouveauRang0="0"+nouveauRang0;
                         nom_copie=nouveauRang0+nom_copie.mid(2);
                         file.copy(dir+"/"+nameGroup+"/"+nom_copie+".txt");
-                        this->setEmpMotif(dir+"/"+nameGroup+"/"+nom_copie+".txt");
+                        this->setEmpMotif("");
                         qDebug()<< "le nouveau fichier apres cut paste est "+ dir+"/"+nameGroup+"/"+nom_copie+".txt";
                         if(file.fileName()!=dir+"/"+nameGroup+"/"+nom_copie+".txt"){
                             qDebug() << "le nom de fichier a couper est"+file.fileName();
@@ -308,7 +308,7 @@ void MainWindow::coller(){
                         ui->treeView->selectionModel()->select(new_index,
                         QItemSelectionModel::ClearAndSelect | QItemSelectionModel::Rows);
                         ui->treeView->edit(new_index);
-                        this->setEmpMotif(dir+"/"+nameGroup+"/"+nom_copie+"_copie.txt");
+                     //   this->setEmpMotif(dir+"/"+nameGroup+"/"+nom_copie+"_copie.txt");
 
                     if (!valid){
                        qDebug()<<"copier coller impossible";
