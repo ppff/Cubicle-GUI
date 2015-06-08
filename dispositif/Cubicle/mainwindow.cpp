@@ -19,7 +19,7 @@ MainWindow::MainWindow(QWidget *parent) :
     initUi();
     initControleur();
     connectAction();
-    //connect(ui->treeView,SIGNAL(clicked(QModelIndex)),this,SLOT(reordonneGroup()));
+    //connect(ui->treeView,SIGNAL(clicked(QModelIndex)),this,SLOT(reordonneRenommage()));
     this->ctlPlan.desactiveSelectPlan(ui,true);
     this->setWindowTitle("Cubicle");
     deletePlanLed(0);
@@ -75,7 +75,7 @@ void MainWindow::connectAction(){
     connect(ui->actionSave_as,SIGNAL(triggered(bool)),this,SLOT(controlSaveAs()));
     connect(ui->actionHelp,SIGNAL(triggered(bool)),this,SLOT(helpwindow()));
     connect(ui->actionAbout_CUBICLE,SIGNAL(triggered(bool)),this,SLOT(About()));
-    connect(model,SIGNAL(dataChanged(QModelIndex,QModelIndex,QVector<int>)),this,SLOT(reordonneGroup()));
+    connect(model,SIGNAL(dataChanged(QModelIndex,QModelIndex,QVector<int>)),this,SLOT(reordonneRenommage()));
     connect(ui->treeView,SIGNAL(pressed(QModelIndex)),this,SLOT(save()));
     connect(ui->actionSelect,SIGNAL(triggered(bool)),this,SLOT(selectPlanToDuplicate()));
     connect(ui->actionDuplicate,SIGNAL(triggered(bool)),this,SLOT(duplicate()));
@@ -246,39 +246,23 @@ void MainWindow::coller(){
 
                     if (copierCouper==1){
 
-                        file.copy(dir+"/"+nameGroup+"/"+nom_copie+".txt");
-                        this->setEmpMotif("");
+                        //file.copy(dir+"/"+nameGroup+"/"+nom_copie+".txt");
+
                         qDebug()<< "le nouveau fichier apres cut paste est "+ dir+"/"+nameGroup+"/"+nom_copie+".txt";
                         if(file.fileName()!=dir+"/"+nameGroup+"/"+nom_copie+".txt"){
                             qDebug() << "le nom de fichier a couper est"+file.fileName();
-                            file.remove();
-                            int dernierRang0=-1 ;
-                           int i=0;
-                            while(index.child(i,0).isValid()){
-                                dernierRang0=index.child(i,0).row();
-                                i++;
-                            }
-                            QString nouveauRang0=QString::number(dernierRang0+1);
-                            if((dernierRang0+1)<10)
-                                nouveauRang0="0"+nouveauRang0;
-                            nom_copie=nouveauRang0+nom_copie.mid(2);
-                             file.rename(dir+"/"+nameGroup+"/"+nom_copie+".txt");
-                            //reordonneGroup();
-                            //file.fileName().
-                            QDir dir0;
-                            QString groupeoriginal=dir0.absoluteFilePath(file.fileName());
-                            QModelIndex index0=model->index(groupeoriginal);
-                            QModelIndex index1= index0.parent();
-                            i=0;
-                            while(index1.child(i,0).isValid()){
-                                QFile file(model->fileInfo(index1).absoluteFilePath());
-                                QString ii=QString::number(i);
-                                file.rename(ii+"_"+file.fileName().mid(3));
-                                 i++;
-                            }
+
+                            QFileInfo fi(file.fileName());
+                            QString oldNameGroup =fi.absolutePath();
+                            qDebug()<< "le groupe où s'est retrouvé le fichier coupé est "+fi.absolutePath();
+                            file.rename(dir+"/"+nameGroup+"/"+nom_copie+".txt");
+                             this->setEmpMotif("");
+                           // connect(model,SIGNAL(dataChanged(QModelIndex,QModelIndex,QVector<int>)),this,SLOT(reordonneGroup(oldNameGroup)));
+
+                           reordonneGroup(oldNameGroup);
+                           reordonneGroup(dir+"/"+nameGroup);
 
                         }
-
 
 
 
@@ -322,7 +306,7 @@ void MainWindow::tree(){
 
     ui->treeView->setModel(model);
     ui->treeView->setRootIndex(model->setRootPath(tmpDir + "/workspace"));
-    connect(model,SIGNAL(dataChanged(QModelIndex,QModelIndex,QVector<int>)),this,SLOT(reordonneGroup()));
+    connect(model,SIGNAL(dataChanged(QModelIndex,QModelIndex,QVector<int>)),this,SLOT(reordonneRenommage()));
     model->setReadOnly(false);
     //model->setSorting(QDir::DirsFirst | QDir::IgnoreCase | QDir::Name);
     //ui->treeView->setModel(model);
@@ -550,10 +534,12 @@ void MainWindow::controlDelete(){
                this->deletePlanLed(1);
                ctlCube.desactivePlan(this->ui);
            }
+            reordonneGroup(path);
     }
     else {
         dirOrFile=true;
     }
+
 }
 void MainWindow::controlSave(){
     //enregistrer les modifications du dernier motifs
@@ -663,8 +649,56 @@ bool MainWindow::removeDir(const QString& PathDir)
     }
     return result;
 }
+void MainWindow::reordonneGroup(QString nameGroup){
+    QDir dir(nameGroup);
+    if (dir.exists()) {
+        int i=0;
+        Q_FOREACH(QFileInfo info, dir.entryInfoList(QDir::NoDotAndDotDot | QDir::System | QDir::Hidden  | QDir::AllDirs | QDir::Files, QDir::DirsFirst)) {
+            if (info.isFile()) {
+                QString ii=QString::number(i);
+                if (i<10)
+                ii="0"+QString::number(i);
+                QString namefile =info.baseName();
+                QString dirfile=info.absolutePath();
+                QFile file(dirfile+"/"+namefile+".txt");
+                qDebug()<<"l'ancien path est "+dirfile+"/"+namefile;
+                namefile=ii+"_"+namefile.mid(3);
+                qDebug()<<"le namefile est "+namefile;
+                qDebug()<<"le dirfile est "+dirfile;
+                qDebug()<< dirfile+"/"+namefile;
 
-void MainWindow::reordonneGroup(){
+                file.rename(dirfile+"/"+namefile+".txt");
+                this->setEmpMotif("");
+                 i++;
+              }
+        }
+    }
+}
+   /* QModelIndex index= model->index(nameGroup);
+    int i=0;
+    while(index.child(i,0).isValid()){
+        QFile file(model->fileInfo(index.child(i,0)).absoluteFilePath());
+        QString ii=QString::number(i);
+        if (i<10)
+        ii="0"+QString::number(i);
+
+        qDebug() << "what is the dir?? : " + model->fileInfo(index.child(i,0)).absoluteFilePath();
+       QFil1eInfo fi(file);
+       QString namefile =fi.baseName();
+       QString dirfile=fi.absolutePath();
+
+
+       namefile=ii+"_"+namefile.mid(3);
+       qDebug()<<"le namefile est "+namefile;
+       qDebug()<<"le dirfile est "+dirfile;
+       qDebug()<< dirfile+"/"+namefile;
+        file.rename(dirfile+"/"+namefile+".txt");
+
+         i++;
+    }
+}*/
+
+void MainWindow::reordonneRenommage(){
     QModelIndex index = ui->treeView->currentIndex();
     int i= index.row();
     qDebug() << "le rang du groupe est"+ QString::number(i);

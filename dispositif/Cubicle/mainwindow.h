@@ -90,6 +90,7 @@ public:
 
     bool removeDir(const QString& dirPath) ;
    // void desactiveSelectPlan(bool b);
+     void reordonneGroup(QString namegroup);
 
     void initUi();
     void initControleur();
@@ -150,7 +151,7 @@ void couper();
 void copier();
 void coller();
 void save();
- void reordonneGroup();
+ void reordonneRenommage();
 //void reordonneMotif();
     void Monter();
     void Descendre();
