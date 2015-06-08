@@ -21,11 +21,13 @@ SOURCES += main.cpp\
     gestionfichier.cpp\
     simulation_cube.cpp \
     parser.c\
+    dialoghelp.cpp\
     CUB_parser.c \
     controlplan2d.cpp \
     controlcube3d.cpp \
     controlarborescence.cpp \
     duppliquerplan.cpp
+
 
 
 
@@ -39,6 +41,7 @@ HEADERS  += mainwindow.h\
     simulation_cube.h\
     adapt.h \
     parser.h\
+    dialoghelp.h\
     CUB_parser.h \
     global.h \
     controlplan2d.h \
@@ -48,7 +51,8 @@ HEADERS  += mainwindow.h\
 
 
 
-FORMS    += mainwindow.ui
+FORMS    += mainwindow.ui\
+            dialoghelp.ui
 unix:!macx {
     LIBS +=-lGL -lGLU -lglut
     DEFINES += CUBICLE_ON_LINUX

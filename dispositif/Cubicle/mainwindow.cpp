@@ -8,14 +8,13 @@ using namespace std;
 MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent),
 
-
-
     ui(new Ui::MainWindow),
     model(new QFileSystemModel(this)),
     namedir(""),
     emplMotif(""),
     tmpDir(QDir::tempPath())
     //tmpDir(QCoreApplication::applicationDirPath())
+
 {
     initUi();
     initControleur();
@@ -74,13 +73,13 @@ void MainWindow::connectAction(){
     connect(ui->actionRaise,SIGNAL(triggered(bool)),this,SLOT(Monter()));
     connect(ui->actionLower,SIGNAL(triggered(bool)),this,SLOT(Descendre()));
     connect(ui->actionSave_as,SIGNAL(triggered(bool)),this,SLOT(controlSaveAs()));
-    //connect(model,SIGNAL(dataChanged(QModelIndex,QModelIndex,QVector<int>)),this,SLOT(reordonneGroup()));
+    connect(ui->actionHelp,SIGNAL(triggered(bool)),this,SLOT(helpwindow()));
+    connect(ui->actionAbout_CUBICLE,SIGNAL(triggered(bool)),this,SLOT(About()));
+    connect(model,SIGNAL(dataChanged(QModelIndex,QModelIndex,QVector<int>)),this,SLOT(reordonneGroup()));
     connect(ui->treeView,SIGNAL(pressed(QModelIndex)),this,SLOT(save()));
     connect(ui->actionSelect,SIGNAL(triggered(bool)),this,SLOT(selectPlanToDuplicate()));
     connect(ui->actionDuplicate,SIGNAL(triggered(bool)),this,SLOT(duplicate()));
-
 }
-
 
 
 void MainWindow::save(){
@@ -105,7 +104,6 @@ void MainWindow::ouvrir_explorer(){
     }
     else {
         QFileInfo f=QFileInfo(tempdir);
-
         namedir = f.absolutePath();
 
         QString nomDossier=f.baseName();
@@ -168,7 +166,7 @@ void MainWindow::contextMenuEvent(QContextMenuEvent *event){
                   ui->treeView->setContextMenuPolicy(Qt::ActionsContextMenu);
                   QString dir=model->fileInfo(index).absolutePath();
                   QString nameGroup=model->fileInfo(index).baseName();
-                  if((dir+'/'+nameGroup)!=namedir){
+                  if((dir+'/'+nameGroup)!=saveDir){
                           insertMotif = contextMenu->addAction("new pattern");
                           connect(insertMotif,SIGNAL(triggered(bool)),this, SLOT(ajouter_motif()));
 
@@ -382,10 +380,7 @@ void MainWindow::ajouter_motif(){
                 qDebug()<<"l'emplacement du dossier est "+dir;
                 qDebug()<<"le nom du dossier est "+nameGroup;
                 if(nameGroup!="Cubicle"){
-
                     NouveauMotif m=NouveauMotif("New Pattern.txt",dir+"/"+nameGroup);
-
-
 
                     new_index =model->index(tmpDir+"/workspace/Cubicle"+"/"+ nameGroup );
 
@@ -459,7 +454,7 @@ void MainWindow::new_project(){
 void MainWindow::on_actionNew_Group_triggered()
 {   int m;
     QString indice;
-    //if (namedir==s+"/workspace"){
+    //if (saveDir==s+"/workspace"){
     QModelIndex index =model->index(tmpDir+"/workspace/Cubicle",0);
     QString name ="NewGroup";
     QDir dir(tmpDir+"/workspace/Cubicle");
@@ -475,7 +470,7 @@ void MainWindow::on_actionNew_Group_triggered()
     name = indice + name;
      qDebug() << "s contient "+ name;
     model->mkdir(index,name);
-    qDebug()<<"j'ai crée un dossier ds "+namedir;
+    qDebug()<<"j'ai crée un dossier ds "+saveDir;
        new_index =model->index(tmpDir+"/workspace/Cubicle");
     // qDebug()<<"le new index est " + s+"/workspace/Cubicle";
      new_index =model->index(tmpDir+"/workspace/Cubicle");
@@ -490,7 +485,6 @@ void MainWindow::on_actionNew_Group_triggered()
 
 
 }
-
 
 void MainWindow::Monter(){
     this->ctlArbr.ctlSave(cubeMotif,emplMotif);
@@ -563,13 +557,13 @@ void MainWindow::controlSave(){
     GestionFichier ges;
     ges.ouvrir(this->emplMotif,this->cubeMotif);
     //si on n'as pas fait saveAs on doit choisir un répertoir
-    if (namedir=="") {
+    if (saveDir=="") {
         controlSaveAs();
     }
     else {
 
-        removeDir(namedir+"/Cubicle");
-        xCopy2(tmpDir+"/workspace",namedir,"Cubicle");
+        removeDir(saveDir+"/Cubicle");
+        xCopy2(tmpDir+"/workspace",saveDir,"Cubicle");
         saved=true;
         QMessageBox msgBox;
         msgBox.setText("Your project Cubicle has been succesfully saved");
@@ -596,14 +590,14 @@ void MainWindow::controlSaveAs(){
             controlSaveAs();
         }
         else {
-            namedir=destPath;
+            saveDir=destPath;
             controlSave();
         }
 
     }
     else {
-    namedir= destPath;
-    qDebug()<< "le nouveau path est" + namedir;
+    saveDir= destPath;
+    qDebug()<< "le nouveau path est" + saveDir;
     controlSave();
     this->setWindowTitle("Cubicle["+destPath+"/Cubicle"+"]") ;
 
@@ -644,7 +638,6 @@ void MainWindow::xCopy2 (const QString &sourcePath, const QString &destPath, con
     }
 }
 
-
 bool MainWindow::removeDir(const QString& PathDir)
 {
     bool result = true;
@@ -666,10 +659,7 @@ bool MainWindow::removeDir(const QString& PathDir)
         result = dir.rmdir(PathDir);
     }
     return result;
-
-
 }
-
 
 void MainWindow::reordonneGroup(){
     QModelIndex index = ui->treeView->currentIndex();
@@ -941,4 +931,16 @@ void MainWindow::on_pushButton_3_clicked()
 void MainWindow::on_pushButton_4_clicked()
 {
     on_actionNew_Group_triggered();
+}
+
+void MainWindow::helpwindow(){
+
+    DialogHelp h;
+    h.show();
+    h.exec();
+}
+
+void MainWindow::About(){
+    DialogHelp h;
+    h.AboutUS();
 }
