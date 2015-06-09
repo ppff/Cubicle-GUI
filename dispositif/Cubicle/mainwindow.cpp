@@ -444,7 +444,6 @@ void MainWindow::descendre(){
     this->ctlArbr.ctlSave(cubeMotif,emplMotif);
     this->ctlArbr.descendre(ui,model);
     this->setEmpMotif("");
-
 }
 
 
@@ -742,7 +741,7 @@ void MainWindow::deletePlanLed(int nfois){
             if(nfois==0){
                 buttons[num]=new QPushButton("",this);
                 buttons[num]->setGeometry(30, 30, 30, 30);
-                buttons[num]->move(30*i+280, 30*j+90);
+                buttons[num]->move(30*i+350, 30*j+200);
             }
             buttons[num]->hide();
         }
