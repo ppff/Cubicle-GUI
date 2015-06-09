@@ -444,7 +444,6 @@ void MainWindow::descendre(){
     this->ctlArbr.ctlSave(cubeMotif,emplMotif);
     this->ctlArbr.descendre(ui,model);
     this->setEmpMotif("");
-
 }
 
 
