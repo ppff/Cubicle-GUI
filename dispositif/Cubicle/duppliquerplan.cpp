@@ -74,15 +74,22 @@ QList<QVector3D> DuppliquerPlan:: parcoursCube(int NumeroPlanADupliquer, QList<Q
     for(int i=0;i<9;i++){
         for (int j=0;j<9;j++){
              Led led=cubeMotif.getList1()->value(NumeroPlanADupliquer).getLed(i,j);
+             QVector3D v;
+             v=QVector3D(abs(8-j),nplan,abs(8-i));
              if(led.getEtat()==1){
-                 QVector3D v;
-                 v=QVector3D(abs(8-j),nplan,abs(8-i));
+
+
                  if(!liste_vecteur3D.contains(v)){
                      liste_vecteur3D.append(v);
                      int size=liste_vecteur3D.size();
                      QString s=QString::number(size);
                      qDebug()<<"taille de liste vecteur3D "+s;
                      cubeMotif.getList1()->value(nplan).getLed(i,j).modifierEtat();
+                 }
+             }
+             else {
+                 if (liste_vecteur3D.contains(v)) {
+                     liste_vecteur3D.removeOne(v);
                  }
 
              }

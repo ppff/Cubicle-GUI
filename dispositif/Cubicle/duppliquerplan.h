@@ -21,7 +21,7 @@ public:
 
 private:
     bool enfonce;
-    Ui::MainWindow *ui;
+    //Ui::MainWindow *ui;
 
 
 };
