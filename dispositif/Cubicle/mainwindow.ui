@@ -498,6 +498,15 @@
     <string>About CUBICLE</string>
    </property>
   </action>
+  <action name="actionRename">
+   <property name="icon">
+    <iconset resource="ressource.qrc">
+     <normaloff>:/Images/rename.png</normaloff>:/Images/rename.png</iconset>
+   </property>
+   <property name="text">
+    <string>Rename</string>
+   </property>
+  </action>
  </widget>
  <layoutdefault spacing="6" margin="11"/>
  <customwidgets>

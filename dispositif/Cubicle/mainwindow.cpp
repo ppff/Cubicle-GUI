@@ -50,6 +50,7 @@ void MainWindow::initUi(){
     b1->setText("plane9");
     b1->setUi(ui);
     ui->gridLayout->addWidget(b1, 2, 2);
+    //ui->treeView->setEditTriggers(QAbstractItemView::AnyKeyPressed);
 
 }
 
@@ -79,6 +80,7 @@ void MainWindow::connectAction(){
     connect(ui->actionSave_as,SIGNAL(triggered(bool)),this,SLOT(controlSaveAs()));
     connect(ui->actionHelp,SIGNAL(triggered(bool)),this,SLOT(helpwindow()));
     connect(ui->actionAbout_CUBICLE,SIGNAL(triggered(bool)),this,SLOT(About()));
+    connect(ui->actionRename,SIGNAL(triggered(bool)),this,SLOT(rename()));
     connect(model,SIGNAL(dataChanged(QModelIndex,QModelIndex,QVector<int>)),this,SLOT(reordonneRenommage()));
     connect(ui->treeView,SIGNAL(pressed(QModelIndex)),this,SLOT(save()));
     connect(ui->actionSelect,SIGNAL(triggered(bool)),this,SLOT(selectPlanToDuplicate()));
@@ -116,6 +118,7 @@ void MainWindow::ShowContextMenu(const QPoint& p){
             myMenu.addAction(ui->actionCopy);
             myMenu.addAction(ui->actionCut_pattern);
             myMenu.addAction(ui->actionDelete_pattern);
+            myMenu.addAction(ui->actionRename);
         }
     }
 
@@ -684,6 +687,16 @@ void MainWindow::reordonneRenommage(){
         QFile file(pathTotalOld);
         file.rename(pathTotalNew+".txt");
         this->setEmpMotif("");
+    }
+}
+
+void MainWindow::rename(){
+    QModelIndex index=ui->treeView->currentIndex();
+    if(index.isValid()){
+        ui->treeView->selectionModel()->select(index,
+                                               QItemSelectionModel::ClearAndSelect | QItemSelectionModel::Rows);
+        ui->treeView->edit(index);
+
     }
 }
 
