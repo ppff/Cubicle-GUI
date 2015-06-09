@@ -13,13 +13,11 @@ MainWindow::MainWindow(QWidget *parent) :
     namedir(""),
     emplMotif(""),
     tmpDir(QDir::tempPath())
-  //tmpDir(QCoreApplication::applicationDirPath())
 
 {
     initUi();
     initControleur();
     connectAction();
-    //connect(ui->treeView,SIGNAL(clicked(QModelIndex)),this,SLOT(reordonneRenommage()));
     this->ctlPlan.desactiveSelectPlan(ui,true);
     this->setWindowTitle("Cubicle");
     deletePlanLed(0);
@@ -171,7 +169,6 @@ void MainWindow::ouvrir_explorer(){
     }
     qDebug()<<"je crée cubicle pour la 1ere fois";
     xCopy2(namedir,tmpDir+"/workspace","Cubicle");
-
     tree();
     dirOpen=1;
     saved=false;
@@ -276,10 +273,7 @@ void MainWindow::tree(){
 
     ui->treeView->setModel(model);
     ui->treeView->setRootIndex(model->setRootPath(tmpDir + "/workspace"));
-    connect(model,SIGNAL(dataChanged(QModelIndex,QModelIndex,QVector<int>)),this,SLOT(reordonneRenommage()));
     model->setReadOnly(false);
-    //model->setSorting(QDir::DirsFirst | QDir::IgnoreCase | QDir::Name);
-    //ui->treeView->setModel(model);
     QModelIndex index=model->index(tmpDir+"/workspace");
 
 
