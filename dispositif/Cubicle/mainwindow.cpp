@@ -16,13 +16,13 @@ MainWindow::MainWindow(QWidget *parent) :
     initUi();
     initControleur();
     connectAction();
-    this->ctlPlan.desactiveSelectPlan(ui,true);
+    this->ctlPlan.desactiveSelectPlan(plans,true);
     this->setWindowTitle("Cubicle");
     this->setWindowIcon(QIcon(":/icone/cubicle.png"));
     this->setStyleSheet("MainWindow{background-image : url(':icone/image_de_fond.jpg')}");
 
     deletePlanLed(0);
-    ctlCube.desactivePlan(this->ui);
+    ctlCube.desactivePlan(plans);
     connexion();
     dirOpen=0;
 }
@@ -46,10 +46,18 @@ void MainWindow::initUi(){
     ui->pushButton_2->setDisabled(true);
     ui->pushButton_3->setDisabled(true);
     ui->pushButton_4->setDisabled(true);
-    b1=new QPushButtonPers(this);
-    b1->setText("plane9");
-    b1->setUi(ui);
-    ui->gridLayout->addWidget(b1, 2, 2);
+
+    for(int i=0;i<9;i++){
+        plans[i]=new QPushButtonPers(this);
+        QString nplan=QString::number(9-i);
+        plans[i]->setText("plane"+nplan);
+        ui->gridLayout->addWidget(plans[i],2*i,2);
+    }
+    plans[0]->setUi(ui);
+ //   b1=new QPushButtonPers(this);
+ //   b1->setText("plane9");
+  // b1->setUi(ui);
+ //   ui->gridLayout->addWidget(b1,2,2);
 
 }
 
@@ -139,7 +147,7 @@ void MainWindow::ouvrir_explorer(){
         }
     }
 
-    this->ctlPlan.desactiveSelectPlan(ui,true);
+    this->ctlPlan.desactiveSelectPlan(plans,true);
     QString  tempdir=QFileDialog::getExistingDirectory(this, tr("Open Directory"), "/home");
 
     if (tempdir=="") {
@@ -193,7 +201,7 @@ void MainWindow::ouvrir_explorer(){
     ui->actionSave_as->setDisabled(false);
     this->cubeMotif=Cube();
     deletePlanLed(1);
-    ctlCube.desactivePlan(this->ui);
+    ctlCube.desactivePlan(plans);
     this->liste_vecteur3D.clear();
     this->ui->widget->setListPoints(liste_vecteur3D);
     ui->widget->setListPlan(liste_vecteur3D);
@@ -363,7 +371,7 @@ void MainWindow::new_project(){
         }
 
     }
-    this->ctlPlan.desactiveSelectPlan(ui,true);
+    this->ctlPlan.desactiveSelectPlan(plans,true);
     QModelIndex index=model->index(tmpDir);
     QDir dir0(tmpDir+"/workspace");
     if(!dir0.exists()){
@@ -397,7 +405,7 @@ void MainWindow::new_project(){
     saved=false;
     this->cubeMotif=Cube();
     deletePlanLed(1);
-    ctlCube.desactivePlan(this->ui);
+    ctlCube.desactivePlan(plans);
     this->liste_vecteur3D.clear();
     this->ui->widget->setListPoints(liste_vecteur3D);
     ui->widget->setListPlan(liste_vecteur3D);
@@ -496,7 +504,7 @@ void MainWindow::controlDelete(){
                                                    QItemSelectionModel::ClearAndSelect | QItemSelectionModel::Rows);
 
             this->deletePlanLed(1);
-            ctlCube.desactivePlan(this->ui);
+            ctlCube.desactivePlan(plans);
         }
         reordonneGroup(path);
     }
@@ -696,7 +704,7 @@ void MainWindow::doubleClick(){
         dirOrFile=false;
 
         //réactiver la sélection des plans
-        this->ctlPlan.desactiveSelectPlan(ui,false);
+        this->ctlPlan.desactiveSelectPlan(plans,false);
 
         QString name=model->fileInfo(index).absoluteFilePath();
         this->currentPattern=model->fileInfo(index).baseName();
@@ -705,7 +713,7 @@ void MainWindow::doubleClick(){
             this->setEmpMotif(name);
             this->cubeMotif=Cube();
             deletePlanLed(1);
-            ctlCube.desactivePlan(this->ui);
+            ctlCube.desactivePlan(plans);
             this->liste_vecteur3D.clear();
             this->ui->widget->setListPoints(liste_vecteur3D);
             ui->widget->setListPlan(liste_vecteur3D);
@@ -728,7 +736,7 @@ void MainWindow::doubleClick(){
 
             }
             //séléctionner le 1er plan par défaut et l'afficher pour guider l'utilisateur
-            this->setNumeroPlan(ctlCube.affichePlanLed("00",this->ui,this->buttons,this->cubeMotif));
+            this->setNumeroPlan(ctlCube.affichePlanLed("00",this->ui,plans,this->buttons,this->cubeMotif));
         }
         else {
             dirOrFile=true;
@@ -757,7 +765,7 @@ void MainWindow::allume_led(const QString & valeur){
     this->liste_vecteur3D=ctlPlan.controlLed(valeur,this->cubeMotif,this->NumeroPlan,this->liste_vecteur3D,this->ui,this->buttons);
 }
 void MainWindow::affiche_plan_Cube(const QString &valeur){
-    this->setNumeroPlan(ctlCube.affichePlanLed(valeur,this->ui,this->buttons,this->cubeMotif));
+    this->setNumeroPlan(ctlCube.affichePlanLed(valeur,this->ui,plans,this->buttons,this->cubeMotif));
 }
 
 void MainWindow::selectPlanToDuplicate(){
@@ -802,7 +810,15 @@ void MainWindow::showMenu(const QPoint& p){
 void MainWindow::connectPlanToAffiche(){
     QSignalMapper *signalMapper = new QSignalMapper(this);
 
+       for (int i=0;i<9;i++){
 
+
+           connect(plans[i], SIGNAL(clicked()), signalMapper, SLOT(map()));
+           QString text=QString::number(i);
+           signalMapper->setMapping(plans[i], "0"+text);
+       }
+       connect(signalMapper, SIGNAL(mapped(const QString &)), this, SLOT(affiche_plan_Cube(const QString &)));
+/*
     connect(b1, SIGNAL(clicked()), signalMapper, SLOT(map()));
     signalMapper->setMapping(b1, "00");
     connect(ui->plane1, SIGNAL(clicked()), signalMapper, SLOT(map()));
@@ -824,12 +840,24 @@ void MainWindow::connectPlanToAffiche(){
     connect(ui->plane9, SIGNAL(clicked()), signalMapper, SLOT(map()));
     signalMapper->setMapping(ui->plane9, "08");
     connect(signalMapper, SIGNAL(mapped(const QString &)), this, SLOT(affiche_plan_Cube(const QString &)));
-
+*/
 }
 
 void MainWindow:: connectPlanToDuplicate(){
 
     QSignalMapper *signalMapper = new QSignalMapper(this);
+
+
+       for (int i=0;i<9;i++){
+
+
+           connect(plans[i], SIGNAL(clicked()), signalMapper, SLOT(map()));
+           QString text=QString::number(i);
+           signalMapper->setMapping(plans[i], "0"+text);
+       }
+       connect(signalMapper, SIGNAL(mapped(const QString &)), this, SLOT(choixPlanADupliquer(const QString &)));
+/*
+
     connect(ui->plane1, SIGNAL(clicked()), signalMapper, SLOT(map()));
     signalMapper->setMapping(ui->plane1, "00");
     connect(ui->plane2, SIGNAL(clicked()), signalMapper, SLOT(map()));
@@ -849,6 +877,7 @@ void MainWindow:: connectPlanToDuplicate(){
     connect(ui->plane9, SIGNAL(clicked()), signalMapper, SLOT(map()));
     signalMapper->setMapping(ui->plane9, "08");
     connect(signalMapper, SIGNAL(mapped(const QString &)), this, SLOT(choixPlanADupliquer(const QString &)));
+*/
 }
 
 

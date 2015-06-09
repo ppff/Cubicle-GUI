@@ -50,8 +50,8 @@ QList<QVector3D> ControlPlan2D::controlLed(const QString & valeur,Cube cubeMotif
 }
 
 
-void ControlPlan2D::desactiveSelectPlan(Ui::MainWindow *ui,bool b){
-    ui->plane1->setDisabled(b);
+void ControlPlan2D::desactiveSelectPlan(QPushButtonPers* plans[9],bool b){
+   /* ui->plane1->setDisabled(b);
     ui->plane2->setDisabled(b);
     ui->plane3->setDisabled(b);
     ui->plane4->setDisabled(b);
@@ -59,6 +59,9 @@ void ControlPlan2D::desactiveSelectPlan(Ui::MainWindow *ui,bool b){
     ui->plane6->setDisabled(b);
     ui->plane7->setDisabled(b);
     ui->plane8->setDisabled(b);
-    ui->plane9->setDisabled(b);
+    ui->plane9->setDisabled(b);*/
+    for(int i=0;i<9;i++){
+        plans[i]->setDisabled(b);
+    }
 }
 
