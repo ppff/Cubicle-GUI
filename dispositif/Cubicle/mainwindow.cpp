@@ -441,7 +441,6 @@ void MainWindow::Monter(){
     this->ctlArbr.ctlSave(cubeMotif,emplMotif);
     this->ctlArbr.monter(ui,model);
     this->setEmpMotif("");
-
 }
 
 
@@ -449,7 +448,6 @@ void MainWindow::Descendre(){
     this->ctlArbr.ctlSave(cubeMotif,emplMotif);
     this->ctlArbr.descendre(ui,model);
     this->setEmpMotif("");
-
 }
 
 

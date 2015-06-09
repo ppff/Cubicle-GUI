@@ -6,6 +6,7 @@
 #include "gestionfichier.h"
 #include "global.h"
 #include <QObject>
+#include <QFileSystemModel>
 
 class ControlArborescence
 {
