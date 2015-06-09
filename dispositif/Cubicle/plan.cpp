@@ -9,7 +9,7 @@ Plan::Plan(){
     }
     ///initialisation de la matrice////
     for(int i=0 ; i<9 ; i++){
-        for(int j ; j<9 ; j++){
+        for(int j=0 ; j<9 ; j++){
             Led l=Led();
             this->led_list[i][j]=l;
         }

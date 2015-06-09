@@ -2,13 +2,16 @@
 #define CONTROLCUBE3D_H
 
 #include "global.h"
+#include "qpushbuttonpers.h"
 class ControlCube3D
 {
 public:
     ControlCube3D();
-    void desactivePlan(Ui::MainWindow *ui);
-    int affichePlanLed(const QString & valeur,Ui::MainWindow *ui,
+    void desactivePlan(QPushButtonPers * plans[9],Ui::MainWindow *ui);
+    int affichePlanLed(const QString & valeur,Ui::MainWindow *ui,QPushButtonPers * plans[9],
                        QPushButton* buttons[90],Cube cubeMotif);
+
+
 };
 
 #endif // CONTROLCUBE3D_H
