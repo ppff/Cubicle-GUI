@@ -658,8 +658,16 @@ void MainWindow::reordonneRenommage(){
     }else {
         indice = QString::number(i)+"_";
     }
+    bool ok;
+    int value=nameGroup.left(2).toInt(&ok);
+    QString newNameGroup;
+    if((ok)&&(nameGroup[2]=='_')){
+     newNameGroup=indice+nameGroup.mid(3);
+    }
+    else{
+           newNameGroup=indice+nameGroup;
+    }
 
-    QString newNameGroup=indice+nameGroup;
     QString pathTotalOld = path+"/"+nameGroup;
     QString pathTotalNew = path+"/"+newNameGroup;
     if (model->fileInfo(index).isDir()){
