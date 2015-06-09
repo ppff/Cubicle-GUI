@@ -45,6 +45,7 @@ void DialogHelp::afficher_help(){
            ui->textEdit->append("Method 3 : Select “New Project” in the menu “File” \n");
            QString s("<FONT COLOR=red>Warning : </FONT> <FONT COLOR=blue>Make sure that current project have been saved before creating a new one.</FONT>");
            ui->textEdit->append(s);
+           ui->textEdit->append("The location of botton is: <img src=':/Images/1.png' width='200' height='100'>\n");
        }else if (str=="Open directory"){
            ui->textEdit->setText("Open a project by : \n");
            ui->textEdit->append("Method 1 : By shortcut “Ctrl+O” \n");
@@ -53,6 +54,7 @@ void DialogHelp::afficher_help(){
            ui->textEdit->append("Method 3 : Select “Open Directory” in the menu “File” \n");
            QString s("<FONT COLOR=red>Warning : </FONT> <FONT COLOR=blue>The name of the directory must be “Cubicle”.</FONT>");
            ui->textEdit->append(s);
+           ui->textEdit->append("The location of botton is: <img src=':/Images/2.png' width='200' height='100'>\n");
        }else if (str=="New group"){
            ui->textEdit->setText("A new crystal group can be created by : \n");
            ui->textEdit->append("Method 1 : By shortcut “Ctrl+G” \n");
@@ -61,6 +63,7 @@ void DialogHelp::afficher_help(){
            ui->textEdit->append("Method 3 : Select “New Group” in the menu “File” \n");
            QString s("<FONT COLOR=red>Warning : </FONT> <FONT COLOR=blue>A new group can't be created before open or create a directory.</FONT>");
            ui->textEdit->append(s);
+           ui->textEdit->append("The location of botton is: <img src=':/Images/4.png' width='200' height='100'>\n");
        }else if(str=="New pattern"){
            ui->textEdit->setText("A new crystal pattern can be created by : \n");
            ui->textEdit->append("Method 1 : By shortcut “Ctrl+P” \n");
@@ -70,6 +73,7 @@ void DialogHelp::afficher_help(){
            ui->textEdit->append("Method 4 : Right click on a folder and select “New Pattern” \n");
            QString s("<FONT COLOR=red>Warning : </FONT> <FONT COLOR=blue>Select a folder before creating pattern, otherwise it can't be created.</FONT>");
            ui->textEdit->append(s);
+           ui->textEdit->append("The location of botton is: <img src=':/Images/5.png' width='200' height='100'>\n");
        }else if(str=="Save"){
            ui->textEdit->setText("Save the current project by: \n");
            ui->textEdit->append("Method 1 : By shortcut “Ctrl+S” \n");
@@ -78,6 +82,7 @@ void DialogHelp::afficher_help(){
            ui->textEdit->append("Method 3 : Select “Save” in the menu “File” \n");
            QString s("<FONT COLOR=red>Warning : </FONT> <FONT COLOR=blue>If project hasn't be saved, a folder need to be selected to save it. Otherwise, it can be saved directly.</FONT>");
            ui->textEdit->append(s);
+           ui->textEdit->append("The location of botton is: <img src=':/Images/3.png' width='200' height='100'>\n");
        }else if(str=="Save as"){
            ui->textEdit->setText("Save the current project by: \n");
            ui->textEdit->append("Method 1 : By shortcut “Ctrl+R” \n");
@@ -94,14 +99,14 @@ void DialogHelp::afficher_help(){
            ui->textEdit->setText("Copy a crystal pattern by: \n");
            ui->textEdit->append("Method 1 : By shortcut “Ctrl+C” \n");
            ui->textEdit->append("Method 2 : Right click on a pattern and select “Copy pattern”\n");
-           ui->textEdit->append("Method 3 : Select “copy pattern” in the menu “Edit” \n");
+           ui->textEdit->append("Method 3 : Select “Copy pattern” in the menu “Edit” \n");
            QString s("<FONT COLOR=red>Warning : </FONT> <FONT COLOR=blue>Select a pattern before using this funtion.</FONT>");
            ui->textEdit->append(s);
        }else if(str=="Paste pattern"){
            ui->textEdit->setText("Paste a crystal pattern by: \n");
            ui->textEdit->append("Method 1 : By shortcut “Ctrl+V” \n");
            ui->textEdit->append("Method 2 : Right click on a group and select “Paste pattern”\n");
-           ui->textEdit->append("Method 3 : Select “paste pattern” in the menu “Edit” \n");
+           ui->textEdit->append("Method 3 : Select “Paste pattern” in the menu “Edit” \n");
            QString s("<FONT COLOR=red>Warning : </FONT> <FONT COLOR=blue>Select a folder before using this funtion.</FONT>");
            ui->textEdit->append(s);
        }else if(str=="Delete pattern"){
@@ -125,6 +130,7 @@ void DialogHelp::afficher_help(){
            ui->textEdit->append("");
            ui->textEdit->append("Method 3 : Select “Select” in the menu “Tools” \n");
            //ui->textEdit->append("");
+           ui->textEdit->append("The location of botton is: <img src=':/Images/8.png' width='200' height='100'>\n");
        }else if(str=="Duplicate"){
            ui->textEdit->setText("Duplicate a part of plan by: \n");
            ui->textEdit->append("Method 1 : By shortcut “Ctrl+T” \n");
@@ -132,6 +138,7 @@ void DialogHelp::afficher_help(){
            ui->textEdit->append("");
            ui->textEdit->append("Method 3 : Select “Duplicate” in the menu “Tools” \n");
            //ui->textEdit->append("");
+           ui->textEdit->append("The location of botton is: <img src=':/Images/9.png' width='200' height='100'>\n");
        }else if(str=="Raise"){
            ui->textEdit->setText("Raise a group/pattern in the directory by: \n");
            ui->textEdit->append("Method 1 : By shortcut “Ctrl+U” \n");
@@ -140,6 +147,7 @@ void DialogHelp::afficher_help(){
            ui->textEdit->append("Method 3 : Select “Raise” in the menu “Tools” \n");
            QString s("<FONT COLOR=red>Warning : </FONT> <FONT COLOR=blue>A folder or a pattern need to be selected before raising, it can't be raised if it’s the first folder/file in the directory.</FONT>");
            ui->textEdit->append(s);
+           ui->textEdit->append("The location of botton is: <img src=':/Images/6.png' width='200' height='100'>\n");
        }else if(str=="Lower"){
            ui->textEdit->setText("Lower a group/pattern in the directory by: \n");
            ui->textEdit->append("Method 1 : By shortcut “Ctrl+D” \n");
@@ -148,6 +156,7 @@ void DialogHelp::afficher_help(){
            ui->textEdit->append("Method 3 : Select “Lower” in the menu “Tools” \n");
            QString s("<FONT COLOR=red>Warning : </FONT> <FONT COLOR=blue>A folder or a pattern need to be selected before decreasing, it can't be decreased if it’s the last folder/file in the directory.</FONT>");
            ui->textEdit->append(s);
+           ui->textEdit->append("The location of botton is: <img src=':/Images/7.png' width='200' height='100'>\n");
        }
     }
 }
