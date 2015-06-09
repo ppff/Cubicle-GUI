@@ -73,7 +73,6 @@ class MainWindow : public QMainWindow
 
 public:
     explicit MainWindow(QWidget *parent = 0);
-
     void tree();
     void modifierFichier(QString newLine);
     void ouvrir();
@@ -85,18 +84,12 @@ public:
     void connexion();
     void connectPlanToAffiche();
     void connectPlanToDuplicate();
-    void xCopy2 (const QString &sourcePath, const QString &destPath, const QString &name);
-
-
+    void copy(const QString &sourcePath, const QString &destPath, const QString &name);
     bool removeDir(const QString& dirPath) ;
-
-     void reordonneGroup(QString namegroup);
-
+    void reordonneGroup(QString namegroup);
     void initUi();
     void initControleur();
     void connectAction();
-
-
     ~MainWindow();
 
 private:
@@ -125,8 +118,6 @@ private:
     QList<int> listePlanADupliquer;
     bool enfonce;
     QDir *aDir;
-
-
     Cube cubeMotif;
     QString tmpDir;
     ControlPlan2D ctlPlan;
@@ -138,19 +129,18 @@ private:
 
 
 
-public slots:
+private slots:
 
-void new_project();
-void ouvrir_explorer() ;
-void ajouter_motif() ;
-void couper();
-void copier();
-void coller();
-void save();
- void reordonneRenommage();
-
-    void Monter();
-    void Descendre();
+    void new_project();
+    void ouvrir_explorer() ;
+    void ajouter_motif() ;
+    void couper();
+    void copier();
+    void coller();
+    void save();
+    void reordonneRenommage();
+    void descendre();
+    void monter();
     void controlQuit();
     void controlDelete();
     void controlSave();
@@ -159,27 +149,17 @@ void save();
     void closeEvent(QCloseEvent *event);
     void helpwindow();
     void About();
-
-     void allume_led(const QString & valeur);
-     void affiche_plan_Cube(const QString &valeur);
-     void selectPlanToDuplicate();
-     void choixPlanADupliquer(const QString &valeur);
-     void duplicate();
-
-     void ShowContextMenu(const QPoint& p);
-
-
-
-
-
-
-
-private slots:
-void on_actionNew_Group_triggered();
-void on_pushButton_clicked();
-void on_pushButton_2_clicked();
-void on_pushButton_3_clicked();
-void on_pushButton_4_clicked();
+    void allume_led(const QString & valeur);
+    void affiche_plan_Cube(const QString &valeur);
+    void selectPlanToDuplicate();
+    void choixPlanADupliquer(const QString &valeur);
+    void duplicate();
+    void ShowContextMenu(const QPoint& p);
+    void on_pushButton_clicked();
+    void on_pushButton_2_clicked();
+    void on_pushButton_3_clicked();
+    void on_pushButton_4_clicked();
+    void ajouter_groupe();
 };
 
 
