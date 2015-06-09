@@ -14,15 +14,20 @@ void QPushButtonPers::mousePressEvent(QMouseEvent *event1)
 {
     if(event1->button() == Qt::RightButton){
         event1->accept();
-        emit onPressRightClic();
+        emit onPressRightClic(event1->globalPos());
     }
     QPushButton::mousePressEvent(event1);
 
 }
 
 
-void QPushButtonPers::onPressRightClic(){
+void QPushButtonPers::onPressRightClic(QPoint  p){
     qDebug("je rentre dans signal emit");
+   // QPushButtonPers *button = (QPushButtonPers *)(sender());
+
+
+    //QPushButton *button = (QPushButton *)sender();
+   // QPushButton *button = qobject_cast<QPushButton *>( sender() );
     QMenu myMenu;
 
     myMenu.addAction(this->uiMainWindow->actionCopy_Plane);
@@ -34,9 +39,12 @@ void QPushButtonPers::onPressRightClic(){
     QAction *collerPlan;
     collerPlan = myMenu.addAction("coller");
     connect(collerPlan, SIGNAL(triggered(bool)),this, SLOT(collerPlan()));*/
-
-    myMenu.move(860,500);
-    myMenu.exec();
+    QString x=QString::number(p.x());
+    QString y=QString::number(p.y());
+    qDebug()<< "les coord de p "+x+" "+y;
+  //  myMenu.move(860,500);
+  //  myMenu.exec();
+    myMenu.exec(p+QPoint(0,10));
    // myMenu.exec(uiMainWindow->plane1->pos()+QPoint(0,50));
 }
 

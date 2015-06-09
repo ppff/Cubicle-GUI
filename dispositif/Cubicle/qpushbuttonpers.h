@@ -13,7 +13,7 @@ public:
 
 
 signals:
-    void onPressRightClic(void);
+    void onPressRightClic(QPoint  p);
 
 protected:
     void mousePressEvent(QMouseEvent *event1);
