@@ -117,7 +117,7 @@
         <widget class="QPushButton" name="pushButton">
          <property name="geometry">
           <rect>
-           <x>130</x>
+           <x>140</x>
            <y>0</y>
            <width>61</width>
            <height>27</height>
@@ -137,7 +137,7 @@
         <widget class="QPushButton" name="pushButton_2">
          <property name="geometry">
           <rect>
-           <x>190</x>
+           <x>200</x>
            <y>0</y>
            <width>61</width>
            <height>27</height>
@@ -157,7 +157,7 @@
         <widget class="QPushButton" name="pushButton_3">
          <property name="geometry">
           <rect>
-           <x>60</x>
+           <x>70</x>
            <y>0</y>
            <width>71</width>
            <height>27</height>
@@ -179,7 +179,7 @@
           <rect>
            <x>0</x>
            <y>0</y>
-           <width>61</width>
+           <width>71</width>
            <height>27</height>
           </rect>
          </property>
@@ -216,7 +216,7 @@
      <x>0</x>
      <y>0</y>
      <width>1200</width>
-     <height>25</height>
+     <height>21</height>
     </rect>
    </property>
    <property name="nativeMenuBar">

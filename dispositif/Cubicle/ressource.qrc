@@ -33,6 +33,8 @@
         <file>Dupliquer.jpg</file>
         <file>Select.png</file>
         <file>saveas.png</file>
+        <file>cubicle.png</file>
+        <file>image_de_fond.jpg</file>
     </qresource>
     <qresource prefix="/texte">
         <file>parser.txt</file>
@@ -52,5 +54,3 @@
         <file>new_project.png</file>
     </qresource>
 </RCC>
-
-

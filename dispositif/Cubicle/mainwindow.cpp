@@ -22,6 +22,9 @@ MainWindow::MainWindow(QWidget *parent) :
     //connect(ui->treeView,SIGNAL(clicked(QModelIndex)),this,SLOT(reordonneRenommage()));
     this->ctlPlan.desactiveSelectPlan(ui,true);
     this->setWindowTitle("Cubicle");
+    this->setWindowIcon(QIcon(":/icone/cubicle.png"));
+    this->setStyleSheet("MainWindow{background-image : url(':icone/image_de_fond.jpg')}");
+
     deletePlanLed(0);
     ctlCube.desactivePlan(this->ui);
     connexion();
