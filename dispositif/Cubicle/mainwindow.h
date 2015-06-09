@@ -71,7 +71,6 @@ class MainWindow : public QMainWindow
 
 public:
     explicit MainWindow(QWidget *parent = 0);
-
     void tree();
     void modifierFichier(QString newLine);
     void ouvrir();
@@ -83,28 +82,16 @@ public:
     void connexion();
     void connectPlanToAffiche();
     void connectPlanToDuplicate();
-    void xCopy2 (const QString &sourcePath, const QString &destPath, const QString &name);
-
-
+    void copy(const QString &sourcePath, const QString &destPath, const QString &name);
     bool removeDir(const QString& dirPath) ;
-
-     void reordonneGroup(QString namegroup);
-
+    void reordonneGroup(QString namegroup);
     void initUi();
     void initControleur();
     void connectAction();
-
-
     ~MainWindow();
 
-    /*static MainWindow* getInstance();
-    static void kill();*/
-     //static MainWindow* _instance;
-     //Ui::MainWindow* getUi();
-
-public:
+private:
     Ui::MainWindow *ui;
-
     QFileSystemModel *model;
     QModelIndex new_index;
     QMenu* contextMenu;
@@ -129,7 +116,9 @@ public:
     QList<int> listePlanADupliquer;
     bool enfonce;
     QDir *aDir;
+
     QPushButtonPers* b1;
+
 
 
     Cube cubeMotif;
@@ -140,41 +129,41 @@ public:
     ControlArborescence ctlArbr;
 
 
-public slots:
 
-void new_project();
-void ouvrir_explorer() ;
-void ajouter_motif() ;
-void couper();
-void copier();
-void coller();
-void save();
-void reordonneRenommage();
-void Monter();
-void Descendre();
-void controlQuit();
-void controlDelete();
-void controlSave();
-void controlSaveAs();
-void doubleClick();
-void closeEvent(QCloseEvent *event);
-void helpwindow();
-void About();
-void allume_led(const QString & valeur);
-void affiche_plan_Cube(const QString &valeur);
-void selectPlanToDuplicate();
-void choixPlanADupliquer(const QString &valeur);
-void duplicate();
-void ShowContextMenu(const QPoint& p);
-//void showMenu(const QPoint& p);
 
 
 private slots:
-void on_actionNew_Group_triggered();
-void on_pushButton_clicked();
-void on_pushButton_2_clicked();
-void on_pushButton_3_clicked();
-void on_pushButton_4_clicked();
+
+    void new_project();
+    void ouvrir_explorer() ;
+    void ajouter_motif() ;
+    void couper();
+    void copier();
+    void coller();
+    void save();
+    void reordonneRenommage();
+    void descendre();
+    void monter();
+    void controlQuit();
+    void controlDelete();
+    void controlSave();
+    void controlSaveAs();
+    void doubleClick();
+    void closeEvent(QCloseEvent *event);
+    void helpwindow();
+    void About();
+    void allume_led(const QString & valeur);
+    void affiche_plan_Cube(const QString &valeur);
+    void selectPlanToDuplicate();
+    void choixPlanADupliquer(const QString &valeur);
+    void duplicate();
+    void ShowContextMenu(const QPoint& p);
+    void on_pushButton_clicked();
+    void on_pushButton_2_clicked();
+    void on_pushButton_3_clicked();
+    void on_pushButton_4_clicked();
+    void ajouter_groupe();
+
 };
 
 
