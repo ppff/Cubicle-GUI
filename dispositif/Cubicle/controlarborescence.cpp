@@ -74,11 +74,9 @@ void ControlArborescence::monter(Ui::MainWindow *ui,QFileSystemModel *model){
 
                         QDir directory(totalnameGroupMoinsUn);
                         directory.rename(totalnameGroupMoinsUn,totalnameGroupMoinsUnChange);
-                       // emit model->directoryLoaded(totalnameGroupMoinsUnChange);
 
                         QDir dir1(pathTotalOld);
                         dir1.rename(pathTotalOld, pathTotalNew);
-                        //emit model->directoryLoaded(pathTotalNew);
 
                         QString nameGroupMoinsUnChangeCorrect = "0"+QString::number(num)+"_"+nameDessusRest;
                         qDebug()<<"777777777777777777777777";
@@ -90,7 +88,6 @@ void ControlArborescence::monter(Ui::MainWindow *ui,QFileSystemModel *model){
 
                         QDir dir2(totalnameGroupMoinsUnChange);
                         dir2.rename(totalnameGroupMoinsUnChange, totalnameGroupMoinsUnCorrect);
-                        //emit model->directoryLoaded(totalnameGroupMoinsUnCorrect);
                         dir2.setSorting(QDir::Name);
                 }else if(num==10){
                         QString nameGroupMoinsUn = "0"+QString::number(num-1)+"_"+nameDessusRest;
@@ -211,7 +208,7 @@ void ControlArborescence::monter(Ui::MainWindow *ui,QFileSystemModel *model){
                         dir2.rename(totalnameMotifMoinsUnChange, totalnameMotifMoinsUnCorrect);
                 }
          }
-    model->dataChanged(index,index);
+    model->dataChanged(index,indexMoinsUn);
     }
 }
 
