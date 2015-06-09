@@ -99,14 +99,8 @@ public:
 
     ~MainWindow();
 
-    /*static MainWindow* getInstance();
-    static void kill();*/
-     //static MainWindow* _instance;
-     //Ui::MainWindow* getUi();
-
-public:
+private:
     Ui::MainWindow *ui;
-
     QFileSystemModel *model;
     QModelIndex new_index;
     QMenu* contextMenu;
@@ -174,7 +168,6 @@ void save();
 
      void ShowContextMenu(const QPoint& p);
 
-    //void clignotement();
 
 
 

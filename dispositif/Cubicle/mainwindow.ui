@@ -302,7 +302,7 @@
      <normaloff>:/Images/new_group.png</normaloff>:/Images/new_group.png</iconset>
    </property>
    <property name="text">
-    <string>new Group</string>
+    <string>New Group</string>
    </property>
    <property name="shortcut">
     <string>Ctrl+G</string>
@@ -314,7 +314,7 @@
      <normaloff>:/Images/new_pattern.gif</normaloff>:/Images/new_pattern.gif</iconset>
    </property>
    <property name="text">
-    <string>new Pattern</string>
+    <string>New Pattern</string>
    </property>
    <property name="shortcut">
     <string>Ctrl+P</string>
@@ -326,7 +326,7 @@
      <normaloff>:/Images/save.png</normaloff>:/Images/save.png</iconset>
    </property>
    <property name="text">
-    <string>save </string>
+    <string>Save </string>
    </property>
    <property name="shortcut">
     <string>Ctrl+S</string>
@@ -338,7 +338,7 @@
      <normaloff>:/Images/quit.png</normaloff>:/Images/quit.png</iconset>
    </property>
    <property name="text">
-    <string>quit</string>
+    <string>Quit</string>
    </property>
   </action>
   <action name="actionCopy">
@@ -347,7 +347,7 @@
      <normaloff>:/Images/copy.png</normaloff>:/Images/copy.png</iconset>
    </property>
    <property name="text">
-    <string>copy pattern</string>
+    <string>Copy pattern</string>
    </property>
    <property name="shortcut">
     <string>Ctrl+C</string>
@@ -359,7 +359,7 @@
      <normaloff>:/Images/open_directory.png</normaloff>:/Images/open_directory.png</iconset>
    </property>
    <property name="text">
-    <string>open directory</string>
+    <string>Open directory</string>
    </property>
    <property name="shortcut">
     <string>Ctrl+O</string>
@@ -371,7 +371,7 @@
      <normaloff>:/Images/paste.png</normaloff>:/Images/paste.png</iconset>
    </property>
    <property name="text">
-    <string>paste pattern</string>
+    <string>Paste pattern</string>
    </property>
    <property name="shortcut">
     <string>Ctrl+V</string>
@@ -383,19 +383,10 @@
      <normaloff>:/Images/delete_pattern.png</normaloff>:/Images/delete_pattern.png</iconset>
    </property>
    <property name="text">
-    <string>delete pattern</string>
+    <string>Delete pattern</string>
    </property>
    <property name="shortcut">
     <string>Ctrl+F</string>
-   </property>
-  </action>
-  <action name="actionSelect_a_group_of_atoms">
-   <property name="icon">
-    <iconset resource="ressource.qrc">
-     <normaloff>:/icone/Selection_Plan.jpeg</normaloff>:/icone/Selection_Plan.jpeg</iconset>
-   </property>
-   <property name="text">
-    <string>select a group of atoms</string>
    </property>
   </action>
   <action name="actionSelect">
@@ -428,7 +419,7 @@
      <normaloff>:/icone/couper.png</normaloff>:/icone/couper.png</iconset>
    </property>
    <property name="text">
-    <string>cut pattern</string>
+    <string>Cut pattern</string>
    </property>
    <property name="shortcut">
     <string>Ctrl+X</string>
@@ -440,7 +431,7 @@
      <normaloff>:/icone/saveas.png</normaloff>:/icone/saveas.png</iconset>
    </property>
    <property name="text">
-    <string>save as</string>
+    <string>Save as</string>
    </property>
    <property name="shortcut">
     <string>Ctrl+R</string>
@@ -452,7 +443,7 @@
      <normaloff>:/Images/quit.png</normaloff>:/Images/quit.png</iconset>
    </property>
    <property name="text">
-    <string>quit</string>
+    <string>Quit</string>
    </property>
    <property name="shortcut">
     <string>Ctrl+Q</string>
@@ -464,7 +455,7 @@
      <normaloff>:/Images/new_project.png</normaloff>:/Images/new_project.png</iconset>
    </property>
    <property name="text">
-    <string>new project</string>
+    <string>New project</string>
    </property>
    <property name="shortcut">
     <string>Ctrl+N</string>
