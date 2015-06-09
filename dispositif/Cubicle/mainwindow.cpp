@@ -79,8 +79,8 @@ void MainWindow::connectAction(){
     connect(ui->actionSelect,SIGNAL(triggered(bool)),this,SLOT(selectPlanToDuplicate()));
     connect(ui->actionDuplicate,SIGNAL(triggered(bool)),this,SLOT(duplicate()));
     ui->treeView->setContextMenuPolicy(Qt::CustomContextMenu);
-    connect(ui->treeView, SIGNAL(customContextMenuRequested(const QPoint&)),
-        this, SLOT(ShowContextMenu(const QPoint&)));
+ //   connect(ui->treeView, SIGNAL(customContextMenuRequested(const QPoint&)),
+   //     this, SLOT(ShowContextMenu(const QPoint&)));
 }
 
 
@@ -795,10 +795,21 @@ void MainWindow:: duplicate(){
     this->listePlanADupliquer.clear();
 }
 
+void MainWindow::showMenu(const QPoint& p){
+    qDebug()<<"clic droit sur plan1";
+    QPoint globalPos = ui->treeView->mapToGlobal(p);
+    QMenu myMenu;
+    myMenu.addAction("fok");
+    QAction* selectedItem = myMenu.exec(globalPos);
+
+}
+
 //connecter tous les plans au signal affiche_plan_cube
 void MainWindow::connectPlanToAffiche(){
     QSignalMapper *signalMapper = new QSignalMapper(this);
 
+    connect(ui->plane1, SIGNAL(customContextMenuRequested(const QPoint&)),
+                this, SLOT(showMenu(const QPoint&)));
         connect(ui->plane1, SIGNAL(clicked()), signalMapper, SLOT(map()));
         signalMapper->setMapping(ui->plane1, "00");
         connect(ui->plane2, SIGNAL(clicked()), signalMapper, SLOT(map()));

@@ -33,8 +33,6 @@
 #include <iostream>
 #include "gestionfichier.h"
 #include <QFile>
-
-
 #include <QPainter>
 #include <QPainterPath>
 #include "simulation_cube.h"
@@ -165,6 +163,7 @@ void selectPlanToDuplicate();
 void choixPlanADupliquer(const QString &valeur);
 void duplicate();
 void ShowContextMenu(const QPoint& p);
+void showMenu(const QPoint& p);
 
 
 
