@@ -20,7 +20,7 @@ void simulation_cube::initializeGL()
         fArrowRadius = 0.06f;
         fArrowHeight = 1.0f;
     //changer la couleur du fond du cube 3D. l'enlever si on veut un fond noir
-    qglClearColor(QColor(170,207,191,255));
+    qglClearColor(QColor(103,194,152,255));
 
     //activate the depth buffer
     glEnable(GL_DEPTH_TEST);
@@ -74,7 +74,7 @@ void simulation_cube::paintGL()
 
                     }
                     else{
-                        dessiner_sphere(QColor(239,222,146,255), RAYON_SPHERES_plan, DETAIL_SPHERES);
+                        dessiner_sphere(QColor(247,239,102,255), RAYON_SPHERES_plan, DETAIL_SPHERES);
 
                     }
                     glPopMatrix();

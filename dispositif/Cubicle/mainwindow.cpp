@@ -3,11 +3,9 @@
 
 using namespace std;
 
-//MainWindow *MainWindow::_instance = NULL;
 
 MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent),
-
     ui(new Ui::MainWindow),
     model(new QFileSystemModel(this)),
     namedir(""),
@@ -20,11 +18,15 @@ MainWindow::MainWindow(QWidget *parent) :
     connectAction();
     this->ctlPlan.desactiveSelectPlan(ui,true);
     this->setWindowTitle("Cubicle");
+    this->setWindowIcon(QIcon(":/icone/cubicle.png"));
+    this->setStyleSheet("MainWindow{background-image : url(':icone/image_de_fond.jpg')}");
+
     deletePlanLed(0);
     ctlCube.desactivePlan(this->ui);
     connexion();
     dirOpen=0;
 }
+
 
 void MainWindow::initUi(){
     ui->setupUi(this);
@@ -52,7 +54,6 @@ void MainWindow::initControleur() {
     this->ctlCube=ControlCube3D();
     this->dupPlan=DuppliquerPlan();
     this->ctlArbr=ControlArborescence();
-
 }
 
 
@@ -62,13 +63,14 @@ void MainWindow::connectAction(){
     connect(ui->actionCopy,SIGNAL(triggered(bool)),this,SLOT(copier()));
     connect(ui->actionPaste_pattern,SIGNAL(triggered(bool)),this,SLOT(coller()));
     connect(ui->actionNew_Pattern,SIGNAL(triggered(bool)),this,SLOT(ajouter_motif()));
+    connect(ui->actionNew_Group,SIGNAL(triggered(bool)),this,SLOT(ajouter_groupe()));
     connect(ui->actionQuit_2,SIGNAL(triggered(bool)),this,SLOT(controlQuit()));
     connect(ui->actionDelete_pattern,SIGNAL(triggered(bool)),this,SLOT(controlDelete()));
     connect(ui->actionSave,SIGNAL(triggered(bool)),this,SLOT(controlSave()));
     connect(ui->treeView,SIGNAL(doubleClicked(const QModelIndex &)),this,SLOT(doubleClick()));
     connect(ui->actionCut_pattern,SIGNAL(triggered(bool)),this,SLOT(couper()));
-    connect(ui->actionRaise,SIGNAL(triggered(bool)),this,SLOT(Monter()));
-    connect(ui->actionLower,SIGNAL(triggered(bool)),this,SLOT(Descendre()));
+    connect(ui->actionRaise,SIGNAL(triggered(bool)),this,SLOT(monter()));
+    connect(ui->actionLower,SIGNAL(triggered(bool)),this,SLOT(descendre()));
     connect(ui->actionSave_as,SIGNAL(triggered(bool)),this,SLOT(controlSaveAs()));
     connect(ui->actionHelp,SIGNAL(triggered(bool)),this,SLOT(helpwindow()));
     connect(ui->actionAbout_CUBICLE,SIGNAL(triggered(bool)),this,SLOT(About()));
@@ -83,6 +85,7 @@ void MainWindow::connectAction(){
 
 
 void MainWindow::ShowContextMenu(const QPoint& p){
+
     QPoint globalPos = ui->treeView->mapToGlobal(p);
     QMenu myMenu;
     QModelIndex index=ui->treeView->currentIndex();
@@ -91,6 +94,7 @@ void MainWindow::ShowContextMenu(const QPoint& p){
     if(nameGroup=="Cubicle"){
         return;
     }
+
     if(index.isValid()){
         if (model->fileInfo(index).isDir()) {
             if((dir+'/'+nameGroup)!=saveDir){
@@ -108,25 +112,30 @@ void MainWindow::ShowContextMenu(const QPoint& p){
             myMenu.addAction(ui->actionDelete_pattern);
         }
     }
-    QAction* selectedItem = myMenu.exec(globalPos);
+
+    myMenu.exec(globalPos);
 }
+
 
 void MainWindow::save(){
 
     this->ctlArbr.ctlSave(cubeMotif,emplMotif);
-
 }
+
 
 //ouvre le répertoire de travail
 void MainWindow::ouvrir_explorer(){
+
     if (!saved) {
         int enregistrer=QMessageBox::question(this, "Quit", " Do you want to save the current project ?");
         if (enregistrer==QMessageBox::Yes){
             controlSave();
         }
     }
+
     this->ctlPlan.desactiveSelectPlan(ui,true);
     QString  tempdir=QFileDialog::getExistingDirectory(this, tr("Open Directory"), "/home");
+
     if (tempdir=="") {
         qDebug()<<tempdir;
         return;
@@ -134,7 +143,6 @@ void MainWindow::ouvrir_explorer(){
     else {
         QFileInfo f=QFileInfo(tempdir);
         namedir = f.absolutePath();
-
         QString nomDossier=f.baseName();
         qDebug()<<" le nom duu dossier est "+nomDossier;
         if (nomDossier!="Cubicle") {
@@ -149,12 +157,14 @@ void MainWindow::ouvrir_explorer(){
     nameFilter<<"*.txt";
     QFileInfoList list=dir.entryInfoList(nameFilter,QDir::Files);
     QFileInfoList list2=dir.entryInfoList(QDir::Dirs);
+
     //on ne doit pas charger le dossier d'un groupe de motif mais plutot le repertoire des groupes de motif
     if ((!list.isEmpty()) and (!list2.isEmpty())) {
         QMessageBox::information(this,tr("warning"),"cannot open this directory, please choose the source directory");
         qDebug()<<"impossible";
         return;
     }
+
     this->setWindowTitle("Cubicle["+namedir+"/Cubicle"+"]");
     // je copie le dossier Cubicle dans le workspace"
     QDir dir0(tmpDir+"/workspace");
@@ -164,11 +174,12 @@ void MainWindow::ouvrir_explorer(){
     }
 
     QDir dir2(tmpDir+"/workspace/Cubicle");
+
     if (dir2.exists()){
         removeDir(tmpDir+"/workspace/Cubicle");
     }
-    qDebug()<<"je crée cubicle pour la 1ere fois";
-    xCopy2(namedir,tmpDir+"/workspace","Cubicle");
+
+    copy(namedir,tmpDir+"/workspace","Cubicle");
     tree();
     dirOpen=1;
     saved=false;
@@ -183,10 +194,12 @@ void MainWindow::ouvrir_explorer(){
     ui->actionNew_Group->setDisabled(false);
 }
 
+
 void MainWindow::couper(){
     copier();
     copierCouper=1;
 }
+
 
 void MainWindow::copier(){
     QModelIndex index=ui->treeView->currentIndex();
@@ -195,14 +208,15 @@ void MainWindow::copier(){
         paste_element=model->fileInfo(index).absoluteFilePath();
         nom_copie=model->fileInfo(index).baseName();
         copierCouper=0;
-        qDebug()<<nom_copie;
-        qDebug()<<"j'ai copié : "+paste_element;
     }
 }
-void MainWindow::coller(){
-    QString nameGroup;
-    if (!dirOrFile){
 
+
+void MainWindow::coller(){
+
+    QString nameGroup;
+
+    if (!dirOrFile){
         QModelIndex index=ui->treeView->currentIndex();
         if (index.isValid()){
             if (model->fileInfo(index).isDir()) {
@@ -211,16 +225,10 @@ void MainWindow::coller(){
                 // on vérifie qu'on ne colle pas dans Cubicle(répertoire des groupes)
                 if((dir+'/'+nameGroup)!=tmpDir+"/workspace/Cubicle"){
                     QFile file(paste_element);
-
-
                     if (copierCouper==1){
-
-                        //file.copy(dir+"/"+nameGroup+"/"+nom_copie+".txt");
-
                         qDebug()<< "le nouveau fichier apres cut paste est "+ dir+"/"+nameGroup+"/"+nom_copie+".txt";
                         if(file.fileName()!=dir+"/"+nameGroup+"/"+nom_copie+".txt"){
                             qDebug() << "le nom de fichier a couper est"+file.fileName();
-
                             QFileInfo fi(file.fileName());
                             QString oldNameGroup =fi.absolutePath();
                             qDebug()<< "le groupe où s'est retrouvé le fichier coupé est "+fi.absolutePath();
@@ -228,11 +236,7 @@ void MainWindow::coller(){
                             this->setEmpMotif("");
                             reordonneGroup(oldNameGroup);
                             reordonneGroup(dir+"/"+nameGroup);
-
                         }
-
-
-
                     }
                     else {
                         int dernierRang=-1 ;
@@ -269,6 +273,7 @@ void MainWindow::coller(){
     }
 }
 
+
 void MainWindow::tree(){
 
     ui->treeView->setModel(model);
@@ -276,27 +281,22 @@ void MainWindow::tree(){
     model->setReadOnly(false);
     QModelIndex index=model->index(tmpDir+"/workspace");
 
-
     if(index.isValid()){
-
         ui->treeView->setRootIndex(index);
-
-
     }
+
     //on ouvre toujours le dossier de travail présent sur le workspace
     index= model->index(tmpDir+"/workspace/Cubicle");
+
     if(index.isValid()){
         ui->treeView->setExpanded(index,true);
         ui->treeView->scrollTo(index);
-
     }
 
     for(int i=1;i<4;i++){
         ui->treeView->hideColumn(i);
     }
 
-
-    // ui->treeView->setEditTriggers(QAbstractItemView::SelectedClicked);
     ui->treeView->resizeColumnToContents(0);
     ui->actionNew_Pattern->setEnabled(true);
     ui->actionDelete_pattern->setEnabled(true);
@@ -318,31 +318,26 @@ void MainWindow::tree(){
 
 //créer un nouveau motif
 void MainWindow::ajouter_motif(){
+
     QModelIndex index=ui->treeView->currentIndex();
+
     if (index.isValid()){
-
         if (model->fileInfo(index).isDir()) {
-
             QString dir=model->fileInfo(index).absolutePath();
-
             QString nameGroup=model->fileInfo(index).baseName();
+
             if((dir + "/" + nameGroup) !=tmpDir){
-                qDebug()<<"le namedir est "+ namedir;
                 qDebug()<<"l'emplacement du dossier est "+dir;
                 qDebug()<<"le nom du dossier est "+nameGroup;
+
                 if(nameGroup!="Cubicle"){
                     NouveauMotif m=NouveauMotif("New Pattern.txt",dir+"/"+nameGroup);
-
-                    new_index =model->index(tmpDir+"/workspace/Cubicle"+"/"+ nameGroup );
-
                     new_index =model->index(m.getNameFile());
-
                     qDebug() << "le path du pattern ajoute est "+ m.getNameFile();
                     ui->treeView->setCurrentIndex(new_index);
                     ui->treeView->selectionModel()->select(new_index,
                                                            QItemSelectionModel::ClearAndSelect | QItemSelectionModel::Rows);
                     ui->treeView->edit(new_index);
-
                 }
                 else {
                     QMessageBox::information(this,tr("warning"),"cannot add a pattern, please choose or add a group");
@@ -351,6 +346,8 @@ void MainWindow::ajouter_motif(){
         }
     }
 }
+
+
 void MainWindow::new_project(){
     if (!saved) {
         int enregistrer=QMessageBox::question(this, "Quit", " Do you want to save the current project ?");
@@ -377,7 +374,7 @@ void MainWindow::new_project(){
 
         }
     }
-    qDebug()<<"je crée cubicle pour la 1ere fois";
+
     index=model->index(tmpDir+"/workspace");
 
     if(!dir.exists()){
@@ -399,33 +396,33 @@ void MainWindow::new_project(){
     this->ui->widget->setListPoints(liste_vecteur3D);
     ui->widget->setListPlan(liste_vecteur3D);
     ui->actionNew_Group->setDisabled(false);
-
 }
 
-void MainWindow::on_actionNew_Group_triggered()
-{   int m;
+
+void MainWindow::ajouter_groupe()
+{
+    int m;
     QString indice;
-    //if (saveDir==s+"/workspace"){
     QModelIndex index =model->index(tmpDir+"/workspace/Cubicle",0);
     QString name ="NewGroup";
     QDir dir(tmpDir+"/workspace/Cubicle");
     QFileInfoList entries = dir.entryInfoList(QDir::NoDotAndDotDot | QDir::AllEntries);
     dir.setSorting( QDir::Name);
     m=entries.size();
+
     if (m<10){
         indice ="0"+QString::number(m)+"_";
     }else {
         indice=QString::number(m)+"_";
     }
-    qDebug() << "s contient "+ tmpDir;
+
+    //qDebug() << "tmpDir contient "+ tmpDir;
     name = indice + name;
-    qDebug() << "s contient "+ name;
+    //qDebug() << "tmpDir contient "+ name;
     model->mkdir(index,name);
-    qDebug()<<"j'ai crée un dossier ds "+saveDir;
+    //qDebug()<<"j'ai crée un dossier ds"+saveDir;
     new_index =model->index(tmpDir+"/workspace/Cubicle");
     // qDebug()<<"le new index est " + s+"/workspace/Cubicle";
-    new_index =model->index(tmpDir+"/workspace/Cubicle");
-
     new_index =model->index(tmpDir+"/workspace/Cubicle/"+name);
     qDebug() << "le nouveau index pointe sur "+tmpDir+"/workspace/Cubicle/"+name;
     ui->treeView->setCurrentIndex(new_index);
@@ -433,18 +430,17 @@ void MainWindow::on_actionNew_Group_triggered()
                                            QItemSelectionModel::ClearAndSelect | QItemSelectionModel::Rows);
     ui->treeView->edit(new_index);
     dirOpen=1;
-
-
 }
 
-void MainWindow::Monter(){
+
+void MainWindow::monter(){
     this->ctlArbr.ctlSave(cubeMotif,emplMotif);
     this->ctlArbr.monter(ui,model);
     this->setEmpMotif("");
 }
 
 
-void MainWindow::Descendre(){
+void MainWindow::descendre(){
     this->ctlArbr.ctlSave(cubeMotif,emplMotif);
     this->ctlArbr.descendre(ui,model);
     this->setEmpMotif("");
@@ -503,6 +499,8 @@ void MainWindow::controlDelete(){
     }
 
 }
+
+
 void MainWindow::controlSave(){
     //enregistrer les modifications du dernier motifs
     GestionFichier ges;
@@ -514,7 +512,7 @@ void MainWindow::controlSave(){
     else {
 
         removeDir(saveDir+"/Cubicle");
-        xCopy2(tmpDir+"/workspace",saveDir,"Cubicle");
+        copy(tmpDir+"/workspace",saveDir,"Cubicle");
         saved=true;
         QMessageBox msgBox;
         msgBox.setText("Your project Cubicle has been succesfully saved");
@@ -522,11 +520,16 @@ void MainWindow::controlSave(){
     }
 
 }
+
+
 void MainWindow::controlSaveAs(){
     qDebug()<<"je suis dans controlSaveAs";
     QString destPath=QFileDialog::getExistingDirectory(this, tr("Save as"),"/home");
+
     if (destPath=="") {qDebug()<<destPath;
-        return;}
+        return;
+    }
+
     QDir dir0(destPath);
     if(dir0.dirName()=="Cubicle"){
         QMessageBox::information(this,tr("warning"),"This directory is already named Cubicle, please choose an other directory");
@@ -534,12 +537,15 @@ void MainWindow::controlSaveAs(){
     }
     qDebug()<<"la destination est"+destPath;
     QDir dir(destPath+"/Cubicle");
+
     if (dir.exists()) {
 
         int remplacer=QMessageBox::question(this, "Exist", "Project Cubicle already exists in this directory, do you want to replace it ?");
+
         if (remplacer==QMessageBox::No){
             controlSaveAs();
         }
+
         else {
             saveDir=destPath;
             controlSave();
@@ -556,14 +562,14 @@ void MainWindow::controlSaveAs(){
 }
 
 
-void MainWindow::xCopy2 (const QString &sourcePath, const QString &destPath, const QString &name)
+void MainWindow::copy(const QString &sourcePath, const QString &destPath, const QString &name)
 {
     static const QStringList filters = QStringList () << "*";
     static const QDir::Filters flags = QDir::NoDotAndDotDot | QDir::AllDirs | QDir::Files | QDir::Hidden;
-
     QString sourceObjectPath = sourcePath+"/"+name;
     QString destObjectPath = destPath +"/"+name;
     QDir dir(destObjectPath);
+
     if (dir.exists()) {
         removeDir(destObjectPath) ;
         qDebug()<<"j'ai supprimé le dossier "+destObjectPath;
@@ -574,20 +580,18 @@ void MainWindow::xCopy2 (const QString &sourcePath, const QString &destPath, con
         qDebug () << "Créer le répertoire " << destObjectPath;
         QDir destDir(destPath);
         destDir.mkdir(name);
-
         qDebug () << "Recopier dedans, récursivement, le contenu de" << sourceObjectPath;
-        //sourceObjectPath += '/';
-        //destObjectPath += '/';
         QDir currentSourceDir (sourceObjectPath);
         const QStringList fileList = currentSourceDir.entryList (filters, flags);
         foreach (const QString &content, fileList) {
-            xCopy2 (sourceObjectPath, destObjectPath, content);
+            copy (sourceObjectPath, destObjectPath, content);
         }
     } else {
         qDebug () << "Copier le fichier " << name << "de" << sourcePath << "vers" << destPath;
         QFile::copy (sourceObjectPath, destObjectPath);
     }
 }
+
 
 bool MainWindow::removeDir(const QString& PathDir)
 {
@@ -670,12 +674,6 @@ void MainWindow::reordonneRenommage(){
 }
 
 
-
-
-
-//extern "C" int* parser_file(const char* name);
-
-
 // supprimer  le plan 2D Lors d'un double clic sur un nouveau motif
 void MainWindow::doubleClick(){
     qDebug() << "je suis entre dans le double clic";
@@ -688,14 +686,12 @@ void MainWindow::doubleClick(){
 
         QString name=model->fileInfo(index).absoluteFilePath();
         this->currentPattern=model->fileInfo(index).baseName();
+
         if(name.compare(this->getEmplMotif())!=0){
-
             this->setEmpMotif(name);
-
             this->cubeMotif=Cube();
             deletePlanLed(1);
             ctlCube.desactivePlan(this->ui);
-
             this->liste_vecteur3D.clear();
             this->ui->widget->setListPoints(liste_vecteur3D);
             ui->widget->setListPlan(liste_vecteur3D);
@@ -703,9 +699,9 @@ void MainWindow::doubleClick(){
             //parser le fichier afin de remplir la liste des vecteurs 3D
             QList<QVector3D> l;
             l=ges.parser(name,l);
+
             if(!l.empty()){
                 this->ui->widget->setListPoints(l);
-
                 for (QVector3D u:l){
                     Led l=this->cubeMotif.getList1()->value(u.y()).getLed(fabs(8-u.z()),fabs(8-u.x()));
                     l.modifierEtat();
@@ -753,23 +749,9 @@ void MainWindow::affiche_plan_Cube(const QString &valeur){
 void MainWindow::selectPlanToDuplicate(){
     this->dupPlan.DeconnecterPlan(ui);
     connectPlanToDuplicate();
-    /*
-    dupPlan.clignotementPlan(ui,NumeroPlan);
-
-    connect(timer, SIGNAL(timeout()), this, SLOT(clignotement()));
-    timer->setInterval(1);
-    timer->start();
-
-    this->enfonce = false;
-    */
 }
 
-/*
-void MainWindow::clignotement(){
-   bool etat=dupPlan.clignotement(ui,this->enfonce);
-   this->enfonce=etat;
 
-}*/
 void MainWindow::choixPlanADupliquer(const QString &valeur){
     QString stnplan=valeur[1];
     int nplan=stnplan.toInt(0,10);
@@ -785,14 +767,9 @@ void MainWindow::choixPlanADupliquer(const QString &valeur){
 void MainWindow:: duplicate(){
 
     QList<QVector3D> l=this->dupPlan.dupliquer(ui, cubeMotif,NumeroPlan, listePlanADupliquer,liste_vecteur3D,emplMotif);
-
     liste_vecteur3D=l;
     this->ui->widget->setListPoints(liste_vecteur3D);
     this->ui->widget->setListPlan(liste_vecteur3D);
-    //timer->stop();
-    //timer->disconnect(SIGNAL(timeout()));
-    //ui->plane1->setCheckable(false);
-
     connectPlanToAffiche();
     this->listePlanADupliquer.clear();
 }
@@ -800,7 +777,6 @@ void MainWindow:: duplicate(){
 //connecter tous les plans au signal affiche_plan_cube
 void MainWindow::connectPlanToAffiche(){
     QSignalMapper *signalMapper = new QSignalMapper(this);
-
     connect(ui->plane1, SIGNAL(clicked()), signalMapper, SLOT(map()));
     signalMapper->setMapping(ui->plane1, "00");
     connect(ui->plane2, SIGNAL(clicked()), signalMapper, SLOT(map()));
@@ -824,8 +800,8 @@ void MainWindow::connectPlanToAffiche(){
 }
 
 void MainWindow:: connectPlanToDuplicate(){
-    QSignalMapper *signalMapper = new QSignalMapper(this);
 
+    QSignalMapper *signalMapper = new QSignalMapper(this);
     connect(ui->plane1, SIGNAL(clicked()), signalMapper, SLOT(map()));
     signalMapper->setMapping(ui->plane1, "00");
     connect(ui->plane2, SIGNAL(clicked()), signalMapper, SLOT(map()));
@@ -847,10 +823,10 @@ void MainWindow:: connectPlanToDuplicate(){
     connect(signalMapper, SIGNAL(mapped(const QString &)), this, SLOT(choixPlanADupliquer(const QString &)));
 }
 
+
 void MainWindow::connexion(){
 
     connectPlanToAffiche();
-
     QSignalMapper *signalMapper1 = new QSignalMapper(this);
     for (int i = 0; i < 9; i++) {
         for (int j=0;j<9; j++){
@@ -892,12 +868,12 @@ MainWindow::~MainWindow()
 
 void MainWindow::on_pushButton_clicked()
 {
-    Monter();
+    monter();
 }
 
 void MainWindow::on_pushButton_2_clicked()
 {
-    Descendre();
+    descendre();
 }
 
 void MainWindow::on_pushButton_3_clicked()
@@ -907,7 +883,7 @@ void MainWindow::on_pushButton_3_clicked()
 
 void MainWindow::on_pushButton_4_clicked()
 {
-    on_actionNew_Group_triggered();
+   ajouter_groupe();
 }
 
 void MainWindow::helpwindow(){
