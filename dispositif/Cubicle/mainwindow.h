@@ -4,7 +4,7 @@
 #include "global.h"
 #include "controlplan2d.h"
 #include "controlcube3d.h"
-
+#include "qpushbuttonpers.h"
 #include <QMainWindow>
 #include <QtCore>
 #include <QtGui>
@@ -84,7 +84,12 @@ public:
     void connectPlanToAffiche();
     void connectPlanToDuplicate();
     void xCopy2 (const QString &sourcePath, const QString &destPath, const QString &name);
-    bool removeDir(const QString& dirPath) ; 
+
+
+    bool removeDir(const QString& dirPath) ;
+
+     void reordonneGroup(QString namegroup);
+
     void initUi();
     void initControleur();
     void connectAction();
@@ -124,6 +129,7 @@ public:
     QList<int> listePlanADupliquer;
     bool enfonce;
     QDir *aDir;
+    QPushButtonPers* b1;
 
 
     Cube cubeMotif;
@@ -132,9 +138,6 @@ public:
     ControlCube3D ctlCube;
     DuppliquerPlan dupPlan;
     ControlArborescence ctlArbr;
-
-
-
 
 
 public slots:
@@ -146,7 +149,7 @@ void couper();
 void copier();
 void coller();
 void save();
-void reordonneGroup();
+void reordonneRenommage();
 void Monter();
 void Descendre();
 void controlQuit();
@@ -163,8 +166,7 @@ void selectPlanToDuplicate();
 void choixPlanADupliquer(const QString &valeur);
 void duplicate();
 void ShowContextMenu(const QPoint& p);
-void showMenu(const QPoint& p);
-
+//void showMenu(const QPoint& p);
 
 
 private slots:

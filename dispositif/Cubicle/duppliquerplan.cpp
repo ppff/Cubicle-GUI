@@ -97,16 +97,17 @@ Cube DuppliquerPlan::updateCube(Cube nouveauCube,int NumeroPlanADupliquer,int np
     for(int i=0;i<9;i++){
         for (int j=0;j<9;j++){
              Led led=nouveauCube.getList1()->value(NumeroPlanADupliquer).getLed(i,j);
-             if(led.getEtat()==1){
+         //    if(led.getEtat()==1){
                  Led led1=nouveauCube.getList1()->value(nplan).getLed(i,j);
-                 if(led1.getEtat()==0){
-                     led1.modifierEtat();
+           //      if(led1.getEtat()==0){
+              //       led1.modifierEtat();
                      Plan p1=nouveauCube.getList1()->value(nplan);
                      p1.updatePlan(led1,i,j);
                      nouveauCube.updateCube(p1,nplan);
-                 }
+               //  }
 
-             }
+         //    }
+
         }
     }
     return nouveauCube;
@@ -116,6 +117,7 @@ QList<QVector3D> DuppliquerPlan::dupliquer(Ui::MainWindow *ui,
                   Cube cubeMotif,int NumeroPlanADupliquer, QList<int> l,QList<QVector3D> liste_vecteur3D,QString emplMotif){
 
     QList<QVector3D> Nouvelleliste;
+  //  Nouvelleliste.clear();
     Cube nouveauCube=cubeMotif;
     Nouvelleliste=liste_vecteur3D;
     for(int i=0; i<l.size();i++){

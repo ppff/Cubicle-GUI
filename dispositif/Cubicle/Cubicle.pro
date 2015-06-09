@@ -26,7 +26,8 @@ SOURCES += main.cpp\
     controlplan2d.cpp \
     controlcube3d.cpp \
     controlarborescence.cpp \
-    duppliquerplan.cpp
+    duppliquerplan.cpp \
+    qpushbuttonpers.cpp
 
 
 
@@ -47,7 +48,8 @@ HEADERS  += mainwindow.h\
     controlplan2d.h \
     controlcube3d.h \
     controlarborescence.h \
-    duppliquerplan.h
+    duppliquerplan.h \
+    qpushbuttonpers.h
 
 
 
