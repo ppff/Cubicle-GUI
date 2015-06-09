@@ -30,9 +30,9 @@ void ControlArborescence::monter(Ui::MainWindow *ui,QFileSystemModel *model){
                    return;
                }
 
-               QString numero1=nameGroup.left(2);
-               int num1=numero1.toInt();
-               if(num1==0){
+               QString numero = nameGroup.left(2);
+               int num = numero.toInt();
+               if(num==0){
                    return;
                }
 
@@ -42,28 +42,35 @@ void ControlArborescence::monter(Ui::MainWindow *ui,QFileSystemModel *model){
 
                 QString dir=model->fileInfo(index).absolutePath();
                 nameGroupDessus=model->fileInfo(indexMoinsUn).baseName();
-
-                QString numero = nameGroup.left(2);
+                qDebug()<<"1111111111111111";
+                qDebug()<<"nameGroupDessus: "+ nameGroupDessus;
                 QString nameRest = nameGroup.mid(3);
                 QString nameDessusRest = nameGroupDessus.mid(3);
-                int num = numero.toInt();
-                if(num==0){
-                    return;
-                }
+
                 if (num<11){
                     newNameGroup = "0"+QString::number(num-1)+"_"+nameRest;
                 }else {
                     newNameGroup = QString::number(num-1)+"_"+nameRest;
                 }
                 QString pathTotalOld = dir+"/"+nameGroup;
+                qDebug()<<"2222222222222222";
+                qDebug()<<"pathTotalOld: "+ pathTotalOld;
+
                 QString pathTotalNew = dir+"/"+newNameGroup;
+                qDebug()<<"3333333333333333";
+                qDebug()<<"pathTotalNew: "+ pathTotalNew;
 
                 if (num<10){
-                        QString nameGroupMoinsUn = "0"+QString::number(num-1)+"_"+nameDessusRest;
-                        QString totalnameGroupMoinsUn = dir+"/"+nameGroupMoinsUn;
-
+                        //QString nameGroupMoinsUn = "0"+QString::number(num-1)+"_"+nameDessusRest;
+                        QString totalnameGroupMoinsUn = dir+"/"+nameGroupDessus;
+                        qDebug()<<"444444444444444444";
+                        qDebug()<<"totalnameGroupMoinsUn: "+ totalnameGroupMoinsUn;
                         QString nameGroupMoinsUnChange = nameDessusRest;
+                        qDebug()<<"555555555555555555555";
+                        qDebug()<<"nameGroupMoinsUnChange: "+ nameGroupMoinsUnChange;
                         QString totalnameGroupMoinsUnChange = dir+"/"+nameGroupMoinsUnChange;
+                        qDebug()<<"6666666666666666666666";
+                        qDebug()<<"totalnameGroupMoinsUnChange: "+ totalnameGroupMoinsUnChange;
 
                         QDir directory(totalnameGroupMoinsUn);
                         directory.rename(totalnameGroupMoinsUn,totalnameGroupMoinsUnChange);
@@ -72,8 +79,14 @@ void ControlArborescence::monter(Ui::MainWindow *ui,QFileSystemModel *model){
                         dir1.rename(pathTotalOld, pathTotalNew);
 
                         QString nameGroupMoinsUnChangeCorrect = "0"+QString::number(num)+"_"+nameDessusRest;
+                        qDebug()<<"777777777777777777777777";
+                        qDebug()<<"nameGroupMoinsUnChangeCorrect: "+ nameGroupMoinsUnChangeCorrect;
+
                         QString totalnameGroupMoinsUnCorrect = dir+"/"+nameGroupMoinsUnChangeCorrect;
-                        QDir dir2(totalnameGroupMoinsUnCorrect);
+                        qDebug()<<"8888888888888888888888888";
+                        qDebug()<<"totalnameGroupMoinsUnCorrect: "+ totalnameGroupMoinsUnCorrect;
+
+                        QDir dir2(totalnameGroupMoinsUnChange);
                         dir2.rename(totalnameGroupMoinsUnChange, totalnameGroupMoinsUnCorrect);
                         dir2.setSorting(QDir::Name);
                 }else if(num==10){

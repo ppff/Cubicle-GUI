@@ -45,6 +45,7 @@ void DialogHelp::afficher_help(){
            ui->textEdit->append("Method 3 : Select “New Project” in the menu “File” \n");
            QString s("<FONT COLOR=red>Warning : </FONT> <FONT COLOR=blue>Make sure that current project have been saved before creating a new one.</FONT>");
            ui->textEdit->append(s);
+
        }else if (str=="Open directory"){
            ui->textEdit->setText("Open a project by : \n");
            ui->textEdit->append("Method 1 : By shortcut “Ctrl+O” \n");
