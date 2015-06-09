@@ -24,9 +24,9 @@ void QPushButtonPers::mousePressEvent(QMouseEvent *event1)
 void QPushButtonPers::onPressRightClic(){
     qDebug("je rentre dans signal emit");
     QMenu myMenu;
-    myMenu.addAction("copier");
-  //  myMenu.addAction(this->uiMainWindow->actionDuplicate);
 
+    myMenu.addAction(this->uiMainWindow->actionCopy_Plane);
+    myMenu.addAction(this->uiMainWindow->actionPaste_Plane);
 
   /*  QAction *copierPlan;
     copierPlan = myMenu.addAction("copier");
@@ -35,8 +35,9 @@ void QPushButtonPers::onPressRightClic(){
     collerPlan = myMenu.addAction("coller");
     connect(collerPlan, SIGNAL(triggered(bool)),this, SLOT(collerPlan()));*/
 
+    myMenu.move(860,500);
     myMenu.exec();
-   // myMenu.exec(uiMainWindow->plane9->pos()+QPoint(0,50));
+   // myMenu.exec(uiMainWindow->plane1->pos()+QPoint(0,50));
 }
 
 void QPushButtonPers::copierPlan(){

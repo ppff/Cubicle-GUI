@@ -46,14 +46,17 @@ void MainWindow::initUi(){
     ui->pushButton_2->setDisabled(true);
     ui->pushButton_3->setDisabled(true);
     ui->pushButton_4->setDisabled(true);
+  //  ui->actionCopy_Plane->setDisabled(true);
+  //  ui->actionPaste_Plane->setDisabled(true);
 
     for(int i=0;i<9;i++){
         plans[i]=new QPushButtonPers(this);
         QString nplan=QString::number(9-i);
         plans[i]->setText("plane"+nplan);
         ui->gridLayout->addWidget(plans[i],2*i,2);
+        plans[i]->setUi(ui);
     }
-    plans[0]->setUi(ui);
+
  //   b1=new QPushButtonPers(this);
  //   b1->setText("plane9");
   // b1->setUi(ui);
@@ -91,6 +94,9 @@ void MainWindow::connectAction(){
     connect(ui->treeView,SIGNAL(pressed(QModelIndex)),this,SLOT(save()));
     connect(ui->actionSelect,SIGNAL(triggered(bool)),this,SLOT(selectPlanToDuplicate()));
     connect(ui->actionDuplicate,SIGNAL(triggered(bool)),this,SLOT(duplicate()));
+    connect(ui->actionCopy_Plane,SIGNAL(triggered(bool)),this,SLOT(copyPlane()));
+    connect(ui->actionPaste_Plane,SIGNAL(triggered(bool)),this,SLOT(pastePlane()));
+
     ui->treeView->setContextMenuPolicy(Qt::CustomContextMenu);
     connect(ui->treeView, SIGNAL(customContextMenuRequested(const QPoint&)),
         this, SLOT(ShowContextMenu(const QPoint&)));
@@ -796,6 +802,15 @@ void MainWindow:: duplicate(){
     connectPlanToAffiche();
     this->listePlanADupliquer.clear();
 }
+
+void MainWindow::copyPlane(){
+
+}
+
+void MainWindow::pastePlane(){
+
+}
+
 /*
 void MainWindow::showMenu(const QPoint& p){
     qDebug()<<"clic droit sur plan1";

@@ -498,6 +498,30 @@
     <string>About CUBICLE</string>
    </property>
   </action>
+  <action name="actionCopy_Plane">
+   <property name="icon">
+    <iconset resource="ressource.qrc">
+     <normaloff>:/icone/plan0.png</normaloff>:/icone/plan0.png</iconset>
+   </property>
+   <property name="text">
+    <string>Copy Plane</string>
+   </property>
+   <property name="shortcut">
+    <string>Shift+C</string>
+   </property>
+  </action>
+  <action name="actionPaste_Plane">
+   <property name="icon">
+    <iconset resource="ressource.qrc">
+     <normaloff>:/icone/cubeatome.gif</normaloff>:/icone/cubeatome.gif</iconset>
+   </property>
+   <property name="text">
+    <string>Paste Plane</string>
+   </property>
+   <property name="shortcut">
+    <string>Shift+V</string>
+   </property>
+  </action>
  </widget>
  <layoutdefault spacing="6" margin="11"/>
  <customwidgets>

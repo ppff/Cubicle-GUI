@@ -62,6 +62,7 @@ void ControlPlan2D::desactiveSelectPlan(QPushButtonPers* plans[9],bool b){
     ui->plane9->setDisabled(b);*/
     for(int i=0;i<9;i++){
         plans[i]->setDisabled(b);
+
     }
 }
 
