@@ -4,8 +4,12 @@ DuppliquerPlan::DuppliquerPlan()
 {
 }
 //déconnecter tous les plans du signal affichePlanLed
-void DuppliquerPlan:: DeconnecterPlan(Ui::MainWindow *ui){
-    ui->plane1->disconnect(SIGNAL(clicked()));
+void DuppliquerPlan:: DeconnecterPlan(QPushButtonPers* plans[9]){
+ for(int i=0;i<9;i++){
+     plans[i]->disconnect(SIGNAL(clicked()));
+ }
+
+    /* ui->plane1->disconnect(SIGNAL(clicked()));
     ui->plane2->disconnect(SIGNAL(clicked()));
     ui->plane3->disconnect(SIGNAL(clicked()));
     ui->plane4->disconnect(SIGNAL(clicked()));
@@ -14,6 +18,7 @@ void DuppliquerPlan:: DeconnecterPlan(Ui::MainWindow *ui){
     ui->plane7->disconnect(SIGNAL(clicked()));
     ui->plane8->disconnect(SIGNAL(clicked()));
     ui->plane9->disconnect(SIGNAL(clicked()));
+    */
 }
 /*
 void DuppliquerPlan::clignotementPlan(Ui::MainWindow *ui,int NumeroPlan){
@@ -38,8 +43,10 @@ bool DuppliquerPlan::clignotement(Ui::MainWindow *ui,bool enfonce){
 }
 */
 //colorer les plans choisis à dupliquer en jaune
-void DuppliquerPlan::colorePlan(Ui::MainWindow *ui,int nplan){
+void DuppliquerPlan::colorePlan(QPushButtonPers* plans[9],int nplan){
 
+    plans[8-nplan]->setStyleSheet("QPushButton { background-color: yellow; }");
+    /*
     switch(nplan){
     case 0:ui->plane1->setStyleSheet("QPushButton { background-color: yellow; }"); break;
     case 1:ui->plane2->setStyleSheet("QPushButton { background-color: yellow; }"); break;
@@ -51,10 +58,12 @@ void DuppliquerPlan::colorePlan(Ui::MainWindow *ui,int nplan){
     case 7:ui->plane8->setStyleSheet("QPushButton { background-color: yellow; }"); break;
     case 8:ui->plane9->setStyleSheet("QPushButton { background-color: yellow; }"); break;
     }
+    */
 }
 
-void DuppliquerPlan:: decolorePlan(Ui::MainWindow *ui,int nplan){
-    switch(nplan){
+void DuppliquerPlan:: decolorePlan(QPushButtonPers* plans[9],int nplan){
+    plans[8-nplan]->setStyleSheet("QPushButton { background-color: rgba(240,240,240,255); }");
+  /*  switch(nplan){
     case 0:ui->plane1->setStyleSheet("QPushButton { background-color: rgba(240,240,240,255); }"); break;
     case 1:ui->plane2->setStyleSheet("QPushButton { background-color: rgba(240,240,240,255); }"); break;
     case 2:ui->plane3->setStyleSheet("QPushButton { background-color: rgba(240,240,240,255); }"); break;
@@ -64,7 +73,7 @@ void DuppliquerPlan:: decolorePlan(Ui::MainWindow *ui,int nplan){
     case 6:ui->plane7->setStyleSheet("QPushButton { background-color: rgba(240,240,240,255); }"); break;
     case 7:ui->plane8->setStyleSheet("QPushButton { background-color: rgba(240,240,240,255); }"); break;
     case 8:ui->plane9->setStyleSheet("QPushButton { background-color: rgba(240,240,240,255); }"); break;
-    }
+    }*/
 
 }
 
@@ -113,7 +122,7 @@ Cube DuppliquerPlan::updateCube(Cube nouveauCube,int NumeroPlanADupliquer,int np
     return nouveauCube;
 }
 
-QList<QVector3D> DuppliquerPlan::dupliquer(Ui::MainWindow *ui,
+QList<QVector3D> DuppliquerPlan::dupliquer(Ui::MainWindow *ui,QPushButtonPers* plans[9],
                   Cube cubeMotif,int NumeroPlanADupliquer, QList<int> l,QList<QVector3D> liste_vecteur3D,QString emplMotif){
 
     QList<QVector3D> Nouvelleliste;
@@ -132,9 +141,9 @@ QList<QVector3D> DuppliquerPlan::dupliquer(Ui::MainWindow *ui,
     //décolorer les boutons plans sélectionnés pour la duplication
     for(int j=0;j<l.size();j++){
         int n=l.value(j);
-        decolorePlan(ui,n);
+        decolorePlan(plans,n);
     }
 
-    DeconnecterPlan(ui);
+    DeconnecterPlan(plans);
     return Nouvelleliste;
 }

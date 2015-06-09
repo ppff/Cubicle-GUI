@@ -4,12 +4,22 @@ ControlCube3D::ControlCube3D()
 {
 
 }
-void ControlCube3D::desactivePlan(QPushButtonPers * plans[9]){
+void ControlCube3D::desactivePlan(QPushButtonPers * plans[9],Ui::MainWindow *ui){
 
 for(int i=0;i<9;i++){
     plans[i]->setStyleSheet("QPushButton { background-color: rgba(240,240,240,255); }");
 
 }
+ ui->plane1->hide();
+ ui->plane2->hide();
+ ui->plane3->hide();
+ ui->plane4->hide();
+ ui->plane5->hide();
+ ui->plane6->hide();
+ ui->plane7->hide();
+ ui->plane8->hide();
+ ui->plane9->hide();
+
 
 
             //déselectionner les plans
@@ -26,7 +36,7 @@ for(int i=0;i<9;i++){
 
 int ControlCube3D::affichePlanLed(const QString & valeur,Ui::MainWindow *ui,QPushButtonPers * plans[9],QPushButton* buttons[90],Cube cubeMotif){
 
-    desactivePlan(plans);
+    desactivePlan(plans,ui);
 
     QString stnplan=valeur[1];
 
@@ -45,7 +55,7 @@ int ControlCube3D::affichePlanLed(const QString & valeur,Ui::MainWindow *ui,QPus
     }
 */
 
-   plans[nplan]->setStyleSheet("QPushButton { background-color: red; }");
+   plans[8-nplan]->setStyleSheet("QPushButton { background-color: red; }");
 
     QList<QVector3D> ll;
     for(int i=0;i<9;i++)

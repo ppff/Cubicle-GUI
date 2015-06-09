@@ -22,7 +22,7 @@ MainWindow::MainWindow(QWidget *parent) :
     this->setStyleSheet("MainWindow{background-image : url(':icone/image_de_fond.jpg')}");
 
     deletePlanLed(0);
-    ctlCube.desactivePlan(plans);
+    ctlCube.desactivePlan(plans,ui);
     connexion();
     dirOpen=0;
 }
@@ -201,7 +201,7 @@ void MainWindow::ouvrir_explorer(){
     ui->actionSave_as->setDisabled(false);
     this->cubeMotif=Cube();
     deletePlanLed(1);
-    ctlCube.desactivePlan(plans);
+    ctlCube.desactivePlan(plans,ui);
     this->liste_vecteur3D.clear();
     this->ui->widget->setListPoints(liste_vecteur3D);
     ui->widget->setListPlan(liste_vecteur3D);
@@ -405,7 +405,7 @@ void MainWindow::new_project(){
     saved=false;
     this->cubeMotif=Cube();
     deletePlanLed(1);
-    ctlCube.desactivePlan(plans);
+    ctlCube.desactivePlan(plans,ui);
     this->liste_vecteur3D.clear();
     this->ui->widget->setListPoints(liste_vecteur3D);
     ui->widget->setListPlan(liste_vecteur3D);
@@ -504,7 +504,7 @@ void MainWindow::controlDelete(){
                                                    QItemSelectionModel::ClearAndSelect | QItemSelectionModel::Rows);
 
             this->deletePlanLed(1);
-            ctlCube.desactivePlan(plans);
+            ctlCube.desactivePlan(plans,ui);
         }
         reordonneGroup(path);
     }
@@ -713,7 +713,7 @@ void MainWindow::doubleClick(){
             this->setEmpMotif(name);
             this->cubeMotif=Cube();
             deletePlanLed(1);
-            ctlCube.desactivePlan(plans);
+            ctlCube.desactivePlan(plans,ui);
             this->liste_vecteur3D.clear();
             this->ui->widget->setListPoints(liste_vecteur3D);
             ui->widget->setListPlan(liste_vecteur3D);
@@ -769,7 +769,7 @@ void MainWindow::affiche_plan_Cube(const QString &valeur){
 }
 
 void MainWindow::selectPlanToDuplicate(){
-    this->dupPlan.DeconnecterPlan(ui);
+    this->dupPlan.DeconnecterPlan(plans);
     connectPlanToDuplicate();
 }
 
@@ -782,13 +782,13 @@ void MainWindow::choixPlanADupliquer(const QString &valeur){
         int size=listePlanADupliquer.size();
         QString s=QString:: number(size);
         qDebug()<<"taille liste dup"+s;
-        this->dupPlan.colorePlan(ui,nplan);
+        this->dupPlan.colorePlan(plans,nplan);
     }
 }
 
 void MainWindow:: duplicate(){
 
-    QList<QVector3D> l=this->dupPlan.dupliquer(ui, cubeMotif,NumeroPlan, listePlanADupliquer,liste_vecteur3D,emplMotif);
+    QList<QVector3D> l=this->dupPlan.dupliquer(ui,plans, cubeMotif,NumeroPlan, listePlanADupliquer,liste_vecteur3D,emplMotif);
     liste_vecteur3D=l;
     this->ui->widget->setListPoints(liste_vecteur3D);
     this->ui->widget->setListPlan(liste_vecteur3D);
@@ -814,7 +814,7 @@ void MainWindow::connectPlanToAffiche(){
 
 
            connect(plans[i], SIGNAL(clicked()), signalMapper, SLOT(map()));
-           QString text=QString::number(i);
+           QString text=QString::number(8-i);
            signalMapper->setMapping(plans[i], "0"+text);
        }
        connect(signalMapper, SIGNAL(mapped(const QString &)), this, SLOT(affiche_plan_Cube(const QString &)));
@@ -852,7 +852,7 @@ void MainWindow:: connectPlanToDuplicate(){
 
 
            connect(plans[i], SIGNAL(clicked()), signalMapper, SLOT(map()));
-           QString text=QString::number(i);
+           QString text=QString::number(8-i);
            signalMapper->setMapping(plans[i], "0"+text);
        }
        connect(signalMapper, SIGNAL(mapped(const QString &)), this, SLOT(choixPlanADupliquer(const QString &)));
