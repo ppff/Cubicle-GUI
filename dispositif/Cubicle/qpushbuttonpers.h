@@ -20,9 +20,6 @@ signals:
 protected:
     void mousePressEvent(QMouseEvent *event1);
 
-private slots:
-    void copierPlan();
-    void collerPlan();
 
 private :
     Ui::MainWindow *uiMainWindow;
