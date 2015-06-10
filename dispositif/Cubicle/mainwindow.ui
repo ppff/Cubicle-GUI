@@ -507,7 +507,7 @@
     <string>Rename</string>
    </property>
   </action>
-  <action name="actionCopy_Plane">
+  <action name="actionCopy_Plane1">
    <property name="icon">
     <iconset resource="ressource.qrc">
      <normaloff>:/icone/plan0.png</normaloff>:/icone/plan0.png</iconset>
@@ -516,7 +516,151 @@
     <string>Copy Plane</string>
    </property>
   </action>
-  <action name="actionPaste_Plane">
+  <action name="actionPaste_Plane1">
+   <property name="icon">
+    <iconset resource="ressource.qrc">
+     <normaloff>:/icone/cubeatome.gif</normaloff>:/icone/cubeatome.gif</iconset>
+   </property>
+   <property name="text">
+    <string>Paste Plane</string>
+   </property>
+  </action>
+  <action name="actionCopy_Plane2">
+   <property name="icon">
+    <iconset resource="ressource.qrc">
+     <normaloff>:/icone/plan0.png</normaloff>:/icone/plan0.png</iconset>
+   </property>
+   <property name="text">
+    <string>Copy Plane</string>
+   </property>
+  </action>
+  <action name="actionPaste_Plane2">
+   <property name="icon">
+    <iconset resource="ressource.qrc">
+     <normaloff>:/icone/cubeatome.gif</normaloff>:/icone/cubeatome.gif</iconset>
+   </property>
+   <property name="text">
+    <string>Paste Plane</string>
+   </property>
+  </action>
+  <action name="actionCopy_Plane3">
+   <property name="icon">
+    <iconset resource="ressource.qrc">
+     <normaloff>:/icone/plan0.png</normaloff>:/icone/plan0.png</iconset>
+   </property>
+   <property name="text">
+    <string>Copy Plane</string>
+   </property>
+  </action>
+  <action name="actionPaste_Plane3">
+   <property name="icon">
+    <iconset resource="ressource.qrc">
+     <normaloff>:/icone/cubeatome.gif</normaloff>:/icone/cubeatome.gif</iconset>
+   </property>
+   <property name="text">
+    <string>Paste Plane</string>
+   </property>
+  </action>
+  <action name="actionCopy_Plane4">
+   <property name="icon">
+    <iconset resource="ressource.qrc">
+     <normaloff>:/icone/plan0.png</normaloff>:/icone/plan0.png</iconset>
+   </property>
+   <property name="text">
+    <string>Copy Plane</string>
+   </property>
+  </action>
+  <action name="actionPaste_Plane4">
+   <property name="icon">
+    <iconset resource="ressource.qrc">
+     <normaloff>:/icone/cubeatome.gif</normaloff>:/icone/cubeatome.gif</iconset>
+   </property>
+   <property name="text">
+    <string>Paste Plane</string>
+   </property>
+  </action>
+  <action name="actionCopy_Plane5">
+   <property name="icon">
+    <iconset resource="ressource.qrc">
+     <normaloff>:/icone/plan0.png</normaloff>:/icone/plan0.png</iconset>
+   </property>
+   <property name="text">
+    <string>Copy Plane</string>
+   </property>
+  </action>
+  <action name="actionPaste_Plane5">
+   <property name="icon">
+    <iconset resource="ressource.qrc">
+     <normaloff>:/icone/cubeatome.gif</normaloff>:/icone/cubeatome.gif</iconset>
+   </property>
+   <property name="text">
+    <string>Paste Plane</string>
+   </property>
+  </action>
+  <action name="actionCopy_Plane6">
+   <property name="icon">
+    <iconset resource="ressource.qrc">
+     <normaloff>:/icone/plan0.png</normaloff>:/icone/plan0.png</iconset>
+   </property>
+   <property name="text">
+    <string>Copy Plane</string>
+   </property>
+  </action>
+  <action name="actionPaste_Plane6">
+   <property name="icon">
+    <iconset resource="ressource.qrc">
+     <normaloff>:/icone/cubeatome.gif</normaloff>:/icone/cubeatome.gif</iconset>
+   </property>
+   <property name="text">
+    <string>Paste Plane</string>
+   </property>
+  </action>
+  <action name="actionCopy_Plane7">
+   <property name="icon">
+    <iconset resource="ressource.qrc">
+     <normaloff>:/icone/plan0.png</normaloff>:/icone/plan0.png</iconset>
+   </property>
+   <property name="text">
+    <string>Copy Plane</string>
+   </property>
+  </action>
+  <action name="actionPaste_Plane7">
+   <property name="icon">
+    <iconset resource="ressource.qrc">
+     <normaloff>:/icone/cubeatome.gif</normaloff>:/icone/cubeatome.gif</iconset>
+   </property>
+   <property name="text">
+    <string>Paste Plane</string>
+   </property>
+  </action>
+  <action name="actionCopy_Plane8">
+   <property name="icon">
+    <iconset resource="ressource.qrc">
+     <normaloff>:/icone/plan0.png</normaloff>:/icone/plan0.png</iconset>
+   </property>
+   <property name="text">
+    <string>Copy Plane</string>
+   </property>
+  </action>
+  <action name="actionPaste_Plane8">
+   <property name="icon">
+    <iconset resource="ressource.qrc">
+     <normaloff>:/icone/cubeatome.gif</normaloff>:/icone/cubeatome.gif</iconset>
+   </property>
+   <property name="text">
+    <string>Paste Plane</string>
+   </property>
+  </action>
+  <action name="actionCopy_Plane9">
+   <property name="icon">
+    <iconset resource="ressource.qrc">
+     <normaloff>:/icone/plan0.png</normaloff>:/icone/plan0.png</iconset>
+   </property>
+   <property name="text">
+    <string>Copy Plane</string>
+   </property>
+  </action>
+  <action name="actionPaste_Plane9">
    <property name="icon">
     <iconset resource="ressource.qrc">
      <normaloff>:/icone/cubeatome.gif</normaloff>:/icone/cubeatome.gif</iconset>

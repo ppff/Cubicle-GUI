@@ -90,8 +90,24 @@ void MainWindow::connectAction(){
     connect(ui->treeView,SIGNAL(pressed(QModelIndex)),this,SLOT(save()));
     connect(ui->actionSelect,SIGNAL(triggered(bool)),this,SLOT(selectPlanToDuplicate()));
     connect(ui->actionDuplicate,SIGNAL(triggered(bool)),this,SLOT(duplicate()));
-    connect(ui->actionCopy_Plane,SIGNAL(triggered(bool)),this,SLOT(copyPlane()));
-    connect(ui->actionPaste_Plane,SIGNAL(triggered(bool)),this,SLOT(pastePlane()));
+    connect(ui->actionCopy_Plane1,SIGNAL(triggered(bool)),this,SLOT(copyPlane()));
+    connect(ui->actionPaste_Plane1,SIGNAL(triggered(bool)),this,SLOT(pastePlane()));
+    connect(ui->actionCopy_Plane2,SIGNAL(triggered(bool)),this,SLOT(copyPlane()));
+    connect(ui->actionPaste_Plane2,SIGNAL(triggered(bool)),this,SLOT(pastePlane()));
+    connect(ui->actionCopy_Plane3,SIGNAL(triggered(bool)),this,SLOT(copyPlane()));
+    connect(ui->actionPaste_Plane3,SIGNAL(triggered(bool)),this,SLOT(pastePlane()));
+    connect(ui->actionCopy_Plane4,SIGNAL(triggered(bool)),this,SLOT(copyPlane()));
+    connect(ui->actionPaste_Plane4,SIGNAL(triggered(bool)),this,SLOT(pastePlane()));
+    connect(ui->actionCopy_Plane5,SIGNAL(triggered(bool)),this,SLOT(copyPlane()));
+    connect(ui->actionPaste_Plane5,SIGNAL(triggered(bool)),this,SLOT(pastePlane()));
+    connect(ui->actionCopy_Plane6,SIGNAL(triggered(bool)),this,SLOT(copyPlane()));
+    connect(ui->actionPaste_Plane6,SIGNAL(triggered(bool)),this,SLOT(pastePlane()));
+    connect(ui->actionCopy_Plane7,SIGNAL(triggered(bool)),this,SLOT(copyPlane()));
+    connect(ui->actionPaste_Plane7,SIGNAL(triggered(bool)),this,SLOT(pastePlane()));
+    connect(ui->actionCopy_Plane8,SIGNAL(triggered(bool)),this,SLOT(copyPlane()));
+    connect(ui->actionPaste_Plane8,SIGNAL(triggered(bool)),this,SLOT(pastePlane()));
+    connect(ui->actionCopy_Plane9,SIGNAL(triggered(bool)),this,SLOT(copyPlane()));
+    connect(ui->actionPaste_Plane9,SIGNAL(triggered(bool)),this,SLOT(pastePlane()));
 
     ui->treeView->setContextMenuPolicy(Qt::CustomContextMenu);
     connect(ui->treeView, SIGNAL(customContextMenuRequested(const QPoint&)),
@@ -815,22 +831,28 @@ void MainWindow:: duplicate(){
 //copier un plan pour duplication
 void MainWindow::copyPlane(){
 
-    this->numeroPlanADuppliquer=this->dupPlan.recupereNomPlan(plans);
+    //récupérer le sender (action) du slot
+    QAction* action = qobject_cast<QAction* >(sender());
+    QString nom=action->objectName();
 
-    for(int j=0;j<9;j++){
-        plans[j]->setNamePlane("");
-    }
+    QString n=(QString)nom[16];
+    qDebug()<<"le bouton qui  émet le siganl copier est "+n;
+    int numPlan=n.toInt(0,10);
+    this->numeroPlanADuppliquer=numPlan-1;
 }
 
 //coller un plan
 void MainWindow::pastePlane(){
-    int numeroPlanPaste=this->dupPlan.recupereNomPlan(plans);
 
-    for(int j=0;j<9;j++){
-        plans[j]->setNamePlane("");
-    }
+    QAction* action = qobject_cast<QAction* >(sender());
+    QString nom=action->objectName();
+
+    QString n=(QString)nom[17];
+    qDebug()<<"le bouton qui émet le siganl coller est "+n;
+    int numeroPlanPaste=n.toInt(0,10)-1;
 
     QList<QVector3D> l=this->dupPlan.collerPlan( cubeMotif,this->numeroPlanADuppliquer, numeroPlanPaste,liste_vecteur3D,emplMotif);
+    //mettre à jour les vecteurs 3D
     liste_vecteur3D=l;
     this->ui->widget->setListPoints(liste_vecteur3D);
     this->ui->widget->setListPlan(liste_vecteur3D);

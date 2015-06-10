@@ -19,7 +19,6 @@ public:
     QList<QVector3D> collerPlan(Cube cubeMotif,
                     int NumeroPlanADupliquer,int NumeroPlanPaste,QList<QVector3D> liste_vecteur3D,QString emplMotif);
 
-    int recupereNomPlan(QPushButtonPers* plans[9]);
 };
 
 #endif // DUPPLIQUERPLAN_H

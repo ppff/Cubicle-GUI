@@ -9,8 +9,6 @@ class QPushButtonPers : public QPushButton
 public:
     QPushButtonPers(QWidget *parent = 0);
     void setUi(Ui::MainWindow *ui);
-    QString getNamePlane();
-    void setNamePlane(QString name);
     ~QPushButtonPers();
 
 
@@ -23,7 +21,6 @@ protected:
 
 private :
     Ui::MainWindow *uiMainWindow;
-    QString namePlane;
 
 };
 
