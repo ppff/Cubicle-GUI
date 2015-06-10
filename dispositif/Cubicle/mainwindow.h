@@ -4,7 +4,7 @@
 #include "global.h"
 #include "controlplan2d.h"
 #include "controlcube3d.h"
-
+#include "qpushbuttonpers.h"
 #include <QMainWindow>
 #include <QtCore>
 #include <QtGui>
@@ -33,8 +33,6 @@
 #include <iostream>
 #include "gestionfichier.h"
 #include <QFile>
-
-
 #include <QPainter>
 #include <QPainterPath>
 #include "simulation_cube.h"
@@ -98,7 +96,7 @@ private:
     QModelIndex new_index;
     QMenu* contextMenu;
     QString saveDir;
-    QString namedir;
+    //QString namedir;
     QAction *insertMotif;
     QAction *insert_Group;
     QAction *deletePattern;
@@ -110,7 +108,6 @@ private:
     QPushButton* buttons[90];
     int OrienPlan;
     int NumeroPlan;
-    QPushButton* plans[30];
     bool saved=true ;
     int dirOpen;  //vaut 0 si y a pas de directory ouvert, 1 si openDirectory et 2 si on ne choisit pas d'emplacement au début (new project)=>  saveAs
     bool copierCouper; // vaut 0 pour copier et 1 pour couper
@@ -118,6 +115,12 @@ private:
     QList<int> listePlanADupliquer;
     bool enfonce;
     QDir *aDir;
+    int numeroPlanADuppliquer;
+
+
+    QPushButtonPers* plans[9];
+
+
     Cube cubeMotif;
     QString tmpDir;
     ControlPlan2D ctlPlan;
@@ -160,6 +163,10 @@ private slots:
     void on_pushButton_3_clicked();
     void on_pushButton_4_clicked();
     void ajouter_groupe();
+    void rename();
+    void copyPlane();
+    void pastePlane();
+
 };
 
 

@@ -63,5 +63,6 @@
         <file>9.png</file>
         <file>cubicle.jpg</file>
         <file>cube.jpg</file>
+        <file>rename.png</file>
     </qresource>
 </RCC>

@@ -55,7 +55,7 @@ QString GestionFichier::getLinePlan(int nplan,int nligne,Cube c){
     return str;
 }
 
-//parser le fichier du moutif et renvoyer une liste de vecteurs 3D de leds allumées
+//parser le fichier du motif et renvoyer une liste de vecteurs 3D de leds allumées
 
 QList<QVector3D> GestionFichier:: parser(QString empl, QList<QVector3D> list){
     QFile file(empl);
@@ -91,21 +91,4 @@ QList<QVector3D> GestionFichier:: parser(QString empl, QList<QVector3D> list){
 }
 
 
-/*
 
- QList<QVector3D> GestionFichier::tabToVector3D(int* tab){
-     QList<QVector3D> listVect;
-    int i=0;
-    QVector3D v;
-    int x,y,z;
-     while(tab[i]!=NULL){
-        x=tab[i];
-        y=tab[i+1];
-        z=tab[i+2];
-        v=QVector3D(x,y,z);
-        listVect.append(v);
-        i=i+3;
-    }
-     return listVect;
- }
-*/

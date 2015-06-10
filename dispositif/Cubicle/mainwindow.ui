@@ -23,31 +23,24 @@
    <layout class="QGridLayout" name="gridLayout_2">
     <item row="1" column="0">
      <layout class="QGridLayout" name="gridLayout">
+      <item row="13" column="2">
+       <widget class="QPushButton" name="plane2">
+        <property name="text">
+         <string>Plane2</string>
+        </property>
+       </widget>
+      </item>
+      <item row="4" column="2">
+       <widget class="QPushButton" name="plane8">
+        <property name="text">
+         <string>Plane8</string>
+        </property>
+       </widget>
+      </item>
       <item row="5" column="2" rowspan="2">
        <widget class="QPushButton" name="plane7">
         <property name="text">
          <string>Plane7</string>
-        </property>
-       </widget>
-      </item>
-      <item row="14" column="2" rowspan="2">
-       <widget class="QPushButton" name="plane1">
-        <property name="text">
-         <string>Plane1</string>
-        </property>
-       </widget>
-      </item>
-      <item row="10" column="2">
-       <widget class="QPushButton" name="plane4">
-        <property name="text">
-         <string>Plane4</string>
-        </property>
-       </widget>
-      </item>
-      <item row="8" column="2" rowspan="2">
-       <widget class="QPushButton" name="plane5">
-        <property name="text">
-         <string>Plane5</string>
         </property>
        </widget>
       </item>
@@ -64,27 +57,17 @@
         </property>
        </spacer>
       </item>
-      <item row="0" column="0" rowspan="16">
-       <widget class="QTreeView" name="treeView">
-        <property name="sizePolicy">
-         <sizepolicy hsizetype="Minimum" vsizetype="Expanding">
-          <horstretch>0</horstretch>
-          <verstretch>0</verstretch>
-         </sizepolicy>
+      <item row="8" column="2" rowspan="2">
+       <widget class="QPushButton" name="plane5">
+        <property name="text">
+         <string>Plane5</string>
         </property>
        </widget>
       </item>
-      <item row="2" column="2" rowspan="2">
-       <widget class="QPushButton" name="plane9">
+      <item row="10" column="2">
+       <widget class="QPushButton" name="plane4">
         <property name="text">
-         <string>Plane9</string>
-        </property>
-       </widget>
-      </item>
-      <item row="13" column="2">
-       <widget class="QPushButton" name="plane2">
-        <property name="text">
-         <string>Plane2</string>
+         <string>Plane4</string>
         </property>
        </widget>
       </item>
@@ -95,10 +78,20 @@
         </property>
        </widget>
       </item>
-      <item row="4" column="2">
-       <widget class="QPushButton" name="plane8">
+      <item row="14" column="2" rowspan="2">
+       <widget class="QPushButton" name="plane1">
         <property name="text">
-         <string>Plane8</string>
+         <string>Plane1</string>
+        </property>
+       </widget>
+      </item>
+      <item row="0" column="0" rowspan="16">
+       <widget class="QTreeView" name="treeView">
+        <property name="sizePolicy">
+         <sizepolicy hsizetype="Minimum" vsizetype="Expanding">
+          <horstretch>0</horstretch>
+          <verstretch>0</verstretch>
+         </sizepolicy>
         </property>
        </widget>
       </item>
@@ -106,6 +99,16 @@
        <widget class="QPushButton" name="plane3">
         <property name="text">
          <string>Plane3</string>
+        </property>
+       </widget>
+      </item>
+      <item row="0" column="3" rowspan="17">
+       <widget class="simulation_cube" name="widget" native="true">
+        <property name="sizePolicy">
+         <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
+          <horstretch>0</horstretch>
+          <verstretch>0</verstretch>
+         </sizepolicy>
         </property>
        </widget>
       </item>
@@ -196,13 +199,10 @@
         </widget>
        </widget>
       </item>
-      <item row="0" column="3" rowspan="17">
-       <widget class="simulation_cube" name="widget" native="true">
-        <property name="sizePolicy">
-         <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
-          <horstretch>0</horstretch>
-          <verstretch>0</verstretch>
-         </sizepolicy>
+      <item row="2" column="2" rowspan="2">
+       <widget class="QPushButton" name="plane9">
+        <property name="text">
+         <string>Plane9</string>
         </property>
        </widget>
       </item>
@@ -216,7 +216,7 @@
      <x>0</x>
      <y>0</y>
      <width>1200</width>
-     <height>21</height>
+     <height>25</height>
     </rect>
    </property>
    <property name="nativeMenuBar">
@@ -496,6 +496,33 @@
   <action name="actionAbout_CUBICLE">
    <property name="text">
     <string>About CUBICLE</string>
+   </property>
+  </action>
+  <action name="actionRename">
+   <property name="icon">
+    <iconset resource="ressource.qrc">
+     <normaloff>:/Images/rename.png</normaloff>:/Images/rename.png</iconset>
+   </property>
+   <property name="text">
+    <string>Rename</string>
+   </property>
+  </action>
+  <action name="actionCopy_Plane">
+   <property name="icon">
+    <iconset resource="ressource.qrc">
+     <normaloff>:/icone/plan0.png</normaloff>:/icone/plan0.png</iconset>
+   </property>
+   <property name="text">
+    <string>Copy Plane</string>
+   </property>
+  </action>
+  <action name="actionPaste_Plane">
+   <property name="icon">
+    <iconset resource="ressource.qrc">
+     <normaloff>:/icone/cubeatome.gif</normaloff>:/icone/cubeatome.gif</iconset>
+   </property>
+   <property name="text">
+    <string>Paste Plane</string>
    </property>
   </action>
  </widget>
