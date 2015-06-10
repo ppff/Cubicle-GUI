@@ -676,6 +676,7 @@ void MainWindow::reordonneRenommage(){
         indice = QString::number(i)+"_";
     }
     bool ok;
+    int value=nameGroup.left(2).toInt(&ok);
     QString newNameGroup;
     if((ok)&&(nameGroup[2]=='_')){
      newNameGroup=indice+nameGroup.mid(3);
