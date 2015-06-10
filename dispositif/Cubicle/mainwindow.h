@@ -116,6 +116,7 @@ private:
     QList<int> listePlanADupliquer;
     bool enfonce;
     QDir *aDir;
+    int numeroPlanADuppliquer;
 
     QPushButtonPers* b1;
     QPushButtonPers* plans[9];

@@ -4,6 +4,8 @@ ControlPlan2D::ControlPlan2D()
 {
 
 }
+
+//permet d'allumer une led sur le plan 2D selon la valeur passée en paramètre
 void ControlPlan2D:: afficheLed(  QPushButton* buttons[90],const int i, const int j,const  int etat )
 {
        QString lig=QString::number(i);
@@ -49,20 +51,11 @@ QList<QVector3D> ControlPlan2D::controlLed(const QString & valeur,Cube cubeMotif
         return liste_vecteur3D;
 }
 
-
+//désactiver la sélection des plans 2D
 void ControlPlan2D::desactiveSelectPlan(QPushButtonPers* plans[9],bool b){
-   /* ui->plane1->setDisabled(b);
-    ui->plane2->setDisabled(b);
-    ui->plane3->setDisabled(b);
-    ui->plane4->setDisabled(b);
-    ui->plane5->setDisabled(b);
-    ui->plane6->setDisabled(b);
-    ui->plane7->setDisabled(b);
-    ui->plane8->setDisabled(b);
-    ui->plane9->setDisabled(b);*/
+
     for(int i=0;i<9;i++){
         plans[i]->setDisabled(b);
-
     }
 }
 

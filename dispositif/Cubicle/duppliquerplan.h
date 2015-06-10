@@ -16,12 +16,8 @@ public:
     void decolorePlan(QPushButtonPers* plans[9],int nplan);
     QList<QVector3D> parcoursCube(int NumeroPlanADupliquer,QList<QVector3D> liste_vecteur3D,Cube cubeMotif,int nplan);
     Cube updateCube(Cube nouveauCube,int NumeroPlanADupliquer,int nplan);
- //   void clignotementPlan(Ui::MainWindow *ui,int NumeroPlan);
-  //  bool clignotement(Ui::MainWindow *ui,bool enfonce);
-
-private:
-    bool enfonce;
-    //Ui::MainWindow *ui;
+    QList<QVector3D> collerPlan(Ui::MainWindow *ui,QPushButtonPers* plans[9],Cube cubeMotif,
+                    int NumeroPlanADupliquer,int NumeroPlanPaste,QList<QVector3D> liste_vecteur3D,QString emplMotif);
 
 
 };

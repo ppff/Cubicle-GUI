@@ -820,11 +820,127 @@ void MainWindow:: duplicate(){
 }
 
 void MainWindow::copyPlane(){
+    qDebug()<<"dans copyPlane";
+    int i=0;
+    while(plans[i]->getNamePlane().compare("")==0){
+        i++;
+    }
+    QString nomPlan=(QString)plans[i]->getNamePlane();
+    if(nomPlan.compare("plane9")==0){
+        qDebug()<<"plan 9";
+        this->numeroPlanADuppliquer=8;
+
+    }
+    if(nomPlan.compare("plane8")==0){
+        qDebug()<<"plan 8";
+        this->numeroPlanADuppliquer=7;
+
+    }
+    if(nomPlan.compare("plane7")==0){
+        qDebug()<<"plan 7";
+        this->numeroPlanADuppliquer=6;
+
+    }
+    if(nomPlan.compare("plane6")==0){
+        qDebug()<<"plan 6";
+        this->numeroPlanADuppliquer=5;
+
+    }
+    if(nomPlan.compare("plane5")==0){
+        qDebug()<<"plan 5";
+        this->numeroPlanADuppliquer=4;
+
+    }
+    if(nomPlan.compare("plane4")==0){
+        qDebug()<<"plan 4";
+        this->numeroPlanADuppliquer=3;
+
+    }
+    if(nomPlan.compare("plane3")==0){
+        qDebug()<<"plan 3";
+        this->numeroPlanADuppliquer=2;
+
+    }
+    if(nomPlan.compare("plane2")==0){
+        qDebug()<<"plan 2";
+        this->numeroPlanADuppliquer=1;
+
+    }
+    if(nomPlan.compare("plane1")==0){
+        qDebug()<<"plan 1";
+        this->numeroPlanADuppliquer=0;
+
+    }
+    for(int j=0;j<9;j++){
+        plans[j]->setNamePlane("");
+    }
 
 }
 
 void MainWindow::pastePlane(){
+    int i=0;
+    int numeroPlanPaste;
+    while(plans[i]->getNamePlane().compare("")==0){
+        i++;
+    }
+    QString nomPlan=(QString)plans[i]->getNamePlane();
+    if(nomPlan.compare("plane9")==0){
+        qDebug()<<"plan 9";
+        numeroPlanPaste=8;
 
+    }
+    if(nomPlan.compare("plane8")==0){
+        qDebug()<<"plan 8";
+        numeroPlanPaste=7;
+
+    }
+    if(nomPlan.compare("plane7")==0){
+        qDebug()<<"plan 7";
+        numeroPlanPaste=6;
+
+    }
+    if(nomPlan.compare("plane6")==0){
+        qDebug()<<"plan 6";
+        numeroPlanPaste=5;
+
+    }
+    if(nomPlan.compare("plane5")==0){
+        qDebug()<<"plan 5";
+        numeroPlanPaste=4;
+
+    }
+    if(nomPlan.compare("plane4")==0){
+        qDebug()<<"plan 4";
+       numeroPlanPaste=3;
+
+    }
+    if(nomPlan.compare("plane3")==0){
+        qDebug()<<"plan 3";
+        numeroPlanPaste=2;
+
+    }
+    if(nomPlan.compare("plane2")==0){
+        qDebug()<<"plan 2";
+        numeroPlanPaste=1;
+
+    }
+    if(nomPlan.compare("plane1")==0){
+        qDebug()<<"plan 1";
+       numeroPlanPaste=0;
+
+    }
+    for(int j=0;j<9;j++){
+        plans[j]->setNamePlane("");
+    }
+
+    //this->listePlanADupliquer.append(numeroPlanPaste);
+    QList<QVector3D> l=this->dupPlan.collerPlan(ui,plans, cubeMotif,this->numeroPlanADuppliquer, numeroPlanPaste,liste_vecteur3D,emplMotif);
+    liste_vecteur3D=l;
+    this->ui->widget->setListPoints(liste_vecteur3D);
+    this->ui->widget->setListPlan(liste_vecteur3D);
+
+  //  connectPlanToAffiche();
+  //  this->listePlanADupliquer.clear();
 }
 
 /*

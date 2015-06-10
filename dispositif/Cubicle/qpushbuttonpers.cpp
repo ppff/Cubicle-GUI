@@ -24,7 +24,8 @@ void QPushButtonPers::mousePressEvent(QMouseEvent *event1)
 void QPushButtonPers::onPressRightClic(QPoint  p){
     qDebug("je rentre dans signal emit");
    // QPushButtonPers *button = (QPushButtonPers *)(sender());
-
+    QString n=this->text();
+    setNamePlane(n);
 
     //QPushButton *button = (QPushButton *)sender();
    // QPushButton *button = qobject_cast<QPushButton *>( sender() );
@@ -54,6 +55,14 @@ void QPushButtonPers::copierPlan(){
 
 void QPushButtonPers::collerPlan(){
 
+}
+
+void QPushButtonPers::setNamePlane(QString name){
+    this->namePlane=name;
+}
+
+QString QPushButtonPers::getNamePlane(){
+    return this->namePlane;
 }
 
 QPushButtonPers::~QPushButtonPers()
