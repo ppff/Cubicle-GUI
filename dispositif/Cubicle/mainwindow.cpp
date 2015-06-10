@@ -50,8 +50,7 @@ void MainWindow::initUi(){
 
     //ui->treeView->setEditTriggers(QAbstractItemView::AnyKeyPressed);
 
-
-
+    //créer les plans à selectionnées comme QPushButtonPers pour pouvoir effectuer des clics droits dessus
     for(int i=0;i<9;i++){
         plans[i]=new QPushButtonPers(this);
         QString nplan=QString::number(9-i);
@@ -59,13 +58,6 @@ void MainWindow::initUi(){
         ui->gridLayout->addWidget(plans[i],2*i,2);
         plans[i]->setUi(ui);
     }
-
- //   b1=new QPushButtonPers(this);
- //   b1->setText("plane9");
-  // b1->setUi(ui);
- //   ui->gridLayout->addWidget(b1,2,2);
-
-
 }
 
 
@@ -108,7 +100,7 @@ void MainWindow::connectAction(){
 
 }
 
-
+//le menu des clics droits sur l'arborescence
 void MainWindow::ShowContextMenu(const QPoint& p){
 
     QPoint globalPos = ui->treeView->mapToGlobal(p);
@@ -684,7 +676,6 @@ void MainWindow::reordonneRenommage(){
         indice = QString::number(i)+"_";
     }
     bool ok;
-    int value=nameGroup.left(2).toInt(&ok);
     QString newNameGroup;
     if((ok)&&(nameGroup[2]=='_')){
      newNameGroup=indice+nameGroup.mid(3);
@@ -810,7 +801,7 @@ void MainWindow::choixPlanADupliquer(const QString &valeur){
 
 void MainWindow:: duplicate(){
 
-    QList<QVector3D> l=this->dupPlan.dupliquer(ui,plans, cubeMotif,NumeroPlan, listePlanADupliquer,liste_vecteur3D,emplMotif);
+    QList<QVector3D> l=this->dupPlan.dupliquer(plans, cubeMotif,NumeroPlan, listePlanADupliquer,liste_vecteur3D,emplMotif);
     liste_vecteur3D=l;
     this->ui->widget->setListPoints(liste_vecteur3D);
     this->ui->widget->setListPlan(liste_vecteur3D);
@@ -819,212 +810,56 @@ void MainWindow:: duplicate(){
     this->listePlanADupliquer.clear();
 }
 
+//copier un plan pour duplication
 void MainWindow::copyPlane(){
-    qDebug()<<"dans copyPlane";
-    int i=0;
-    while(plans[i]->getNamePlane().compare("")==0){
-        i++;
-    }
-    QString nomPlan=(QString)plans[i]->getNamePlane();
-    if(nomPlan.compare("plane9")==0){
-        qDebug()<<"plan 9";
-        this->numeroPlanADuppliquer=8;
 
-    }
-    if(nomPlan.compare("plane8")==0){
-        qDebug()<<"plan 8";
-        this->numeroPlanADuppliquer=7;
+    this->numeroPlanADuppliquer=this->dupPlan.recupereNomPlan(plans);
 
-    }
-    if(nomPlan.compare("plane7")==0){
-        qDebug()<<"plan 7";
-        this->numeroPlanADuppliquer=6;
-
-    }
-    if(nomPlan.compare("plane6")==0){
-        qDebug()<<"plan 6";
-        this->numeroPlanADuppliquer=5;
-
-    }
-    if(nomPlan.compare("plane5")==0){
-        qDebug()<<"plan 5";
-        this->numeroPlanADuppliquer=4;
-
-    }
-    if(nomPlan.compare("plane4")==0){
-        qDebug()<<"plan 4";
-        this->numeroPlanADuppliquer=3;
-
-    }
-    if(nomPlan.compare("plane3")==0){
-        qDebug()<<"plan 3";
-        this->numeroPlanADuppliquer=2;
-
-    }
-    if(nomPlan.compare("plane2")==0){
-        qDebug()<<"plan 2";
-        this->numeroPlanADuppliquer=1;
-
-    }
-    if(nomPlan.compare("plane1")==0){
-        qDebug()<<"plan 1";
-        this->numeroPlanADuppliquer=0;
-
-    }
     for(int j=0;j<9;j++){
         plans[j]->setNamePlane("");
     }
-
 }
 
+//coller un plan
 void MainWindow::pastePlane(){
-    int i=0;
-    int numeroPlanPaste;
-    while(plans[i]->getNamePlane().compare("")==0){
-        i++;
-    }
-    QString nomPlan=(QString)plans[i]->getNamePlane();
-    if(nomPlan.compare("plane9")==0){
-        qDebug()<<"plan 9";
-        numeroPlanPaste=8;
+    int numeroPlanPaste=this->dupPlan.recupereNomPlan(plans);
 
-    }
-    if(nomPlan.compare("plane8")==0){
-        qDebug()<<"plan 8";
-        numeroPlanPaste=7;
-
-    }
-    if(nomPlan.compare("plane7")==0){
-        qDebug()<<"plan 7";
-        numeroPlanPaste=6;
-
-    }
-    if(nomPlan.compare("plane6")==0){
-        qDebug()<<"plan 6";
-        numeroPlanPaste=5;
-
-    }
-    if(nomPlan.compare("plane5")==0){
-        qDebug()<<"plan 5";
-        numeroPlanPaste=4;
-
-    }
-    if(nomPlan.compare("plane4")==0){
-        qDebug()<<"plan 4";
-       numeroPlanPaste=3;
-
-    }
-    if(nomPlan.compare("plane3")==0){
-        qDebug()<<"plan 3";
-        numeroPlanPaste=2;
-
-    }
-    if(nomPlan.compare("plane2")==0){
-        qDebug()<<"plan 2";
-        numeroPlanPaste=1;
-
-    }
-    if(nomPlan.compare("plane1")==0){
-        qDebug()<<"plan 1";
-       numeroPlanPaste=0;
-
-    }
     for(int j=0;j<9;j++){
         plans[j]->setNamePlane("");
     }
 
-    //this->listePlanADupliquer.append(numeroPlanPaste);
-    QList<QVector3D> l=this->dupPlan.collerPlan(ui,plans, cubeMotif,this->numeroPlanADuppliquer, numeroPlanPaste,liste_vecteur3D,emplMotif);
+    QList<QVector3D> l=this->dupPlan.collerPlan( cubeMotif,this->numeroPlanADuppliquer, numeroPlanPaste,liste_vecteur3D,emplMotif);
     liste_vecteur3D=l;
     this->ui->widget->setListPoints(liste_vecteur3D);
     this->ui->widget->setListPlan(liste_vecteur3D);
-
-  //  connectPlanToAffiche();
-  //  this->listePlanADupliquer.clear();
 }
 
-/*
-void MainWindow::showMenu(const QPoint& p){
-    qDebug()<<"clic droit sur plan1";
-    QPoint globalPos = ui->treeView->mapToGlobal(p);
-    QMenu myMenu;
-    myMenu.addAction("fok");
-    QAction* selectedItem = myMenu.exec(globalPos);
-
-}
-*/
 //connecter tous les plans au signal affiche_plan_cube
 void MainWindow::connectPlanToAffiche(){
+
     QSignalMapper *signalMapper = new QSignalMapper(this);
 
        for (int i=0;i<9;i++){
-
 
            connect(plans[i], SIGNAL(clicked()), signalMapper, SLOT(map()));
            QString text=QString::number(8-i);
            signalMapper->setMapping(plans[i], "0"+text);
        }
        connect(signalMapper, SIGNAL(mapped(const QString &)), this, SLOT(affiche_plan_Cube(const QString &)));
-/*
-    connect(b1, SIGNAL(clicked()), signalMapper, SLOT(map()));
-    signalMapper->setMapping(b1, "00");
-    connect(ui->plane1, SIGNAL(clicked()), signalMapper, SLOT(map()));
-    signalMapper->setMapping(ui->plane1, "00");
-    connect(ui->plane2, SIGNAL(clicked()), signalMapper, SLOT(map()));
-    signalMapper->setMapping(ui->plane2, "01");
-    connect(ui->plane3, SIGNAL(clicked()), signalMapper, SLOT(map()));
-    signalMapper->setMapping(ui->plane3, "02");
-    connect(ui->plane4, SIGNAL(clicked()), signalMapper, SLOT(map()));
-    signalMapper->setMapping(ui->plane4, "03");
-    connect(ui->plane5, SIGNAL(clicked()), signalMapper, SLOT(map()));
-    signalMapper->setMapping(ui->plane5, "04");
-    connect(ui->plane6, SIGNAL(clicked()), signalMapper, SLOT(map()));
-    signalMapper->setMapping(ui->plane6, "05");
-    connect(ui->plane7, SIGNAL(clicked()), signalMapper, SLOT(map()));
-    signalMapper->setMapping(ui->plane7, "06");
-    connect(ui->plane8, SIGNAL(clicked()), signalMapper, SLOT(map()));
-    signalMapper->setMapping(ui->plane8, "07");
-    connect(ui->plane9, SIGNAL(clicked()), signalMapper, SLOT(map()));
-    signalMapper->setMapping(ui->plane9, "08");
-    connect(signalMapper, SIGNAL(mapped(const QString &)), this, SLOT(affiche_plan_Cube(const QString &)));
-*/
+
 }
 
 void MainWindow:: connectPlanToDuplicate(){
 
     QSignalMapper *signalMapper = new QSignalMapper(this);
 
-
        for (int i=0;i<9;i++){
-
 
            connect(plans[i], SIGNAL(clicked()), signalMapper, SLOT(map()));
            QString text=QString::number(8-i);
            signalMapper->setMapping(plans[i], "0"+text);
        }
        connect(signalMapper, SIGNAL(mapped(const QString &)), this, SLOT(choixPlanADupliquer(const QString &)));
-/*
-
-    connect(ui->plane1, SIGNAL(clicked()), signalMapper, SLOT(map()));
-    signalMapper->setMapping(ui->plane1, "00");
-    connect(ui->plane2, SIGNAL(clicked()), signalMapper, SLOT(map()));
-    signalMapper->setMapping(ui->plane2, "01");
-    connect(ui->plane3, SIGNAL(clicked()), signalMapper, SLOT(map()));
-    signalMapper->setMapping(ui->plane3, "02");
-    connect(ui->plane4, SIGNAL(clicked()), signalMapper, SLOT(map()));
-    signalMapper->setMapping(ui->plane4, "03");
-    connect(ui->plane5, SIGNAL(clicked()), signalMapper, SLOT(map()));
-    signalMapper->setMapping(ui->plane5, "04");
-    connect(ui->plane6, SIGNAL(clicked()), signalMapper, SLOT(map()));
-    signalMapper->setMapping(ui->plane6, "05");
-    connect(ui->plane7, SIGNAL(clicked()), signalMapper, SLOT(map()));
-    signalMapper->setMapping(ui->plane7, "06");
-    connect(ui->plane8, SIGNAL(clicked()), signalMapper, SLOT(map()));
-    signalMapper->setMapping(ui->plane8, "07");
-    connect(ui->plane9, SIGNAL(clicked()), signalMapper, SLOT(map()));
-    signalMapper->setMapping(ui->plane9, "08");
-    connect(signalMapper, SIGNAL(mapped(const QString &)), this, SLOT(choixPlanADupliquer(const QString &)));
-*/
 }
 
 

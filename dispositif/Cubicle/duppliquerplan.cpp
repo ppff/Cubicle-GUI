@@ -79,7 +79,7 @@ Cube DuppliquerPlan::updateCube(Cube nouveauCube,int NumeroPlanADupliquer,int np
 
 
 
-QList<QVector3D> DuppliquerPlan::dupliquer(Ui::MainWindow *ui,QPushButtonPers* plans[9],
+QList<QVector3D> DuppliquerPlan::dupliquer(QPushButtonPers* plans[9],
                   Cube cubeMotif,int NumeroPlanADupliquer, QList<int> l,QList<QVector3D> liste_vecteur3D,QString emplMotif){
 
     QList<QVector3D> Nouvelleliste;
@@ -108,7 +108,7 @@ QList<QVector3D> DuppliquerPlan::dupliquer(Ui::MainWindow *ui,QPushButtonPers* p
 }
 
 //coller un plan à partir d'un clic droit
-QList<QVector3D> DuppliquerPlan::collerPlan(Ui::MainWindow *ui,QPushButtonPers* plans[9],Cube cubeMotif,
+QList<QVector3D> DuppliquerPlan::collerPlan(Cube cubeMotif,
                 int NumeroPlanADupliquer, int NumeroPlanPaste, QList<QVector3D> liste_vecteur3D,QString emplMotif){
 
     QList<QVector3D> Nouvelleliste;
@@ -125,3 +125,57 @@ QList<QVector3D> DuppliquerPlan::collerPlan(Ui::MainWindow *ui,QPushButtonPers* 
     return Nouvelleliste;
 }
 
+int DuppliquerPlan::recupereNomPlan(QPushButtonPers* plans[9]){
+    int i=0;
+    int numeroPlanADuppliquer;
+    while(plans[i]->getNamePlane().compare("")==0){
+        i++;
+    }
+    QString nomPlan=(QString)plans[i]->getNamePlane();
+    if(nomPlan.compare("plane9")==0){
+        qDebug()<<"plan 9";
+        numeroPlanADuppliquer=8;
+
+    }
+    if(nomPlan.compare("plane8")==0){
+        qDebug()<<"plan 8";
+        numeroPlanADuppliquer=7;
+
+    }
+    if(nomPlan.compare("plane7")==0){
+        qDebug()<<"plan 7";
+        numeroPlanADuppliquer=6;
+
+    }
+    if(nomPlan.compare("plane6")==0){
+        qDebug()<<"plan 6";
+        numeroPlanADuppliquer=5;
+
+    }
+    if(nomPlan.compare("plane5")==0){
+        qDebug()<<"plan 5";
+        numeroPlanADuppliquer=4;
+
+    }
+    if(nomPlan.compare("plane4")==0){
+        qDebug()<<"plan 4";
+        numeroPlanADuppliquer=3;
+
+    }
+    if(nomPlan.compare("plane3")==0){
+        qDebug()<<"plan 3";
+        numeroPlanADuppliquer=2;
+
+    }
+    if(nomPlan.compare("plane2")==0){
+        qDebug()<<"plan 2";
+        numeroPlanADuppliquer=1;
+
+    }
+    if(nomPlan.compare("plane1")==0){
+        qDebug()<<"plan 1";
+        numeroPlanADuppliquer=0;
+
+    }
+    return numeroPlanADuppliquer;
+}

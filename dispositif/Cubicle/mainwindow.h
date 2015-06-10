@@ -108,7 +108,6 @@ private:
     QPushButton* buttons[90];
     int OrienPlan;
     int NumeroPlan;
-  //  QPushButton* plans[30];
     bool saved=true ;
     int dirOpen;  //vaut 0 si y a pas de directory ouvert, 1 si openDirectory et 2 si on ne choisit pas d'emplacement au début (new project)=>  saveAs
     bool copierCouper; // vaut 0 pour copier et 1 pour couper
@@ -118,7 +117,7 @@ private:
     QDir *aDir;
     int numeroPlanADuppliquer;
 
-    QPushButtonPers* b1;
+
     QPushButtonPers* plans[9];
 
 
