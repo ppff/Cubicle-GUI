@@ -20,7 +20,7 @@ void simulation_cube::initializeGL()
         fArrowRadius = 0.06f;
         fArrowHeight = 1.0f;
     //changer la couleur du fond du cube 3D. l'enlever si on veut un fond noir
-    qglClearColor(QColor(103,194,152,255));
+   qglClearColor(QColor(143,181,184,255));
 
     //activate the depth buffer
     glEnable(GL_DEPTH_TEST);
