@@ -8,7 +8,7 @@ MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent),
     ui(new Ui::MainWindow),
     model(new QFileSystemModel(this)),
-    namedir(""),
+    saveDir(""),
     emplMotif(""),
     tmpDir(QDir::tempPath())
 
@@ -168,17 +168,17 @@ void MainWindow::ouvrir_explorer(){
     }
     else {
         QFileInfo f=QFileInfo(tempdir);
-        namedir = f.absolutePath();
+        saveDir = f.absolutePath();
         QString nomDossier=f.baseName();
         qDebug()<<" le nom duu dossier est "+nomDossier;
         if (nomDossier!="Cubicle") {
             QMessageBox::information(this,tr("warning"),"cannot open this directory, please choose the folder Cubicle");
             ouvrir_explorer();
         }
-        qDebug()<<" le chemin du namedir est"+namedir;
+        qDebug()<<" le chemin du namedir est"+saveDir;
     }
 
-    QDir dir(namedir+"/Cubicle");
+    QDir dir(saveDir+"/Cubicle");
     QStringList nameFilter;
     nameFilter<<"*.txt";
     QFileInfoList list=dir.entryInfoList(nameFilter,QDir::Files);
@@ -191,7 +191,7 @@ void MainWindow::ouvrir_explorer(){
         return;
     }
 
-    this->setWindowTitle("Cubicle["+namedir+"/Cubicle"+"]");
+    this->setWindowTitle("Cubicle["+saveDir+"/Cubicle"+"]");
     // je copie le dossier Cubicle dans le workspace"
     QDir dir0(tmpDir+"/workspace");
 
@@ -205,9 +205,10 @@ void MainWindow::ouvrir_explorer(){
         removeDir(tmpDir+"/workspace/Cubicle");
     }
 
-    copy(namedir,tmpDir+"/workspace","Cubicle");
+    copy(saveDir,tmpDir+"/workspace","Cubicle");
     tree();
     dirOpen=1;
+    //saveDir=tempdir;
     saved=false;
     emplMotif="";
     ui->actionSave_as->setDisabled(false);
@@ -407,7 +408,7 @@ void MainWindow::new_project(){
         dir.mkpath(".");
     }
 
-    namedir="";
+    saveDir="";
     saved=false;
     dirOpen=2;
     emplMotif="";
@@ -574,6 +575,7 @@ void MainWindow::controlSaveAs(){
 
         else {
             saveDir=destPath;
+
             controlSave();
         }
 
