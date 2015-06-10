@@ -14,7 +14,7 @@ DialogHelp::DialogHelp(QWidget *parent) :
     ui->treeWidget->setColumnCount(1);
     ui->treeWidget->setHeaderLabel("Tutorial of functions");
     ui->textEdit->setReadOnly(true);
-
+    ui->textEdit->setText("<body background=:/Images/cube.jpg >");
     QAction* group;
     group = new QAction("Groups",this);
     ui->treeWidget->addAction(group);
@@ -36,9 +36,10 @@ void DialogHelp::afficher_help(){
     itemList = ui->treeWidget->selectedItems();
     foreach(QTreeWidgetItem *item, itemList)
     {
-       QString str = item->text(0);
+       QString str = item->text(0);  
        if (str=="New project"){
-           ui->textEdit->setText("A new project can be created by : \n");
+           ui->textEdit->setText("<body background=:/Images/cube.jpg >");
+           ui->textEdit->append("A new project can be created by : \n");
            ui->textEdit->append("Method 1 : By shortcut “Ctrl+N” \n");
            ui->textEdit->append("Method 2 : Click on botton: <img src=':/Images/new_project.png' width='20' height='20'>\n");
            ui->textEdit->append("");
@@ -47,7 +48,8 @@ void DialogHelp::afficher_help(){
            ui->textEdit->append(s);
            ui->textEdit->append("The location of botton is: <img src=':/Images/1.png' width='200' height='100'>\n");
        }else if (str=="Open directory"){
-           ui->textEdit->setText("Open a project by : \n");
+           ui->textEdit->setText("<body background=:/Images/cube.jpg >");
+           ui->textEdit->append("Open a project by : \n");
            ui->textEdit->append("Method 1 : By shortcut “Ctrl+O” \n");
            ui->textEdit->append("Method 2 : Click on botton: <img src=':/Images/open_directory.png' width='20' height='20'>\n");
            ui->textEdit->append("");
@@ -56,7 +58,8 @@ void DialogHelp::afficher_help(){
            ui->textEdit->append(s);
            ui->textEdit->append("The location of botton is: <img src=':/Images/2.png' width='200' height='100'>\n");
        }else if (str=="New group"){
-           ui->textEdit->setText("A new crystal group can be created by : \n");
+           ui->textEdit->setText("<body background=:/Images/cube.jpg >");
+           ui->textEdit->append("A new crystal group can be created by : \n");
            ui->textEdit->append("Method 1 : By shortcut “Ctrl+G” \n");
            ui->textEdit->append("Method 2 : Click on botton: <img src=':/Images/new_group.png' width='20' height='20'>");
            ui->textEdit->append("");
@@ -65,7 +68,8 @@ void DialogHelp::afficher_help(){
            ui->textEdit->append(s);
            ui->textEdit->append("The location of botton is: <img src=':/Images/4.png' width='200' height='100'>\n");
        }else if(str=="New pattern"){
-           ui->textEdit->setText("A new crystal pattern can be created by : \n");
+           ui->textEdit->setText("<body background=:/Images/cube.jpg >");
+           ui->textEdit->append("A new crystal pattern can be created by : \n");
            ui->textEdit->append("Method 1 : By shortcut “Ctrl+P” \n");
            ui->textEdit->append("Method 2 : Click on botton: <img src=':/Images/new_pattern.gif' width='20' height='20'>");
            ui->textEdit->append("");
@@ -75,7 +79,8 @@ void DialogHelp::afficher_help(){
            ui->textEdit->append(s);
            ui->textEdit->append("The location of botton is: <img src=':/Images/5.png' width='200' height='100'>\n");
        }else if(str=="Save"){
-           ui->textEdit->setText("Save the current project by: \n");
+           ui->textEdit->setText("<body background=:/Images/cube.jpg >");
+           ui->textEdit->append("Save the current project by: \n");
            ui->textEdit->append("Method 1 : By shortcut “Ctrl+S” \n");
            ui->textEdit->append("Method 2 : Click on botton: <img src=':/Images/save.png' width='20' height='20'>");
            ui->textEdit->append("");
@@ -84,47 +89,54 @@ void DialogHelp::afficher_help(){
            ui->textEdit->append(s);
            ui->textEdit->append("The location of botton is: <img src=':/Images/3.png' width='200' height='100'>\n");
        }else if(str=="Save as"){
-           ui->textEdit->setText("Save the current project by: \n");
+           ui->textEdit->setText("<body background=:/Images/cube.jpg >");
+           ui->textEdit->append("Save the current project by: \n");
            ui->textEdit->append("Method 1 : By shortcut “Ctrl+R” \n");
            ui->textEdit->append("Method 2 : Select “Save As” in the menu “File” \n");
            QString s("<FONT COLOR=red>Warning : </FONT> <FONT COLOR=blue>If project has been saved, another folder can be chosen to save it. If not, it is needed to be saved for the first time.</FONT>");
            ui->textEdit->append(s);
        }else if(str=="Quit"){
-           ui->textEdit->setText("Quit the current project by: \n");
+           ui->textEdit->setText("<body background=:/Images/cube.jpg >");
+           ui->textEdit->append("Quit the current project by: \n");
            ui->textEdit->append("Method 1 : By shortcut “Ctrl+Q” \n");
            ui->textEdit->append("Method 2 : Select “Quit” in the menu “File” \n");
            QString s("<FONT COLOR=red>Warning : </FONT> <FONT COLOR=blue>Make sure that current project has been saved before quitting the program.</FONT>");
            ui->textEdit->append(s);
        }else if(str=="Copy pattern"){
-           ui->textEdit->setText("Copy a crystal pattern by: \n");
+           ui->textEdit->setText("<body background=:/Images/cube.jpg >");
+           ui->textEdit->append("Copy a crystal pattern by: \n");
            ui->textEdit->append("Method 1 : By shortcut “Ctrl+C” \n");
            ui->textEdit->append("Method 2 : Right click on a pattern and select “Copy pattern”\n");
            ui->textEdit->append("Method 3 : Select “Copy pattern” in the menu “Edit” \n");
            QString s("<FONT COLOR=red>Warning : </FONT> <FONT COLOR=blue>Select a pattern before using this funtion.</FONT>");
            ui->textEdit->append(s);
        }else if(str=="Paste pattern"){
-           ui->textEdit->setText("Paste a crystal pattern by: \n");
+           ui->textEdit->setText("<body background=:/Images/cube.jpg >");
+           ui->textEdit->append("Paste a crystal pattern by: \n");
            ui->textEdit->append("Method 1 : By shortcut “Ctrl+V” \n");
            ui->textEdit->append("Method 2 : Right click on a group and select “Paste pattern”\n");
            ui->textEdit->append("Method 3 : Select “Paste pattern” in the menu “Edit” \n");
            QString s("<FONT COLOR=red>Warning : </FONT> <FONT COLOR=blue>Select a folder before using this funtion.</FONT>");
            ui->textEdit->append(s);
        }else if(str=="Delete pattern"){
-           ui->textEdit->setText("Delete a crystal pattern by: \n");
+           ui->textEdit->setText("<body background=:/Images/cube.jpg >");
+           ui->textEdit->append("Delete a crystal pattern by: \n");
            ui->textEdit->append("Method 1 : By shortcut “Ctrl+F” \n");
            ui->textEdit->append("Method 2 : Right click on a pattern and select “Delete pattern”\n");
            ui->textEdit->append("Method 3 : Select “Delete pattern” in the menu “Edit” \n");
            QString s("<FONT COLOR=red>Warning : </FONT> <FONT COLOR=blue>Select a pattern before using this function.</FONT>");
            ui->textEdit->append(s);
        }else if(str=="Cut pattern"){
-           ui->textEdit->setText("Cut a crystal pattern by: \n");
+           ui->textEdit->setText("<body background=:/Images/cube.jpg >");
+           ui->textEdit->append("Cut a crystal pattern by: \n");
            ui->textEdit->append("Method 1 : By shortcut “Ctrl+X” \n");
            ui->textEdit->append("Method 2 : Right click on a pattern and select “Cut pattern”\n");
            ui->textEdit->append("Method 3 : Select “Cut pattern” in the menu “Edit” \n");
            QString s("<FONT COLOR=red>Warning : </FONT> <FONT COLOR=blue>Select a pattern before using this function.</FONT>");
            ui->textEdit->append(s);
        }else if(str=="Select"){
-           ui->textEdit->setText("Select a part of plan to duplicate by: \n");
+           ui->textEdit->setText("<body background=:/Images/cube.jpg >");
+           ui->textEdit->append("Select a part of plan to duplicate by: \n");
            ui->textEdit->append("Method 1 : By shortcut “Ctrl+A” \n");
            ui->textEdit->append("Method 2 : Click on botton: <img src=':/icone/Select.png' width='20' height='20'>");
            ui->textEdit->append("");
@@ -132,7 +144,8 @@ void DialogHelp::afficher_help(){
            //ui->textEdit->append("");
            ui->textEdit->append("The location of botton is: <img src=':/Images/8.png' width='200' height='100'>\n");
        }else if(str=="Duplicate"){
-           ui->textEdit->setText("Duplicate a part of plan by: \n");
+           ui->textEdit->setText("<body background=:/Images/cube.jpg >");
+           ui->textEdit->append("Duplicate a part of plan by: \n");
            ui->textEdit->append("Method 1 : By shortcut “Ctrl+T” \n");
            ui->textEdit->append("Method 2 : Click on botton: <img src=':/icone/Dupliquer.jpg' width='40' height='40'>");
            ui->textEdit->append("");
@@ -140,7 +153,8 @@ void DialogHelp::afficher_help(){
            //ui->textEdit->append("");
            ui->textEdit->append("The location of botton is: <img src=':/Images/9.png' width='200' height='100'>\n");
        }else if(str=="Raise"){
-           ui->textEdit->setText("Raise a group/pattern in the directory by: \n");
+           ui->textEdit->setText("<body background=:/Images/cube.jpg >");
+           ui->textEdit->append("Raise a group/pattern in the directory by: \n");
            ui->textEdit->append("Method 1 : By shortcut “Ctrl+U” \n");
            ui->textEdit->append("Method 2 : Click on botton: <img src=':/Images/up.png' width='20' height='20'>");
            ui->textEdit->append("");
@@ -149,7 +163,8 @@ void DialogHelp::afficher_help(){
            ui->textEdit->append(s);
            ui->textEdit->append("The location of botton is: <img src=':/Images/6.png' width='200' height='100'>\n");
        }else if(str=="Lower"){
-           ui->textEdit->setText("Lower a group/pattern in the directory by: \n");
+           ui->textEdit->setText("<body background=:/Images/cube.jpg >");
+           ui->textEdit->append("Lower a group/pattern in the directory by: \n");
            ui->textEdit->append("Method 1 : By shortcut “Ctrl+D” \n");
            ui->textEdit->append("Method 2 : Click on botton: <img src=':/Images/down.png' width='20' height='20'>");
            ui->textEdit->append("");
