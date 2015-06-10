@@ -12,7 +12,7 @@ int main(int argc, char *argv[])
 {
     QApplication a(argc, argv);
     QPalette pal=a.palette();
-    pal.setColor(QPalette::Window,QColor(234,237,229,255));
+    pal.setColor(QPalette::Window,QColor(143,181,184,255));
     a.setPalette(pal);
 
     MainWindow w;
