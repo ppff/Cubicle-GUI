@@ -6,7 +6,6 @@ NouveauMotif::NouveauMotif(QString nomMotif, QString Dir)
 {
     QDir dir(Dir);
     QStringList nameFilter;
-    //nameFilter<<"*.txt";
     QFileInfoList list=dir.entryInfoList(nameFilter,QDir::Files);
     int num=list.size();
     QString snum;

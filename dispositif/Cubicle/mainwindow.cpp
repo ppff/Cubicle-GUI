@@ -180,8 +180,8 @@ void MainWindow::ouvrir_explorer(){
 
     QDir dir(saveDir+"/Cubicle");
     QStringList nameFilter;
-    nameFilter<<"*.txt";
-    QFileInfoList list=dir.entryInfoList(nameFilter,QDir::Files);
+    //nameFilter<<"*.txt";
+    QFileInfoList list=dir.entryInfoList(QDir::Files);
     QFileInfoList list2=dir.entryInfoList(QDir::Dirs);
 
     //on ne doit pas charger le dossier d'un groupe de motif mais plutot le repertoire des groupes de motif
@@ -251,13 +251,13 @@ void MainWindow::coller(){
                 if((dir+'/'+nameGroup)!=tmpDir+"/workspace/Cubicle"){
                     QFile file(paste_element);
                     if (copierCouper==1){
-                        qDebug()<< "le nouveau fichier après cut paste est "+ dir+"/"+nameGroup+"/"+nom_copie+".txt";
-                        if(file.fileName()!=dir+"/"+nameGroup+"/"+nom_copie+".txt"){
+                        qDebug()<< "le nouveau fichier après cut paste est "+ dir+"/"+nameGroup+"/"+nom_copie;
+                        if(file.fileName()!=dir+"/"+nameGroup+"/"+nom_copie){
                             qDebug() << "le nom du fichier à couper est"+file.fileName();
                             QFileInfo fi(file.fileName());
                             QString oldNameGroup =fi.absolutePath();
                             qDebug()<< "le groupe ou se trouve le fichier coupé est "+fi.absolutePath();
-                            file.rename(dir+"/"+nameGroup+"/"+nom_copie+".txt");
+                            file.rename(dir+"/"+nameGroup+"/"+nom_copie);
                             this->setEmpMotif("");
                             reordonneGroup(oldNameGroup);
                             reordonneGroup(dir+"/"+nameGroup);
@@ -277,9 +277,9 @@ void MainWindow::coller(){
                         qDebug() << "le dernier rang est "+ nouveauRang;
 
                         nom_copie=nouveauRang+nom_copie.mid(2);
-                        bool valid = file.copy(dir+"/"+nameGroup+"/"+nom_copie+"_copie.txt");
+                        bool valid = file.copy(dir+"/"+nameGroup+"/"+nom_copie+"_copie");
 
-                        new_index=model->index(dir+"/"+nameGroup+"/"+nom_copie+"_copie.txt");
+                        new_index=model->index(dir+"/"+nameGroup+"/"+nom_copie+"_copie");
                         ui->treeView->setCurrentIndex(new_index);
                         ui->treeView->selectionModel()->select(new_index,
                                                                QItemSelectionModel::ClearAndSelect | QItemSelectionModel::Rows);
@@ -352,7 +352,7 @@ void MainWindow::ajouter_motif(){
                 qDebug()<<"le nom du dossier est "+nameGroup;
 
                 if(nameGroup!="Cubicle"){
-                    NouveauMotif m=NouveauMotif("New Pattern.txt",dir+"/"+nameGroup);
+                    NouveauMotif m=NouveauMotif("New Pattern",dir+"/"+nameGroup);
                     new_index =model->index(m.getNameFile());
                     qDebug() << "le path du pattern ajouté est "+ m.getNameFile();
                     ui->treeView->setCurrentIndex(new_index);
@@ -643,14 +643,14 @@ void MainWindow::reordonneGroup(QString nameGroup){
                     ii="0"+QString::number(i);
                 QString namefile =info.baseName();
                 QString dirfile=info.absolutePath();
-                QFile file(dirfile+"/"+namefile+".txt");
+                QFile file(dirfile+"/"+namefile);
                 qDebug()<<"l'ancien path est "+dirfile+"/"+namefile;
                 namefile=ii+"_"+namefile.mid(3);
                 qDebug()<<"le namefile est "+namefile;
                 qDebug()<<"le dirfile est "+dirfile;
                 qDebug()<< dirfile+"/"+namefile;
 
-                file.rename(dirfile+"/"+namefile+".txt");
+                file.rename(dirfile+"/"+namefile);
                 this->setEmpMotif("");
                 i++;
             }
@@ -691,7 +691,7 @@ void MainWindow::reordonneRenommage(){
     }
     else{
             QFile file(pathTotalOld);
-            file.rename(pathTotalNew+".txt");
+            file.rename(pathTotalNew);
             this->setEmpMotif("");
     }
 }
