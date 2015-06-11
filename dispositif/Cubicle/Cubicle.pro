@@ -20,9 +20,7 @@ SOURCES += main.cpp\
     nouveaumotif.cpp\
     gestionfichier.cpp\
     simulation_cube.cpp \
-    parser.c\
     dialoghelp.cpp\
-    CUB_parser.c \
     controlplan2d.cpp \
     controlcube3d.cpp \
     controlarborescence.cpp \
@@ -41,9 +39,7 @@ HEADERS  += mainwindow.h\
     gestionfichier.h\
     simulation_cube.h\
     adapt.h \
-    parser.h\
     dialoghelp.h\
-    CUB_parser.h \
     global.h \
     controlplan2d.h \
     controlcube3d.h \
