@@ -135,13 +135,12 @@ void DialogHelp::afficher_help(){
            ui->textEdit->append(s);
        }else if(str=="Copy Plane"){
            ui->textEdit->setText("<body background=:/Images/cube.jpg >");
-           ui->textEdit->append("Select a plane to duplicate by: \n");
-           ui->textEdit->append("Method 1: a right click on the plane and select “Copy Plane”\n");
+           ui->textEdit->append("Select a plane to copy by: \n");
+           ui->textEdit->append("Method : Right click on the plane to be copied and select “Copy Plane”\n");
        }else if(str=="Paste Plane"){
            ui->textEdit->setText("<body background=:/Images/cube.jpg >");
            ui->textEdit->append("Select a plane to paste by: \n");
-           ui->textEdit->append("Method 1: a right click on the plane and select “Paste Plane” \n");
-           ui->textEdit->append("The location of botton is: <img src=':/Images/9.png' width='200' height='100'>\n");
+           ui->textEdit->append("Method : Right click on the plane to be pasted and select “Paste Plane” \n");
        }else if(str=="Raise"){
            ui->textEdit->setText("<body background=:/Images/cube.jpg >");
            ui->textEdit->append("Raise a group/pattern in the directory by: \n");
