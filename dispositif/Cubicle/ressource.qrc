@@ -35,6 +35,8 @@
         <file>saveas.png</file>
         <file>cubicle.png</file>
         <file>image_de_fond.jpg</file>
+        <file>help.png</file>
+        <file>about.png</file>
     </qresource>
     <qresource prefix="/texte">
         <file>parser.txt</file>
