@@ -81,7 +81,6 @@ public:
     void setNumeroPlan(int i);
     void connexion();
     void connectPlanToAffiche();
-    void connectPlanToDuplicate();
     void copy(const QString &sourcePath, const QString &destPath, const QString &name);
     bool removeDir(const QString& dirPath) ;
     void reordonneGroup(QString namegroup);
@@ -96,7 +95,6 @@ private:
     QModelIndex new_index;
     QMenu* contextMenu;
     QString saveDir;
-    //QString namedir;
     QAction *insertMotif;
     QAction *insert_Group;
     QAction *deletePattern;
@@ -154,9 +152,6 @@ private slots:
     void About();
     void allume_led(const QString & valeur);
     void affiche_plan_Cube(const QString &valeur);
-    void selectPlanToDuplicate();
-    void choixPlanADupliquer(const QString &valeur);
-    void duplicate();
     void ShowContextMenu(const QPoint& p);
     void on_pushButton_clicked();
     void on_pushButton_2_clicked();
