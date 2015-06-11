@@ -10,16 +10,6 @@ void ControlCube3D::desactivePlan(QPushButtonPers * plans[9],Ui::MainWindow *ui)
          plans[i]->setStyleSheet("QPushButton { background-color: rgba(240,240,240,255); }");
     }
 
- ui->plane1->hide();
- ui->plane2->hide();
- ui->plane3->hide();
- ui->plane4->hide();
- ui->plane5->hide();
- ui->plane6->hide();
- ui->plane7->hide();
- ui->plane8->hide();
- ui->plane9->hide();
-
 }
 
 int ControlCube3D::affichePlanLed(const QString & valeur,Ui::MainWindow *ui,QPushButtonPers * plans[9],QPushButton* buttons[90],Cube cubeMotif){
