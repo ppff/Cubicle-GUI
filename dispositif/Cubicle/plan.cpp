@@ -34,4 +34,3 @@ void Plan::updatePlan(const Led l, const int i, const int j){
       this->setLed(l,i,j);
 }
 
-

@@ -409,7 +409,7 @@
      <x>0</x>
      <y>0</y>
      <width>1309</width>
-     <height>21</height>
+     <height>25</height>
     </rect>
    </property>
    <property name="nativeMenuBar">
@@ -469,6 +469,7 @@
    <addaction name="actionNew_project"/>
    <addaction name="actionOpen_directory"/>
    <addaction name="actionSave"/>
+   <addaction name="actionSave_as"/>
   </widget>
   <action name="actionNew_Group">
    <property name="icon">
@@ -636,6 +637,10 @@
    </property>
   </action>
   <action name="actionHelp">
+   <property name="icon">
+    <iconset resource="ressource.qrc">
+     <normaloff>:/icone/help.png</normaloff>:/icone/help.png</iconset>
+   </property>
    <property name="text">
     <string>Help</string>
    </property>
@@ -644,6 +649,10 @@
    </property>
   </action>
   <action name="actionAbout_CUBICLE">
+   <property name="icon">
+    <iconset resource="ressource.qrc">
+     <normaloff>:/icone/about.png</normaloff>:/icone/about.png</iconset>
+   </property>
    <property name="text">
     <string>About CUBICLE</string>
    </property>

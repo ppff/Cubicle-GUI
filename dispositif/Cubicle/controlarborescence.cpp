@@ -42,7 +42,6 @@ void ControlArborescence::monter(Ui::MainWindow *ui,QFileSystemModel *model){
 
                 QString dir=model->fileInfo(index).absolutePath();
                 nameGroupDessus=model->fileInfo(indexMoinsUn).baseName();
-                qDebug()<<"1111111111111111";
                 qDebug()<<"nameGroupDessus: "+ nameGroupDessus;
                 QString nameRest = nameGroup.mid(3);
                 QString nameDessusRest = nameGroupDessus.mid(3);
@@ -53,23 +52,18 @@ void ControlArborescence::monter(Ui::MainWindow *ui,QFileSystemModel *model){
                     newNameGroup = QString::number(num-1)+"_"+nameRest;
                 }
                 QString pathTotalOld = dir+"/"+nameGroup;
-                qDebug()<<"2222222222222222";
                 qDebug()<<"pathTotalOld: "+ pathTotalOld;
 
                 QString pathTotalNew = dir+"/"+newNameGroup;
-                qDebug()<<"3333333333333333";
                 qDebug()<<"pathTotalNew: "+ pathTotalNew;
 
                 if (num<10){
                         //QString nameGroupMoinsUn = "0"+QString::number(num-1)+"_"+nameDessusRest;
                         QString totalnameGroupMoinsUn = dir+"/"+nameGroupDessus;
-                        qDebug()<<"444444444444444444";
                         qDebug()<<"totalnameGroupMoinsUn: "+ totalnameGroupMoinsUn;
                         QString nameGroupMoinsUnChange = nameDessusRest;
-                        qDebug()<<"555555555555555555555";
                         qDebug()<<"nameGroupMoinsUnChange: "+ nameGroupMoinsUnChange;
                         QString totalnameGroupMoinsUnChange = dir+"/"+nameGroupMoinsUnChange;
-                        qDebug()<<"6666666666666666666666";
                         qDebug()<<"totalnameGroupMoinsUnChange: "+ totalnameGroupMoinsUnChange;
 
                         QDir directory(totalnameGroupMoinsUn);
@@ -79,11 +73,9 @@ void ControlArborescence::monter(Ui::MainWindow *ui,QFileSystemModel *model){
                         dir1.rename(pathTotalOld, pathTotalNew);
 
                         QString nameGroupMoinsUnChangeCorrect = "0"+QString::number(num)+"_"+nameDessusRest;
-                        qDebug()<<"777777777777777777777777";
                         qDebug()<<"nameGroupMoinsUnChangeCorrect: "+ nameGroupMoinsUnChangeCorrect;
 
                         QString totalnameGroupMoinsUnCorrect = dir+"/"+nameGroupMoinsUnChangeCorrect;
-                        qDebug()<<"8888888888888888888888888";
                         qDebug()<<"totalnameGroupMoinsUnCorrect: "+ totalnameGroupMoinsUnCorrect;
 
                         QDir dir2(totalnameGroupMoinsUnChange);
@@ -149,35 +141,31 @@ void ControlArborescence::monter(Ui::MainWindow *ui,QFileSystemModel *model){
                 }else {
                     newNameMotif = QString::number(num-1)+"_"+nameRest;
                 }
-                QString pathTotalOld = dir+"/"+nameMotif+".txt";
-                QString pathTotalNew = dir+"/"+newNameMotif+".txt";
+                QString pathTotalOld = dir+"/"+nameMotif;
+                QString pathTotalNew = dir+"/"+newNameMotif;
 
                 if (num<10){
-                    //////////////////////////////
-                        QString nameMotifMoinsUn = "0"+QString::number(num-1)+"_"+nameDessusRest+".txt";
+                        QString nameMotifMoinsUn = "0"+QString::number(num-1)+"_"+nameDessusRest;
                         QString totalnameMotifMoinsUn = dir+"/"+nameMotifMoinsUn;
 
                         QString nameMotifMoinsUnChange = nameDessusRest;
-                        QString totalnameMotifMoinsUnChange = dir+"/"+nameMotifMoinsUnChange+".txt";
+                        QString totalnameMotifMoinsUnChange = dir+"/"+nameMotifMoinsUnChange;
 
                         QFile directory(totalnameMotifMoinsUn);
                         directory.rename(totalnameMotifMoinsUn,totalnameMotifMoinsUnChange);
-                    ////////////////////////////////
                         QFile dir1(pathTotalOld);
                         dir1.rename(pathTotalOld, pathTotalNew);
-                    ////////////////////////////////
-                        QString nameMotifMoinsUnChangeCorrect = "0"+QString::number(num)+"_"+nameDessusRest+".txt";
+                        QString nameMotifMoinsUnChangeCorrect = "0"+QString::number(num)+"_"+nameDessusRest;
                         QString totalnameMotifMoinsUnCorrect = dir+"/"+nameMotifMoinsUnChangeCorrect;
 
                         QFile dir2(totalnameMotifMoinsUnChange);
                         dir2.rename(totalnameMotifMoinsUnChange, totalnameMotifMoinsUnCorrect);
-                   ///////////////////////////////
                 }else if(num==10){
-                        QString nameMotifMoinsUn = "0"+QString::number(num-1)+"_"+nameDessusRest+".txt";
+                        QString nameMotifMoinsUn = "0"+QString::number(num-1)+"_"+nameDessusRest;
                         QString totalnameMotifMoinsUn = dir+"/"+nameMotifMoinsUn;
 
                         QString nameMotifMoinsUnChange = nameDessusRest;
-                        QString totalnameMotifMoinsUnChange = dir+"/"+nameMotifMoinsUnChange+".txt";
+                        QString totalnameMotifMoinsUnChange = dir+"/"+nameMotifMoinsUnChange;
 
                         QFile directory(totalnameMotifMoinsUn);
                         directory.rename(totalnameMotifMoinsUn,totalnameMotifMoinsUnChange);
@@ -185,16 +173,16 @@ void ControlArborescence::monter(Ui::MainWindow *ui,QFileSystemModel *model){
                         QFile dir1(pathTotalOld);
                         dir1.rename(pathTotalOld, pathTotalNew);
 
-                        QString nameMotifMoinsUnChangeCorrect = QString::number(num)+"_"+nameDessusRest+".txt";
+                        QString nameMotifMoinsUnChangeCorrect = QString::number(num)+"_"+nameDessusRest;
                         QString totalnameMotifMoinsUnCorrect = dir+"/"+nameMotifMoinsUnChangeCorrect;
                         QFile dir2(totalnameMotifMoinsUnCorrect);
                         dir2.rename(totalnameMotifMoinsUnChange, totalnameMotifMoinsUnCorrect);
                 }else if(num>10){
-                        QString nameMotifMoinsUn = QString::number(num-1)+"_"+nameDessusRest+".txt";
+                        QString nameMotifMoinsUn = QString::number(num-1)+"_"+nameDessusRest;
                         QString totalnameMotifMoinsUn = dir+"/"+nameMotifMoinsUn;
 
                         QString nameMotifMoinsUnChange = nameDessusRest;
-                        QString totalnameMotifMoinsUnChange = dir+"/"+nameMotifMoinsUnChange+".txt";
+                        QString totalnameMotifMoinsUnChange = dir+"/"+nameMotifMoinsUnChange;
 
                         QFile directory(totalnameMotifMoinsUn);
                         directory.rename(totalnameMotifMoinsUn,totalnameMotifMoinsUnChange);
@@ -202,7 +190,7 @@ void ControlArborescence::monter(Ui::MainWindow *ui,QFileSystemModel *model){
                         QFile dir1(pathTotalOld);
                         dir1.rename(pathTotalOld, pathTotalNew);
 
-                        QString nameMotifMoinsUnChangeCorrect = QString::number(num)+"_"+nameDessusRest+".txt";
+                        QString nameMotifMoinsUnChangeCorrect = QString::number(num)+"_"+nameDessusRest;
                         QString totalnameMotifMoinsUnCorrect = dir+"/"+nameMotifMoinsUnChangeCorrect;
                         QFile dir2(totalnameMotifMoinsUnCorrect);
                         dir2.rename(totalnameMotifMoinsUnChange, totalnameMotifMoinsUnCorrect);
@@ -344,16 +332,16 @@ void ControlArborescence::descendre(Ui::MainWindow *ui,QFileSystemModel *model){
                }else {
                    newNameMotif = QString::number(num+1)+"_"+nameRest;
                }
-               QString pathTotalOld = dir+"/"+nameMotif+".txt";
-               QString pathTotalNew = dir+"/"+newNameMotif+".txt";
+               QString pathTotalOld = dir+"/"+nameMotif;
+               QString pathTotalNew = dir+"/"+newNameMotif;
 
                if (num<9){
                    if (numDessous==num+1){
-                       QString nameMotifPlusUn = "0"+QString::number(num+1)+"_"+nameDessousRest+".txt";
+                       QString nameMotifPlusUn = "0"+QString::number(num+1)+"_"+nameDessousRest;
                        QString totalnameMotifPlusUn = dir+"/"+nameMotifPlusUn;
 
                        QString nameMotifPlusUnChange = nameDessousRest;
-                       QString totalnameMotifPlusUnChange = dir+"/"+nameMotifPlusUnChange+".txt";
+                       QString totalnameMotifPlusUnChange = dir+"/"+nameMotifPlusUnChange;
 
                        QFile directory(totalnameMotifPlusUn);
                        directory.rename(totalnameMotifPlusUn,totalnameMotifPlusUnChange);
@@ -361,18 +349,18 @@ void ControlArborescence::descendre(Ui::MainWindow *ui,QFileSystemModel *model){
                        QFile dir1(pathTotalOld);
                        dir1.rename(pathTotalOld, pathTotalNew);
 
-                       QString nameMotifPlusUnChangeCorrect = "0"+QString::number(num)+"_"+nameDessousRest+".txt";
+                       QString nameMotifPlusUnChangeCorrect = "0"+QString::number(num)+"_"+nameDessousRest;
                        QString totalnameMotifPlusUnCorrect = dir+"/"+nameMotifPlusUnChangeCorrect;
                        QFile dir2(totalnameMotifPlusUnCorrect);
                        dir2.rename(totalnameMotifPlusUnChange, totalnameMotifPlusUnCorrect);
                    }
                }else if(num==9){
                    if (numDessous==num+1){
-                       QString nameMotifPlusUn = QString::number(num+1)+"_"+nameDessousRest+".txt";
+                       QString nameMotifPlusUn = QString::number(num+1)+"_"+nameDessousRest;
                        QString totalnameMotifPlusUn = dir+"/"+nameMotifPlusUn;
 
                        QString nameMotifPlusUnChange = nameDessousRest;
-                       QString totalnameMotifPlusUnChange = dir+"/"+nameMotifPlusUnChange+".txt";
+                       QString totalnameMotifPlusUnChange = dir+"/"+nameMotifPlusUnChange;
 
                        QFile directory(totalnameMotifPlusUn);
                        directory.rename(totalnameMotifPlusUn,totalnameMotifPlusUnChange);
@@ -380,18 +368,18 @@ void ControlArborescence::descendre(Ui::MainWindow *ui,QFileSystemModel *model){
                        QFile dir1(pathTotalOld);
                        dir1.rename(pathTotalOld, pathTotalNew);
 
-                       QString nameMotifPlusUnChangeCorrect = "0"+QString::number(num)+"_"+nameDessousRest+".txt";
+                       QString nameMotifPlusUnChangeCorrect = "0"+QString::number(num)+"_"+nameDessousRest;
                        QString totalnameMotifPlusUnCorrect = dir+"/"+nameMotifPlusUnChangeCorrect;
                        QFile dir2(totalnameMotifPlusUnCorrect);
                        dir2.rename(totalnameMotifPlusUnChange, totalnameMotifPlusUnCorrect);
                    }
                }else if(num>9){
                    if (numDessous==num+1){
-                       QString nameMotifPlusUn = QString::number(num+1)+"_"+nameDessousRest+".txt";
+                       QString nameMotifPlusUn = QString::number(num+1)+"_"+nameDessousRest;
                        QString totalnameMotifPlusUn = dir+"/"+nameMotifPlusUn;
 
                        QString nameMotifPlusUnChange = nameDessousRest;
-                       QString totalnameMotifPlusUnChange = dir+"/"+nameMotifPlusUnChange+".txt";
+                       QString totalnameMotifPlusUnChange = dir+"/"+nameMotifPlusUnChange;
 
                        QFile directory(totalnameMotifPlusUn);
                        directory.rename(totalnameMotifPlusUn,totalnameMotifPlusUnChange);
@@ -399,7 +387,7 @@ void ControlArborescence::descendre(Ui::MainWindow *ui,QFileSystemModel *model){
                        QFile dir1(pathTotalOld);
                        dir1.rename(pathTotalOld, pathTotalNew);
 
-                       QString nameMotifPlusUnChangeCorrect = QString::number(num)+"_"+nameDessousRest+".txt";
+                       QString nameMotifPlusUnChangeCorrect = QString::number(num)+"_"+nameDessousRest;
                        QString totalnameMotifPlusUnCorrect = dir+"/"+nameMotifPlusUnChangeCorrect;
                        QFile dir2(totalnameMotifPlusUnCorrect);
                        dir2.rename(totalnameMotifPlusUnChange, totalnameMotifPlusUnCorrect);

@@ -19,11 +19,19 @@ SOURCES += main.cpp\
     plan.cpp\
     nouveaumotif.cpp\
     gestionfichier.cpp\
+<<<<<<< HEAD
     simulation_cube.cpp\
     dialoghelp.cpp\
     controlplan2d.cpp\
     controlcube3d.cpp\
     controlarborescence.cpp\
+=======
+    simulation_cube.cpp \
+    dialoghelp.cpp\
+    controlplan2d.cpp \
+    controlcube3d.cpp \
+    controlarborescence.cpp \
+>>>>>>> Nettoyage
     duppliquerplan.cpp \
     qpushbuttonpers.cpp
 
