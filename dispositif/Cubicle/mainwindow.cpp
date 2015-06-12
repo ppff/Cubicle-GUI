@@ -864,6 +864,7 @@ QString MainWindow::getEmplMotif(){
 MainWindow::~MainWindow()
 {
     delete ui;
+    delete model;
 }
 
 void MainWindow::on_pushButton_clicked()

@@ -215,4 +215,3 @@ void simulation_cube::setListPlan(QList<QVector3D> const& l){
 
     }
 }
-

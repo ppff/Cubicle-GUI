@@ -469,6 +469,7 @@
    <addaction name="actionNew_project"/>
    <addaction name="actionOpen_directory"/>
    <addaction name="actionSave"/>
+   <addaction name="actionSave_as"/>
   </widget>
   <action name="actionNew_Group">
    <property name="icon">

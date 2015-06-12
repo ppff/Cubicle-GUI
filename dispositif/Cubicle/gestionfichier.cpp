@@ -10,7 +10,7 @@ void GestionFichier::ouvrir(QString empl,Cube c){
     QFile file(empl);
     if(!file.open(QIODevice::ReadWrite | QIODevice::Text)){
         qDebug()<<"le fichier n'est pas ouvert";
-       return;
+        return;
     }
 
     QTextStream flux(&file);
@@ -20,23 +20,23 @@ void GestionFichier::ouvrir(QString empl,Cube c){
     flux<<version<<endl;
 
     for(int cntP=0;cntP<9;cntP++){
-       y=QString::number(cntP);
-       for(int cntL=0;cntL<9;cntL++){
-           z=QString::number(abs(8-cntL));
-           for(int cntA=0;cntA<9;cntA++){
-               Led l=c.getList1()->value(cntP).getLed(cntL,cntA);
-               int e=l.getEtat() ;
-               if (e) {
+        y=QString::number(cntP);
+        for(int cntL=0;cntL<9;cntL++){
+            z=QString::number(abs(8-cntL));
+            for(int cntA=0;cntA<9;cntA++){
+                Led l=c.getList1()->value(cntP).getLed(cntL,cntA);
+                int e=l.getEtat() ;
+                if (e) {
 
-                   x=QString::number(abs(8-cntA));
-                   qDebug()<<"led ("+x+y+z+") allumé ";
-                   flux<<x+" "+y+" "+z<<endl;
-               }
+                    x=QString::number(abs(8-cntA));
+                    qDebug()<<"led ("+x+y+z+") allumé ";
+                    flux<<x+" "+y+" "+z<<endl;
+                }
 
             }
-       }
+        }
     }
-   file.close();
+    file.close();
 }
 
 QString GestionFichier::getLinePlan(int nplan,int nligne,Cube c){
@@ -45,12 +45,12 @@ QString GestionFichier::getLinePlan(int nplan,int nligne,Cube c){
     y=QString::number(nplan);
     z=QString::number(nligne);
     for(int i=0;i<9;i++){
-       Led l=c.getList1()->value(nplan).getLed(nligne,i);
-       int e=l.getEtat() ;
-       if (e==1) {
-           x=QString::number(i);
-           str+=x+y+z+'\n';
-       }
+        Led l=c.getList1()->value(nplan).getLed(nligne,i);
+        int e=l.getEtat() ;
+        if (e==1) {
+            x=QString::number(i);
+            str+=x+y+z+'\n';
+        }
     }
     return str;
 }
@@ -73,12 +73,12 @@ QList<QVector3D> GestionFichier:: parser(QString empl, QList<QVector3D> list){
     while(!flux.atEnd()){
         Line=flux.readLine()+'\n';
         if(Line.size()>1){
-                QString sx=(QString)Line[0];
-                QString sy=(QString)Line[2];
-                QString sz=(QString)Line[4];
-                int x=sx.toInt(0,10);
-                int y=sy.toInt(0,10);
-                int z=sz.toInt(0,10);
+            QString sx=(QString)Line[0];
+            QString sy=(QString)Line[2];
+            QString sz=(QString)Line[4];
+            int x=sx.toInt(0,10);
+            int y=sy.toInt(0,10);
+            int z=sz.toInt(0,10);
 
             QVector3D v=QVector3D(x,y,z);
             list.append(v);
@@ -86,7 +86,7 @@ QList<QVector3D> GestionFichier:: parser(QString empl, QList<QVector3D> list){
     }
 
     file.close();
-   return list;
+    return list;
 
 }
 
